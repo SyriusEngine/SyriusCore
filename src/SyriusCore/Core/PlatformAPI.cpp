@@ -1,10 +1,13 @@
 #include "../../../include/SyirusCore/Core/PlatformAPI.hpp"
 
+#include <utility>
+
 namespace Syrius{
 
-    PlatformAPI::PlatformAPI(const VulkanPlatformDesc& vpDesc)
+    PlatformAPI::PlatformAPI(VulkanPlatformDesc vpDesc)
             : m_GlVersion(0),
-              m_VulkanPlatformDesc(vpDesc){
+              m_PlatformGladInstances(0),
+              m_VulkanPlatformDesc(std::move(vpDesc)){
     }
 
     PlatformAPI::~PlatformAPI() {

@@ -43,14 +43,14 @@ namespace Syrius{
 
         static void pushOpenGLMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
 
-        static void pushOpenGlError(GLenum error, const std::string& function, const std::string& file, uint32 line);
+        static void pushOpenGlError(uint32 error, const std::string& function, const std::string& file, uint32 line);
 
         static void pushMessage(SR_MESSAGE_SEVERITY severity, const std::string& message, const std::string& function, const std::string& file, uint32 line, SR_MESSAGE_TYPE type = SR_MESSAGE);
 
 #if defined(SR_PLATFORM_WIN64)
-        static void formatHresultMessage(HRESULT hr, const std::string& function, const std::string& file, uint32 line);
+        static void formatHresultMessage(int64 hr, const std::string& function, const std::string& file, uint32 line);
 
-        static void d3d11DeviceRemovedHandler(HRESULT hr, const std::string& function, const std::string& file, uint32 line);
+        static void d3d11DeviceRemovedHandler(int64 hr, const std::string& function, const std::string& file, uint32 line);
 
 #endif
 

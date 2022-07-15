@@ -1,4 +1,5 @@
 #include "../../../include/SyirusCore/Core/DebugMessageHandler.hpp"
+#include "PlatformInclude.hpp"
 
 namespace Syrius{
     std::string getMessageTypeString(SR_MESSAGE_TYPE type){
@@ -100,7 +101,7 @@ namespace Syrius{
         m_MessageHandler(msgStruct);
     }
 
-    void DebugMessageHandler::pushOpenGlError(GLenum error, const std::string &function, const std::string &file,
+    void DebugMessageHandler::pushOpenGlError(uint32 error, const std::string &function, const std::string &file,
                                               uint32 line) {
         std::string msg = "OpenGL encountered a state error = ";
         switch (error) {
@@ -139,7 +140,7 @@ namespace Syrius{
     }
 
 #if defined(SR_PLATFORM_WIN64)
-    void DebugMessageHandler::formatHresultMessage(HRESULT hr, const std::string& function, const std::string& file, uint32 line){
+    void DebugMessageHandler::formatHresultMessage(int64 hr, const std::string& function, const std::string& file, uint32 line){
         LPTSTR errorText = nullptr;
         FormatMessage(
                 FORMAT_MESSAGE_FROM_SYSTEM
@@ -171,7 +172,7 @@ namespace Syrius{
     }
 
     void
-    DebugMessageHandler::d3d11DeviceRemovedHandler(HRESULT hr, const std::string &function, const std::string &file,
+    DebugMessageHandler::d3d11DeviceRemovedHandler(int64 hr, const std::string &function, const std::string &file,
                                                    uint32 line) {
         LPTSTR errorText = nullptr;
         FormatMessage(

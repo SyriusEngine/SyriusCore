@@ -9,6 +9,10 @@ namespace Syrius {
         std::vector<std::string> m_Extensions;
     };
 
+    struct SR_API GlPlatformDesc{
+
+    };
+
     class SR_API PlatformAPI{
     public:
         virtual ~PlatformAPI();
@@ -17,9 +21,8 @@ namespace Syrius {
 
         virtual uint32 getPrimaryScreenHeight() = 0;
 
-#if defined(SR_PLATFORM_WIN64)
-        virtual void initPlatformGlad(HDC hdc) = 0;
-#endif
+        virtual void initPlatformGlad(GlPlatformDesc* glDesc) = 0;
+
         virtual void terminatePlatformGlad() = 0;
 
         [[nodiscard]] int32 getGlVersion() const;
@@ -28,12 +31,12 @@ namespace Syrius {
 
     protected:
 
-        explicit PlatformAPI(const VulkanPlatformDesc& vpDesc);
+        explicit PlatformAPI(VulkanPlatformDesc vpDesc);
 
     protected:
         int32 m_GlVersion;
+        uint32 m_PlatformGladInstances;
 
-    private:
         VulkanPlatformDesc m_VulkanPlatformDesc;
     };
 
