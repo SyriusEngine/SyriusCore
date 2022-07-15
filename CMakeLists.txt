@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.21)
 project(SyriusCore)
 
+add_compile_definitions(SR_DEBUG_MODE)
+
 set(CMAKE_CXX_STANDARD 17)
 
 include_directories(Dependencies/Vulkan/1.3.211.0/Include/)
@@ -40,7 +42,7 @@ set(SYRIUS_CORE_SRC
         ${GLAD_SRC}
         ${IMGUI_SRC}
         ${STB_IMAGE_SRC}
-        src/SyriusCore/SyriusCore.cpp)
+        src/SyriusCore/Core/SyriusCore.cpp src/SyriusCore/Core/DebugMessageHandler.cpp src/SyriusCore/Core/PlatformAPI.cpp)
 
 add_library(syrius_core SHARED ${SYRIUS_CORE_SRC})
 

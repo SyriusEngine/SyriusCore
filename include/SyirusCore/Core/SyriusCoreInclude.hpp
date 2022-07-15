@@ -19,6 +19,8 @@
 #include <commdlg.h>
 #include <comdef.h>
 
+#include "../Dependencies/glad/glad/wgl.h"
+
 #include <d3d11.h>
 #include <dxgi.h>
 #include <d3dcompiler.h>
@@ -28,7 +30,9 @@
 
 #endif
 
-#include <vulkan/vulkan.hpp>
+#include "../Dependencies/glad/glad/gl.h"
+
+#include "vulkan/vulkan.hpp"
 
 namespace Syrius{
 
