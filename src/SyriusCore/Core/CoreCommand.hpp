@@ -24,6 +24,8 @@ namespace Syrius{
 
         static Time getStartupTime();
 
+        static Time getElapsedTimeSinceStart();
+
     private:
         static PlatformAPI* m_PlatformAPI;
         static Time m_StartupTime;

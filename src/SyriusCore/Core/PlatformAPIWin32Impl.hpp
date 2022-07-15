@@ -17,6 +17,9 @@ namespace Syrius{
         HDC m_HDC;
 
         explicit GlPlatformDescWin32(HDC hdc);
+
+        ~GlPlatformDescWin32() override = default;
+
     };
 
     class PlatformAPIWin32Impl: public PlatformAPI{

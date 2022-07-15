@@ -10,6 +10,9 @@ namespace Syrius {
     };
 
     struct SR_API GlPlatformDesc{
+        GlPlatformDesc() = default;
+
+        virtual ~GlPlatformDesc() = default;
 
     };
 

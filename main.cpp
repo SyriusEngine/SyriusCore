@@ -1,6 +1,13 @@
 #include <iostream>
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    try{
+
+
+    } catch (std::exception& e){
+        std::cerr << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Unknown Error" << std::endl;
+    }
     return 0;
 }

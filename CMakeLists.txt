@@ -42,7 +42,12 @@ set(SYRIUS_CORE_SRC
         ${GLAD_SRC}
         ${IMGUI_SRC}
         ${STB_IMAGE_SRC}
-        src/SyriusCore/Core/SyriusCore.cpp src/SyriusCore/Core/DebugMessageHandler.cpp src/SyriusCore/Core/PlatformAPI.cpp src/SyriusCore/Core/CoreCommand.cpp src/SyriusCore/Core/PlatformAPIWin32Impl.cpp src/SyriusCore/Core/PlatformAPIWin32Impl.hpp)
+        src/SyriusCore/Core/SyriusCore.cpp
+        src/SyriusCore/Core/DebugMessageHandler.cpp
+        src/SyriusCore/Core/PlatformAPI.cpp
+        src/SyriusCore/Core/CoreCommand.cpp
+        src/SyriusCore/Core/PlatformAPIWin32Impl.cpp
+        src/SyriusCore/Core/PlatformAPIWin32Impl.hpp)
 
 add_library(syrius_core SHARED ${SYRIUS_CORE_SRC})
 

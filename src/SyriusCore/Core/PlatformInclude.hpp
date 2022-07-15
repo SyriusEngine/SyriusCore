@@ -1,5 +1,8 @@
 #pragma once
 
+#include "../../../../include/SyirusCore/Core/SyriusCoreInclude.hpp"
+#include "../../../../include/SyirusCore/Core/DebugMacros.hpp"
+
 #include <vulkan/vulkan.hpp>
 
 #include "../Dependencies/glad/glad/gl.h"
