@@ -14,7 +14,7 @@
 // Read online: https://github.com/ocornut/imgui/tree/master/docs
 
 #include "../../../../include/SyirusCore/Dependencies/imgui/imgui.h"
-#include "../../../../include/SyirusCore/Dependencies/imgui/imgui_impl_win32.h"
+#include "imgui_impl_win32.h"
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif

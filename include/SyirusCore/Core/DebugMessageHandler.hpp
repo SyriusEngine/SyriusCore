@@ -41,7 +41,7 @@ namespace Syrius{
 
         static void setDebugMessageHandler(handleDebugMessageFunc newHandler);
 
-        static void pushOpenGLMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
+        static void pushOpenGLMessageCallback(uint32 source, uint32 type, uint32 id, uint32 severity, int32 length, const char* message, const void* userParam);
 
         static void pushOpenGlError(uint32 error, const std::string& function, const std::string& file, uint32 line);
 

@@ -92,8 +92,8 @@
 #endif
 
 #include "../../../../include/SyirusCore/Dependencies/imgui/imgui.h"
-#include "../../../../include/SyirusCore/Dependencies/imgui/imgui_impl_opengl3.h"
-#include "../../../../include/SyirusCore/Dependencies/glad/glad/gl.h"
+#include "imgui_impl_opengl3.h"
+#include "../glad/glad/gl.h"
 #define IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 
 #include <stdio.h>

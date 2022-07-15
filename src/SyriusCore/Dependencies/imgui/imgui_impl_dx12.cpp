@@ -41,7 +41,7 @@
 //  2018-02-22: Merged into master with all Win32 code synchronized to other examples.
 
 #include "../../../../include/SyirusCore/Dependencies/imgui/imgui.h"
-#include "../../../../include/SyirusCore/Dependencies/imgui/imgui_impl_dx12.h"
+#include "imgui_impl_dx12.h"
 
 // DirectX
 #include <d3d12.h>

@@ -13,8 +13,6 @@
 #include <chrono>
 #include <random>
 
-#include "../Dependencies/glad/glad/gl.h"
-
 namespace Syrius{
 
     typedef enum SR_SUPPORTED_API{

@@ -32,7 +32,7 @@
 //  2016-05-07: DirectX11: Disabling depth-write.
 
 #include "../../../../include/SyirusCore/Dependencies/imgui/imgui.h"
-#include "../../../../include/SyirusCore/Dependencies/imgui/imgui_impl_dx11.h"
+#include "imgui_impl_dx11.h"
 
 // DirectX
 #include <stdio.h>

@@ -53,8 +53,7 @@ namespace Syrius{
         m_MessageHandler = newHandler;
     }
 
-    void DebugMessageHandler::pushOpenGLMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity,
-                                                        GLsizei length, const GLchar *message, const void *userParam) {
+    void DebugMessageHandler::pushOpenGLMessageCallback(uint32 source, uint32 type, uint32 id, uint32 severity, int32 length, const char* message, const void* userParam) {
         std::string msg = "type = ";
         switch (type) {
             case GL_DEBUG_TYPE_ERROR:               msg += "Error"; break;
