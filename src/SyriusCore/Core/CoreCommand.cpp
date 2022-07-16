@@ -49,6 +49,13 @@ namespace Syrius{
     void CoreCommand::initGlad() {
         if (!m_GladInstances){
             gladLoaderLoadGL();
+
+#if defined(SR_DEBUG_MODE)
+            glEnable(GL_DEBUG_OUTPUT);
+            glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+            glDebugMessageCallback(DebugMessageHandler::pushOpenGLMessageCallback, nullptr);
+
+#endif
         }
         m_GladInstances++;
     }

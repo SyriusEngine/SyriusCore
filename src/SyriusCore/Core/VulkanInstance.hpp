@@ -14,7 +14,7 @@ namespace Syrius{
 
         ~VulkanInstance();
 
-        std::vector<std::string> getSupportedExtensions() const;
+        [[nodiscard]] std::vector<std::string> getSupportedExtensions() const;
 
         [[nodiscard]] const VkInstance& getVkInstance() const;
 
