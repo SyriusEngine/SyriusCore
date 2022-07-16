@@ -12,7 +12,7 @@
 // Read online: https://github.com/ocornut/imgui/tree/master/docs
 
 #pragma once
-#include "../../../../include/SyirusCore/Dependencies/imgui/imgui.h"      // IMGUI_IMPL_API
+#include "../../../../include/SyriusCore/Dependencies/imgui/imgui.h"      // IMGUI_IMPL_API
 
 struct ID3D11Device;
 struct ID3D11DeviceContext;

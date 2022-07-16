@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SyriusCoreInclude.hpp"
+#include "../Window/SyriusWindow.hpp"
 
 namespace Syrius {
 
@@ -27,6 +28,8 @@ namespace Syrius {
         virtual void initPlatformGlad(GlPlatformDesc* glDesc) = 0;
 
         virtual void terminatePlatformGlad() = 0;
+
+        virtual SyriusWindow* createWindow(const WindowDesc& windowDesc) = 0;
 
         [[nodiscard]] int32 getGlVersion() const;
 

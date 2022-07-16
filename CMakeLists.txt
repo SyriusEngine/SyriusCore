@@ -17,6 +17,9 @@ if (WIN32)
 #            src/SyriusCore/Dependencies/imgui/imgui_impl_dx12.cpp
             src/SyriusCore/Dependencies/imgui/imgui_impl_dx11.cpp)
 
+    set(SYRIUSCORE_CORE_PLATFORM_SRC
+            src/SyriusCore/Core/PlatformAPIWin32Impl.cpp)
+
 
 endif()
 
@@ -38,18 +41,35 @@ set(STB_IMAGE_SRC
         src/SyriusCore/Dependencies/stb_image/stb_image_resize.cpp
         src/SyriusCore/Dependencies/stb_image/stb_image_write.cpp)
 
-set(SYRIUS_CORE_SRC
+set(SYRIUSCORE_CORE_SRC
         ${GLAD_SRC}
         ${IMGUI_SRC}
         ${STB_IMAGE_SRC}
-        src/SyriusCore/Core/SyriusCore.cpp
+        ${SYRIUSCORE_CORE_PLATFORM_SRC}
         src/SyriusCore/Core/DebugMessageHandler.cpp
         src/SyriusCore/Core/PlatformAPI.cpp
-        src/SyriusCore/Core/CoreCommand.cpp
-        src/SyriusCore/Core/PlatformAPIWin32Impl.cpp
-        src/SyriusCore/Core/PlatformAPIWin32Impl.hpp)
+        src/SyriusCore/Core/CoreCommand.cpp)
 
-add_library(syrius_core SHARED ${SYRIUS_CORE_SRC})
+set(SYRIUSCORE_UTILS_SRC
+        src/SyriusCore/Utils/Image.cpp)
+
+set(SYRIUSCORE_WINDOW_SRC
+        src/SyriusCore/Window/Event/Event.cpp
+        src/SyriusCore/Window/Event/MouseEvent.cpp
+        src/SyriusCore/Window/Event/WindowEvent.cpp
+        src/SyriusCore/Window/Event/KeyboardEvent.cpp
+        src/SyriusCore/Window/SyriusWindow.cpp
+        src/SyriusCore/Window/SyriusWindowWin32Impl.cpp
+        src/SyriusCore/Window/Win32Utils.cpp
+        src/SyriusCore/Window/Context/Context.cpp  )
+
+set(SYRIUSCORE_SRC
+        ${SYRIUSCORE_CORE_SRC}
+        ${SYRIUSCORE_UTILS_SRC}
+        ${SYRIUSCORE_WINDOW_SRC}
+        src/SyriusCore/SyriusCore.cpp )
+
+add_library(syrius_core SHARED ${SYRIUSCORE_SRC})
 
 if (WIN32)
     file(GLOB VULKAN_DLL "./Dependencies/Vulkan/1.3.211.0/Bin/*.dll")
@@ -90,5 +110,5 @@ target_link_libraries(syrius_core ${SYRIUS_CORE_LIBS})
 include_directories(/include/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(SyriusCore main.cpp)
-target_link_libraries(SyriusCore -lsyrius_core)
+add_executable(SyriusCoreDev main.cpp)
+target_link_libraries(SyriusCoreDev -lsyrius_core)

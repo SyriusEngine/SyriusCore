@@ -1,4 +1,4 @@
-#include "../../../include/SyirusCore/Core/PlatformAPI.hpp"
+#include "../../../include/SyriusCore/Core/PlatformAPI.hpp"
 
 #include <utility>
 

@@ -91,7 +91,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "../../../../include/SyirusCore/Dependencies/imgui/imgui.h"
+#include "../../../../include/SyriusCore/Dependencies/imgui/imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "../glad/glad/gl.h"
 #define IMGUI_IMPL_OPENGL_LOADER_CUSTOM

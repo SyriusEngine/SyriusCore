@@ -1,4 +1,4 @@
-#include "../../../include/SyirusCore/Core/DebugMessageHandler.hpp"
+#include "../../../include/SyriusCore/Core/DebugMessageHandler.hpp"
 #include "PlatformInclude.hpp"
 
 namespace Syrius{

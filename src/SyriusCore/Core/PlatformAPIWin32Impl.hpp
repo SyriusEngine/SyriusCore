@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../../../../include/SyirusCore/Core/PlatformAPI.hpp"
+#include "../../../../include/SyriusCore/Core/PlatformAPI.hpp"
 #include "PlatformInclude.hpp"
+#include "../Window/SyriusWindowWin32Impl.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 
@@ -36,6 +37,8 @@ namespace Syrius{
         void initPlatformGlad(GlPlatformDesc* glDesc) override;
 
         void terminatePlatformGlad() override;
+
+        SyriusWindow* createWindow(const WindowDesc& windowDesc) override;
     };
 
 }

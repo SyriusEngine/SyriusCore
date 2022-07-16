@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../include/SyirusCore/Core/PlatformAPI.hpp"
+#include "../../../../include/SyriusCore/Core/PlatformAPI.hpp"
 
 namespace Syrius{
 
@@ -25,6 +25,12 @@ namespace Syrius{
         static Time getStartupTime();
 
         static Time getElapsedTimeSinceStart();
+
+        static uint32 getPrimaryScreenWidth();
+
+        static uint32 getPrimaryScreenHeight();
+
+        static SyriusWindow* createWindow(const WindowDesc& windowDesc);
 
     private:
         static PlatformAPI* m_PlatformAPI;

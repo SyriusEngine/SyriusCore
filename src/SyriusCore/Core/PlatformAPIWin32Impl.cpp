@@ -52,6 +52,10 @@ namespace Syrius{
         m_PlatformGladInstances--;
     }
 
+    SyriusWindow *PlatformAPIWin32Impl::createWindow(const WindowDesc &windowDesc) {
+        return new SyriusWindowWin32Impl(windowDesc);
+    }
+
 }
 
 #endif

@@ -26,7 +26,7 @@ namespace Syrius{
     }
 
     void CoreCommand::terminate() {
-
+        SR_CORE_MESSAGE("Terminating Syrius")
     }
 
     void CoreCommand::initGlad() {
@@ -61,5 +61,17 @@ namespace Syrius{
 
     Time CoreCommand::getElapsedTimeSinceStart() {
         return getTimeSinceEpochMilli() - m_StartupTime;
+    }
+
+    uint32 CoreCommand::getPrimaryScreenWidth() {
+        return m_PlatformAPI->getPrimaryScreenWidth();
+    }
+
+    uint32 CoreCommand::getPrimaryScreenHeight() {
+        return m_PlatformAPI->getPrimaryScreenHeight();
+    }
+
+    SyriusWindow *CoreCommand::createWindow(const WindowDesc &windowDesc) {
+        return m_PlatformAPI->createWindow(windowDesc);
     }
 }

@@ -820,13 +820,13 @@ CODE
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "../../../../include/SyirusCore/Dependencies/imgui/imgui.h"
+#include "../../../../include/SyriusCore/Dependencies/imgui/imgui.h"
 #ifndef IMGUI_DISABLE
 
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include "../../../../include/SyirusCore/Dependencies/imgui/imgui_internal.h"
+#include "../../../../include/SyriusCore/Dependencies/imgui/imgui_internal.h"
 
 // System includes
 #include <ctype.h>      // toupper
