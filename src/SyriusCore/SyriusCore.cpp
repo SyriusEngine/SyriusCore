@@ -35,4 +35,12 @@ namespace Syrius {
         return CoreCommand::createWindow(windowDesc);
     }
 
+    void setDebugMessageCallback(handleDebugMessageFunc callback){
+        DebugMessageHandler::setDebugMessageHandler(callback);
+    }
+
+    void test(){
+
+    }
+
 }

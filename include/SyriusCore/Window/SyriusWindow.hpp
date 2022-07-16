@@ -123,7 +123,7 @@ namespace Syrius{
 
         virtual std::string saveFileDialog(const std::string& fileName, const std::string& filter) = 0;
 
-        virtual void requestContext(SR_SUPPORTED_API api) = 0;
+        virtual Context* requestContext(SR_SUPPORTED_API api) = 0;
 
     protected:
 

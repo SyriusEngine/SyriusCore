@@ -55,6 +55,15 @@
 #define SR_CORE_CHECK_D3D11_DEVICE_REMOVED(hr) \
     if (FAILED(hr)) DebugMessageHandler::d3d11DeviceRemovedHandler(hr, SR_FUNC, SR_FILE, SR_LINE);
 
+#define SR_VULKAN_CALL(x, message) \
+    do {                           \
+        int32 __vkResult = x; \
+        if (__vkResult != 0){ \
+               DebugMessageHandler::vulkanFormatVkResultMessage(__vkResult, message, SR_FUNC, SR_FILE, SR_LINE);               \
+        }\
+    } while (0);                              \
+
+
 #else
 
 #define SR_CORE_PRECONDITION(condition, message)
@@ -66,5 +75,7 @@
 #define SR_OPENGL_CHECK_CALL(x) x;
 #define SR_CORE_CHECK_HRESULT(hr) hr;
 #define SR_CORE_CHECK_D3D11_DEVICE_REMOVED(hr) hr;
+
+#define SR_VULKAN_CALL(x, message) x;\
 
 #endif

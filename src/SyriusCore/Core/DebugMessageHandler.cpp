@@ -1,6 +1,8 @@
 #include "../../../include/SyriusCore/Core/DebugMessageHandler.hpp"
 #include "PlatformInclude.hpp"
 
+#include <vulkan/vulkan.hpp>
+
 namespace Syrius{
     std::string getMessageTypeString(SR_MESSAGE_TYPE type){
         switch (type) {
@@ -205,4 +207,65 @@ namespace Syrius{
     }
 
 #endif
+
+    void DebugMessageHandler::vulkanFormatVkResultMessage(int32 vkResult, const std::string &message,
+                                                          const std::string &function, const std::string &file,
+                                                          uint32 line) {
+
+        auto result = static_cast<VkResult>(vkResult);
+        std::string msg = "Vulkan function returned exit code = " + std::to_string(vkResult) + "(";
+
+        switch (result) {
+            case VK_SUCCESS:                                    msg += "VK_SUCCESS"; break;
+            case VK_NOT_READY:                                  msg += "VK_NOT_READY"; break;
+            case VK_TIMEOUT:                                    msg += "VK_TIMEOUT"; break;
+            case VK_EVENT_SET:                                  msg += "VK_EVENT_SET"; break;
+            case VK_EVENT_RESET:                                msg += "VK_EVENT_RESET"; break;
+            case VK_INCOMPLETE:                                 msg += "VK_INCOMPLETE"; break;
+            case VK_ERROR_OUT_OF_HOST_MEMORY:                   msg += "VK_ERROR_OUT_OF_HOST_MEMORY"; break;
+            case VK_ERROR_OUT_OF_DEVICE_MEMORY:                 msg += "VK_ERROR_OUT_OF_DEVICE_MEMORY"; break;
+            case VK_ERROR_INITIALIZATION_FAILED:                msg += "VK_ERROR_INITIALIZATION_FAILED"; break;
+            case VK_ERROR_DEVICE_LOST:                          msg += "VK_ERROR_DEVICE_LOST"; break;
+            case VK_ERROR_MEMORY_MAP_FAILED:                    msg += "VK_ERROR_MEMORY_MAP_FAILED"; break;
+            case VK_ERROR_LAYER_NOT_PRESENT:                    msg += "VK_ERROR_LAYER_NOT_PRESENT"; break;
+            case VK_ERROR_EXTENSION_NOT_PRESENT:                msg += "VK_ERROR_EXTENSION_NOT_PRESENT"; break;
+            case VK_ERROR_FEATURE_NOT_PRESENT:                  msg += "VK_ERROR_FEATURE_NOT_PRESENT"; break;
+            case VK_ERROR_INCOMPATIBLE_DRIVER:                  msg += "VK_ERROR_INCOMPATIBLE_DRIVER"; break;
+            case VK_ERROR_TOO_MANY_OBJECTS:                     msg += "VK_ERROR_TOO_MANY_OBJECTS"; break;
+            case VK_ERROR_FORMAT_NOT_SUPPORTED:                 msg += "VK_ERROR_FORMAT_NOT_SUPPORTED"; break;
+            case VK_ERROR_FRAGMENTED_POOL:                      msg += "VK_ERROR_FRAGMENTED_POOL"; break;
+            case VK_ERROR_UNKNOWN:                              msg += "VK_ERROR_UNKNOWN"; break;
+            case VK_ERROR_OUT_OF_POOL_MEMORY:                   msg += "VK_ERROR_OUT_OF_POOL_MEMORY"; break;
+            case VK_ERROR_INVALID_EXTERNAL_HANDLE:              msg += "VK_ERROR_INVALID_EXTERNAL_HANDLE"; break;
+            case VK_ERROR_FRAGMENTATION:                        msg += "VK_ERROR_FRAGMENTATION"; break;
+            case VK_ERROR_INVALID_OPAQUE_CAPTURE_ADDRESS:       msg += "VK_ERROR_INVALID_OPAQUE_CAPTURE_ADDRESS"; break;
+            case VK_PIPELINE_COMPILE_REQUIRED:                  msg += "VK_PIPELINE_COMPILE_REQUIRED"; break;
+            case VK_ERROR_SURFACE_LOST_KHR:                     msg += "VK_ERROR_SURFACE_LOST_KHR"; break;
+            case VK_ERROR_NATIVE_WINDOW_IN_USE_KHR:             msg += "VK_ERROR_NATIVE_WINDOW_IN_USE_KHR"; break;
+            case VK_SUBOPTIMAL_KHR:                             msg += "VK_SUBOPTIMAL_KHR"; break;
+            case VK_ERROR_OUT_OF_DATE_KHR:                      msg += "VK_ERROR_OUT_OF_DATE_KHR"; break;
+            case VK_ERROR_INCOMPATIBLE_DISPLAY_KHR:             msg += "VK_ERROR_INCOMPATIBLE_DISPLAY_KHR"; break;
+            case VK_ERROR_VALIDATION_FAILED_EXT:                msg += "VK_ERROR_VALIDATION_FAILED_EXT"; break;
+            case VK_ERROR_INVALID_SHADER_NV:                    msg += "VK_ERROR_INVALID_SHADER_NV"; break;
+            case VK_ERROR_INVALID_DRM_FORMAT_MODIFIER_PLANE_LAYOUT_EXT: msg += "VK_ERROR_INVALID_DRM_FORMAT_MODIFIER_PLANE_LAYOUT_EXT"; break;
+            case VK_ERROR_NOT_PERMITTED_KHR:                    msg += "VK_ERROR_NOT_PERMITTED_KHR"; break;
+            case VK_ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST_EXT:  msg += "VK_ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST_EXT"; break;
+            case VK_THREAD_IDLE_KHR:                            msg += "VK_THREAD_IDLE_KHR"; break;
+            case VK_THREAD_DONE_KHR:                            msg += "VK_THREAD_DONE_KHR"; break;
+            case VK_OPERATION_DEFERRED_KHR:                     msg += "VK_OPERATION_DEFERRED_KHR"; break;
+            case VK_OPERATION_NOT_DEFERRED_KHR:                 msg += "VK_OPERATION_NOT_DEFERRED_KHR"; break;
+            case VK_RESULT_MAX_ENUM:                            msg += "VK_RESULT_MAX_ENUM"; break;
+        }
+        msg += ")\n extra info = " + message;
+
+        Message msgStruct;
+        msgStruct.m_Type = SR_MESSAGE_VULKAN;
+        msgStruct.m_Severity = SR_MESSAGE_SEVERITY_HIGH;
+        msgStruct.m_Message = msg;
+        msgStruct.m_Function = function;
+        msgStruct.m_File = file;
+        msgStruct.m_Line = line;
+        m_MessageHandler(msgStruct);
+
+    }
 }

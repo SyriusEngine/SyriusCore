@@ -53,6 +53,7 @@ namespace Syrius{
         static void d3d11DeviceRemovedHandler(int64 hr, const std::string& function, const std::string& file, uint32 line);
 
 #endif
+        static void vulkanFormatVkResultMessage(int32 vkResult, const std::string& message, const std::string& function, const std::string& file, uint32 line);
 
     private:
         static handleDebugMessageFunc m_MessageHandler;

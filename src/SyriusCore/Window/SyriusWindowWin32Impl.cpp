@@ -1,5 +1,6 @@
 #include "SyriusWindowWin32Impl.hpp"
 #include "../Core/CoreCommand.hpp"
+#include "Context/WglContext.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 
@@ -237,13 +238,14 @@ namespace Syrius{
         }
     }
 
-    void SyriusWindowWin32Impl::requestContext(SR_SUPPORTED_API api) {
+    Context* SyriusWindowWin32Impl::requestContext(SR_SUPPORTED_API api) {
         switch (api) {
             case SR_API_OPENGL:
-//                m_Context = new WglContext(m_Hwnd);
-                break;
+                m_Context = new WglContext(m_Hwnd);
+                return m_Context;
             default:
                 SR_CORE_WARNING("cannot create context: unsupported API")
+                return nullptr;
         }
 
     }

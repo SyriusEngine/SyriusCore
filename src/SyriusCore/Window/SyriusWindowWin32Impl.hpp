@@ -62,7 +62,7 @@ namespace Syrius{
 
         std::string saveFileDialog(const std::string& fileName, const std::string& filter) override;
 
-        void requestContext(SR_SUPPORTED_API api) override;
+        Context* requestContext(SR_SUPPORTED_API api) override;
 
         [[nodiscard]] const HWND& getHwnd() const;
 

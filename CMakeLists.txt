@@ -67,7 +67,7 @@ set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}
         ${SYRIUSCORE_UTILS_SRC}
         ${SYRIUSCORE_WINDOW_SRC}
-        src/SyriusCore/SyriusCore.cpp )
+        src/SyriusCore/SyriusCore.cpp src/SyriusCore/Window/Context/GlContext.cpp src/SyriusCore/Window/Context/GlContext.hpp src/SyriusCore/Window/Context/WglContext.cpp src/SyriusCore/Window/Context/WglContext.hpp src/SyriusCore/Core/VulkanInstance.cpp src/SyriusCore/Core/VulkanInstance.hpp)
 
 add_library(syrius_core SHARED ${SYRIUSCORE_SRC})
 

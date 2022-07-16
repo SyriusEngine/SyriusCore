@@ -6,7 +6,10 @@ namespace Syrius{
     Time CoreCommand::m_StartupTime = 0;
     uint32 CoreCommand::m_GladInstances = 0;
     uint32 CoreCommand::m_CoreCommandInstances = 0;
+    uint32 CoreCommand::m_VulkanInstances = 0;
+
     PlatformAPI* CoreCommand::m_PlatformAPI = nullptr;
+    VulkanInstance* CoreCommand::m_VulkanInstance = nullptr;
 
 
     void CoreCommand::init() {
@@ -26,6 +29,20 @@ namespace Syrius{
     }
 
     void CoreCommand::terminate() {
+        if (m_GladInstances > 0){
+            SR_CORE_WARNING("Syrius is terminated but some objects still depend on glad, glad will be terminated too!");
+            m_GladInstances = 0;
+            gladLoaderUnloadGL();
+        }
+
+        if (m_VulkanInstances > 0){
+            SR_CORE_WARNING("Syrius is terminated but some objects still depend on vulkan, vulkan will be terminated too!");
+
+            m_VulkanInstances = 0;
+            delete m_VulkanInstance;
+            m_VulkanInstance = nullptr;
+        }
+
         SR_CORE_MESSAGE("Terminating Syrius")
     }
 
@@ -55,6 +72,27 @@ namespace Syrius{
         m_PlatformAPI->terminatePlatformGlad();
     }
 
+    void CoreCommand::initVulkan() {
+        SR_CORE_PRECONDITION(m_PlatformAPI, "Cannot initialize vulkan, no platform API was created");
+
+        if (!m_VulkanInstances){
+            SR_CORE_MESSAGE("initializing vulkan instance");
+            m_VulkanInstance = new VulkanInstance(m_PlatformAPI);
+        }
+        m_VulkanInstances++;
+
+        SR_CORE_POSTCONDITION(m_VulkanInstance, "Failed to initialize Vulkan");
+    }
+
+    void CoreCommand::terminateVulkan() {
+        m_VulkanInstances--;
+
+        if (!m_VulkanInstances){
+            SR_CORE_MESSAGE("terminating vulkan instance");
+            delete m_VulkanInstance;
+        }
+    }
+
     Time CoreCommand::getStartupTime() {
         return m_StartupTime;
     }
@@ -74,4 +112,9 @@ namespace Syrius{
     SyriusWindow *CoreCommand::createWindow(const WindowDesc &windowDesc) {
         return m_PlatformAPI->createWindow(windowDesc);
     }
+
+    std::vector<std::string> CoreCommand::getVulkanExtensionNames() {
+        return m_VulkanInstance->getSupportedExtensions();
+    }
+
 }
