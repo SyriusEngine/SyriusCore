@@ -39,6 +39,8 @@ namespace Syrius{
 
         static std::vector<std::string> getVulkanExtensionNames();
 
+        static std::vector<std::string> getVulkanLayerNames();
+
     private:
         static Time m_StartupTime;
         static uint32 m_CoreCommandInstances;

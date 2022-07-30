@@ -14,16 +14,24 @@ namespace Syrius{
         appInfo.apiVersion = VK_API_VERSION_1_0;
 
         const VulkanPlatformDesc& vpDesc = m_PlatformAPI->getVulkanPlatformDesc();
-        const char** extensions = new const char*[vpDesc.m_ExtensionCount];
-        for (uint32 i = 0; i < vpDesc.m_ExtensionCount; i++){
-            extensions[i] = vpDesc.m_Extensions[i].c_str();
+
+        const char** extensions = new const char*[vpDesc.getExtensionCount()];
+        for (uint32 i = 0; i < vpDesc.getExtensionCount(); i++){
+            extensions[i] = vpDesc.getExtensionNames()[i].c_str();
+        }
+
+        const char** layers = new const char*[vpDesc.getLayerCount()];
+        for (uint32 i = 0; i < vpDesc.getLayerCount(); i++){
+            layers[i] = vpDesc.getLayerNames()[i].c_str();
         }
 
         VkInstanceCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         createInfo.pApplicationInfo = &appInfo;
-        createInfo.enabledExtensionCount = vpDesc.m_ExtensionCount;
+        createInfo.enabledExtensionCount = vpDesc.getExtensionCount();
         createInfo.ppEnabledExtensionNames = extensions;
+        createInfo.enabledLayerCount = vpDesc.getLayerCount();
+        createInfo.ppEnabledLayerNames = layers;
 
         SR_VULKAN_CALL(vkCreateInstance(&createInfo, nullptr, &m_Instance), "Failed to create the vulkan instance");
 
@@ -51,7 +59,19 @@ namespace Syrius{
         return extensionNames;
     }
 
-    const VkInstance &VulkanInstance::getVkInstance() const {
-        return m_Instance;
+    std::vector<std::string> VulkanInstance::getSupportedLayers() const {
+        uint32 layerCount = 0;
+        SR_VULKAN_CALL(vkEnumerateInstanceLayerProperties(&layerCount, nullptr), "Failed to get the number of validation layers");
+
+        std::vector<VkLayerProperties> layers(layerCount);
+        SR_VULKAN_CALL(vkEnumerateInstanceLayerProperties(&layerCount, layers.data()), "Failed to get the layer information");
+
+        std::vector<std::string> layerNames;
+        for (const auto& layer : layers){
+            layerNames.emplace_back(layer.layerName);
+        }
+
+        return layerNames;
     }
+
 }

@@ -5,9 +5,29 @@
 
 namespace Syrius {
 
-    struct SR_API VulkanPlatformDesc{
-        uint32 m_ExtensionCount = 0;
+    class SR_API VulkanPlatformDesc{
+    public:
+
+        [[nodiscard]] uint32 getExtensionCount() const;
+
+        [[nodiscard]] uint32 getLayerCount() const;
+
+        [[nodiscard]] const std::vector<std::string>& getExtensionNames() const;
+
+        [[nodiscard]] const std::vector<std::string>& getLayerNames() const;
+
+    protected:
+
+        VulkanPlatformDesc();
+
+        void addRequiredExtension(const std::string& extensionName);
+
+        void addRequiredLayer(const std::string& layerName);
+
+    private:
         std::vector<std::string> m_Extensions;
+        std::vector<std::string> m_ValidationLayers;
+
     };
 
     struct SR_API GlPlatformDesc{

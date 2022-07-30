@@ -40,7 +40,17 @@ namespace Syrius {
     }
 
     void test(){
+        auto names = CoreCommand::getVulkanLayerNames();
 
+        for (const auto& name: names){
+            std::cout << name << std::endl;
+        }
+
+        names = CoreCommand::getVulkanExtensionNames();
+
+        for (const auto& name: names){
+            std::cout << name << std::endl;
+        }
     }
 
 }

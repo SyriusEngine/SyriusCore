@@ -124,4 +124,8 @@ namespace Syrius{
         return m_VulkanInstance->getSupportedExtensions();
     }
 
+    std::vector<std::string> CoreCommand::getVulkanLayerNames() {
+        return m_VulkanInstance->getSupportedLayers();
+    }
+
 }

@@ -16,12 +16,14 @@ namespace Syrius{
 
         [[nodiscard]] std::vector<std::string> getSupportedExtensions() const;
 
-        [[nodiscard]] const VkInstance& getVkInstance() const;
+        [[nodiscard]] std::vector<std::string> getSupportedLayers() const;
 
 
     private:
         const PlatformAPI* m_PlatformAPI;
         VkInstance m_Instance;
+
+
 
     };
 }
