@@ -2,7 +2,7 @@
 
 namespace Syrius{
 
-    VulkanPhysicalDevice::VulkanPhysicalDevice(VkInstance& instance)
+    VulkanPhysicalDevice::VulkanPhysicalDevice(VkInstance instance)
     : m_Instance(instance),
     m_Device(VK_NULL_HANDLE){
         uint32 deviceCount = 0;
@@ -32,7 +32,7 @@ namespace Syrius{
 
     }
 
-    VkPhysicalDevice &VulkanPhysicalDevice::getDevice() {
+    VkPhysicalDevice VulkanPhysicalDevice::getDevice() {
         return m_Device;
     }
 

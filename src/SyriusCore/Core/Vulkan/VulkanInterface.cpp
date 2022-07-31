@@ -30,4 +30,12 @@ namespace Syrius{
         }
     }
 
+    VulkanInstance *VulkanInterface::getInstance() const {
+        return m_Instance;
+    }
+
+    VulkanLogicalDevice *VulkanInterface::getLogicalDevice() const {
+        return m_LogicalDevice;
+    }
+
 }

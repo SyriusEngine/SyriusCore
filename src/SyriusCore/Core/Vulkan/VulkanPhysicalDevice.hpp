@@ -7,11 +7,11 @@ namespace Syrius{
 
     class VulkanPhysicalDevice{
     public:
-        explicit VulkanPhysicalDevice(VkInstance& instance);
+        explicit VulkanPhysicalDevice(VkInstance instance);
 
         ~VulkanPhysicalDevice();
 
-        VkPhysicalDevice& getDevice();
+        VkPhysicalDevice getDevice();
 
     private:
 

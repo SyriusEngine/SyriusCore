@@ -19,6 +19,10 @@ namespace Syrius{
 
         void createDevices();
 
+        [[nodiscard]] VulkanInstance* getInstance() const;
+
+        [[nodiscard]] VulkanLogicalDevice* getLogicalDevice() const;
+
     private:
         VulkanInstance* m_Instance;
         VulkanPhysicalDevice* m_PhysicalDevice;

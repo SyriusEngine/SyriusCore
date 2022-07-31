@@ -41,6 +41,10 @@ namespace Syrius{
 
         static std::vector<std::string> getVulkanLayerNames();
 
+        static VulkanLogicalDevice* getVulkanLogicalDevice();
+
+        static VulkanInstance* getVulkanInstance();
+
     private:
         static Time m_StartupTime;
         static uint32 m_CoreCommandInstances;

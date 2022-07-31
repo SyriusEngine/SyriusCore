@@ -130,4 +130,12 @@ namespace Syrius{
         return m_VulkanInterface->getSupportedLayers();
     }
 
+    VulkanLogicalDevice *CoreCommand::getVulkanLogicalDevice() {
+        return m_VulkanInterface->getLogicalDevice();
+    }
+
+    VulkanInstance *CoreCommand::getVulkanInstance() {
+        return m_VulkanInterface->getInstance();
+    }
+
 }

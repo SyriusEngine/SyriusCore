@@ -12,7 +12,7 @@ namespace Syrius{
 
         ~VulkanLogicalDevice();
 
-        VkDevice& getDevice();
+        VkDevice getDevice();
 
     private:
         VulkanInstance* m_Instance;

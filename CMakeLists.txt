@@ -69,7 +69,7 @@ set(SYRIUSCORE_WINDOW_SRC
         src/SyriusCore/Window/Win32Utils.cpp
         src/SyriusCore/Window/Context/Context.cpp
         src/SyriusCore/Window/Context/GlContext.cpp
-        src/SyriusCore/Window/Context/WglContext.cpp)
+        src/SyriusCore/Window/Context/WglContext.cpp src/SyriusCore/Window/Context/VulkanContext.cpp src/SyriusCore/Window/Context/VulkanContext.hpp src/SyriusCore/Window/Context/VulkanContextWin32.cpp)
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}

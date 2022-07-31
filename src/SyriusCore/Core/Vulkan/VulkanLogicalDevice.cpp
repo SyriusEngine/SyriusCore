@@ -38,7 +38,7 @@ namespace Syrius{
         }
     }
 
-    VkDevice &VulkanLogicalDevice::getDevice() {
+    VkDevice VulkanLogicalDevice::getDevice() {
         return m_Device;
     }
 }
