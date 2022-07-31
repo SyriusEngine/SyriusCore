@@ -85,9 +85,6 @@ namespace Syrius{
         if (!m_VulkanInterfaces){
             m_VulkanInterface = new VulkanInterface(m_PlatformAPI);
 
-            // for now, call this here, some functionality should be able to work without the creation of devices
-            // such as checking if the system actually has a valid Vulkan capable graphics card
-            m_VulkanInterface->createDevices();
         }
         m_VulkanInterfaces++;
 
@@ -128,10 +125,6 @@ namespace Syrius{
 
     std::vector<std::string> CoreCommand::getVulkanLayerNames() {
         return m_VulkanInterface->getSupportedLayers();
-    }
-
-    VulkanLogicalDevice *CoreCommand::getVulkanLogicalDevice() {
-        return m_VulkanInterface->getLogicalDevice();
     }
 
     VulkanInstance *CoreCommand::getVulkanInstance() {

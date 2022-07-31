@@ -3,15 +3,11 @@
 namespace Syrius{
 
     VulkanInterface::VulkanInterface(const PlatformAPI *platformAPI)
-    : m_Instance(nullptr),
-      m_PhysicalDevice(nullptr),
-      m_LogicalDevice(nullptr){
+    : m_Instance(nullptr){
         m_Instance = new VulkanInstance(platformAPI);
     }
 
     VulkanInterface::~VulkanInterface() {
-        delete m_LogicalDevice;
-        delete m_PhysicalDevice;
         delete m_Instance;
     }
 
@@ -23,19 +19,8 @@ namespace Syrius{
         return m_Instance->getSupportedLayers();
     }
 
-    void VulkanInterface::createDevices() {
-        if (m_PhysicalDevice == nullptr){
-            m_PhysicalDevice = new VulkanPhysicalDevice(m_Instance->getInstance());
-            m_LogicalDevice = new VulkanLogicalDevice(m_Instance, m_PhysicalDevice);
-        }
-    }
-
     VulkanInstance *VulkanInterface::getInstance() const {
         return m_Instance;
-    }
-
-    VulkanLogicalDevice *VulkanInterface::getLogicalDevice() const {
-        return m_LogicalDevice;
     }
 
 }

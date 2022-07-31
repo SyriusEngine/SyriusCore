@@ -30,6 +30,9 @@ namespace Syrius{
 
             SR_VULKAN_CALL(vkCreateWin32SurfaceKHR(m_Instance, &createInfo, nullptr, &m_Surface), "Failed to create Surface");
 
+            selectPhysicalDevice();
+            createLogicalDevice();
+
         }
         else{
             SR_CORE_EXCEPTION("Failed to create a surface for Win32");

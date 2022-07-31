@@ -1,6 +1,7 @@
 #include "SyriusWindowWin32Impl.hpp"
 #include "../Core/CoreCommand.hpp"
 #include "Context/WglContext.hpp"
+#include "Context/VulkanContextWin32.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 
@@ -243,6 +244,10 @@ namespace Syrius{
             case SR_API_OPENGL:
                 m_Context = new WglContext(m_Hwnd);
                 return m_Context;
+            case SR_API_VULKAN:
+                m_Context = new VulkanContextWin32(m_Hwnd);
+                return m_Context;
+
             default:
                 SR_CORE_WARNING("cannot create context: unsupported API")
                 return nullptr;

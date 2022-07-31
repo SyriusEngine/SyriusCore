@@ -51,10 +51,7 @@ set(SYRIUSCORE_CORE_SRC
         src/SyriusCore/Core/CoreCommand.cpp
         src/SyriusCore/Core/Message.cpp
         src/SyriusCore/Core/Vulkan/VulkanInstance.cpp
-        src/SyriusCore/Core/Vulkan/VulkanPhysicalDevice.cpp
-        src/SyriusCore/Core/Vulkan/VulkanInterface.cpp
-        src/SyriusCore/Core/Vulkan/VulkanQueueFamily.cpp
-        src/SyriusCore/Core/Vulkan/VulkanLogicalDevice.cpp)
+        src/SyriusCore/Core/Vulkan/VulkanInterface.cpp)
 
 set(SYRIUSCORE_UTILS_SRC
         src/SyriusCore/Utils/Image.cpp)
@@ -69,7 +66,9 @@ set(SYRIUSCORE_WINDOW_SRC
         src/SyriusCore/Window/Win32Utils.cpp
         src/SyriusCore/Window/Context/Context.cpp
         src/SyriusCore/Window/Context/GlContext.cpp
-        src/SyriusCore/Window/Context/WglContext.cpp src/SyriusCore/Window/Context/VulkanContext.cpp src/SyriusCore/Window/Context/VulkanContext.hpp src/SyriusCore/Window/Context/VulkanContextWin32.cpp)
+        src/SyriusCore/Window/Context/WglContext.cpp
+        src/SyriusCore/Window/Context/VulkanContext.cpp
+        src/SyriusCore/Window/Context/VulkanContextWin32.cpp)
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}

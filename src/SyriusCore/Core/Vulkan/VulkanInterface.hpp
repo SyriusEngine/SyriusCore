@@ -1,8 +1,6 @@
 #pragma once
 
 #include "VulkanInstance.hpp"
-#include "VulkanPhysicalDevice.hpp"
-#include "VulkanLogicalDevice.hpp"
 
 namespace Syrius{
 
@@ -17,16 +15,10 @@ namespace Syrius{
 
         [[nodiscard]] std::vector<std::string> getSupportedLayers() const;
 
-        void createDevices();
-
         [[nodiscard]] VulkanInstance* getInstance() const;
-
-        [[nodiscard]] VulkanLogicalDevice* getLogicalDevice() const;
 
     private:
         VulkanInstance* m_Instance;
-        VulkanPhysicalDevice* m_PhysicalDevice;
-        VulkanLogicalDevice* m_LogicalDevice;
     };
 
 }
