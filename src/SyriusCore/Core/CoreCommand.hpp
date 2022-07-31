@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../../include/SyriusCore/Core/PlatformAPI.hpp"
-#include "VulkanInstance.hpp"
+#include "Vulkan/VulkanInterface.hpp"
 
 namespace Syrius{
 
@@ -45,10 +45,10 @@ namespace Syrius{
         static Time m_StartupTime;
         static uint32 m_CoreCommandInstances;
         static uint32 m_GladInstances;
-        static uint32 m_VulkanInstances;
+        static uint32 m_VulkanInterfaces;
 
         static PlatformAPI* m_PlatformAPI;
-        static VulkanInstance* m_VulkanInstance;
+        static VulkanInterface* m_VulkanInterface;
     };
 
 }

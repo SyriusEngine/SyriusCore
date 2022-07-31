@@ -12,17 +12,18 @@
 #include <iostream>
 #include <chrono>
 #include <random>
+#include <map>
 
 namespace Syrius{
 
     typedef enum SR_SUPPORTED_API{
         SR_API_NONE     = 0x00,
         SR_API_OPENGL   = 0x01,
-        SR_API_VULKAN   = 0x02,
+        SR_API_VULKAN   = 0x10,
 
 #if defined(SR_PLATFORM_WIN64)
-        SR_API_D3D11    = 0x03,
-        SR_API_D3D12    = 0x04,
+        SR_API_D3D11    = 0x08,
+        SR_API_D3D12    = 0x09,
 #endif
 
     } SR_SUPPORTED_API;
@@ -53,6 +54,12 @@ namespace Syrius{
                 std::chrono::system_clock::now().time_since_epoch())
                 .count();
     }
+
+#if defined(SR_DEBUG_MODE)
+    const static bool s_SyriusDebugMode = true;
+#else
+    const static bool s_SyriusDebugMode = false;
+#endif
 
 }
 

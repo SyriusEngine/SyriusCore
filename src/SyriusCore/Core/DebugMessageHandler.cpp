@@ -252,7 +252,7 @@ namespace Syrius{
         }
 
         std::string msg = "[Vulkan message callback]: type = " + msgType;
-        msg += "Message = " + std::string(pCallbackData->pMessage);
+        msg += " Message = " + std::string(pCallbackData->pMessage);
 
         Message msgStruct;
         msgStruct.m_Type = SR_MESSAGE_VULKAN;

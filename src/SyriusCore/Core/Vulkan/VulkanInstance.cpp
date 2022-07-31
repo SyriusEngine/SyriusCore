@@ -4,7 +4,8 @@ namespace Syrius{
 
     VulkanInstance::VulkanInstance(const PlatformAPI *platformAPI)
     : m_PlatformAPI(platformAPI),
-      m_Instance(nullptr){
+      m_Instance(nullptr),
+      m_DebugMessenger(nullptr){
         VkApplicationInfo appInfo{};
         appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
         appInfo.pApplicationName = "Syrius Core Lib";
@@ -35,13 +36,20 @@ namespace Syrius{
 
         SR_VULKAN_CALL(vkCreateInstance(&createInfo, nullptr, &m_Instance), "Failed to create the vulkan instance");
 
+#if defined(SR_DEBUG_MODE)
+        setupDebugMessenger();
+#endif
+
     }
 
     VulkanInstance::~VulkanInstance() {
+        if (m_DebugMessenger){
+            destroyDebugUtilsMessenger(m_DebugMessenger, nullptr);
+        }
+
         if (m_Instance){
             vkDestroyInstance(m_Instance, nullptr);
         }
-
     }
 
     std::vector<std::string> VulkanInstance::getSupportedExtensions() const {
@@ -86,6 +94,32 @@ namespace Syrius{
         createInfo.pUserData = nullptr;
         createInfo.pfnUserCallback = DebugMessageHandler::vulkanDebugCallback;
 
+        SR_VULKAN_CALL(createDebugUtilsMessenger(&createInfo, nullptr, &m_DebugMessenger), "Failed to create the vulkan debug messenger")
+
+    }
+
+    VkResult VulkanInstance::createDebugUtilsMessenger(const VkDebugUtilsMessengerCreateInfoEXT *pCreateInfo,
+                                                       const VkAllocationCallbacks *pAllocator,
+                                                       VkDebugUtilsMessengerEXT *pDebugMessenger) {
+        auto vkCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT) vkGetInstanceProcAddr(m_Instance, "vkCreateDebugUtilsMessengerEXT");
+        if (vkCreateDebugUtilsMessengerEXT != nullptr){
+            return vkCreateDebugUtilsMessengerEXT(m_Instance, pCreateInfo, pAllocator, pDebugMessenger);
+        }
+        else{
+            return VK_ERROR_EXTENSION_NOT_PRESENT;
+        }
+    }
+
+    void VulkanInstance::destroyDebugUtilsMessenger(VkDebugUtilsMessengerEXT debugMessenger,
+                                                        const VkAllocationCallbacks *pAllocator) {
+        auto vkDestroyDebugUtilsMessengerEXT = (PFN_vkDestroyDebugUtilsMessengerEXT) vkGetInstanceProcAddr(m_Instance, "vkDestroyDebugUtilsMessengerEXT");
+        if (vkDestroyDebugUtilsMessengerEXT != nullptr){
+            vkDestroyDebugUtilsMessengerEXT(m_Instance, debugMessenger, pAllocator);
+        }
+    }
+
+    VkInstance& VulkanInstance::getInstance() {
+        return m_Instance;
     }
 
 }

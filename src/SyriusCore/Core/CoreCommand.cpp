@@ -6,10 +6,10 @@ namespace Syrius{
     Time CoreCommand::m_StartupTime = 0;
     uint32 CoreCommand::m_GladInstances = 0;
     uint32 CoreCommand::m_CoreCommandInstances = 0;
-    uint32 CoreCommand::m_VulkanInstances = 0;
+    uint32 CoreCommand::m_VulkanInterfaces = 0;
 
     PlatformAPI* CoreCommand::m_PlatformAPI = nullptr;
-    VulkanInstance* CoreCommand::m_VulkanInstance = nullptr;
+    VulkanInterface* CoreCommand::m_VulkanInterface = nullptr;
 
 
     void CoreCommand::init() {
@@ -35,12 +35,12 @@ namespace Syrius{
             gladLoaderUnloadGL();
         }
 
-        if (m_VulkanInstances > 0){
+        if (m_VulkanInterfaces > 0){
             SR_CORE_WARNING("Syrius is terminated but some objects still depend on vulkan, vulkan will be terminated too!");
 
-            m_VulkanInstances = 0;
-            delete m_VulkanInstance;
-            m_VulkanInstance = nullptr;
+            m_VulkanInterfaces = 0;
+            delete m_VulkanInterface;
+            m_VulkanInterface = nullptr;
         }
 
         SR_CORE_MESSAGE("Terminating Syrius")
@@ -82,21 +82,23 @@ namespace Syrius{
     void CoreCommand::initVulkan() {
         SR_CORE_PRECONDITION(m_PlatformAPI, "Cannot initialize vulkan, no platform API was created");
 
-        if (!m_VulkanInstances){
-            SR_CORE_MESSAGE("initializing vulkan instance");
-            m_VulkanInstance = new VulkanInstance(m_PlatformAPI);
-        }
-        m_VulkanInstances++;
+        if (!m_VulkanInterfaces){
+            m_VulkanInterface = new VulkanInterface(m_PlatformAPI);
 
-        SR_CORE_POSTCONDITION(m_VulkanInstance, "Failed to initialize Vulkan");
+            // for now, call this here, some functionality should be able to work without the creation of devices
+            // such as checking if the system actually has a valid Vulkan capable graphics card
+            m_VulkanInterface->createDevices();
+        }
+        m_VulkanInterfaces++;
+
+        SR_CORE_POSTCONDITION(m_VulkanInterface, "Failed to initialize Vulkan");
     }
 
     void CoreCommand::terminateVulkan() {
-        m_VulkanInstances--;
+        m_VulkanInterfaces--;
 
-        if (!m_VulkanInstances){
-            SR_CORE_MESSAGE("terminating vulkan instance");
-            delete m_VulkanInstance;
+        if (!m_VulkanInterfaces){
+            delete m_VulkanInterface;
         }
     }
 
@@ -121,11 +123,11 @@ namespace Syrius{
     }
 
     std::vector<std::string> CoreCommand::getVulkanExtensionNames() {
-        return m_VulkanInstance->getSupportedExtensions();
+        return m_VulkanInterface->getSupportedExtensions();
     }
 
     std::vector<std::string> CoreCommand::getVulkanLayerNames() {
-        return m_VulkanInstance->getSupportedLayers();
+        return m_VulkanInterface->getSupportedLayers();
     }
 
 }

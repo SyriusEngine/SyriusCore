@@ -40,6 +40,7 @@ namespace Syrius {
     }
 
     void test(){
+        CoreCommand::initVulkan();
         auto names = CoreCommand::getVulkanLayerNames();
 
         for (const auto& name: names){
@@ -51,6 +52,8 @@ namespace Syrius {
         for (const auto& name: names){
             std::cout << name << std::endl;
         }
+
+        CoreCommand::terminateVulkan();
     }
 
 }
