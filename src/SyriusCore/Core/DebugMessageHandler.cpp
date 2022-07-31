@@ -1,44 +1,6 @@
-#include "../../../include/SyriusCore/Core/DebugMessageHandler.hpp"
-#include "PlatformInclude.hpp"
-
-#include <vulkan/vulkan.hpp>
+#include "DebugMessageHandler.hpp"
 
 namespace Syrius{
-    std::string getMessageTypeString(SR_MESSAGE_TYPE type){
-        switch (type) {
-            case SR_MESSAGE:
-                return "MESSAGE";
-            case SR_MESSAGE_HRESULT:
-                return "HRESULT";
-            case SR_MESSAGE_OPENGL:
-                return "OPENGL";
-            case SR_MESSAGE_VULKAN:
-                return "VULKAN";
-            case SR_MESSAGE_PRECONDITION:
-                return "PRECONDITION";
-            case SR_MESSAGE_POSTCONDITION:
-                return "POSTCONDITION";
-            case SR_MESSAGE_ASSERTION:
-                return "ASSERTION";
-            default:
-                return "UNKNOWN";
-        }
-    }
-
-    std::string getMessageSeverityString(SR_MESSAGE_SEVERITY severity){
-        switch (severity) {
-            case SR_MESSAGE_SEVERITY_HIGH:
-                return "HIGH";
-            case SR_MESSAGE_SEVERITY_MEDIUM:
-                return "MEDIUM";
-            case SR_MESSAGE_SEVERITY_LOW:
-                return "LOW";
-            case SR_MESSAGE_SEVERITY_INFO:
-                return "INFO";
-            default:
-                return "UNKNOWN";
-        }
-    }
 
     void defaultMessageHandler(const Message& msg){
         std::string message = "[Syrius: " + msg.m_Function + "]: severity = " + getMessageSeverityString(msg.m_Severity) + ", type = " +
@@ -55,7 +17,7 @@ namespace Syrius{
         m_MessageHandler = newHandler;
     }
 
-    void DebugMessageHandler::pushOpenGLMessageCallback(uint32 source, uint32 type, uint32 id, uint32 severity, int32 length, const char* message, const void* userParam) {
+    void DebugMessageHandler::pushOpenGLMessageCallback(GLenum source, uint32 type, uint32 id, uint32 severity, int32 length, const char* message, const void* userParam) {
         std::string msg = "type = ";
         switch (type) {
             case GL_DEBUG_TYPE_ERROR:               msg += "Error"; break;
@@ -102,7 +64,7 @@ namespace Syrius{
         m_MessageHandler(msgStruct);
     }
 
-    void DebugMessageHandler::pushOpenGlError(uint32 error, const std::string &function, const std::string &file,
+    void DebugMessageHandler::pushOpenGlError(GLenum error, const std::string &function, const std::string &file,
                                               uint32 line) {
         std::string msg = "OpenGL encountered a state error = ";
         switch (error) {
@@ -141,7 +103,7 @@ namespace Syrius{
     }
 
 #if defined(SR_PLATFORM_WIN64)
-    void DebugMessageHandler::formatHresultMessage(int64 hr, const std::string& function, const std::string& file, uint32 line){
+    void DebugMessageHandler::formatHresultMessage(HRESULT hr, const std::string& function, const std::string& file, uint32 line){
         LPTSTR errorText = nullptr;
         FormatMessage(
                 FORMAT_MESSAGE_FROM_SYSTEM
@@ -173,7 +135,7 @@ namespace Syrius{
     }
 
     void
-    DebugMessageHandler::d3d11DeviceRemovedHandler(int64 hr, const std::string &function, const std::string &file,
+    DebugMessageHandler::d3d11DeviceRemovedHandler(HRESULT hr, const std::string &function, const std::string &file,
                                                    uint32 line) {
         LPTSTR errorText = nullptr;
         FormatMessage(
@@ -208,12 +170,11 @@ namespace Syrius{
 
 #endif
 
-    void DebugMessageHandler::vulkanFormatVkResultMessage(int32 vkResult, const std::string &message,
+    void DebugMessageHandler::vulkanFormatVkResultMessage(VkResult result, const std::string &message,
                                                           const std::string &function, const std::string &file,
                                                           uint32 line) {
 
-        auto result = static_cast<VkResult>(vkResult);
-        std::string msg = "Vulkan function returned exit code = " + std::to_string(vkResult) + "(";
+        std::string msg = "Vulkan function returned exit code = " + std::to_string(result) + "(";
 
         switch (result) {
             case VK_SUCCESS:                                    msg += "VK_SUCCESS"; break;
@@ -268,4 +229,41 @@ namespace Syrius{
         m_MessageHandler(msgStruct);
 
     }
+
+    VkBool32 DebugMessageHandler::vulkanDebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+                                                VkDebugUtilsMessageTypeFlagsEXT messageType,
+                                                const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
+                                                void *pUserData) {
+        SR_MESSAGE_SEVERITY severity;
+        switch (messageSeverity) {
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:           severity = SR_MESSAGE_SEVERITY_INFO; break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:              severity = SR_MESSAGE_SEVERITY_INFO; break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:           severity = SR_MESSAGE_SEVERITY_MEDIUM; break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:             severity = SR_MESSAGE_SEVERITY_HIGH; break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_FLAG_BITS_MAX_ENUM_EXT:    severity = SR_MESSAGE_SEVERITY_LOW; break;
+        }
+
+        std::string msgType;
+        switch (messageType) {
+            case VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT:       msgType = "GENERAL"; break;
+            case VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT:   msgType = "PERFORMANCE"; break;
+            case VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT:    msgType = "VALIDATION"; break;
+            default:                                                msgType = ""; break;
+        }
+
+        std::string msg = "[Vulkan message callback]: type = " + msgType;
+        msg += "Message = " + std::string(pCallbackData->pMessage);
+
+        Message msgStruct;
+        msgStruct.m_Type = SR_MESSAGE_VULKAN;
+        msgStruct.m_File = "";
+        msgStruct.m_Function = "Vulkan callback";
+        msgStruct.m_Line = 0;
+        msgStruct.m_Message = msg;
+        msgStruct.m_Severity = severity;
+        m_MessageHandler(msgStruct);
+
+        return VK_FALSE;
+    }
+
 }

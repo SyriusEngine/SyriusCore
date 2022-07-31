@@ -48,7 +48,7 @@ set(SYRIUSCORE_CORE_SRC
         ${SYRIUSCORE_CORE_PLATFORM_SRC}
         src/SyriusCore/Core/DebugMessageHandler.cpp
         src/SyriusCore/Core/PlatformAPI.cpp
-        src/SyriusCore/Core/CoreCommand.cpp)
+        src/SyriusCore/Core/CoreCommand.cpp src/SyriusCore/Core/Message.cpp)
 
 set(SYRIUSCORE_UTILS_SRC
         src/SyriusCore/Utils/Image.cpp)

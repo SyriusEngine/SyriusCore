@@ -57,7 +57,7 @@
 
 #define SR_VULKAN_CALL(x, message) \
     do {                           \
-        int32 __vkResult = x; \
+        VkResult __vkResult = x; \
         if (__vkResult != 0){ \
                DebugMessageHandler::vulkanFormatVkResultMessage(__vkResult, message, SR_FUNC, SR_FILE, SR_LINE);               \
         }\

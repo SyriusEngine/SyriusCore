@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../../../../include/SyriusCore/Core/SyriusCoreInclude.hpp"
-#include "../../../../include/SyriusCore/Core/DebugMacros.hpp"
 
 #include <vulkan/vulkan.hpp>
 

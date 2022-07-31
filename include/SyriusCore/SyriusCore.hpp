@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core/SyriusCoreInclude.hpp"
-#include "Core/DebugMessageHandler.hpp"
 #include "Utils/Image.hpp"
 #include "Window/SyriusWindow.hpp"
 

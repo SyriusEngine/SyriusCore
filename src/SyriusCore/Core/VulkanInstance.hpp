@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vulkan/vulkan.hpp>
 #include "PlatformInclude.hpp"
+#include "DebugMacros.hpp"
 #include "../../../../include/SyriusCore/Core/PlatformAPI.hpp"
 
 namespace Syrius{
@@ -18,10 +18,14 @@ namespace Syrius{
 
         [[nodiscard]] std::vector<std::string> getSupportedLayers() const;
 
+    private:
+
+        void setupDebugMessenger();
 
     private:
         const PlatformAPI* m_PlatformAPI;
         VkInstance m_Instance;
+        VkDebugUtilsMessengerEXT m_DebugMessenger;
 
 
 

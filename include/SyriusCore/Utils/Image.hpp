@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Core/SyriusCoreInclude.hpp"
-#include "../Core/DebugMacros.hpp"
+#include "../../../src/SyriusCore/Core/DebugMacros.hpp"
 
 namespace Syrius{
 
