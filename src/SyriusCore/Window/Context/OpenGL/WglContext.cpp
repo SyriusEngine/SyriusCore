@@ -1,6 +1,6 @@
 #include "WglContext.hpp"
-#include "../../Core/CoreCommand.hpp"
-#include "../../Core/PlatformAPIWin32Impl.hpp"
+#include "../../../Core/CoreCommand.hpp"
+#include "../../../Core/PlatformAPIWin32Impl.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 
@@ -52,6 +52,8 @@ namespace Syrius{
         wglMakeCurrent(m_HardwareDeviceContext, m_Context);
         loadExtensions();
 
+        initGl();
+
         SR_CORE_POSTCONDITION(m_HardwareDeviceContext, "Failed to create hardware device context")
         SR_CORE_POSTCONDITION(m_Context, "Failed to create context")
     }
@@ -60,14 +62,6 @@ namespace Syrius{
         wglMakeCurrent(m_HardwareDeviceContext, nullptr);
         wglDeleteContext(m_Context);
         CoreCommand::terminatePlatformGlad();
-    }
-
-    void WglContext::makeCurrent() {
-        wglMakeCurrent(m_HardwareDeviceContext, m_Context);
-    }
-
-    void WglContext::releaseCurrent() {
-        wglMakeCurrent(m_HardwareDeviceContext, nullptr);
     }
 
     void WglContext::swapBuffers() {

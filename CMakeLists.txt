@@ -63,18 +63,26 @@ set(SYRIUSCORE_WINDOW_SRC
         src/SyriusCore/Window/Event/KeyboardEvent.cpp
         src/SyriusCore/Window/SyriusWindow.cpp
         src/SyriusCore/Window/SyriusWindowWin32Impl.cpp
-        src/SyriusCore/Window/Win32Utils.cpp
+        src/SyriusCore/Window/Win32Utils.cpp)
+
+set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Window/Context/Context.cpp
-        src/SyriusCore/Window/Context/GlContext.cpp
-        src/SyriusCore/Window/Context/WglContext.cpp
-        src/SyriusCore/Window/Context/VulkanContext.cpp
-        src/SyriusCore/Window/Context/VulkanContextWin32.cpp)
+        src/SyriusCore/Window/Context/Utils.cpp
+        src/SyriusCore/Window/Context/OpenGL/GlContext.cpp
+        src/SyriusCore/Window/Context/OpenGL/WglContext.cpp
+        src/SyriusCore/Window/Context/Vulkan/VulkanContext.cpp
+        src/SyriusCore/Window/Context/Vulkan/VulkanContextWin32.cpp
+        src/SyriusCore/Window/Context/Vulkan/VulkanUtils.cpp
+        src/SyriusCore/Window/Context/Vulkan/VulkanPhysicalDevice.cpp
+        src/SyriusCore/Window/Context/Vulkan/VulkanLogicalDevice.cpp
+        src/SyriusCore/Window/Context/Vulkan/VulkanSwapChain.cpp)
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}
         ${SYRIUSCORE_UTILS_SRC}
         ${SYRIUSCORE_WINDOW_SRC}
-        src/SyriusCore/SyriusCore.cpp)
+        ${SYRIUSCORE_GRAPHICS_API_SRC}
+        src/SyriusCore/SyriusCore.cpp )
 
 add_library(syrius_core SHARED ${SYRIUSCORE_SRC})
 

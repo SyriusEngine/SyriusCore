@@ -1,9 +1,21 @@
 #include <iostream>
 #include "include/SyriusCore/SyriusCore.hpp"
 
+void messageCallback(const Syrius::Message& msg){
+    if (msg.m_Message.find("Device Extension") == std::string::npos){
+        std::string message = "[Syrius: " + msg.m_Function + "]: severity = " + getMessageSeverityString(msg.m_Severity) + ", type = " +
+                              getMessageTypeString(msg.m_Type) + "\n";
+        message += "File = " + msg.m_File + ", line = " + std::to_string(msg.m_Line) + "\n";
+        message += "Message = " + msg.m_Message + "\n";
+        std::cerr << message;
+        std::cerr << "\n\n--------------------------------------------------------------------------------\n";
+    }
+}
+
 int main() {
     try{
         Syrius::syriusInit();
+        Syrius::setDebugMessageCallback(messageCallback);
 
         Syrius::WindowDesc wDesc;
         wDesc.m_PosX = 200;
@@ -15,8 +27,6 @@ int main() {
         auto window = Syrius::createWindow(wDesc);
         auto context = window->requestContext(Syrius::SR_API_VULKAN);
 
-        window->requestImGuiContext();
-
         while (window->isOpen()){
 
             window->pollEvents();
@@ -27,17 +37,10 @@ int main() {
                 }
             }
 
-//            window->onImGuiBegin();
-//
-//            ImGui::Begin("Test");
-//            ImGui::End();
-//
-//            window->onImGuiEnd();
 
             window->update();
         }
 
-        window->releaseImGuiContext();
         window->releaseContext();
 
         delete window;

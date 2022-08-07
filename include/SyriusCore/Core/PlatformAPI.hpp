@@ -20,9 +20,9 @@ namespace Syrius {
 
         VulkanPlatformDesc();
 
-        void addRequiredExtension(const std::string& extensionName);
+        void addExtension(const std::string& extensionName);
 
-        void addRequiredLayer(const std::string& layerName);
+        void addLayer(const std::string& layerName);
 
     private:
         std::vector<std::string> m_Extensions;

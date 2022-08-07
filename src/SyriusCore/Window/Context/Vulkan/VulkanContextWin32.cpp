@@ -30,8 +30,7 @@ namespace Syrius{
 
             SR_VULKAN_CALL(vkCreateWin32SurfaceKHR(m_Instance, &createInfo, nullptr, &m_Surface), "Failed to create Surface");
 
-            selectPhysicalDevice();
-            createLogicalDevice();
+            createDevicesAndSwapChain();
 
         }
         else{
@@ -40,14 +39,6 @@ namespace Syrius{
     }
 
     VulkanContextWin32::~VulkanContextWin32() {
-
-    }
-
-    void VulkanContextWin32::makeCurrent() {
-
-    }
-
-    void VulkanContextWin32::releaseCurrent() {
 
     }
 

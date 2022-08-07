@@ -28,6 +28,14 @@ namespace Syrius{
 
     } SR_SUPPORTED_API;
 
+    typedef enum SR_PHYSICAL_DEVICE_TYPE {
+        SR_PHYSICAL_DEVICE_NONE             = 0x00,
+        SR_PHYSICAL_DEVICE_INTEGRATED_GPU   = 0x01,
+        SR_PHYSICAL_DEVICE_DISCRETE_GPU     = 0x02,
+        SR_PHYSICAL_DEVICE_VIRTUAL_GPU      = 0x03,
+        SR_PHYSICAL_DEVICE_CPU              = 0x04,
+    } SR_PHYSICAL_DEVICE_TYPE;
+
     typedef uint8_t uint8;
     typedef int8_t int8;
     typedef uint16_t uint16;

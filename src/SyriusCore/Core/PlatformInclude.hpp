@@ -1,5 +1,8 @@
 #pragma once
 
+#include <optional>
+#include <set>
+
 #include "../../../../include/SyriusCore/Core/SyriusCoreInclude.hpp"
 
 #include <vulkan/vulkan.hpp>

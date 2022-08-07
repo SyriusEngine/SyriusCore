@@ -6,8 +6,8 @@ namespace Syrius{
 
     VulkanPlatformDescWin32::VulkanPlatformDescWin32()
     : VulkanPlatformDesc() {
-        addRequiredExtension("VK_KHR_surface");
-        addRequiredExtension("VK_KHR_win32_surface");
+        addExtension("VK_KHR_surface");
+        addExtension("VK_KHR_win32_surface");
     }
 
     GlPlatformDescWin32::GlPlatformDescWin32(HDC hdc)

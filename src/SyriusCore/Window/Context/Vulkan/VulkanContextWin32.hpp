@@ -11,10 +11,6 @@ namespace Syrius{
 
         ~VulkanContextWin32() override;
 
-        void makeCurrent() override;
-
-        void releaseCurrent() override;
-
         void swapBuffers() override;
 
         void setVerticalSynchronisation(bool enable) override;

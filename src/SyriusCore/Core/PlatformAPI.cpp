@@ -7,10 +7,9 @@ namespace Syrius{
 
     VulkanPlatformDesc::VulkanPlatformDesc() {
 
-
 #if defined(SR_DEBUG_MODE)
-        addRequiredLayer("VK_LAYER_KHRONOS_validation");
-        addRequiredExtension(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+        addLayer("VK_LAYER_KHRONOS_validation");
+        addExtension(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 #endif
     }
 
@@ -30,11 +29,11 @@ namespace Syrius{
         return m_ValidationLayers;
     }
 
-    void VulkanPlatformDesc::addRequiredExtension(const std::string &extensionName) {
+    void VulkanPlatformDesc::addExtension(const std::string &extensionName) {
         m_Extensions.emplace_back(extensionName);
     }
 
-    void VulkanPlatformDesc::addRequiredLayer(const std::string &layerName) {
+    void VulkanPlatformDesc::addLayer(const std::string &layerName) {
         m_ValidationLayers.emplace_back(layerName);
     }
 
