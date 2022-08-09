@@ -23,6 +23,8 @@ namespace Syrius{
 
         void onImGuiEnd() override;
 
+        FramebufferSize getFramebufferSize() override;
+
     private:
         HWND& m_Hwnd;
     };

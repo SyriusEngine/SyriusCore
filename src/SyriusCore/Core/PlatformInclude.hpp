@@ -2,6 +2,8 @@
 
 #include <optional>
 #include <set>
+#include <limits>
+#include <algorithm>
 
 #include "../../../../include/SyriusCore/Core/SyriusCoreInclude.hpp"
 

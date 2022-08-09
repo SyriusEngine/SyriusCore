@@ -140,6 +140,16 @@ namespace Syrius{
 
         }
     }
+
+    FramebufferSize WglContext::getFramebufferSize() {
+        RECT area;
+        GetClientRect(m_Hwnd, &area);
+        FramebufferSize size;
+        size.m_Width = area.right;
+        size.m_Height = area.bottom;
+        return size;
+    }
+
 }
 
 #endif

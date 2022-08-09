@@ -8,7 +8,7 @@ namespace Syrius{
     }
 
     GlContext::~GlContext() {
-
+        CoreCommand::terminateGlad();
     }
 
     void GlContext::initGl() {

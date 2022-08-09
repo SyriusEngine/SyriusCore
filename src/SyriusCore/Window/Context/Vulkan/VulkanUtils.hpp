@@ -16,4 +16,12 @@ namespace Syrius{
 
     QueueFamilyIndices findQueueFamily(VkPhysicalDevice device, VkSurfaceKHR surface);
 
+    struct SwapChainSupportDetails{
+        VkSurfaceCapabilitiesKHR m_Capabilities;
+        std::vector<VkSurfaceFormatKHR> m_Formats;
+        std::vector<VkPresentModeKHR> m_PresentModes;
+    };
+
+    SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device, VkSurfaceKHR surface);
+
 }

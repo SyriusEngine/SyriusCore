@@ -29,6 +29,8 @@ namespace Syrius {
 
         void onImGuiEnd() override;
 
+        FramebufferSize getFramebufferSize() override;
+
     private:
         static bool isExtensionSupported(const std::string &extName);
 

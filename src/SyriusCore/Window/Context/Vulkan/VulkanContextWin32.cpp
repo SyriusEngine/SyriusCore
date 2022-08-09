@@ -66,4 +66,13 @@ namespace Syrius{
 
     }
 
+    FramebufferSize VulkanContextWin32::getFramebufferSize() {
+        RECT area;
+        GetClientRect(m_Hwnd, &area);
+        FramebufferSize size;
+        size.m_Width = area.right;
+        size.m_Height = area.bottom;
+        return size;
+    }
+
 }

@@ -39,6 +39,8 @@ namespace Syrius{
 #if defined(SR_DEBUG_MODE)
         setupDebugMessenger();
 #endif
+        delete[] layers;
+        delete[] extensions;
 
     }
 

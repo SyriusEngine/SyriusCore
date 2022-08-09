@@ -15,6 +15,10 @@ namespace Syrius{
         VkDevice getDevice();
 
     private:
+
+
+
+    private:
         VulkanPhysicalDevice* m_PhysicalDevice;
 
         VkDevice m_Device;

@@ -5,6 +5,11 @@
 
 namespace Syrius{
 
+    struct FramebufferSize{
+        uint32 m_Width;
+        uint32 m_Height;
+    };
+
     class SR_API Context{
     public:
 
@@ -49,6 +54,8 @@ namespace Syrius{
         virtual int32 getMaxConstantBufferSize() = 0;
 
         virtual int32 getMaxDepthBufferBits() = 0;
+
+        virtual FramebufferSize getFramebufferSize() = 0;
 
     protected:
 

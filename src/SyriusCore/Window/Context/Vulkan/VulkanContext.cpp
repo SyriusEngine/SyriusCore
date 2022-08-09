@@ -19,6 +19,7 @@ namespace Syrius{
             vkDestroySurfaceKHR(m_Instance, m_Surface, nullptr);
         }
 
+        delete m_SwapChain;
         delete m_Device;
         delete m_PhysicalDevice;
 
@@ -30,6 +31,7 @@ namespace Syrius{
 
         m_PhysicalDevice = new VulkanPhysicalDevice(m_Instance, m_Surface);
         m_Device = new VulkanLogicalDevice(m_PhysicalDevice, m_Surface);
+        m_SwapChain = new VulkanSwapChain(m_PhysicalDevice, m_Device, m_Surface, getFramebufferSize());
     }
 
     std::string VulkanContext::getAPIVersion() {

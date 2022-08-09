@@ -25,11 +25,20 @@ namespace Syrius{
 
         VkPhysicalDeviceFeatures deviceFeatures{};
 
+
+        auto extensionNames = m_PhysicalDevice->getExtensionsNames();
+        const char** extensions = new const char*[extensionNames.size()];
+        for (uint32 i = 0; i < extensionNames.size(); i++){
+            extensions[i] = extensionNames[i].c_str();
+        }
+
         VkDeviceCreateInfo createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
         createInfo.pQueueCreateInfos = queueCreateInfos.data();
         createInfo.queueCreateInfoCount = queueCreateInfos.size();
         createInfo.pEnabledFeatures = &deviceFeatures;
+        createInfo.enabledExtensionCount = extensionNames.size();
+        createInfo.ppEnabledExtensionNames = extensions;
 
         SR_VULKAN_CALL(vkCreateDevice(m_PhysicalDevice->getPhysicalDevice(), &createInfo, nullptr, &m_Device), "Failed to create logical device");
 
@@ -46,6 +55,6 @@ namespace Syrius{
     }
 
     VkDevice VulkanLogicalDevice::getDevice() {
-        return nullptr;
+        return m_Device;
     }
 }

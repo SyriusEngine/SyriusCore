@@ -8,6 +8,7 @@
 #include "VulkanUtils.hpp"
 #include "VulkanLogicalDevice.hpp"
 #include "VulkanPhysicalDevice.hpp"
+#include "VulkanSwapChain.hpp"
 
 namespace Syrius{
 
@@ -48,6 +49,7 @@ namespace Syrius{
 
         VulkanPhysicalDevice* m_PhysicalDevice;
         VulkanLogicalDevice* m_Device;
+        VulkanSwapChain* m_SwapChain;
     };
 
 }
