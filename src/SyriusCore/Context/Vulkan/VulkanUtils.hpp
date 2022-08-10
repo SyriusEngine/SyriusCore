@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../../Core/PlatformInclude.hpp"
-#include "../../../Core/DebugMacros.hpp"
-#include "../../../Core/CoreCommand.hpp"
-#include "../../../../../include/SyriusCore/Window/Context/Utils.hpp"
+#include "../../Core/PlatformInclude.hpp"
+#include "../../Core/DebugMacros.hpp"
+#include "../../Core/CoreCommand.hpp"
+#include "../../../../include/SyriusCore/Context/Utils.hpp"
 
 namespace Syrius{
 

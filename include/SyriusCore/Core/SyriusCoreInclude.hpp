@@ -36,6 +36,12 @@ namespace Syrius{
         SR_PHYSICAL_DEVICE_CPU              = 0x04,
     } SR_PHYSICAL_DEVICE_TYPE;
 
+    typedef enum SR_LOAD_TYPE {
+        SR_LOAD_NONE             = 0x00,
+        SR_LOAD_FROM_FILE        = 0x01,
+        SR_LOAD_FROM_MEMORY      = 0x02,
+    } SR_LOAD_TYPE;
+
     typedef uint8_t uint8;
     typedef int8_t int8;
     typedef uint16_t uint16;

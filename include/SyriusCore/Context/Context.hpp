@@ -1,7 +1,9 @@
 #pragma once
 
-#include "../../Core/SyriusCoreInclude.hpp"
-#include "../../../../src/SyriusCore/Core/DebugMacros.hpp"
+#include "../Core/SyriusCoreInclude.hpp"
+#include "../../../src/SyriusCore/Core/DebugMacros.hpp"
+#include "ShaderModule.hpp"
+#include "Shader.hpp"
 
 namespace Syrius{
 
@@ -56,6 +58,10 @@ namespace Syrius{
         virtual int32 getMaxDepthBufferBits() = 0;
 
         virtual FramebufferSize getFramebufferSize() = 0;
+
+        virtual ShaderModule* createShaderModule(const ShaderModuleDesc& desc) = 0;
+
+        virtual Shader* createShader() = 0;
 
     protected:
 

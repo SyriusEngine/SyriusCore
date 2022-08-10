@@ -78,5 +78,13 @@ namespace Syrius{
         return depthBufferBits;
     }
 
+    ShaderModule *GlContext::createShaderModule(const ShaderModuleDesc &desc) {
+        return new GlShaderModule(desc);
+    }
+
+    Shader *GlContext::createShader() {
+        return new GlShader();
+    }
+
 }
 

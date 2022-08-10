@@ -7,7 +7,7 @@
 
 #include "../Utils/Image.hpp"
 
-#include "Context/Context.hpp"
+#include "../Context/Context.hpp"
 
 namespace Syrius{
 

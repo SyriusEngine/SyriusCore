@@ -74,5 +74,13 @@ namespace Syrius{
         return 0;
     }
 
+    ShaderModule *VulkanContext::createShaderModule(const ShaderModuleDesc &desc) {
+        return new VulkanShaderModule(desc, m_Device);
+    }
+
+    Shader *VulkanContext::createShader() {
+        return nullptr;
+    }
+
 }
 

@@ -3,7 +3,7 @@
 #include "VulkanUtils.hpp"
 #include "VulkanPhysicalDevice.hpp"
 #include "VulkanLogicalDevice.hpp"
-#include "../../../../../include/SyriusCore/Window/Context/Context.hpp"
+#include "../../../../include/SyriusCore/Context/Context.hpp"
 
 namespace Syrius{
 
@@ -21,6 +21,8 @@ namespace Syrius{
 
         VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities, const FramebufferSize& framebufferSize);
 
+        void createImageViews();
+
     private:
         VulkanPhysicalDevice* m_PhysicalDevice;
         VulkanLogicalDevice* m_Device;
@@ -29,6 +31,7 @@ namespace Syrius{
         VkFormat m_ImageFormat;
         VkExtent2D m_Extent;
         std::vector<VkImage> m_Images;
+        std::vector<VkImageView> m_ImageViews;
     };
 }
 

@@ -1,9 +1,11 @@
-#include "../../../../include/SyriusCore/Window/Context/Utils.hpp"
+#pragma once
+
+#include "../Core/SyriusCoreInclude.hpp"
 
 namespace Syrius{
 
-    // Base types
-    typedef enum SR_DATA_TYPE: uint8_t {
+    // basic types
+    typedef enum SR_DATA_TYPE: uint8 {
         SR_TYPE_NONE    = 0x00,
         SR_FLOAT32      = 0x10,
         SR_FLOAT64      = 0x20,
@@ -16,24 +18,10 @@ namespace Syrius{
         SR_VOID         = 0x90
     } SR_DATA_TYPE;
 
-    /**
-     * The Syrius datatypes are meant to be a wrapper over the native APIs (such as openGL, DirectX11) data types and
-     * to provide info over the actual memory layout of the type
-     *
-     * The types are all 8-bit unsigned integers with the upper 4 bits representing the basic data type.
-     * The lower 4 bits represents the size of that type.
-     * IMPORTANT: Due to alignment issues, a float 4-component vector is represented as 0x13 with the last 3 meaning actually
-     * 4 components (starting from 0). That is why a SR_FLOAT32 is 0x10. Normally this is not a problem but when representing
-     * a 4x4 matrix, we need extra bits if we start counting from 1, so that is the trade-off I made.
-     *
-     * In short:
-     *          0x43
-     *  |---------^^-------|
-     *  data type           component count
-     *
-     *  => represents a 4-component vector consisting of unsigned ints
-     */
-    typedef enum SR_SCALAR_TYPE: uint8_t{
+    // scalar types
+    // upper 4 bits are the data type
+    // lower 4 bits are the component count (NOTE: 0 represents 1 component, F represents 16 components)
+    typedef enum SR_SCALAR_TYPE: uint8 {
         SR_FLOAT32_1    = 0x10,
         SR_FLOAT32_2    = 0x11,
         SR_FLOAT32_3    = 0x12,
@@ -87,13 +75,20 @@ namespace Syrius{
 
     // shader types
     typedef enum SR_SHADER_TYPE {
-        SR_SHADER_VERTEX_SHADER         = 0x01,
-        SR_SHADER_FRAGMENT_SHADER       = 0x02,
-        SR_SHADER_PIXEL_SHADER          = 0x02,
-        SR_SHADER_GEOMETRY_SHADER       = 0x03,
-        SR_SHADER_TESSELATION_SHADER    = 0x04,
-        SR_SHADER_COMPUTE_SHADER        = 0x05
+        SR_SHADER_VERTEX         = 0x01,
+        SR_SHADER_FRAGMENT       = 0x02,
+        SR_SHADER_PIXEL          = 0x02,
+        SR_SHADER_GEOMETRY       = 0x03,
+        SR_SHADER_TESSELATION    = 0x04,
+        SR_SHADER_COMPUTE        = 0x05
     } SR_SHADER_TYPE;
+
+    typedef enum SR_SHADER_CODE_TYPE {
+        SR_SHADER_CODE_NONE           = 0x00,
+        SR_SHADER_CODE_GLSL           = 0x01,
+        SR_SHADER_CODE_HLSL           = 0x02,
+        SR_SHADER_CODE_SPIRV          = 0x03
+    } SR_SHADER_CODE_TYPE;
 
     // buffer access types
     typedef enum SR_BUFFER_TYPE {
@@ -124,7 +119,7 @@ namespace Syrius{
     } SR_DEPTH_FUNC;
 
     // base texture formats, the upper 4 bits represent the number of channels
-    typedef enum SR_TEXTURE_FORMAT: uint8_t {
+    typedef enum SR_TEXTURE_FORMAT: uint8 {
         SR_TEXTURE_FORMAT_R     = 0x10,
         SR_TEXTURE_FORMAT_RG    = 0x20,
         SR_TEXTURE_FORMAT_RGB   = 0x30,
@@ -133,7 +128,7 @@ namespace Syrius{
         SR_TEXTURE_FORMAT_BGRA  = 0x41
     } SR_TEXTURE_FORMAT;
 
-    typedef enum SR_TEXTURE_DATA_FORMAT {
+    typedef enum SR_TEXTURE_DATA_FORMAT: uint8 {
         SR_TEXTURE_DATA_FORMAT_R8           = 0x11,
         SR_TEXTURE_DATA_FORMAT_R_I8         = 0x12,
         SR_TEXTURE_DATA_FORMAT_R_I16        = 0x13,
@@ -175,4 +170,31 @@ namespace Syrius{
         SR_TEXTURE_DATA_FORMAT_RGBA_F32     = 0x49,
 
     } SR_TEXTURE_DATA_FORMAT;
+
+    /**
+     * @brief This function will return the size of a type in bytes
+     * @example SR_UINT8 -> 1 byte
+     * @example SR_UINT16 -> 2 bytes
+     * @example SR_UINT32 -> 4 bytes
+     * @example SR_UINT64 -> 8 bytes
+     * @param type The type to get the size of
+     * @return the number of bytes needed to store data of that type
+     */
+    uint8 SR_API getTypeSize(SR_DATA_TYPE type);
+    uint8 SR_API getTypeSize(SR_SCALAR_TYPE type);
+
+    /**
+     * @brief Returns the number of components in a scalar type
+     * @example SR_FLOAT32_1 -> 1
+     * @example SR_FLOAT64_1 -> 1
+     * @example SR_UINT8_4 -> 4
+     * @param type
+     * @return the number of components in the scalar type
+     */
+    uint8 SR_API getScalarComponentCount(SR_SCALAR_TYPE type);
+
 }
+
+
+
+

@@ -56,10 +56,13 @@ namespace Syrius{
     }
 
     VulkanSwapChain::~VulkanSwapChain() {
+        for (auto imageView : m_ImageViews) {
+            vkDestroyImageView(m_Device->getDevice(), imageView, nullptr);
+        }
+
         if (m_SwapChain != VK_NULL_HANDLE) {
             vkDestroySwapchainKHR(m_Device->getDevice(), m_SwapChain, nullptr);
         }
-
     }
 
     VkSurfaceFormatKHR VulkanSwapChain::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats) {
@@ -92,5 +95,27 @@ namespace Syrius{
             };
             return extent;
         }
+    }
+
+    void VulkanSwapChain::createImageViews() {
+        m_ImageViews.resize(m_Images.size());
+        for (size_t i = 0; i < m_Images.size(); i++) {
+            VkImageViewCreateInfo createInfo{};
+            createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+            createInfo.image = m_Images[i];
+            createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+            createInfo.format = m_ImageFormat;
+            createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
+            createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+            createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+            createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
+            createInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            createInfo.subresourceRange.baseMipLevel = 0;
+            createInfo.subresourceRange.levelCount = 1;
+            createInfo.subresourceRange.baseArrayLayer = 0;
+            createInfo.subresourceRange.layerCount = 1;
+            SR_VULKAN_CALL(vkCreateImageView(m_Device->getDevice(), &createInfo, nullptr, &m_ImageViews[i]), "Failed to create image view!");
+        }
+
     }
 }

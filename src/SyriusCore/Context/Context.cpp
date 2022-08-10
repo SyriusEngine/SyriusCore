@@ -1,4 +1,4 @@
-#include "../../../../include/SyriusCore/Window/Context/Context.hpp"
+#include "../../../include/SyriusCore/Context/Context.hpp"
 
 namespace Syrius{
 

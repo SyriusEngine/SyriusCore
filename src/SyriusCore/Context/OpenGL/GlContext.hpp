@@ -1,7 +1,9 @@
 #pragma once
 
-#include "../../../../../include/SyriusCore/Window/Context/Context.hpp"
-#include "../../../Core/CoreCommand.hpp"
+#include "../../../../include/SyriusCore/Context/Context.hpp"
+#include "../../Core/CoreCommand.hpp"
+#include "GlShaderModule.hpp"
+#include "GlShader.hpp"
 
 namespace Syrius{
 
@@ -29,6 +31,10 @@ namespace Syrius{
         int32 getMaxConstantBufferSize() override;
 
         int32 getMaxDepthBufferBits() override;
+
+        ShaderModule* createShaderModule(const ShaderModuleDesc& desc) override;
+
+        Shader* createShader() override;
 
     protected:
         GlContext();
