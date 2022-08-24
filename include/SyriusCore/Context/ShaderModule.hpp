@@ -5,8 +5,8 @@
 namespace Syrius{
 
     struct SR_API ShaderModuleDesc{
-        std::string m_Code;
-        uint32 m_CodeLength;
+        std::string m_Code;     // can be actual code in a string or a file path
+        uint32 m_CodeLength = 0;
         SR_SHADER_TYPE m_Type;
         std::string m_EntryPoint;
         SR_LOAD_TYPE m_LoadType;

@@ -4,6 +4,10 @@
 #include "../../../src/SyriusCore/Core/DebugMacros.hpp"
 #include "ShaderModule.hpp"
 #include "Shader.hpp"
+#include "VertexDescription.hpp"
+#include "VertexBuffer.hpp"
+#include "IndexBuffer.hpp"
+#include "VertexArray.hpp"
 
 namespace Syrius{
 
@@ -62,6 +66,14 @@ namespace Syrius{
         virtual ShaderModule* createShaderModule(const ShaderModuleDesc& desc) = 0;
 
         virtual Shader* createShader() = 0;
+
+        VertexDescription* createVertexDescription();
+
+        virtual VertexBuffer* createVertexBuffer(const VertexBufferDesc& desc) = 0;
+
+        virtual IndexBuffer* createIndexBuffer(const IndexBufferDesc& desc) = 0;
+
+        virtual VertexArray* createVertexArray(const VertexArrayDesc& desc) = 0;
 
     protected:
 

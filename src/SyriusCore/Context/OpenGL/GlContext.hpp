@@ -4,6 +4,9 @@
 #include "../../Core/CoreCommand.hpp"
 #include "GlShaderModule.hpp"
 #include "GlShader.hpp"
+#include "GlVertexBuffer.hpp"
+#include "GlIndexBuffer.hpp"
+#include "GlVertexArray.hpp"
 
 namespace Syrius{
 
@@ -35,6 +38,12 @@ namespace Syrius{
         ShaderModule* createShaderModule(const ShaderModuleDesc& desc) override;
 
         Shader* createShader() override;
+
+        VertexBuffer* createVertexBuffer(const VertexBufferDesc& desc) override;
+
+        IndexBuffer* createIndexBuffer(const IndexBufferDesc& desc) override;
+
+        VertexArray* createVertexArray(const VertexArrayDesc& desc) override;
 
     protected:
         GlContext();

@@ -50,6 +50,8 @@ namespace Syrius{
         else{
             SR_CORE_WARNING("Failed to open file: " + fileName);
         }
+
+        return byteCode;
     }
 
     const std::string &ShaderModule::getEntryPoint() const {

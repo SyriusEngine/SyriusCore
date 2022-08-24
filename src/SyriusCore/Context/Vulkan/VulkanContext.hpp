@@ -45,6 +45,12 @@ namespace Syrius{
 
         Shader* createShader() override;
 
+        VertexBuffer* createVertexBuffer(const VertexBufferDesc& desc) override;
+
+        IndexBuffer* createIndexBuffer(const IndexBufferDesc& desc) override;
+
+        VertexArray* createVertexArray(const VertexArrayDesc& desc) override;
+
     protected:
 
         void createDevicesAndSwapChain();

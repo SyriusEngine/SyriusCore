@@ -82,5 +82,17 @@ namespace Syrius{
         return nullptr;
     }
 
+    VertexBuffer *VulkanContext::createVertexBuffer(const VertexBufferDesc &desc) {
+        return nullptr;
+    }
+
+    IndexBuffer *VulkanContext::createIndexBuffer(const IndexBufferDesc &desc) {
+        return nullptr;
+    }
+
+    VertexArray *VulkanContext::createVertexArray(const VertexArrayDesc &desc) {
+        return nullptr;
+    }
+
 }
 

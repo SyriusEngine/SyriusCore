@@ -86,5 +86,22 @@ namespace Syrius{
         return new GlShader();
     }
 
+    VertexBuffer *GlContext::createVertexBuffer(const VertexBufferDesc &desc) {
+        return new GlVertexBuffer(desc);
+    }
+
+    IndexBuffer *GlContext::createIndexBuffer(const IndexBufferDesc &desc) {
+        return new GlIndexBuffer(desc);
+    }
+
+    VertexArray *GlContext::createVertexArray(const VertexArrayDesc &desc) {
+        if (desc.m_IndexBuffer != nullptr) {
+            return new GlVertexArrayIndexed(desc);
+        }
+        else {
+            return new GlVertexArray(desc);
+        }
+    }
+
 }
 

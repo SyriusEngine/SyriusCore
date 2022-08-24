@@ -20,4 +20,8 @@ namespace Syrius{
         return m_VerticalSync;
     }
 
+    VertexDescription *Context::createVertexDescription() {
+        return new VertexDescription();
+    }
+
 }

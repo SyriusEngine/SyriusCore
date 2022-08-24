@@ -99,11 +99,12 @@ namespace Syrius{
     } SR_BUFFER_TYPE;
 
     // drawing modes
-    typedef enum SR_DRAW_MODE {
-        SR_DRAW_TRIANGLES       = 0x01,
-        SR_DRAW_POINTS          = 0x02,
-        SR_DRAW_LINES           = 0x03,
-        SR_DRAW_TRIANGLE_STRIP  = 0x04
+    typedef enum SR_DRAW_TYPE {
+        SR_DRAW_POINTS          = 0x01,
+        SR_DRAW_LINES           = 0x02,
+        SR_DRAW_LINES_STRIP     = 0x03,
+        SR_DRAW_TRIANGLES       = 0x04,
+        SR_DRAW_TRIANGLE_STRIP  = 0x05
     } SR_DRAW_MODE;
 
     // depth functions
@@ -192,6 +193,8 @@ namespace Syrius{
      * @return the number of components in the scalar type
      */
     uint8 SR_API getScalarComponentCount(SR_SCALAR_TYPE type);
+
+    SR_DATA_TYPE SR_API getScalarDataType(SR_SCALAR_TYPE type);
 
 }
 

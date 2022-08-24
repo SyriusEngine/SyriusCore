@@ -15,17 +15,22 @@ namespace Syrius{
             case SR_TYPE_NONE: return 0;
             case SR_VOID:      return 0;
         }
-        return 0;
     }
     uint8 getTypeSize(SR_SCALAR_TYPE type){
-        uint8 ccount = ((type << 4) >> 4);
-        ccount++;
-        return getTypeSize(static_cast<SR_DATA_TYPE>(type)) * ccount;
+        uint8 trunc = type << 4;
+        uint8 shifted = (trunc >> 4);
+        shifted++;
+        return getTypeSize(static_cast<SR_DATA_TYPE>(static_cast<SR_DATA_TYPE>((type >> 4) << 4))) * shifted;
     }
 
     uint8 SR_API getScalarComponentCount(SR_SCALAR_TYPE type){
-        uint8 shifted = ((type << 4) >> 4);
+        uint8 trunc = type << 4;
+        uint8 shifted = (trunc >> 4);
         shifted++;
         return shifted;
+    }
+
+    SR_DATA_TYPE SR_API getScalarDataType(SR_SCALAR_TYPE type){
+        return static_cast<SR_DATA_TYPE>((type >> 4) << 4);
     }
 }

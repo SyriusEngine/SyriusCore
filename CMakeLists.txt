@@ -70,12 +70,18 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/Utils.cpp
         src/SyriusCore/Context/ShaderModule.cpp
         src/SyriusCore/Context/Shader.cpp
+        src/SyriusCore/Context/VertexDescription.cpp
+        src/SyriusCore/Context/VertexBuffer.cpp
+        src/SyriusCore/Context/IndexBuffer.cpp
+        src/SyriusCore/Context/VertexArray.cpp
 
         src/SyriusCore/Context/OpenGL/GlContext.cpp
         src/SyriusCore/Context/OpenGL/WglContext.cpp
         src/SyriusCore/Context/OpenGL/GlUtils.cpp
         src/SyriusCore/Context/OpenGL/GlShaderModule.cpp
         src/SyriusCore/Context/OpenGL/GlShader.cpp
+        src/SyriusCore/Context/OpenGL/GlVertexBuffer.cpp
+        src/SyriusCore/Context/OpenGL/GlIndexBuffer.cpp
 
         src/SyriusCore/Context/Vulkan/VulkanContext.cpp
         src/SyriusCore/Context/Vulkan/VulkanContextWin32.cpp
@@ -85,14 +91,15 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/Vulkan/VulkanSwapChain.cpp
         src/SyriusCore/Context/Vulkan/VulkanShaderModule.cpp
         src/SyriusCore/Context/Vulkan/VulkanShader.cpp
-        )
+        src/SyriusCore/Context/Vulkan/VulkanPipeline.cpp
+        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp src/SyriusCore/Context/OpenGL/GlVertexArray.cpp src/SyriusCore/Context/OpenGL/GlVertexArray.hpp)
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}
         ${SYRIUSCORE_UTILS_SRC}
         ${SYRIUSCORE_WINDOW_SRC}
         ${SYRIUSCORE_GRAPHICS_API_SRC}
-        src/SyriusCore/SyriusCore.cpp  )
+        src/SyriusCore/SyriusCore.cpp )
 
 add_library(syrius_core SHARED ${SYRIUSCORE_SRC})
 

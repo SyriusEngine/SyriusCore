@@ -40,20 +40,8 @@ namespace Syrius {
     }
 
     void test(){
-        CoreCommand::initVulkan();
-        auto names = CoreCommand::getVulkanLayerNames();
-
-        for (const auto& name: names){
-            std::cout << name << std::endl;
-        }
-
-        names = CoreCommand::getVulkanExtensionNames();
-
-        for (const auto& name: names){
-            std::cout << name << std::endl;
-        }
-
-        CoreCommand::terminateVulkan();
+        glClearColor(0.0f, 1.0f, 0.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
     }
 
 }
