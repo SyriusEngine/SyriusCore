@@ -15,6 +15,8 @@ namespace Syrius{
 
         ~GlContext() override;
 
+        virtual void makeCurrent() = 0;
+
         std::string getAPIVersion() override;
 
         std::string getDeviceName() override;

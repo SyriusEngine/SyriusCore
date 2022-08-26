@@ -59,9 +59,12 @@ namespace Syrius{
     }
 
     WglContext::~WglContext() {
-        wglMakeCurrent(m_HardwareDeviceContext, nullptr);
         wglDeleteContext(m_Context);
         CoreCommand::terminatePlatformGlad();
+    }
+
+    void WglContext::makeCurrent() {
+        wglMakeCurrent(m_HardwareDeviceContext, m_Context);
     }
 
     void WglContext::swapBuffers() {

@@ -17,6 +17,8 @@ namespace Syrius {
 
         ~WglContext() override;
 
+        void makeCurrent() override;
+
         void swapBuffers() override;
 
         void setVerticalSynchronisation(bool enable) override;

@@ -19,11 +19,10 @@ struct Vertex{
 //    float m_Color[3];
 };
 
-const std::vector<Vertex> vertices = {
-    {{-0.5f, -0.5f, 0.0f}},
-    {{0.5f, -0.5f, 0.0f}},
-    {{0.5f, 0.5f, 0.0f}},
-    {{-0.5f, 0.5f, 0.0f}}
+const std::vector<float> vertices = {
+    -0.5f, 0.0f, 0.0f,
+    0.5f, 0.0f, 0.0f,
+    0.0f, 0.5f, 0.0f
 };
 
 const std::vector<uint32> indices = {
@@ -52,13 +51,20 @@ int main() {
         VertexBufferDesc vboDesc;
         vboDesc.m_Type = Syrius::SR_BUFFER_DEFAULT;
         vboDesc.m_Layout = vd;
-        vboDesc.m_Count = 3;
+        vboDesc.m_Count = vertices.size();
         vboDesc.m_Data = &vertices[0];
         auto vbo = context->createVertexBuffer(vboDesc);
 
+        IndexBufferDesc iboDesc;
+        iboDesc.m_Type = SR_BUFFER_DEFAULT;
+        iboDesc.m_DataType = SR_UINT32;
+        iboDesc.m_Count = indices.size();
+        iboDesc.m_Data = &indices[0];
+        auto ibo = context->createIndexBuffer(iboDesc);
+
         VertexArrayDesc vaoDesc;
         vaoDesc.m_DrawMode = SR_DRAW_TRIANGLES;
-        vaoDesc.m_IndexBuffer = nullptr;
+        vaoDesc.m_IndexBuffer = ibo;
         vaoDesc.m_VertexBuffer = vbo;
         auto vao = context->createVertexArray(vaoDesc);
 
@@ -67,6 +73,7 @@ int main() {
         vsmDesc.m_EntryPoint = "main";
         vsmDesc.m_LoadType = SR_LOAD_FROM_FILE;
         vsmDesc.m_Code = "./Resources/Shaders/GLSL/Basic.vert";
+        vsmDesc.m_CodeType = SR_SHADER_CODE_GLSL;
         auto vertexShader = context->createShaderModule(vsmDesc);
 
         ShaderModuleDesc fsmDesc;
@@ -74,6 +81,7 @@ int main() {
         fsmDesc.m_EntryPoint = "main";
         fsmDesc.m_LoadType = SR_LOAD_FROM_FILE;
         fsmDesc.m_Code = "./Resources/Shaders/GLSL/Basic.frag";
+        fsmDesc.m_CodeType = SR_SHADER_CODE_GLSL;
         auto fragmentShader = context->createShaderModule(fsmDesc);
 
         auto shaderProgram = context->createShader();

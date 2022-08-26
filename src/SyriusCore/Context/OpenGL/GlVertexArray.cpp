@@ -8,8 +8,6 @@ namespace Syrius{
     m_RendererID(0),
     m_Offset(0),
     m_VertexAttribPointer(0) {
-        SR_CORE_PRECONDITION(desc.m_VertexBuffer != nullptr, "VertexBuffer is nullptr");
-        SR_CORE_PRECONDITION(desc.m_IndexBuffer == nullptr, "IndexBuffer must be nullptr when using vertex array without elements");
 
         glGenVertexArrays(1, &m_RendererID);
         glBindVertexArray(m_RendererID);

@@ -82,6 +82,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/OpenGL/GlShader.cpp
         src/SyriusCore/Context/OpenGL/GlVertexBuffer.cpp
         src/SyriusCore/Context/OpenGL/GlIndexBuffer.cpp
+        src/SyriusCore/Context/OpenGL/GlVertexArray.cpp
 
         src/SyriusCore/Context/Vulkan/VulkanContext.cpp
         src/SyriusCore/Context/Vulkan/VulkanContextWin32.cpp
@@ -92,7 +93,8 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/Vulkan/VulkanShaderModule.cpp
         src/SyriusCore/Context/Vulkan/VulkanShader.cpp
         src/SyriusCore/Context/Vulkan/VulkanPipeline.cpp
-        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp src/SyriusCore/Context/OpenGL/GlVertexArray.cpp src/SyriusCore/Context/OpenGL/GlVertexArray.hpp)
+        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp
+        )
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}

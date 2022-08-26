@@ -25,18 +25,19 @@ namespace Syrius{
     }
 
     void GlShaderModule::loadGlsl(const ShaderModuleDesc& desc) {
-        const char* code = nullptr;
+        std::string code;
         if (desc.m_LoadType == SR_LOAD_FROM_FILE){
-            code = readFile(desc.m_Code).c_str();
+            code = readFile(desc.m_Code);
         }
         else{
-            code = desc.m_Code.c_str();
+            code = desc.m_Code;
         }
         int32 success;
         char infoLog[512];
 
         m_ModuleID = glCreateShader(getGlShaderType(desc.m_Type));
-        glShaderSource(m_ModuleID, 1, &code, nullptr);
+        const char* codePtr = code.c_str();
+        glShaderSource(m_ModuleID, 1, &codePtr, nullptr);
         glCompileShader(m_ModuleID);
         glGetShaderiv(m_ModuleID, GL_COMPILE_STATUS, &success);
         if (!success){
