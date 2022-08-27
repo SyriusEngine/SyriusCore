@@ -16,14 +16,14 @@ void messageCallback(const Syrius::Message& msg){
 
 struct Vertex{
     float m_Position[3];
-    float m_Color[3];
+    float m_TexCoords[2];
 };
 
 const std::vector<Vertex> vertices = {
-    {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
-    {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
-    {{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
-    {{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}}
+    {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
+    {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
+    {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}},
+    {{-0.5f, 0.5f, 0.0f}, {0.0f, 1.0f}}
 };
 
 const std::vector<uint32> indices = {
@@ -51,7 +51,7 @@ int main() {
 
         auto vd = context->createVertexDescription();
         vd->addAttribute("Position", SR_FLOAT32_3);
-        vd->addAttribute("Color", SR_FLOAT32_3);
+        vd->addAttribute("TexCoords", SR_FLOAT32_2);
 
         VertexBufferDesc vboDesc;
         vboDesc.m_Type = Syrius::SR_BUFFER_DEFAULT;
@@ -97,6 +97,12 @@ int main() {
         delete fragmentShader;
         delete vertexShader;
 
+        auto imgLogo = createImage("./Resources/Textures/Logo.jpg", true);
+        imgLogo->addAlphaChannel();
+        auto texture = context->createTexture2D();
+        texture->upload(imgLogo);
+        delete imgLogo;
+
 
         while (window->isOpen()){
 
@@ -111,6 +117,7 @@ int main() {
             context->clear();
 
             shaderProgram->bind();
+            texture->bind(0);
             context->draw(vao);
 
             window->onImGuiBegin();
@@ -125,7 +132,9 @@ int main() {
             context->swapBuffers();
         }
 
+
         window->releaseImGuiContext();
+        delete texture;
         delete shaderProgram;
         delete vao;
         delete ibo;

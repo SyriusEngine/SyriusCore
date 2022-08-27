@@ -115,6 +115,10 @@ namespace Syrius{
         }
     }
 
+    Texture2D *GlContext::createTexture2D() {
+        return new GlTexture2D();
+    }
+
 
 }
 

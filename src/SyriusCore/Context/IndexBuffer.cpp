@@ -7,7 +7,7 @@ namespace Syrius{
     : m_Count(desc.m_Count),
     m_Type(desc.m_Type),
     m_DataType(desc.m_DataType) {
-        SR_CORE_PRECONDITION(desc.m_DataType > SR_INT32, "Index buffer only supports integer data")
+        SR_CORE_PRECONDITION(desc.m_DataType <= SR_INT64, "Index buffer only supports integer data")
 
         m_Size = m_Count * getTypeSize(m_DataType);
     }

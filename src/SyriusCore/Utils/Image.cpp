@@ -102,7 +102,7 @@ namespace Syrius{
         auto size = m_Width * m_Height * m_ChannelCount;
         for (uint32 i = 0; i < size; i += 4){
             if (m_Data[i] == red and m_Data[i + 1] == green and m_Data[i + 2] == blue){
-                m_Data[i + 3] = 0;
+                m_Data[i + 3] = 255;
             }
         }
     }

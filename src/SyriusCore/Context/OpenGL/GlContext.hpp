@@ -7,6 +7,7 @@
 #include "GlVertexBuffer.hpp"
 #include "GlIndexBuffer.hpp"
 #include "GlVertexArray.hpp"
+#include "GlTexture2D.hpp"
 
 namespace Syrius{
 
@@ -52,6 +53,8 @@ namespace Syrius{
         IndexBuffer* createIndexBuffer(const IndexBufferDesc& desc) override;
 
         VertexArray* createVertexArray(const VertexArrayDesc& desc) override;
+
+        Texture2D* createTexture2D() override;
 
     protected:
         GlContext();

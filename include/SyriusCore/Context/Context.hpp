@@ -8,6 +8,7 @@
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "VertexArray.hpp"
+#include "Texture2D.hpp"
 
 namespace Syrius{
 
@@ -80,6 +81,8 @@ namespace Syrius{
         virtual IndexBuffer* createIndexBuffer(const IndexBufferDesc& desc) = 0;
 
         virtual VertexArray* createVertexArray(const VertexArrayDesc& desc) = 0;
+
+        virtual Texture2D* createTexture2D() = 0;
 
     protected:
 

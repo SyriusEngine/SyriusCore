@@ -37,4 +37,8 @@ namespace Syrius{
     void GlShader::bind() {
         glUseProgram(m_ShaderID);
     }
+
+    uint64 GlShader::getIdentifier() const {
+        return m_ShaderID;
+    }
 }

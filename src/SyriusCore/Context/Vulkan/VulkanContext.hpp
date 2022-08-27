@@ -57,6 +57,8 @@ namespace Syrius{
 
         VertexArray* createVertexArray(const VertexArrayDesc& desc) override;
 
+        Texture2D* createTexture2D() override;
+
     protected:
 
         void createDevicesAndSwapChain();

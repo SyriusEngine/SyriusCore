@@ -1,9 +1,15 @@
 #version 460
 
-in vec3 pColor;
+in vec2 texCoords;
 
 out vec4 FragColor;
 
+uniform sampler2D tex;
+
 void main(){
-    FragColor = vec4(pColor, 1.0);
+    vec4 tColor = texture(tex, texCoords);
+    if (tColor.a < 0.1f){
+        discard;
+    }
+    FragColor = tColor;
 }

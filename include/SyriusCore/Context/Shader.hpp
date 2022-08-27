@@ -17,6 +17,8 @@ namespace Syrius{
 
         virtual void bind() = 0;
 
+        [[nodiscard]] virtual uint64 getIdentifier() const = 0;
+
     private:
 
     };

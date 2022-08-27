@@ -18,6 +18,8 @@ namespace Syrius{
 
         void bind() override;
 
+        [[nodiscard]] uint64 getIdentifier() const override;
+
     private:
         uint32 m_ShaderID;
         std::unordered_map<std::string, int32> m_Uniforms;

@@ -34,22 +34,28 @@ namespace Syrius{
 
     GLenum getGlDataType(SR_DATA_TYPE type){
         switch (type) {
-            case SR_FLOAT32:
-                return GL_FLOAT;
-            case SR_FLOAT64:
-                return GL_DOUBLE;
-            case SR_INT32:
-                return GL_INT;
-            case SR_UINT32:
-                return GL_UNSIGNED_INT;
-            case SR_INT16:
-                return GL_SHORT;
-            case SR_UINT16:
-                return GL_UNSIGNED_SHORT;
             case SR_INT8:
                 return GL_BYTE;
             case SR_UINT8:
                 return GL_UNSIGNED_BYTE;
+            case SR_INT16:
+                return GL_SHORT;
+            case SR_UINT16:
+                return GL_UNSIGNED_SHORT;
+            case SR_INT32:
+                return GL_INT;
+            case SR_UINT32:
+                return GL_UNSIGNED_INT;
+            case SR_INT64:
+                return GL_INT64_ARB;
+            case SR_UINT64:
+                return GL_UNSIGNED_INT64_ARB;
+            case SR_FLOAT16:
+                return GL_HALF_FLOAT;
+            case SR_FLOAT32:
+                return GL_FLOAT;
+            case SR_FLOAT64:
+                return GL_DOUBLE;
             default: {
                 SR_CORE_WARNING("Invalid type given to converter, return default: GL_FLOAT");
                 return GL_FLOAT;
