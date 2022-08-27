@@ -71,7 +71,7 @@ namespace Syrius{
         return event;
     }
 
-    void SyriusWindow::requestImGuiContext() {
+    void SyriusWindow::createImGuiContext() {
         SR_CORE_PRECONDITION(m_Context, "A valid context must be created in order to create an ImGui context")
         SR_CORE_PRECONDITION(!m_UseImGui, "There exists already an ImGui context")
 

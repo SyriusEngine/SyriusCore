@@ -16,13 +16,14 @@ void messageCallback(const Syrius::Message& msg){
 
 struct Vertex{
     float m_Position[3];
-//    float m_Color[3];
+    float m_Color[3];
 };
 
-const std::vector<float> vertices = {
-    -0.5f, 0.0f, 0.0f,
-    0.5f, 0.0f, 0.0f,
-    0.0f, 0.5f, 0.0f
+const std::vector<Vertex> vertices = {
+    {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
+    {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
+    {{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+    {{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}}
 };
 
 const std::vector<uint32> indices = {
@@ -38,15 +39,19 @@ int main() {
         WindowDesc wDesc;
         wDesc.m_PosX = 200;
         wDesc.m_PosY = 200;
-        wDesc.m_Width = 800;
-        wDesc.m_Height = 600;
+        wDesc.m_Width = 1280;
+        wDesc.m_Height = 720;
         wDesc.m_Title = " The pubes, farts and other spices";
 
         auto window = createWindow(wDesc);
-        auto context = window->requestContext(SR_API_OPENGL);
+        auto context = window->createContext(SR_API_OPENGL);
+        window->createImGuiContext();
+
+        context->setClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
         auto vd = context->createVertexDescription();
         vd->addAttribute("Position", SR_FLOAT32_3);
+        vd->addAttribute("Color", SR_FLOAT32_3);
 
         VertexBufferDesc vboDesc;
         vboDesc.m_Type = Syrius::SR_BUFFER_DEFAULT;
@@ -89,6 +94,9 @@ int main() {
         shaderProgram->addShaderModule(fragmentShader);
         shaderProgram->link();
 
+        delete fragmentShader;
+        delete vertexShader;
+
 
         while (window->isOpen()){
 
@@ -100,17 +108,29 @@ int main() {
                 }
             }
 
-            test();
+            context->clear();
 
             shaderProgram->bind();
-            vao->drawBuffers();
+            context->draw(vao);
 
+            window->onImGuiBegin();
+            ImGui::Begin("Info");
+            static float background[3] = {0.2f, 0.3f, 0.8f};
+            if (ImGui::ColorPicker3("Background", background)){
+                context->setClearColor(background[0], background[1], background[2], 1.0f);
+            }
+            ImGui::End();
+            context->onImGuiEnd();
 
-            window->update();
+            context->swapBuffers();
         }
 
+        window->releaseImGuiContext();
+        delete shaderProgram;
+        delete vao;
+        delete ibo;
+        delete vbo;
         window->releaseContext();
-
         delete window;
 
         syriusTerminate();

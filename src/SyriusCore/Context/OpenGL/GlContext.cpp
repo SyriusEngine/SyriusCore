@@ -78,6 +78,18 @@ namespace Syrius{
         return depthBufferBits;
     }
 
+    void GlContext::setClearColor(float r, float g, float b, float a) {
+        glClearColor(r, g, b, a);
+    }
+
+    void GlContext::clear() {
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
+
+    void GlContext::draw(VertexArray *vao) {
+        vao->drawBuffers();
+    }
+
     ShaderModule *GlContext::createShaderModule(const ShaderModuleDesc &desc) {
         return new GlShaderModule(desc);
     }
@@ -102,6 +114,7 @@ namespace Syrius{
             return new GlVertexArray(desc);
         }
     }
+
 
 }
 

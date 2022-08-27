@@ -74,6 +74,18 @@ namespace Syrius{
         return 0;
     }
 
+    void VulkanContext::setClearColor(float r, float g, float b, float a) {
+
+    }
+
+    void VulkanContext::clear() {
+
+    }
+
+    void VulkanContext::draw(VertexArray *vao) {
+
+    }
+
     ShaderModule *VulkanContext::createShaderModule(const ShaderModuleDesc &desc) {
         return new VulkanShaderModule(desc, m_Device);
     }

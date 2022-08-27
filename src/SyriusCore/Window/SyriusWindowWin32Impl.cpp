@@ -239,7 +239,7 @@ namespace Syrius{
         }
     }
 
-    Context* SyriusWindowWin32Impl::requestContext(SR_SUPPORTED_API api) {
+    Context* SyriusWindowWin32Impl::createContext(SR_SUPPORTED_API api) {
         switch (api) {
             case SR_API_OPENGL:
                 m_Context = new WglContext(m_Hwnd);

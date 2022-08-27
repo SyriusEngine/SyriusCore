@@ -5,9 +5,8 @@ namespace Syrius{
     GlVertexBuffer::GlVertexBuffer(const VertexBufferDesc &desc)
     : VertexBuffer(desc),
     m_BufferID(0){
-        glGenBuffers(1, &m_BufferID);
-        glBindBuffer(GL_ARRAY_BUFFER, m_BufferID);
-        glBufferData(GL_ARRAY_BUFFER, m_Size, desc.m_Data, m_Type);
+        glCreateBuffers(1, &m_BufferID);
+        glNamedBufferData(m_BufferID, m_Size, desc.m_Data, getGlBufferType(desc.m_Type));
     }
 
     GlVertexBuffer::~GlVertexBuffer() {
@@ -20,6 +19,10 @@ namespace Syrius{
 
     void GlVertexBuffer::unbind() {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    uint64 GlVertexBuffer::getIdentifier() const {
+        return m_BufferID;
     }
 
 }

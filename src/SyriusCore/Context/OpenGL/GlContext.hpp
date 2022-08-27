@@ -37,6 +37,12 @@ namespace Syrius{
 
         int32 getMaxDepthBufferBits() override;
 
+        void setClearColor(float r, float g, float b, float a) override;
+
+        void clear() override;
+
+        void draw(VertexArray* vao) override;
+
         ShaderModule* createShaderModule(const ShaderModuleDesc& desc) override;
 
         Shader* createShader() override;

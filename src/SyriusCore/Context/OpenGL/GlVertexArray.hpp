@@ -20,9 +20,7 @@ namespace Syrius{
         void setDrawMode(SR_DRAW_TYPE drawMode) override;
 
     protected:
-        uint32 m_RendererID;
-        uint32 m_VertexAttribPointer;
-        uint32 m_Offset;
+        uint32 m_ArrayID;
         GLenum m_GlDrawMode;
 
     };

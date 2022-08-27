@@ -1,38 +1,39 @@
 #include "GlVertexArray.hpp"
+#include "GlVertexBuffer.hpp"
 
 namespace Syrius{
 
     GlVertexArray::GlVertexArray(const VertexArrayDesc &desc)
     : VertexArray(desc),
     m_GlDrawMode(getGlDrawType(desc.m_DrawMode)),
-    m_RendererID(0),
-    m_Offset(0),
-    m_VertexAttribPointer(0) {
+    m_ArrayID(0) {
+        glCreateVertexArrays(1, &m_ArrayID);
 
-        glGenVertexArrays(1, &m_RendererID);
-        glBindVertexArray(m_RendererID);
-        m_VertexBuffer->bind();
+        uint32 offset = 0;
+        uint32 attribPtr = 0;
 
-        for (const auto& element: m_VertexBuffer->getVertexDescription()->getAttributes()){
-            glEnableVertexAttribArray(m_VertexAttribPointer);
+        for (const auto& element: m_VertexBuffer->getVertexDescription()->getAttributes()) {
+            glEnableVertexArrayAttrib(m_ArrayID, attribPtr);
+            glVertexArrayAttribBinding(m_ArrayID, attribPtr, 0);
             SR_DATA_TYPE dataType = getScalarDataType(element.m_Type);
-            glVertexAttribPointer(m_VertexAttribPointer,
-                                  element.m_ElementCount,
-                                  getGlDataType(dataType),
-                                  false,
-                                  static_cast<int>(m_VertexBuffer->getVertexDescription()->getStride()),
-                                  reinterpret_cast<const void*>(m_Offset));
-            m_VertexAttribPointer++;
-            m_Offset += getTypeSize(element.m_Type);
+            glVertexArrayAttribFormat(m_ArrayID, attribPtr, element.m_ElementCount, getGlDataType(dataType), GL_FALSE,
+                                      offset);
+
+            attribPtr++;
+            offset += getTypeSize(dataType) * element.m_ElementCount;
         }
+
+        auto vboID = static_cast<GLuint>(m_VertexBuffer->getIdentifier());
+        glVertexArrayVertexBuffer(m_ArrayID, 0, vboID, 0, offset);
+
     }
 
     GlVertexArray::~GlVertexArray() {
-        glDeleteVertexArrays(1, &m_RendererID);
+        glDeleteVertexArrays(1, &m_ArrayID);
     }
 
     void GlVertexArray::bind() {
-        glBindVertexArray(m_RendererID);
+        glBindVertexArray(m_ArrayID);
     }
 
     void GlVertexArray::unbind() {
@@ -40,8 +41,8 @@ namespace Syrius{
     }
 
     void GlVertexArray::drawBuffers() {
-        glBindVertexArray(m_RendererID);
-        glDrawArrays(m_GlDrawMode, 0, m_VertexBuffer->getCount());
+        glBindVertexArray(m_ArrayID);
+        SR_OPENGL_CALL(glDrawArrays(m_GlDrawMode, 0, m_VertexBuffer->getCount()));
         glBindVertexArray(0);
     }
 
@@ -55,15 +56,15 @@ namespace Syrius{
     m_IndexDataType(getGlDataType(desc.m_IndexBuffer->getDataType())){
         SR_CORE_PRECONDITION(desc.m_IndexBuffer != nullptr, "IndexBuffer is nullptr");
 
-        glBindVertexArray(m_RendererID);
-        desc.m_IndexBuffer->bind();
+        auto iboID = static_cast<GLuint>(desc.m_IndexBuffer->getIdentifier());
+        glVertexArrayElementBuffer(m_ArrayID, iboID);
     }
 
     GlVertexArrayIndexed::~GlVertexArrayIndexed() = default;
 
     void GlVertexArrayIndexed::drawBuffers() {
-        glBindVertexArray(m_RendererID);
-        glDrawElements(m_GlDrawMode, m_IndexBuffer->getCount(), m_IndexDataType, nullptr);
+        glBindVertexArray(m_ArrayID);
+        SR_OPENGL_CALL(glDrawElements(m_GlDrawMode, m_IndexBuffer->getCount(), m_IndexDataType, nullptr));
         glBindVertexArray(0);
     }
 

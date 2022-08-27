@@ -5,9 +5,8 @@ namespace Syrius{
     GlIndexBuffer::GlIndexBuffer(const IndexBufferDesc &desc)
     : IndexBuffer(desc),
     m_BufferID(0){
-        glGenBuffers(1, &m_BufferID);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Size, desc.m_Data, m_Type);
+        glCreateBuffers(1, &m_BufferID);
+        glNamedBufferData(m_BufferID, m_Size, desc.m_Data, getGlBufferType(desc.m_Type));
     }
 
     GlIndexBuffer::~GlIndexBuffer() {
@@ -20,5 +19,9 @@ namespace Syrius{
 
     void GlIndexBuffer::unbind() {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+
+    uint64 GlIndexBuffer::getIdentifier() const {
+        return m_BufferID;
     }
 }

@@ -63,6 +63,12 @@ namespace Syrius{
 
         virtual FramebufferSize getFramebufferSize() = 0;
 
+        virtual void setClearColor(float r, float g, float b, float a) = 0;
+
+        virtual void clear() = 0;
+
+        virtual void draw(VertexArray* vao) = 0;
+
         virtual ShaderModule* createShaderModule(const ShaderModuleDesc& desc) = 0;
 
         virtual Shader* createShader() = 0;

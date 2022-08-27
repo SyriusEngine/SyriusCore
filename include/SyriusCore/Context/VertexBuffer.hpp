@@ -22,6 +22,8 @@ namespace Syrius{
 
         virtual void unbind() = 0;
 
+        [[nodiscard]] virtual uint64 getIdentifier() const = 0;
+
         [[nodiscard]] uint32 getSize() const;
 
         [[nodiscard]] uint32 getCount() const;

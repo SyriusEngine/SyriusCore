@@ -42,7 +42,7 @@
 #define SR_CORE_MESSAGE_ON_CONDITION(condition, message) \
     if (!condition) SR_CORE_MESSAGE(message)
 
-#define SR_OPENGL_CHECK_CALL(x) \
+#define SR_OPENGL_CALL(x) \
     SR_OPENGL_CLEAR_ERROR(); \
     x;                    \
     while (GLenum __err = glGetError()) { \
@@ -72,7 +72,7 @@
 
 #define SR_CORE_CHECK_CALL(x, message) x;
 
-#define SR_OPENGL_CHECK_CALL(x) x;
+#define SR_OPENGL_CALL(x) x;
 #define SR_CORE_CHECK_HRESULT(hr) hr;
 #define SR_CORE_CHECK_D3D11_DEVICE_REMOVED(hr) hr;
 

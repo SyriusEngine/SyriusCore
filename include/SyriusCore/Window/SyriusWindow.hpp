@@ -65,7 +65,7 @@ namespace Syrius{
 
         Event getEvent();
 
-        void requestImGuiContext();
+        void createImGuiContext();
 
         void releaseImGuiContext();
 
@@ -123,7 +123,7 @@ namespace Syrius{
 
         virtual std::string saveFileDialog(const std::string& fileName, const std::string& filter) = 0;
 
-        virtual Context* requestContext(SR_SUPPORTED_API api) = 0;
+        virtual Context* createContext(SR_SUPPORTED_API api) = 0;
 
     protected:
 

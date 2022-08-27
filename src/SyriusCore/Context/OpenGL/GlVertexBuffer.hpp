@@ -15,6 +15,8 @@ namespace Syrius{
 
         void unbind() override;
 
+        [[nodiscard]] uint64 getIdentifier() const override;
+
     private:
         uint32 m_BufferID;
 
