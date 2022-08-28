@@ -8,11 +8,22 @@ namespace Syrius{
     }
 
     GlContext::~GlContext() {
+        delete m_DefaultFramebuffer;
+
         CoreCommand::terminateGlad();
     }
 
     void GlContext::initGl() {
         CoreCommand::initGlad();
+
+        FramebufferSize fbSize = getFramebufferSize();
+
+        FrameBufferDesc desc;
+        desc.m_Width = fbSize.m_Width;
+        desc.m_Height = fbSize.m_Height;
+        desc.m_XPos = 0;
+        desc.m_YPos = 0;
+        m_DefaultFramebuffer = new GlDefaultFramebuffer(desc);
     }
 
     std::string GlContext::getAPIVersion() {
@@ -78,12 +89,16 @@ namespace Syrius{
         return depthBufferBits;
     }
 
+    FrameBuffer *GlContext::getDefaultFrameBuffer() {
+        return m_DefaultFramebuffer;
+    }
+
     void GlContext::setClearColor(float r, float g, float b, float a) {
-        glClearColor(r, g, b, a);
+        m_DefaultFramebuffer->setClearColor(r, g, b, a);
     }
 
     void GlContext::clear() {
-        glClear(GL_COLOR_BUFFER_BIT);
+        m_DefaultFramebuffer->clear();
     }
 
     void GlContext::draw(VertexArray *vao) {
@@ -93,6 +108,13 @@ namespace Syrius{
     void GlContext::drawInstanced(VertexArray *vao, uint32 instanceCount) {
         vao->drawBuffersInstanced(instanceCount);
     }
+
+    void GlContext::onResize(uint32 width, uint32 height) {
+        SR_CORE_PRECONDITION(width <= getMaxFramebufferWidth(), "Framebuffer width is too large");
+        SR_CORE_PRECONDITION(height <= getMaxFramebufferHeight(), "Framebuffer height is too large");
+        m_DefaultFramebuffer->onResize(width, height);
+    }
+
 
     ShaderModule *GlContext::createShaderModule(const ShaderModuleDesc &desc) {
         return new GlShaderModule(desc);
@@ -119,15 +141,24 @@ namespace Syrius{
         }
     }
 
-    Texture2D *GlContext::createTexture2D() {
-        return new GlTexture2D();
-    }
-
     ConstantBuffer *GlContext::createConstantBuffer(const ConstantBufferDesc &desc) {
+        SR_CORE_PRECONDITION(desc.m_Size <= getMaxConstantBufferSize(), "Constant buffer size is too large");
+
         return new GlConstantBuffer(desc);
     }
 
+    FrameBuffer *GlContext::createFrameBuffer(const FrameBufferDesc &desc) {
+        SR_CORE_PRECONDITION(!desc.m_ColorAttachments.empty(), "Framebuffer must have at least one color attachment");
+        SR_CORE_PRECONDITION(desc.m_Width <= getMaxFramebufferWidth(), "Framebuffer width is too large");
+        SR_CORE_PRECONDITION(desc.m_Height <= getMaxFramebufferHeight(), "Framebuffer height is too large");
+        SR_CORE_PRECONDITION(desc.m_NumColorAttachments <= getMaxFramebufferTextureAttachments(), "Framebuffer has too many color attachments");
 
+        return new GlFrameBuffer(desc);
+    }
+
+    Texture2D *GlContext::createTexture2D() {
+        return new GlTexture2D();
+    }
 
 }
 

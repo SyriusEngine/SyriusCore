@@ -74,6 +74,10 @@ namespace Syrius{
         return 0;
     }
 
+    FrameBuffer *VulkanContext::getDefaultFrameBuffer() {
+        return nullptr;
+    }
+
     void VulkanContext::setClearColor(float r, float g, float b, float a) {
 
     }
@@ -87,6 +91,10 @@ namespace Syrius{
     }
 
     void VulkanContext::drawInstanced(VertexArray *vao, uint32 instanceCount) {
+
+    }
+
+    void VulkanContext::onResize(uint32 width, uint32 height) {
 
     }
 
@@ -114,10 +122,13 @@ namespace Syrius{
         return nullptr;
     }
 
-    Texture2D *VulkanContext::createTexture2D() {
+    FrameBuffer *VulkanContext::createFrameBuffer(const FrameBufferDesc &desc) {
         return nullptr;
     }
 
+    Texture2D *VulkanContext::createTexture2D() {
+        return nullptr;
+    }
 
 }
 

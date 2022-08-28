@@ -139,6 +139,9 @@ int main() {
                 if (event.type == Syrius::SR_EVENT_WINDOW_CLOSED){
                     window->close();
                 }
+                else if (event.type == Syrius::SR_EVENT_WINDOW_RESIZED){
+                    context->onResize(event.windowWidth, event.windowHeight);
+                }
             }
 
             context->clear();

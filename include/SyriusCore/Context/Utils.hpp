@@ -150,6 +150,7 @@ namespace Syrius{
         SR_TEXTURE_FORMAT_BGRA  = 0x41
     } SR_TEXTURE_FORMAT;
 
+    // Texture formats with data types, upper 4 bits represent the number of channels
     typedef enum SR_TEXTURE_DATA_FORMAT: uint8 {
         SR_TEXTURE_DATA_FORMAT_R8           = 0x11,
         SR_TEXTURE_DATA_FORMAT_R_I8         = 0x12,
@@ -216,6 +217,10 @@ namespace Syrius{
     uint8 SR_API getScalarComponentCount(SR_SCALAR_TYPE type);
 
     SR_DATA_TYPE SR_API getScalarDataType(SR_SCALAR_TYPE type);
+
+    SR_TEXTURE_FORMAT SR_API getTextureFormat(SR_TEXTURE_DATA_FORMAT format);
+
+    uint8 SR_API getTextureChannelCount(SR_TEXTURE_FORMAT format);
 
 }
 

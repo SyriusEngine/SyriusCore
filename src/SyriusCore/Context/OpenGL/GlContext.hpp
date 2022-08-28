@@ -9,6 +9,7 @@
 #include "GlVertexArray.hpp"
 #include "GlTexture2D.hpp"
 #include "GlConstantBuffer.hpp"
+#include "GlFrameBuffer.hpp"
 
 namespace Syrius{
 
@@ -39,6 +40,8 @@ namespace Syrius{
 
         int32 getMaxDepthBufferBits() override;
 
+        FrameBuffer* getDefaultFrameBuffer() override;
+
         void setClearColor(float r, float g, float b, float a) override;
 
         void clear() override;
@@ -46,6 +49,8 @@ namespace Syrius{
         void draw(VertexArray* vao) override;
 
         void drawInstanced(VertexArray* vao, uint32 instanceCount) override;
+
+        void onResize(uint32 width, uint32 height) override;
 
         ShaderModule* createShaderModule(const ShaderModuleDesc& desc) override;
 
@@ -57,14 +62,19 @@ namespace Syrius{
 
         VertexArray* createVertexArray(const VertexArrayDesc& desc) override;
 
-        Texture2D* createTexture2D() override;
-
         ConstantBuffer* createConstantBuffer(const ConstantBufferDesc& desc) override;
+
+        FrameBuffer* createFrameBuffer(const FrameBufferDesc& desc) override;
+
+        Texture2D* createTexture2D() override;
 
     protected:
         GlContext();
         
         void initGl();
+
+    private:
+        GlDefaultFramebuffer* m_DefaultFramebuffer;
     };
 
 }

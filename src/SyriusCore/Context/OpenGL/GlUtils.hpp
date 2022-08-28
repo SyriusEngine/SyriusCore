@@ -14,5 +14,11 @@ namespace Syrius{
 
     GLenum getGlBufferType(SR_BUFFER_TYPE type);
 
+    GLenum getGlTextureType(SR_TEXTURE_FORMAT type);
+
+    GLint getGlTextureInternalFormat(SR_TEXTURE_DATA_FORMAT format);
+
+    GLenum getGlDepthFunc(SR_DEPTH_FUNC func);
+
 }
 

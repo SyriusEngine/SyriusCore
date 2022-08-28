@@ -4,6 +4,16 @@
 #include "Utils/Image.hpp"
 #include "Window/SyriusWindow.hpp"
 
+#include "Context/Context.hpp"
+#include "Context/ShaderModule.hpp"
+#include "Context/Shader.hpp"
+#include "Context/VertexDescription.hpp"
+#include "Context/VertexBuffer.hpp"
+#include "Context/IndexBuffer.hpp"
+#include "Context/VertexArray.hpp"
+#include "Context/Texture2D.hpp"
+#include "Context/ConstantBuffer.hpp"
+
 #include "Dependencies/imgui/imgui.h"
 
 namespace Syrius {
@@ -23,8 +33,6 @@ namespace Syrius {
     SyriusWindow* SR_API createWindow(const WindowDesc& windowDesc);
 
     void SR_API setDebugMessageCallback(handleDebugMessageFunc callback);
-
-    void SR_API test();
 
 }
 

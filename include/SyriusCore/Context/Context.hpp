@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Core/SyriusCoreInclude.hpp"
-#include "../../../src/SyriusCore/Core/DebugMacros.hpp"
 #include "ShaderModule.hpp"
 #include "Shader.hpp"
 #include "VertexDescription.hpp"
@@ -10,6 +9,7 @@
 #include "VertexArray.hpp"
 #include "Texture2D.hpp"
 #include "ConstantBuffer.hpp"
+#include "FrameBuffer.hpp"
 
 namespace Syrius{
 
@@ -65,6 +65,8 @@ namespace Syrius{
 
         virtual FramebufferSize getFramebufferSize() = 0;
 
+        virtual FrameBuffer* getDefaultFrameBuffer() = 0;
+
         virtual void setClearColor(float r, float g, float b, float a) = 0;
 
         virtual void clear() = 0;
@@ -72,6 +74,8 @@ namespace Syrius{
         virtual void draw(VertexArray* vao) = 0;
 
         virtual void drawInstanced(VertexArray* vao, uint32 instanceCount) = 0;
+
+        virtual void onResize(uint32 width, uint32 height) = 0;
 
         virtual ShaderModule* createShaderModule(const ShaderModuleDesc& desc) = 0;
 
@@ -86,6 +90,8 @@ namespace Syrius{
         virtual VertexArray* createVertexArray(const VertexArrayDesc& desc) = 0;
 
         virtual ConstantBuffer* createConstantBuffer(const ConstantBufferDesc& desc) = 0;
+
+        virtual FrameBuffer* createFrameBuffer(const FrameBufferDesc& desc) = 0;
 
         virtual Texture2D* createTexture2D() = 0;
 
