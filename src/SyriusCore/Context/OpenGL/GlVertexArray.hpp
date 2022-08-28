@@ -17,6 +17,8 @@ namespace Syrius{
 
         void drawBuffers() override;
 
+        void drawBuffersInstanced(uint32 instanceCount) override;
+
         void setDrawMode(SR_DRAW_TYPE drawMode) override;
 
     protected:
@@ -32,6 +34,8 @@ namespace Syrius{
         ~GlVertexArrayIndexed() override;
 
         void drawBuffers() override;
+
+        void drawBuffersInstanced(uint32 instanceCount) override;
 
     private:
         GLenum m_IndexDataType;

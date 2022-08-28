@@ -19,11 +19,18 @@ struct Vertex{
     float m_TexCoords[2];
 };
 
+struct Vec4{
+    float m_X;
+    float m_Y;
+    float m_Z;
+    float m_W;
+};
+
 const std::vector<Vertex> vertices = {
-    {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
-    {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
-    {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}},
-    {{-0.5f, 0.5f, 0.0f}, {0.0f, 1.0f}}
+    {{-0.05f, -0.05f, 0.0f}, {0.0f, 0.0f}},
+    {{0.05f, -0.05f, 0.0f}, {1.0f, 0.0f}},
+    {{0.05f, 0.05f, 0.0f}, {1.0f, 1.0f}},
+    {{-0.05f, 0.05f, 0.0f}, {0.0f, 1.0f}}
 };
 
 const std::vector<uint32> indices = {
@@ -103,6 +110,26 @@ int main() {
         texture->upload(imgLogo);
         delete imgLogo;
 
+        Vec4 translations[100];
+        int32 index = 0;
+        for (int32 x =-10; x < 10; x += 2){
+            for (int32 y = -10; y < 10; y += 2){
+                translations[index].m_X = (float)x / 10.0f;
+                translations[index].m_Y = (float)y / 10.0f;
+                translations[index].m_Z = 0.0f;
+                translations[index].m_W = 1.0f;
+                index++;
+            }
+        }
+
+        ConstantBufferDesc cbDesc;
+        cbDesc.m_Type = SR_BUFFER_DYNAMIC;
+        cbDesc.m_BindingIndex = 0;
+        cbDesc.m_Size = sizeof(translations);
+        cbDesc.m_BlockName = "Transformation";
+        cbDesc.m_Data = translations;
+        auto cbo = context->createConstantBuffer(cbDesc);
+        cbo->addShader(shaderProgram);
 
         while (window->isOpen()){
 
@@ -117,8 +144,9 @@ int main() {
             context->clear();
 
             shaderProgram->bind();
+            cbo->bind();
             texture->bind(0);
-            context->draw(vao);
+            context->drawInstanced(vao, 100);
 
             window->onImGuiBegin();
             ImGui::Begin("Info");
@@ -134,6 +162,7 @@ int main() {
 
 
         window->releaseImGuiContext();
+        delete cbo;
         delete texture;
         delete shaderProgram;
         delete vao;

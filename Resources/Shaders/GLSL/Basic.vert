@@ -5,7 +5,11 @@ layout(location = 1) in vec2 textureCoords;
 
 out vec2 texCoords;
 
+layout(std140, binding = 0) uniform Transformation {
+    vec4 translation[100];
+};
+
 void main(){
     texCoords = textureCoords;
-    gl_Position = vec4(position, 1.0);
+    gl_Position = vec4(position + translation[gl_InstanceID].xyz, 1.0) ;
 }

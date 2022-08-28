@@ -95,7 +95,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/Vulkan/VulkanShaderModule.cpp
         src/SyriusCore/Context/Vulkan/VulkanShader.cpp
         src/SyriusCore/Context/Vulkan/VulkanPipeline.cpp
-        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp )
+        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp src/SyriusCore/Context/ConstantBuffer.cpp src/SyriusCore/Context/OpenGL/GlConstantBuffer.cpp src/SyriusCore/Context/OpenGL/GlConstantBuffer.hpp)
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}

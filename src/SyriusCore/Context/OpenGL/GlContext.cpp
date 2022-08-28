@@ -90,6 +90,10 @@ namespace Syrius{
         vao->drawBuffers();
     }
 
+    void GlContext::drawInstanced(VertexArray *vao, uint32 instanceCount) {
+        vao->drawBuffersInstanced(instanceCount);
+    }
+
     ShaderModule *GlContext::createShaderModule(const ShaderModuleDesc &desc) {
         return new GlShaderModule(desc);
     }
@@ -118,6 +122,11 @@ namespace Syrius{
     Texture2D *GlContext::createTexture2D() {
         return new GlTexture2D();
     }
+
+    ConstantBuffer *GlContext::createConstantBuffer(const ConstantBufferDesc &desc) {
+        return new GlConstantBuffer(desc);
+    }
+
 
 
 }

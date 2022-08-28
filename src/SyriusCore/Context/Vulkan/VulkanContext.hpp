@@ -47,6 +47,8 @@ namespace Syrius{
 
         void draw(VertexArray* vao) override;
 
+        void drawInstanced(VertexArray* vao, uint32 instanceCount) override;
+
         ShaderModule* createShaderModule(const ShaderModuleDesc& desc) override;
 
         Shader* createShader() override;
@@ -56,6 +58,8 @@ namespace Syrius{
         IndexBuffer* createIndexBuffer(const IndexBufferDesc& desc) override;
 
         VertexArray* createVertexArray(const VertexArrayDesc& desc) override;
+
+        ConstantBuffer* createConstantBuffer(const ConstantBufferDesc& desc) override;
 
         Texture2D* createTexture2D() override;
 

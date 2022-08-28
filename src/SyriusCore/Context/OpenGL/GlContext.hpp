@@ -8,6 +8,7 @@
 #include "GlIndexBuffer.hpp"
 #include "GlVertexArray.hpp"
 #include "GlTexture2D.hpp"
+#include "GlConstantBuffer.hpp"
 
 namespace Syrius{
 
@@ -44,6 +45,8 @@ namespace Syrius{
 
         void draw(VertexArray* vao) override;
 
+        void drawInstanced(VertexArray* vao, uint32 instanceCount) override;
+
         ShaderModule* createShaderModule(const ShaderModuleDesc& desc) override;
 
         Shader* createShader() override;
@@ -55,6 +58,8 @@ namespace Syrius{
         VertexArray* createVertexArray(const VertexArrayDesc& desc) override;
 
         Texture2D* createTexture2D() override;
+
+        ConstantBuffer* createConstantBuffer(const ConstantBufferDesc& desc) override;
 
     protected:
         GlContext();

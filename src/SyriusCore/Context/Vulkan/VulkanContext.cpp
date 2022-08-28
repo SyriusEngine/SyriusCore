@@ -86,6 +86,10 @@ namespace Syrius{
 
     }
 
+    void VulkanContext::drawInstanced(VertexArray *vao, uint32 instanceCount) {
+
+    }
+
     ShaderModule *VulkanContext::createShaderModule(const ShaderModuleDesc &desc) {
         return new VulkanShaderModule(desc, m_Device);
     }
@@ -106,9 +110,14 @@ namespace Syrius{
         return nullptr;
     }
 
+    ConstantBuffer *VulkanContext::createConstantBuffer(const ConstantBufferDesc &desc) {
+        return nullptr;
+    }
+
     Texture2D *VulkanContext::createTexture2D() {
         return nullptr;
     }
+
 
 }
 

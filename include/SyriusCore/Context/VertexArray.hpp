@@ -26,6 +26,8 @@ namespace Syrius{
 
         virtual void drawBuffers() = 0;
 
+        virtual void drawBuffersInstanced(uint32 instanceCount) = 0;
+
         [[nodiscard]] SR_DRAW_TYPE getDrawMode() const;
 
     protected:

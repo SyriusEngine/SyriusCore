@@ -9,6 +9,7 @@
 #include "IndexBuffer.hpp"
 #include "VertexArray.hpp"
 #include "Texture2D.hpp"
+#include "ConstantBuffer.hpp"
 
 namespace Syrius{
 
@@ -70,6 +71,8 @@ namespace Syrius{
 
         virtual void draw(VertexArray* vao) = 0;
 
+        virtual void drawInstanced(VertexArray* vao, uint32 instanceCount) = 0;
+
         virtual ShaderModule* createShaderModule(const ShaderModuleDesc& desc) = 0;
 
         virtual Shader* createShader() = 0;
@@ -81,6 +84,8 @@ namespace Syrius{
         virtual IndexBuffer* createIndexBuffer(const IndexBufferDesc& desc) = 0;
 
         virtual VertexArray* createVertexArray(const VertexArrayDesc& desc) = 0;
+
+        virtual ConstantBuffer* createConstantBuffer(const ConstantBufferDesc& desc) = 0;
 
         virtual Texture2D* createTexture2D() = 0;
 
