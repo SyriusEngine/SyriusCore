@@ -45,6 +45,7 @@ int main() {
 
         auto window = createWindow(wDesc);
         auto context = window->createContext(SR_API_OPENGL);
+        context->setVerticalSynchronisation(true);
         window->createImGuiContext();
 
         context->setClearColor(0.2f, 0.3f, 0.8f, 1.0f);
@@ -98,7 +99,6 @@ int main() {
         delete vertexShader;
 
         auto imgLogo = createImage("./Resources/Textures/Logo.jpg", true);
-        imgLogo->addAlphaChannel();
         auto texture = context->createTexture2D();
         texture->upload(imgLogo);
         delete imgLogo;

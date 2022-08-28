@@ -20,8 +20,6 @@ namespace Syrius {
 
     Image* SR_API createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount);
 
-    Image* SR_API createImage(const std::vector<ubyte>& pixelData, int32 width, int32 height, int32 channelCount);
-
     SyriusWindow* SR_API createWindow(const WindowDesc& windowDesc);
 
     void SR_API setDebugMessageCallback(handleDebugMessageFunc callback);

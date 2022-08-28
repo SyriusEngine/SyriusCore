@@ -27,10 +27,6 @@ namespace Syrius {
         return new Image(pixelData, width, height, channelCount);
     }
 
-    Image* createImage(const std::vector<ubyte>& pixelData, int32 width, int32 height, int32 channelCount){
-        return new Image(pixelData, width, height, channelCount);
-    }
-
     SyriusWindow* createWindow(const WindowDesc& windowDesc){
         return CoreCommand::createWindow(windowDesc);
     }

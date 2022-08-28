@@ -14,8 +14,7 @@ namespace Syrius{
     }
 
     void GlTexture2D::bind(uint32_t slot) {
-        glActiveTexture(GL_TEXTURE0 + slot);
-        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+        glBindTextureUnit(slot, m_TextureID);
     }
 
     void GlTexture2D::unbind() {
@@ -30,18 +29,23 @@ namespace Syrius{
         glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
         GLenum format;
+        GLint internalFormat;
         switch (image->getChannelCount()){
             case 4:
-                format = GL_RGBA8;
+                format = GL_RGBA;
+                internalFormat = GL_RGBA8;
                 break;
             case 3:
-                format = GL_RGB8;
+                format = GL_RGB;
+                internalFormat = GL_RGB8;
                 break;
             case 2:
-                format = GL_RG8;
+                format = GL_RG;
+                internalFormat = GL_RG8;
                 break;
             case 1:
-                format = GL_R8;
+                format = GL_RED;
+                internalFormat = GL_R8;
                 break;
             default:
                 SR_CORE_WARNING("Invalid texture format, default format RGBA will be picked");
@@ -49,8 +53,8 @@ namespace Syrius{
                 break;
         }
 
-        glTextureStorage2D(m_TextureID, 1, format, image->getWidth(), image->getHeight());
-        glTextureSubImage2D(m_TextureID, 0, 0, 0, image->getWidth(), image->getHeight(), format, GL_UNSIGNED_BYTE, &image->getPixels()[0]);
+        glTextureStorage2D(m_TextureID, 1, internalFormat, image->getWidth(), image->getHeight());
+        glTextureSubImage2D(m_TextureID, 0, 0, 0, image->getWidth(), image->getHeight(), format, GL_UNSIGNED_BYTE, &image->getData()[0]);
         glGenerateTextureMipmap(m_TextureID);
     }
 

@@ -116,7 +116,11 @@ namespace Syrius{
             DestroyIcon(m_Icon);
             m_Icon = nullptr;
         }
-        m_Icon = CreateIcon(GetModuleHandleW(nullptr), image->getWidth(), image->getHeight(), 1, image->getChannelCount() * 8, nullptr, &image->getPixelsBGRA()[0]);
+        std::vector<ubyte> bgra = image->getData();
+        for (uint32 i = 0; i < image->getWidth() * image->getHeight() * image->getChannelCount(); i += image->getChannelCount()){
+            std::swap(bgra[i], bgra[i + 2]);
+        }
+        m_Icon = CreateIcon(GetModuleHandleW(nullptr), image->getWidth(), image->getHeight(), 1, image->getChannelCount() * 8, nullptr, &bgra[0]);
         if (m_Icon){
             if (icons & SR_WINDOW_ICON_SMALL){
                 SendMessageW(m_Hwnd, WM_SETICON, ICON_SMALL, (LPARAM)m_Icon);

@@ -13,7 +13,7 @@ namespace Syrius{
         stbi_set_flip_vertically_on_load(flipOnLoad);
         auto pixelData = stbi_load(fileName.c_str(), &m_Width, &m_Height, &m_ChannelCount, 0);
         if (pixelData){
-            m_Data.reserve(m_Width * m_Height * m_ChannelCount);
+            m_Data.resize(m_Width * m_Height * m_ChannelCount);
             memcpy(&m_Data[0], pixelData, m_Width * m_Height * m_ChannelCount);
 
             // we copied the memory contents in our own buffer, we do not need this pointer anymore
@@ -30,14 +30,6 @@ namespace Syrius{
               m_Height(height){
         m_Data.reserve(m_Width * m_Height * m_ChannelCount);
         memcpy(&m_Data[0], pixelData, m_Width * m_Height * m_ChannelCount);
-    }
-
-    Image::Image(const std::vector<ubyte> &pixelData, int32 width, int32 height, int32 channelCount)
-            : m_ChannelCount(channelCount),
-              m_Width(width),
-              m_Height(height),
-              m_Data(pixelData){
-
     }
 
     Image::~Image() {
@@ -74,129 +66,6 @@ namespace Syrius{
         delete[] buf;
     }
 
-    void Image::addAlphaChannel() {
-        // only extend the channel count to 4 if the data only has 3 channels
-        if (m_ChannelCount == 3){
-            std::vector<uint8> buf(m_Width * m_Height * 4);
-            auto size = m_Width * m_Height * m_ChannelCount;
-            uint32 bufIndex = 0;
-            for (uint32 i = 0; i < size; i += 3){
-                buf[bufIndex] = m_Data[i];
-                bufIndex++;
-                buf[bufIndex] = m_Data[i + 1];
-                bufIndex++;
-                buf[bufIndex] = m_Data[i + 2];
-                bufIndex++;
-                buf[bufIndex] = 255;
-                bufIndex++;
-            }
-            m_Data.clear();
-            m_Data = buf;
-            m_ChannelCount = 4;
-        }
-    }
-
-    void Image::makeTransparent(uint8 red, uint8 green, uint8 blue) {
-        addAlphaChannel(); // just in case the data does not have an alpha channel, we are going to need it
-
-        auto size = m_Width * m_Height * m_ChannelCount;
-        for (uint32 i = 0; i < size; i += 4){
-            if (m_Data[i] == red and m_Data[i + 1] == green and m_Data[i + 2] == blue){
-                m_Data[i + 3] = 255;
-            }
-        }
-    }
-
-    void Image::invert() {
-        auto size = m_Width * m_Height * m_ChannelCount;
-        // small optimization possible for images with less than 4 channels
-        if (m_ChannelCount == 4){
-            for (uint32 i = 0; i < size; i += 4){
-                m_Data[i] = 255 - m_Data[i];
-                m_Data[i + 1] = 255 - m_Data[i + 1];
-                m_Data[i + 2] = 255 - m_Data[i + 2];
-            }
-        }
-        else{
-            for (uint32 i = 0; i < size; i++){
-                m_Data[i] = 255 - m_Data[i];
-            }
-        }
-    }
-
-    void Image::setContrast(int32 c) {
-        int32 f = (259 * (c + 255)) / (255 * (259 - c));
-        auto clamp = [](int32 x) -> uint8 {
-            if (x > 255){
-                return 255;
-            }
-            else if (x < 0){
-                return 0;
-            }
-            else{
-                return x;
-            }
-        };
-        auto size = m_Width * m_Height * m_ChannelCount;
-        // same optimization as other functions
-        if (m_ChannelCount == 4){
-            for (uint32 i = 0; i < size; i += 4){
-                m_Data[i] = clamp(f * (m_Data[i] - 128) + 128);
-                m_Data[i + 1] = clamp(f * (m_Data[i + 1] - 128) + 128);
-                m_Data[i + 2] = clamp(f * (m_Data[i + 2] - 128) + 128);
-            }
-        }
-        else{
-            for (uint32 i = 0; i < size; i++){
-                m_Data[i] = clamp(f * (m_Data[i] - 128) + 128);
-            }
-        }
-    }
-
-    void Image::setBrightness(int32 brightness) {
-        auto clamp = [](int32 x) -> uint8 {
-            if (x > 255){
-                return 255;
-            }
-            else if (x < 0){
-                return 0;
-            }
-            else{
-                return x;
-            }
-        };
-        auto size = m_Width * m_Height * m_ChannelCount;
-        if (m_ChannelCount == 4){
-            for (uint32 i = 0; i < size; i += 4){
-                m_Data[i] = clamp(m_Data[i] + brightness);
-                m_Data[i + 1] = clamp(m_Data[i + 1] + brightness);
-                m_Data[i + 2] = clamp(m_Data[i + 2] + brightness);
-            }
-        }
-        else{
-            for (uint32 i = 0; i < size; i++){
-                m_Data[i] = clamp(m_Data[i] + brightness);
-            }
-        }
-    }
-
-    void Image::setPixelColor(uint32 x, uint32 y, uint8 red, uint8 green, uint8 blue, uint8 alpha) {
-        std::vector<uint8> color = {red, green, blue, alpha};
-        uint32 addr = ((m_Width * y) + x) * m_ChannelCount;
-        for (uint32 i = 0; i < m_ChannelCount; i++){
-            m_Data[addr + i] = color[i];
-        }
-    }
-
-    std::vector<ubyte> Image::getPixelColor(uint32 x, uint32 y) {
-        std::vector<uint8> color(m_ChannelCount);
-        uint32 addr = ((m_Width * y) + x) * m_ChannelCount;
-        for (uint32 i = 0; i < m_ChannelCount; i++){
-            color[i] = m_Data[addr + i];
-        }
-        return color;
-    }
-
     int32 Image::getWidth() const {
         return m_Width;
     }
@@ -209,31 +78,43 @@ namespace Syrius{
         return m_ChannelCount;
     }
 
-    int32 Image::getSize() const {
-        return m_Width * m_Height * m_ChannelCount;
-    }
-
-    std::vector<ubyte> Image::getPixelsBGRA() {
-        if (m_ChannelCount < 3){
-            return {};
-        }
-        if (m_ChannelCount == 3){
-            addAlphaChannel();
-        }
-        auto size = m_Width * m_Height * m_ChannelCount;
-        std::vector<ubyte> retVal(size);
-        for (uint32 i = 0; i < size; i += m_ChannelCount){
-            retVal[i] = m_Data[i + 2];
-            retVal[i + 1] = m_Data[i + 1];
-            retVal[i + 2] = m_Data[i];
-            retVal[i + 3] = m_Data[i + 3];
-        }
-        return retVal;
-
-    }
-
-    const std::vector<ubyte>& Image::getPixels() const {
+    const std::vector<ubyte> &Image::getData() const {
         return m_Data;
+    }
+
+    void Image::flipVertically() {
+        std::vector<ubyte> flippedData(m_Data.size());
+        for (int32 y = 0; y < m_Height; y++){
+            for (int32 x = 0; x < m_Width; x++){
+                for (int32 c = 0; c < m_ChannelCount; c++){
+                    flippedData[(m_Height - y - 1) * m_Width * m_ChannelCount + x * m_ChannelCount + c] = m_Data[y * m_Width * m_ChannelCount + x * m_ChannelCount + c];
+                }
+            }
+        }
+        m_Data = flippedData;
+    }
+
+    void Image::extendAlpha(ubyte alpha) {
+        SR_CORE_PRECONDITION(m_ChannelCount == 3, "Image::extendAlpha() can only be used on images with 3 channels")
+
+        std::vector<ubyte> extendedData(m_Width * m_Height * 4);
+        for (int32 i = 0; i < m_Width * m_Height; i += 3){
+            extendedData[i] = m_Data[i];
+            extendedData[i + 1] = m_Data[i + 1];
+            extendedData[i + 2] = m_Data[i + 2];
+            extendedData[i + 3] = alpha;
+        }
+        m_ChannelCount = 4;
+        m_Data = extendedData;
+    }
+
+    void Image::runPixelFunc(pixelFunc func) {
+        for (int32 y = 0; y < m_Height; y++){
+            for (int32 x = 0; x < m_Width; x++){
+                func(&m_Data[(y * m_Width + x) * m_ChannelCount], x, y, m_ChannelCount);
+            }
+        }
+
     }
 
 }
