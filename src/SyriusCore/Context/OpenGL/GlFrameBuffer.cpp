@@ -42,6 +42,7 @@ namespace Syrius{
         SR_CORE_PRECONDITION(glCheckNamedFramebufferStatus(m_FrameBufferID, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Cannot bind the framebuffer because the framebuffer is not complete");
 
         glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
+        glClearColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
 
         // call every time a different framebuffer is bound, this must happen because the viewport is not a part of the framebuffer state
         glViewport(m_XPos, m_YPos, m_Width, m_Height);
@@ -61,12 +62,10 @@ namespace Syrius{
     }
 
     void GlFrameBuffer::setClearColor(float red, float green, float blue, float alpha) {
-        bind();
         m_ClearColor[0] = red;
         m_ClearColor[1] = green;
         m_ClearColor[2] = blue;
         m_ClearColor[3] = alpha;
-        glClearColor(red, green, blue, alpha);
     }
 
     void GlFrameBuffer::setPosition(int32 xPos, int32 yPos) {
@@ -130,6 +129,7 @@ namespace Syrius{
 
         // call every time a different framebuffer is bound, this must happen because the viewport is not a part of the framebuffer state
         glViewport(m_XPos, m_YPos, m_Width, m_Height);
+        glClearColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
 
         if (m_EnableDepthTest){
             glEnable(GL_DEPTH_TEST);
@@ -145,12 +145,10 @@ namespace Syrius{
     }
 
     void GlDefaultFramebuffer::setClearColor(float red, float green, float blue, float alpha) {
-        bind();
         m_ClearColor[0] = red;
         m_ClearColor[1] = green;
         m_ClearColor[2] = blue;
         m_ClearColor[3] = alpha;
-        glClearColor(red, green, blue, alpha);
     }
 
     void GlDefaultFramebuffer::setPosition(int32 xPos, int32 yPos) {
