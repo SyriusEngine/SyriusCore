@@ -45,15 +45,31 @@
 #define SR_OPENGL_CALL(x) \
     SR_OPENGL_CLEAR_ERROR(); \
     x;                    \
-    while (GLenum __err = glGetError()) { \
-        DebugMessageHandler::pushOpenGlError(__err, #x, SR_FILE, SR_LINE); \
+    while (GLenum _err = glGetError()) { \
+        DebugMessageHandler::pushOpenGlError(_err, #x, SR_FILE, SR_LINE); \
     }
 
-#define SR_CORE_CHECK_HRESULT(hr) \
-    if (FAILED(hr)) DebugMessageHandler::formatHresultMessage(hr, SR_FUNC, SR_FILE, SR_LINE);
+#define SR_D3D11_CALL(x) \
+    do {                 \
+        HRESULT _hr = x;\
+        if (FAILED(_hr)){ \
+            DebugMessageHandler::formatHresultMessage(_hr, #x, SR_FILE, SR_LINE);               \
+        }                 \
+        \
+    } while (0);         \
 
-#define SR_CORE_CHECK_D3D11_DEVICE_REMOVED(hr) \
-    if (FAILED(hr)) DebugMessageHandler::d3d11DeviceRemovedHandler(hr, SR_FUNC, SR_FILE, SR_LINE);
+#define SR_D3D11_CHECK_DEVICE_REMOVED(x, device) \
+    do {                 \
+        HRESULT _hr = x;\
+        if (FAILED(_hr)){                       \
+            if (_hr == DXGI_ERROR_DEVICE_REMOVED){ \
+                 DebugMessageHandler::d3d11DeviceRemovedHandler(device->GetDeviceRemovedReason(), #x, SR_FILE, SR_LINE);                                    \
+            }                                     \
+            else{                                \
+                  DebugMessageHandler::formatHresultMessage(_hr, SR_FUNC, SR_FILE, SR_LINE);                                   \
+            } \
+        }                 \
+    } while (0);         \
 
 #define SR_VULKAN_CALL(x, message) \
     do {                           \
@@ -73,8 +89,9 @@
 #define SR_CORE_CHECK_CALL(x, message) x;
 
 #define SR_OPENGL_CALL(x) x;
-#define SR_CORE_CHECK_HRESULT(hr) hr;
-#define SR_CORE_CHECK_D3D11_DEVICE_REMOVED(hr) hr;
+
+#define SR_D3D11_CALL(x) x;
+#define SR_D3D11_CHECK_DEVICE_REMOVED(x, device) x;
 
 #define SR_VULKAN_CALL(x, message) x;\
 

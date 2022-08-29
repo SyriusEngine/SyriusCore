@@ -19,13 +19,6 @@ struct Vertex{
     float m_TexCoords[2];
 };
 
-struct Vec4{
-    float m_X;
-    float m_Y;
-    float m_Z;
-    float m_W;
-};
-
 const std::vector<Vertex> vertices = {
     {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
     {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
@@ -51,72 +44,10 @@ int main() {
         wDesc.m_Title = " The pubes, farts and other spices";
 
         auto window = createWindow(wDesc);
-        auto context = window->createContext(SR_API_OPENGL);
+        auto context = window->createContext(SR_API_D3D11);
         context->setVerticalSynchronisation(true);
+        context->setClearColor(0.2f, 0.3f, 0.5f, 1.0f);
         window->createImGuiContext();
-
-        context->setClearColor(0.2f, 0.3f, 0.8f, 1.0f);
-
-        auto vd = context->createVertexDescription();
-        vd->addAttribute("Position", SR_FLOAT32_3);
-        vd->addAttribute("TexCoords", SR_FLOAT32_2);
-
-        VertexBufferDesc vboDesc;
-        vboDesc.m_Type = Syrius::SR_BUFFER_DEFAULT;
-        vboDesc.m_Layout = vd;
-        vboDesc.m_Count = vertices.size();
-        vboDesc.m_Data = &vertices[0];
-        auto vbo = context->createVertexBuffer(vboDesc);
-
-        IndexBufferDesc iboDesc;
-        iboDesc.m_Type = SR_BUFFER_DEFAULT;
-        iboDesc.m_DataType = SR_UINT32;
-        iboDesc.m_Count = indices.size();
-        iboDesc.m_Data = &indices[0];
-        auto ibo = context->createIndexBuffer(iboDesc);
-
-        VertexArrayDesc vaoDesc;
-        vaoDesc.m_DrawMode = SR_DRAW_TRIANGLES;
-        vaoDesc.m_IndexBuffer = ibo;
-        vaoDesc.m_VertexBuffer = vbo;
-        auto vao = context->createVertexArray(vaoDesc);
-
-        ShaderModuleDesc vsmDesc;
-        vsmDesc.m_Type = SR_SHADER_VERTEX;
-        vsmDesc.m_EntryPoint = "main";
-        vsmDesc.m_LoadType = SR_LOAD_FROM_FILE;
-        vsmDesc.m_Code = "./Resources/Shaders/GLSL/Basic.vert";
-        vsmDesc.m_CodeType = SR_SHADER_CODE_GLSL;
-        auto vertexShader = context->createShaderModule(vsmDesc);
-
-        ShaderModuleDesc fsmDesc;
-        fsmDesc.m_Type = SR_SHADER_FRAGMENT;
-        fsmDesc.m_EntryPoint = "main";
-        fsmDesc.m_LoadType = SR_LOAD_FROM_FILE;
-        fsmDesc.m_Code = "./Resources/Shaders/GLSL/Basic.frag";
-        fsmDesc.m_CodeType = SR_SHADER_CODE_GLSL;
-        auto fragmentShader = context->createShaderModule(fsmDesc);
-
-        auto shaderProgram = context->createShader();
-        shaderProgram->addShaderModule(vertexShader);
-        shaderProgram->addShaderModule(fragmentShader);
-        shaderProgram->link();
-
-        delete fragmentShader;
-        delete vertexShader;
-
-        auto imgLogo = createImage("./Resources/Textures/Logo.jpg", true);
-        auto texture = context->createTexture2D();
-        texture->upload(imgLogo);
-        delete imgLogo;
-
-        FrameBufferDesc fbDesc;
-        fbDesc.m_Width = 1280;
-        fbDesc.m_Height = 720;
-        fbDesc.m_ColorAttachments.push_back(SR_TEXTURE_DATA_FORMAT_RGBA_8);
-        fbDesc.m_NumColorAttachments = 1;
-        auto fbo = context->createFrameBuffer(fbDesc);
-        fbo->setClearColor(0.6f, 0.5f, 0.2f, 1.0f);
 
         while (window->isOpen()){
 
@@ -130,41 +61,22 @@ int main() {
                     context->onResize(event.windowWidth, event.windowHeight);
                 }
             }
-
-            fbo->bind();
-            fbo->clear();
-
-            shaderProgram->bind();
-            texture->bind(0);
-            context->draw(vao);
-
-            fbo->unbind();
-
             context->clear();
-
-            fbo->bindColorAttachment(0, 0);
-            context->draw(vao);
-
 
             window->onImGuiBegin();
             ImGui::Begin("Info");
-            static float background[3] = {0.2f, 0.3f, 0.8f};
-            if (ImGui::ColorPicker3("Background", background)){
-                context->setClearColor(background[0], background[1], background[2], 1.0f);
+            static float bgc[3] = {0.2f, 0.3f, 0.5f};
+            if (ImGui::ColorPicker3("BackGroundColor", bgc)){
+                context->setClearColor(bgc[0], bgc[1], bgc[2], 1.0f);
             }
             ImGui::End();
-            context->onImGuiEnd();
+
+            window->onImGuiEnd();
 
             context->swapBuffers();
         }
 
 
-        window->releaseImGuiContext();
-        delete texture;
-        delete shaderProgram;
-        delete vao;
-        delete ibo;
-        delete vbo;
         window->releaseContext();
         delete window;
 

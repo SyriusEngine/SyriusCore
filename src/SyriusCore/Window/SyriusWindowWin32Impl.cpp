@@ -251,6 +251,9 @@ namespace Syrius{
             case SR_API_VULKAN:
                 m_Context = new VulkanContextWin32(m_Hwnd);
                 return m_Context;
+            case SR_API_D3D11:
+                m_Context = new D3D11Context(m_Hwnd);
+                return m_Context;
 
             default:
                 SR_CORE_WARNING("cannot create context: unsupported API")

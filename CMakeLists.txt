@@ -20,6 +20,9 @@ if (WIN32)
     set(SYRIUSCORE_CORE_PLATFORM_SRC
             src/SyriusCore/Core/PlatformAPIWin32Impl.cpp)
 
+    set(SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC
+            src/SyriusCore/Context/D3D11/D3D11Context.cpp src/SyriusCore/Context/D3D11/D3D11Utils.cpp src/SyriusCore/Context/D3D11/D3D11Utils.hpp)
+
 
 endif()
 
@@ -66,6 +69,8 @@ set(SYRIUSCORE_WINDOW_SRC
         src/SyriusCore/Window/Win32Utils.cpp)
 
 set(SYRIUSCORE_GRAPHICS_API_SRC
+        ${SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC}
+
         src/SyriusCore/Context/Context.cpp
         src/SyriusCore/Context/Utils.cpp
         src/SyriusCore/Context/ShaderModule.cpp
@@ -90,7 +95,6 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/OpenGL/GlConstantBuffer.cpp
         src/SyriusCore/Context/OpenGL/GlFrameBuffer.cpp
         src/SyriusCore/Context/OpenGL/GlRenderTarget.cpp
-
 
         src/SyriusCore/Context/Vulkan/VulkanContext.cpp
         src/SyriusCore/Context/Vulkan/VulkanContextWin32.cpp

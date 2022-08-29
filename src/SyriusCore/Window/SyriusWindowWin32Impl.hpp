@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../../include/SyriusCore/Window/SyriusWindow.hpp"
+#include "../Context/D3D11/D3D11Context.hpp"
 
 #include "Win32Utils.hpp"
 
