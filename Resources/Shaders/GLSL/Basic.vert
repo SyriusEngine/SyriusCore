@@ -3,7 +3,7 @@
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec2 textureCoords;
 
-out vec2 texCoords;
+layout(location = 2) out vec2 texCoords;
 
 void main(){
     texCoords = textureCoords;

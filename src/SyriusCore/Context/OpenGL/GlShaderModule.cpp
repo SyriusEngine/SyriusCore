@@ -42,29 +42,30 @@ namespace Syrius{
         glGetShaderiv(m_ModuleID, GL_COMPILE_STATUS, &success);
         if (!success){
             glGetShaderInfoLog(m_ModuleID, 512, nullptr, infoLog);
-            std::string errormsg = "[GlShaderModule]: Failed to compile shader, type = " + std::to_string(desc.m_Type) + ", error = " + infoLog;
+            std::string errormsg = "Failed to compile shader, type = " + std::to_string(desc.m_Type) + ", error = " + infoLog;
             SR_CORE_WARNING(errormsg);
         }
     }
 
     void GlShaderModule::loadSPIRV(const ShaderModuleDesc& desc) {
-        const char* code = nullptr;
+        std::string code;
         if (desc.m_LoadType == SR_LOAD_FROM_FILE){
-            code = readFileBinary(desc.m_Code).c_str();
+            code = readFileBinary(desc.m_Code);
         }
         else{
-            code = desc.m_Code.c_str();
+            code = desc.m_Code;
         }
         int32 success;
         char infoLog[512];
         m_ModuleID = glCreateShader(getGlShaderType(desc.m_Type));
-        glShaderBinary(1, &m_ModuleID, GL_SHADER_BINARY_FORMAT_SPIR_V, code, desc.m_CodeLength);
+        const char* codePtr = code.c_str();
+        glShaderBinary(1, &m_ModuleID, GL_SHADER_BINARY_FORMAT_SPIR_V, codePtr, code.size());
         glSpecializeShader(m_ModuleID, desc.m_EntryPoint.c_str(), 0, nullptr, nullptr);
 
         glGetShaderiv(m_ModuleID, GL_COMPILE_STATUS, &success);
         if (!success){
             glGetShaderInfoLog(m_ModuleID, 512, nullptr, infoLog);
-            std::string errormsg = "[GlShaderModule]: Failed to compile shader, type = " + std::to_string(desc.m_Type) + ", error = " + infoLog;
+            std::string errormsg = "Failed to compile shader, type = " + std::to_string(desc.m_Type) + ", error = " + infoLog;
             SR_CORE_WARNING(errormsg);
         }
     }
