@@ -48,14 +48,23 @@ namespace Syrius{
 
     void CoreCommand::initGlad() {
         if (!m_GladInstances){
-            gladLoaderLoadGL();
-
+            int32 version = gladLoaderLoadGL();
 #if defined(SR_DEBUG_MODE)
-            glEnable(GL_DEBUG_OUTPUT);
-            glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-            glDebugMessageCallback(DebugMessageHandler::pushOpenGLMessageCallback, nullptr);
+            if (version > 0){
+                int32 major = GLAD_VERSION_MAJOR(version);
+                int32 minor = GLAD_VERSION_MINOR(version);
+                SR_CORE_MESSAGE("OpenGL initialized with version: " + std::to_string(major) + "." + std::to_string(minor))
+                glEnable(GL_DEBUG_OUTPUT);
+                glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+                glDebugMessageCallback(DebugMessageHandler::pushOpenGLMessageCallback, nullptr);
+
+            }
+            else {
+                SR_CORE_EXCEPTION("Failed to initialize OpenGL");
+            }
 
 #endif
+
         }
         m_GladInstances++;
     }

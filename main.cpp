@@ -85,8 +85,8 @@ int main() {
         vsmDesc.m_Type = SR_SHADER_VERTEX;
         vsmDesc.m_EntryPoint = "main";
         vsmDesc.m_LoadType = SR_LOAD_FROM_FILE;
-        vsmDesc.m_Code = "./Resources/Shaders/SPIRV/Basic-vs.spv";
-        vsmDesc.m_CodeType = Syrius::SR_SHADER_CODE_SPIRV;
+        vsmDesc.m_Code = "./Resources/Shaders/GLSL/Basic.vert";
+        vsmDesc.m_CodeType = SR_SHADER_CODE_GLSL;
         auto vertexShader = context->createShaderModule(vsmDesc);
 
         ShaderModuleDesc fsmDesc;
