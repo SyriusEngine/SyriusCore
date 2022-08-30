@@ -19,6 +19,8 @@ namespace Syrius{
 
         virtual ~ShaderModule();
 
+        [[nodiscard]] virtual uint64 getIdentifier() const = 0;
+
         [[nodiscard]] SR_SHADER_TYPE getShaderModuleType() const;
 
         [[nodiscard]] const std::string& getEntryPoint() const;

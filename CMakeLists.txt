@@ -21,7 +21,7 @@ if (WIN32)
             src/SyriusCore/Core/PlatformAPIWin32Impl.cpp)
 
     set(SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC
-            src/SyriusCore/Context/D3D11/D3D11Context.cpp src/SyriusCore/Context/D3D11/D3D11Utils.cpp src/SyriusCore/Context/D3D11/D3D11Utils.hpp)
+            src/SyriusCore/Context/D3D11/D3D11Context.cpp src/SyriusCore/Context/D3D11/D3D11Utils.cpp src/SyriusCore/Context/D3D11/D3D11Utils.hpp src/SyriusCore/Context/D3D11/D3D11ShaderModule.cpp src/SyriusCore/Context/D3D11/D3D11ShaderModule.hpp src/SyriusCore/Context/D3D11/D3D11Shader.cpp src/SyriusCore/Context/D3D11/D3D11Shader.hpp src/SyriusCore/Context/D3D11/D3D11VertexBuffer.cpp src/SyriusCore/Context/D3D11/D3D11VertexBuffer.hpp src/SyriusCore/Context/D3D11/D3D11IndexBuffer.cpp src/SyriusCore/Context/D3D11/D3D11IndexBuffer.hpp)
 
 
 endif()
@@ -155,5 +155,5 @@ target_link_libraries(syrius_core ${SYRIUS_CORE_LIBS})
 include_directories(/include/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(SyriusCoreDev main.cpp)
+add_executable(SyriusCoreDev main.cpp OpenGLTest.cpp)
 target_link_libraries(SyriusCoreDev -lsyrius_core)

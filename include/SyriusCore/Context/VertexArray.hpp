@@ -3,12 +3,14 @@
 #include "Utils.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
+#include "ShaderModule.hpp"
 
 namespace Syrius{
 
     struct SR_API VertexArrayDesc{
         VertexBuffer* m_VertexBuffer = nullptr;
         IndexBuffer* m_IndexBuffer = nullptr;
+        ShaderModule* m_VertexShader = nullptr;
         SR_DRAW_TYPE m_DrawMode = SR_DRAW_TRIANGLES;
     };
 

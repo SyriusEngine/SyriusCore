@@ -79,7 +79,7 @@ namespace Syrius{
 
         virtual ShaderModule* createShaderModule(const ShaderModuleDesc& desc) = 0;
 
-        virtual Shader* createShader() = 0;
+        virtual Shader* createShader(const ShaderDesc& desc) = 0;
 
         VertexDescription* createVertexDescription();
 

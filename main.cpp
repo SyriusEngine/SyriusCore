@@ -1,5 +1,6 @@
 #include <iostream>
 #include "include/SyriusCore/SyriusCore.hpp"
+#include "OpenGLTest.hpp"
 
 using namespace Syrius;
 
@@ -16,14 +17,14 @@ void messageCallback(const Syrius::Message& msg){
 
 struct Vertex{
     float m_Position[3];
-    float m_TexCoords[2];
+//    float m_TexCoords[2];
 };
 
 const std::vector<Vertex> vertices = {
-    {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
-    {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
-    {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}},
-    {{-0.5f, 0.5f, 0.0f}, {0.0f, 1.0f}}
+    {-0.5f, -0.5f, 0.0f}, //{0.0f, 0.0f}},
+    {0.5f, -0.5f, 0.0f}, //{1.0f, 0.0f}},
+    {0.5f, 0.5f, 0.0f}, //{1.0f, 1.0f}},
+    {-0.5f, 0.5f, 0.0f} //{0.0f, 1.0f}}
 };
 
 const std::vector<uint32> indices = {
@@ -48,6 +49,23 @@ int main() {
         context->setVerticalSynchronisation(true);
         context->setClearColor(0.2f, 0.3f, 0.5f, 1.0f);
         window->createImGuiContext();
+
+        auto layout = context->createVertexDescription();
+        layout->addAttribute("Position", SR_FLOAT32_3);
+
+        VertexBufferDesc vboDesc;
+        vboDesc.m_Type = SR_BUFFER_DEFAULT;
+        vboDesc.m_Data = &vertices[0];
+        vboDesc.m_Layout = layout;
+        vboDesc.m_Count = vertices.size();
+        auto vbo = context->createVertexBuffer(vboDesc);
+
+        IndexBufferDesc iboDesc;
+        iboDesc.m_Data = &indices[0];
+        iboDesc.m_Count = indices.size();
+        iboDesc.m_Type = SR_BUFFER_DEFAULT;
+        iboDesc.m_DataType = SR_UINT32;
+        auto ibo = context->createIndexBuffer(iboDesc);
 
         while (window->isOpen()){
 
@@ -77,6 +95,7 @@ int main() {
         }
 
 
+        window->releaseImGuiContext();
         window->releaseContext();
         delete window;
 

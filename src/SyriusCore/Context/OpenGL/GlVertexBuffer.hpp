@@ -13,8 +13,6 @@ namespace Syrius{
 
         void bind() override;
 
-        void unbind() override;
-
         [[nodiscard]] uint64 getIdentifier() const override;
 
     private:

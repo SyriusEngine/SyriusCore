@@ -21,7 +21,7 @@ namespace Syrius{
         glNamedBufferSubData(m_BufferID, 0, m_Size, data);
     }
 
-    void GlConstantBuffer::addShader(Shader *shader) {
+    void GlConstantBuffer::addShader(Shader *shader, SR_SHADER_TYPE shaderType) {
         auto shaderID = shader->getIdentifier();
         auto index = glGetUniformBlockIndex(shaderID, m_BlockName.c_str());
         glUniformBlockBinding(shaderID, index, m_BindingIndex);

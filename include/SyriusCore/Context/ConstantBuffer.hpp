@@ -23,7 +23,7 @@ namespace Syrius{
 
         virtual void setData(const void* data) = 0;
 
-        virtual void addShader(Shader* shader) = 0;
+        virtual void addShader(Shader* shader, SR_SHADER_TYPE shaderType) = 0;
 
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 

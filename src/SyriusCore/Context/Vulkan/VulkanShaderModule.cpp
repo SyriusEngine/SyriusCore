@@ -22,6 +22,10 @@ namespace Syrius{
         }
     }
 
+    uint64 VulkanShaderModule::getIdentifier() const {
+        return reinterpret_cast<uint64>(m_Module);
+    }
+
     void VulkanShaderModule::loadSPIRV(const ShaderModuleDesc &desc) {
         const char* code = nullptr;
         if (desc.m_LoadType == SR_LOAD_FROM_FILE){
@@ -42,4 +46,5 @@ namespace Syrius{
     void VulkanShaderModule::loadGlsl(const ShaderModuleDesc &desc) {
 
     }
+
 }

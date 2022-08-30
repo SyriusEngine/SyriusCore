@@ -5,6 +5,11 @@
 #include "../../Dependencies/imgui/imgui_impl_win32.h"
 #include "../../Dependencies/imgui/imgui_impl_dx11.h"
 
+#include "D3D11ShaderModule.hpp"
+#include "D3D11Shader.hpp"
+#include "D3D11VertexBuffer.hpp"
+#include "D3D11IndexBuffer.hpp"
+
 #if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
@@ -63,7 +68,7 @@ namespace Syrius{
 
         ShaderModule* createShaderModule(const ShaderModuleDesc& desc) override;
 
-        Shader* createShader() override;
+        Shader* createShader(const ShaderDesc& desc) override;
 
         VertexBuffer* createVertexBuffer(const VertexBufferDesc& desc) override;
 

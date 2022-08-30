@@ -20,8 +20,6 @@ namespace Syrius{
 
         virtual void bind() = 0;
 
-        virtual void unbind() = 0;
-
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 
         [[nodiscard]] uint32 getSize() const;

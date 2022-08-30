@@ -12,6 +12,8 @@ namespace Syrius{
 
         ~VulkanShaderModule() override;
 
+        uint64 getIdentifier() const override;
+
     private:
 
         void loadSPIRV(const ShaderModuleDesc& desc);

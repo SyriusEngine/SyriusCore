@@ -8,13 +8,9 @@ namespace Syrius{
 
     class GlShader: public Shader{
     public:
-        GlShader();
+        explicit GlShader(const ShaderDesc& desc);
 
         ~GlShader() override;
-
-        void addShaderModule(ShaderModule* module) override;
-
-        void link() override;
 
         void bind() override;
 

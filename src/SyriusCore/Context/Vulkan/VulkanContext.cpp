@@ -102,7 +102,7 @@ namespace Syrius{
         return new VulkanShaderModule(desc, m_Device);
     }
 
-    Shader *VulkanContext::createShader() {
+    Shader *VulkanContext::createShader(const ShaderDesc& desc) {
         return nullptr;
     }
 

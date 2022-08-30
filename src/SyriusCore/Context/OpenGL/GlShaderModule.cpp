@@ -20,7 +20,7 @@ namespace Syrius{
         glDeleteShader(m_ModuleID);
     }
 
-    uint32 GlShaderModule::getShaderModuleID() const {
+    uint64 GlShaderModule::getIdentifier() const {
         return m_ModuleID;
     }
 

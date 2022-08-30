@@ -120,8 +120,8 @@ namespace Syrius{
         return new GlShaderModule(desc);
     }
 
-    Shader *GlContext::createShader() {
-        return new GlShader();
+    Shader *GlContext::createShader(const ShaderDesc& desc) {
+        return new GlShader(desc);
     }
 
     VertexBuffer *GlContext::createVertexBuffer(const VertexBufferDesc &desc) {

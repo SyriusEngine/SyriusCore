@@ -61,19 +61,15 @@ namespace Syrius{
     D3D11Context::~D3D11Context() {
         if (m_RenderTarget){
             m_RenderTarget->Release();
-            m_RenderTarget = nullptr;
         }
         if (m_SwapChain) {
             m_SwapChain->Release();
-            m_SwapChain = nullptr;
         }
         if (m_DeviceContext) {
             m_DeviceContext->Release();
-            m_DeviceContext = nullptr;
         }
         if (m_Device) {
             m_Device->Release();
-            m_Device = nullptr;
         }
     }
 
@@ -99,10 +95,10 @@ namespace Syrius{
 
     void D3D11Context::destroyImGuiContext() {
         ImGui::SetCurrentContext(m_ImGuiContext);
-        ImGui_ImplDX11_Shutdown();
 
-        ImGui::DestroyContext();
+        ImGui_ImplDX11_Shutdown();
         ImGui_ImplWin32_Shutdown();
+        ImGui::DestroyContext();
         m_ImGuiContext = nullptr;
     }
 
@@ -199,19 +195,19 @@ namespace Syrius{
     }
 
     ShaderModule *D3D11Context::createShaderModule(const ShaderModuleDesc &desc) {
-        return nullptr;
+        return new D3D11ShaderModule(desc, m_Device, m_DeviceContext);
     }
 
-    Shader *D3D11Context::createShader() {
-        return nullptr;
+    Shader *D3D11Context::createShader(const ShaderDesc &desc) {
+        return new D3D11Shader(desc, m_Device, m_DeviceContext);
     }
 
     VertexBuffer *D3D11Context::createVertexBuffer(const VertexBufferDesc &desc) {
-        return nullptr;
+        return new D3D11VertexBuffer(desc, m_Device, m_DeviceContext);
     }
 
     IndexBuffer *D3D11Context::createIndexBuffer(const IndexBufferDesc &desc) {
-        return nullptr;
+        return new D3D11IndexBuffer(desc, m_Device, m_DeviceContext);
     }
 
     VertexArray *D3D11Context::createVertexArray(const VertexArrayDesc &desc) {

@@ -17,10 +17,6 @@ namespace Syrius{
         glBindBuffer(GL_ARRAY_BUFFER, m_BufferID);
     }
 
-    void GlVertexBuffer::unbind() {
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-    }
-
     uint64 GlVertexBuffer::getIdentifier() const {
         return m_BufferID;
     }

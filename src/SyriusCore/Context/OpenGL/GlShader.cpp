@@ -2,27 +2,14 @@
 
 namespace Syrius{
 
-    GlShader::GlShader()
-    : Shader(),
+    GlShader::GlShader(const ShaderDesc& desc)
+    : Shader(desc),
     m_ShaderID(0){
         m_ShaderID = glCreateProgram();
-    }
 
-    GlShader::~GlShader() {
-        glDeleteProgram(m_ShaderID);
-    }
+        glAttachShader(m_ShaderID, desc.m_VertexShader->getIdentifier());
+        glAttachShader(m_ShaderID, desc.m_FragmentShader->getIdentifier());
 
-    void GlShader::addShaderModule(ShaderModule *module) {
-        auto glModule = dynamic_cast<GlShaderModule*>(module);
-        if (glModule != nullptr) {
-            glAttachShader(m_ShaderID, glModule->getShaderModuleID());
-        }
-        else{
-            SR_CORE_WARNING("Failed to add shader module to shader");
-        }
-    }
-
-    void GlShader::link() {
         int32 success;
         char infoLog[512];
         glLinkProgram(m_ShaderID);
@@ -32,6 +19,10 @@ namespace Syrius{
             std::string error = "[GlShader]: Failed to link shader program, error: " + std::string(infoLog);
             SR_CORE_WARNING(error);
         }
+    }
+
+    GlShader::~GlShader() {
+        glDeleteProgram(m_ShaderID);
     }
 
     void GlShader::bind() {

@@ -5,15 +5,16 @@
 
 namespace Syrius{
 
+    struct SR_API ShaderDesc{
+        ShaderModule* m_VertexShader = nullptr;
+        ShaderModule* m_FragmentShader = nullptr;
+    };
+
     class SR_API Shader{
     public:
-        Shader();
+        explicit Shader(const ShaderDesc& desc);
 
         virtual ~Shader();
-
-        virtual void addShaderModule(ShaderModule* module) = 0;
-
-        virtual void link() = 0;
 
         virtual void bind() = 0;
 

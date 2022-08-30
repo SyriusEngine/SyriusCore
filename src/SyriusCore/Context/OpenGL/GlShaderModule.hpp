@@ -11,7 +11,7 @@ namespace Syrius {
 
         ~GlShaderModule() override;
 
-        uint32 getShaderModuleID() const;
+        [[nodiscard]] uint64 getIdentifier() const override;
 
     private:
 

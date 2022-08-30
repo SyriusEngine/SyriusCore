@@ -16,7 +16,7 @@ namespace Syrius{
 
         void setData(const void* data) override;
 
-        void addShader(Shader* shader) override;
+        void addShader(Shader* shader, SR_SHADER_TYPE shaderType) override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
 

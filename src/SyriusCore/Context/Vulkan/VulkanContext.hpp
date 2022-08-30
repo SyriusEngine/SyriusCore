@@ -55,7 +55,7 @@ namespace Syrius{
 
         ShaderModule* createShaderModule(const ShaderModuleDesc& desc) override;
 
-        Shader* createShader() override;
+        Shader* createShader(const ShaderDesc& desc) override;
 
         VertexBuffer* createVertexBuffer(const VertexBufferDesc& desc) override;
 
