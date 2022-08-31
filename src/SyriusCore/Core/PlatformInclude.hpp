@@ -21,6 +21,7 @@
 #include <dxgi.h>
 #include <d3dcompiler.h>
 #include <dxgiformat.h>
+#include <dxgidebug.h>
 
 #include "../Dependencies/glad/glad/wgl.h"
 

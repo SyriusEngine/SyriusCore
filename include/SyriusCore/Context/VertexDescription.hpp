@@ -25,8 +25,11 @@ namespace Syrius{
 
         [[nodiscard]] const std::vector<VertexAttribute>& getAttributes() const;
 
+        [[nodiscard]] uint32 getAttributeCount() const;
+
     public:
         uint32 m_Stride;
+        uint32 m_AttributeCount;
         std::vector<VertexAttribute> m_Attributes;
 
     };

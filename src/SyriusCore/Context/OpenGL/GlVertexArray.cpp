@@ -20,7 +20,7 @@ namespace Syrius{
                                       offset);
 
             attribPtr++;
-            offset += getTypeSize(dataType) * element.m_ElementCount;
+            offset += element.m_Size;
         }
 
         auto vboID = m_VertexBuffer->getIdentifier();

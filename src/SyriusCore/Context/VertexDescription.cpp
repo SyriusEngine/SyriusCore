@@ -13,7 +13,8 @@ namespace Syrius{
 
 
     VertexDescription::VertexDescription()
-    : m_Stride(0) {
+    : m_Stride(0),
+    m_AttributeCount(0){
 
     }
 
@@ -37,6 +38,10 @@ namespace Syrius{
 
     const std::vector<VertexAttribute> &VertexDescription::getAttributes() const {
         return m_Attributes;
+    }
+
+    uint32 VertexDescription::getAttributeCount() const {
+        return m_AttributeCount;
     }
 
 }

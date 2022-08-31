@@ -67,6 +67,36 @@ int main() {
         iboDesc.m_DataType = SR_UINT32;
         auto ibo = context->createIndexBuffer(iboDesc);
 
+        ShaderModuleDesc vsDesc;
+        vsDesc.m_Type = SR_SHADER_VERTEX;
+        vsDesc.m_CodeType = SR_SHADER_CODE_HLSL;
+        vsDesc.m_Code = "./Resources/Shaders/HLSL/Basic-vs.hlsl";
+        vsDesc.m_LoadType = SR_LOAD_FROM_FILE;
+        vsDesc.m_EntryPoint = "main";
+        vsDesc.m_CodeLength = 0;
+        auto vsm = context->createShaderModule(vsDesc);
+
+        ShaderModuleDesc fsDesc;
+        fsDesc.m_Type = SR_SHADER_FRAGMENT;
+        fsDesc.m_CodeType = SR_SHADER_CODE_HLSL;
+        fsDesc.m_Code = "./Resources/Shaders/HLSL/Basic-fs.hlsl";
+        fsDesc.m_LoadType = SR_LOAD_FROM_FILE;
+        fsDesc.m_EntryPoint = "main";
+        fsDesc.m_CodeLength = 0;
+        auto fsm = context->createShaderModule(fsDesc);
+
+        ShaderDesc sDesc;
+        sDesc.m_VertexShader = vsm;
+        sDesc.m_FragmentShader = fsm;
+        auto shader = context->createShader(sDesc);
+
+        VertexArrayDesc vaoDesc;
+        vaoDesc.m_DrawMode = SR_DRAW_TRIANGLES;
+        vaoDesc.m_VertexShader = vsm;
+        vaoDesc.m_VertexBuffer = vbo;
+        vaoDesc.m_IndexBuffer = ibo;
+        auto vao = context->createVertexArray(vaoDesc);
+
         while (window->isOpen()){
 
             window->pollEvents();
@@ -79,7 +109,11 @@ int main() {
                     context->onResize(event.windowWidth, event.windowHeight);
                 }
             }
+
             context->clear();
+
+            shader->bind();
+            context->draw(vao);
 
             window->onImGuiBegin();
             ImGui::Begin("Info");

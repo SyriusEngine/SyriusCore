@@ -56,6 +56,17 @@ namespace Syrius{
             backBuffer->Release();
         }
 
+        auto fbSize = getFramebufferSize();
+
+        D3D11_VIEWPORT vp;
+        vp.Width = fbSize.m_Width;
+        vp.Height = fbSize.m_Height;
+        vp.MinDepth = 0.0f;
+        vp.MaxDepth = 1.0f;
+        vp.TopLeftX = 0;
+        vp.TopLeftY = 0;
+        m_DeviceContext->RSSetViewports(1, &vp);
+
     }
 
     D3D11Context::~D3D11Context() {
@@ -183,6 +194,9 @@ namespace Syrius{
     }
 
     void D3D11Context::draw(VertexArray *vao) {
+        m_DeviceContext->OMSetRenderTargets(1, &m_RenderTarget, nullptr);
+
+        vao->drawBuffers();
 
     }
 
@@ -211,7 +225,12 @@ namespace Syrius{
     }
 
     VertexArray *D3D11Context::createVertexArray(const VertexArrayDesc &desc) {
-        return nullptr;
+        if (desc.m_IndexBuffer != nullptr) {
+            return new D3D11VertexArrayIndexed(desc, m_Device, m_DeviceContext);
+        }
+        else {
+            return new D3D11VertexArray(desc, m_Device, m_DeviceContext);
+        }
     }
 
     ConstantBuffer *D3D11Context::createConstantBuffer(const ConstantBufferDesc &desc) {

@@ -12,6 +12,10 @@ namespace Syrius{
 
     DXGI_FORMAT getD3d11DataType(SR_DATA_TYPE dataType);
 
+    DXGI_FORMAT getD3D11ScalarType(SR_SCALAR_TYPE scalarType);
+
+    D3D11_PRIMITIVE_TOPOLOGY getD3d11DrawMode(SR_DRAW_TYPE drawMode);
+
 }
 
 #endif
