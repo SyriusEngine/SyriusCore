@@ -49,6 +49,8 @@
         DebugMessageHandler::pushOpenGlError(_err, #x, SR_FILE, SR_LINE); \
     }
 
+#if defined(SR_PLATFORM_WIN64)
+
 #define SR_D3D11_CALL(x) \
     do {                 \
         HRESULT _hr = x;\
@@ -71,6 +73,12 @@
         }                 \
     } while (0);         \
 
+#if defined(SR_COMPILER_MSVC)
+#define SR_DXGI_GET_MESSAGES() DebugMessageHandler::dxgiGetMessages();
+#endif
+
+#endif
+
 #define SR_VULKAN_CALL(x, message) \
     do {                           \
         VkResult __vkResult = x; \
@@ -90,8 +98,16 @@
 
 #define SR_OPENGL_CALL(x) x;
 
+#if defined(SR_PLATFORM_WIN64)
+
 #define SR_D3D11_CALL(x) x;
 #define SR_D3D11_CHECK_DEVICE_REMOVED(x, device) x;
+
+#if defined(SR_COMPILER_MSVC)
+#define SR_DXGI_GET_MESSAGES()
+#endif
+
+#endif
 
 #define SR_VULKAN_CALL(x, message) x;\
 

@@ -85,7 +85,7 @@ namespace Syrius{
     }
 
     VkExtent2D VulkanSwapChain::chooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities, const FramebufferSize& framebufferSize) {
-        if (capabilities.currentExtent.width != std::numeric_limits<uint32>::max()) {
+        if (capabilities.currentExtent.width != INT32_MAX) {
             return capabilities.currentExtent;
         }
         else {

@@ -12,6 +12,10 @@ namespace Syrius{
                 return "OPENGL";
             case SR_MESSAGE_VULKAN:
                 return "VULKAN";
+            case SR_MESSAGE_D3D11:
+                return "D3D11";
+            case SR_MESSAGE_DXGI:
+                return "DXGI";
             case SR_MESSAGE_PRECONDITION:
                 return "PRECONDITION";
             case SR_MESSAGE_POSTCONDITION:

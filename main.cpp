@@ -1,4 +1,5 @@
 #include <iostream>
+#define SR_IMPORT_DLL
 #include "include/SyriusCore/SyriusCore.hpp"
 #include "OpenGLTest.hpp"
 

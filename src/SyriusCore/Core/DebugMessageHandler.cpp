@@ -12,6 +12,10 @@ namespace Syrius{
     }
 
     handleDebugMessageFunc DebugMessageHandler::m_MessageHandler = defaultMessageHandler;
+#if defined(SR_COMPILER_MSVC)
+    uint64 DebugMessageHandler::m_DxgiMessageIndex = 0;
+    IDXGIInfoQueue* DebugMessageHandler::m_DxgiInfoQueue = nullptr;
+#endif
 
     void DebugMessageHandler::setDebugMessageHandler(handleDebugMessageFunc newHandler) {
         m_MessageHandler = newHandler;
@@ -167,6 +171,74 @@ namespace Syrius{
 
         }
     }
+
+#if defined(SR_COMPILER_MSVC)
+    SR_MESSAGE_SEVERITY getSrMessageSeverity(DXGI_INFO_QUEUE_MESSAGE_SEVERITY severity){
+        switch (severity) {
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_INFO:         return SR_MESSAGE_SEVERITY_INFO;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_MESSAGE:      return SR_MESSAGE_SEVERITY_LOW;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING:      return SR_MESSAGE_SEVERITY_MEDIUM;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR:        return SR_MESSAGE_SEVERITY_HIGH;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION:   return SR_MESSAGE_SEVERITY_HIGH;
+            default:                                            return SR_MESSAGE_SEVERITY_HIGH;
+        }
+    }
+
+    std::string getDxgiCategoryAsString(DXGI_INFO_QUEUE_MESSAGE_CATEGORY category){
+        switch (category){
+            case DXGI_INFO_QUEUE_MESSAGE_CATEGORY_UNKNOWN:                  return "DXGI_INFO_QUEUE_MESSAGE_CATEGORY_UNKNOWN";
+            case DXGI_INFO_QUEUE_MESSAGE_CATEGORY_MISCELLANEOUS:            return "DXGI_INFO_QUEUE_MESSAGE_CATEGORY_MISCELLANEOUS";
+            case DXGI_INFO_QUEUE_MESSAGE_CATEGORY_INITIALIZATION:           return "DXGI_INFO_QUEUE_MESSAGE_CATEGORY_INITIALIZATION";
+            case DXGI_INFO_QUEUE_MESSAGE_CATEGORY_CLEANUP:                  return "DXGI_INFO_QUEUE_MESSAGE_CATEGORY_CLEANUP";
+            case DXGI_INFO_QUEUE_MESSAGE_CATEGORY_COMPILATION:              return "DXGI_INFO_QUEUE_MESSAGE_CATEGORY_COMPILATION";
+            case DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_CREATION:           return "DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_CREATION";
+            case DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_SETTING:            return "DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_SETTING";
+            case DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_GETTING:            return "DXGI_INFO_QUEUE_MESSAGE_CATEGORY_STATE_GETTING";
+            case DXGI_INFO_QUEUE_MESSAGE_CATEGORY_RESOURCE_MANIPULATION:    return "DXGI_INFO_QUEUE_MESSAGE_CATEGORY_RESOURCE_MANIPULATION";
+            case DXGI_INFO_QUEUE_MESSAGE_CATEGORY_EXECUTION:                return "DXGI_INFO_QUEUE_MESSAGE_CATEGORY_EXECUTION";
+            case DXGI_INFO_QUEUE_MESSAGE_CATEGORY_SHADER:                   return "DXGI_INFO_QUEUE_MESSAGE_CATEGORY_SHADER";
+            default: {
+                return "DXGI_INFO_QUEUE_MESSAGE_CATEGORY_UNKNOWN";
+            }
+        }
+    }
+
+    void DebugMessageHandler::dxgiGetMessages(){
+        static bool libLoaded = false;
+        if (!libLoaded) {
+            typedef HRESULT (WINAPI* DXGIGetDebugInterface)(REFIID, void**);
+            const auto hModDxgiDebug = LoadLibraryEx("dxgidebug.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
+            if (hModDxgiDebug){
+                const auto dxgiGetDebugInterface = reinterpret_cast<DXGIGetDebugInterface>(GetProcAddress(hModDxgiDebug, "DXGIGetDebugInterface"));
+                if (dxgiGetDebugInterface){
+                    HRESULT hr = dxgiGetDebugInterface(__uuidof(IDXGIInfoQueue), reinterpret_cast<void**>(&m_DxgiInfoQueue));
+                    libLoaded = true;
+                    formatHresultMessage(hr, "DXGIGetDebugInterface", SR_FILE, SR_LINE);
+                }
+            }
+        }
+
+        const auto end = m_DxgiInfoQueue->GetNumStoredMessages(DXGI_DEBUG_ALL);
+        for (uint64 i = m_DxgiMessageIndex; i < end; i++){
+            Size messageLength = 0;
+            m_DxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, nullptr, &messageLength);
+            std::vector<byte> buffer(messageLength);
+            auto message = reinterpret_cast<DXGI_INFO_QUEUE_MESSAGE*>(&buffer[0]);
+            m_DxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, message, &messageLength);
+
+            Message msgStruct;
+            msgStruct.m_Type = SR_MESSAGE_DXGI;
+            msgStruct.m_Severity = getSrMessageSeverity(message->Severity);
+            msgStruct.m_Message = "Code = " + std::to_string(message->ID) + ", Category = " + getDxgiCategoryAsString(message->Category) + ",\n message = " + std::string(message->pDescription);;
+            msgStruct.m_Function = "DXGI_DEBUG_ALL";
+            msgStruct.m_File = "";
+            msgStruct.m_Line = 0;
+            m_MessageHandler(msgStruct);
+
+        }
+        m_DxgiMessageIndex = end;
+    }
+#endif
 
 #endif
 

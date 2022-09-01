@@ -21,6 +21,10 @@ namespace Syrius{
 
         static void d3d11DeviceRemovedHandler(HRESULT hr, const std::string& function, const std::string& file, uint32 line);
 
+#if defined(SR_COMPILER_MSVC)
+        static void dxgiGetMessages();
+#endif
+
 #endif
         static void vulkanFormatVkResultMessage(VkResult result, const std::string& message, const std::string& function, const std::string& file, uint32 line);
 
@@ -32,6 +36,10 @@ namespace Syrius{
 
     private:
         static handleDebugMessageFunc m_MessageHandler;
+#if defined(SR_COMPILER_MSVC)
+        static uint64 m_DxgiMessageIndex;
+        static struct IDXGIInfoQueue* m_DxgiInfoQueue;
+#endif
 
     };
 

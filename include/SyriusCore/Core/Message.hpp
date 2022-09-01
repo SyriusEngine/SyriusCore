@@ -9,9 +9,11 @@ namespace Syrius{
         SR_MESSAGE_OPENGL           = 0x01,
         SR_MESSAGE_VULKAN           = 0x02,
         SR_MESSAGE_HRESULT          = 0x03,
-        SR_MESSAGE_PRECONDITION     = 0x04,
-        SR_MESSAGE_POSTCONDITION    = 0x05,
-        SR_MESSAGE_ASSERTION        = 0x06,
+        SR_MESSAGE_D3D11            = 0x04,
+        SR_MESSAGE_DXGI             = 0x05,
+        SR_MESSAGE_PRECONDITION     = 0x11,
+        SR_MESSAGE_POSTCONDITION    = 0x12,
+        SR_MESSAGE_ASSERTION        = 0x13,
     } SR_MESSAGE_TYPE;
 
     typedef enum SR_MESSAGE_SEVERITY{
