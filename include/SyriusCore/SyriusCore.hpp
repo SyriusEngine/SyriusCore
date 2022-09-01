@@ -1,7 +1,12 @@
 #pragma once
 
 #include "Core/SyriusCoreInclude.hpp"
+#include "Core/Message.hpp"
+#include "Core/PlatformAPI.hpp"
+#include "Core/PlatformDetection.hpp"
+
 #include "Utils/Image.hpp"
+
 #include "Window/SyriusWindow.hpp"
 
 #include "Context/Context.hpp"
@@ -13,6 +18,7 @@
 #include "Context/VertexArray.hpp"
 #include "Context/Texture2D.hpp"
 #include "Context/ConstantBuffer.hpp"
+#include "Context/FrameBuffer.hpp"
 
 #include "Dependencies/imgui/imgui.h"
 

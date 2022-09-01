@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../../include/SyriusCore/Context/Texture2D.hpp"
+#include "GlUtils.hpp"
 
 namespace Syrius{
 

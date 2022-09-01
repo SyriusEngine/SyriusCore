@@ -4,6 +4,8 @@
 #include "../Dependencies/stb_image/stb_image_resize.hpp"
 #include "../Dependencies/stb_image/stb_image_write.hpp"
 
+#include "../Core/DebugMacros.hpp"
+
 namespace Syrius{
 
     Image::Image(const std::string &fileName, bool flipOnLoad)

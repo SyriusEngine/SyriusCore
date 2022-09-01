@@ -26,7 +26,8 @@ if (WIN32)
             src/SyriusCore/Context/D3D11/D3D11ShaderModule.cpp
             src/SyriusCore/Context/D3D11/D3D11Shader.cpp
             src/SyriusCore/Context/D3D11/D3D11VertexBuffer.cpp
-            src/SyriusCore/Context/D3D11/D3D11IndexBuffer.cpp src/SyriusCore/Context/D3D11/D3D11VertexArray.cpp src/SyriusCore/Context/D3D11/D3D11VertexArray.hpp)
+            src/SyriusCore/Context/D3D11/D3D11IndexBuffer.cpp
+            src/SyriusCore/Context/D3D11/D3D11VertexArray.cpp )
 
 endif()
 
@@ -118,7 +119,8 @@ set(SYRIUSCORE_SRC
         ${SYRIUSCORE_GRAPHICS_API_SRC}
         src/SyriusCore/SyriusCore.cpp )
 
-add_library(syrius_core SHARED ${SYRIUSCORE_SRC})
+add_library(syrius-core STATIC ${SYRIUSCORE_SRC})
+add_library(syrius-core-d SHARED ${SYRIUSCORE_SRC})
 
 if (WIN32)
     file(GLOB VULKAN_DLL "./Dependencies/Vulkan/1.3.211.0/Bin/*.dll")
@@ -154,10 +156,11 @@ elseif(UNIX)
     message("Platform: Unix, toolchain: unknown")
 endif()
 
-target_link_libraries(syrius_core ${SYRIUS_CORE_LIBS})
+target_link_libraries(syrius-core ${SYRIUS_CORE_LIBS})
+target_link_libraries(syrius-core-d ${SYRIUS_CORE_LIBS})
 
 include_directories(/include/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(SyriusCoreDev main.cpp OpenGLTest.cpp)
-target_link_libraries(SyriusCoreDev -lsyrius_core)
+target_link_libraries(SyriusCoreDev -lsyrius-core-d)

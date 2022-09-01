@@ -1,4 +1,5 @@
 #include "../../../../include/SyriusCore/Window/SyriusWindow.hpp"
+#include "../Core/DebugMacros.hpp"
 
 namespace Syrius{
 
