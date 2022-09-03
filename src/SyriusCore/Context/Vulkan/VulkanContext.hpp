@@ -67,7 +67,7 @@ namespace Syrius{
 
         FrameBuffer* createFrameBuffer(const FrameBufferDesc& desc) override;
 
-        Texture2D* createTexture2D() override;
+        Texture2D* createTexture2D(const Texture2DDesc& desc) override;
 
     protected:
 

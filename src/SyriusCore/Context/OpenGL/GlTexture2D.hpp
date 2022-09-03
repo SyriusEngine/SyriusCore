@@ -7,15 +7,13 @@ namespace Syrius{
 
     class GlTexture2D : public Texture2D{
     public:
-        GlTexture2D();
+        explicit GlTexture2D(const Texture2DDesc& desc);
 
         ~GlTexture2D() override;
 
         void bind(uint32_t slot) override;
 
         void unbind() override;
-
-        void upload(Image* image) override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
 

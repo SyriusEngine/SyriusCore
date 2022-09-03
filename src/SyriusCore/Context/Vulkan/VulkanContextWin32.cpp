@@ -1,5 +1,7 @@
 #include "VulkanContextWin32.hpp"
 
+#if defined(SR_PLATFORM_WIN64)
+
 #define VK_USE_PLATFORM_WIN32_KHR
 
 namespace Syrius{
@@ -76,3 +78,5 @@ namespace Syrius{
     }
 
 }
+
+#endif

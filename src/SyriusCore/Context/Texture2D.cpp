@@ -3,7 +3,7 @@
 
 namespace Syrius{
 
-    Texture2D::Texture2D() {
+    Texture2D::Texture2D(const Texture2DDesc& desc){
 
     }
 

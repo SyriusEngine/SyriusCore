@@ -126,7 +126,7 @@ namespace Syrius{
         return nullptr;
     }
 
-    Texture2D *VulkanContext::createTexture2D() {
+    Texture2D *VulkanContext::createTexture2D(const Texture2DDesc& desc) {
         return nullptr;
     }
 

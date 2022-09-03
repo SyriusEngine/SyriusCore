@@ -6,8 +6,8 @@
 namespace Syrius{
 
     struct SR_API ShaderDesc{
-        ShaderModule* m_VertexShader = nullptr;
-        ShaderModule* m_FragmentShader = nullptr;
+        ShaderModule* m_VertexShader    = nullptr;
+        ShaderModule* m_FragmentShader  = nullptr;
     };
 
     class SR_API Shader{

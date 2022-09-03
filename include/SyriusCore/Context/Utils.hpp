@@ -194,6 +194,20 @@ namespace Syrius{
 
     } SR_TEXTURE_DATA_FORMAT;
 
+    typedef enum SR_TEXTURE_FILTER{
+        SR_TEXTURE_FILTER_NONE      = 0x00,
+        SR_TEXTURE_FILTER_LINEAR    = 0x01,
+        SR_TEXTURE_FILTER_POINT     = 0x02
+    } SR_TEXTURE_FILTER;
+
+    typedef enum SR_TEXTURE_WRAP{
+        SR_TEXTURE_WRAP_NONE            = 0x00,
+        SR_TEXTURE_WRAP_REPEAT          = 0x01,
+        SR_TEXTURE_WRAP_MIRROR_REPEAT   = 0x02,
+        SR_TEXTURE_WRAP_CLAMP_EDGE      = 0x03,
+        SR_TEXTURE_WRAP_CLAMP_BORDER    = 0x04
+    } SR_TEXTURE_ADDRESS_WRAP;
+
     /**
      * @brief This function will return the size of a type in bytes
      * @example SR_UINT8 -> 1 byte

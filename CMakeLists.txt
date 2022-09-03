@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.16)
 project(SyriusCore)
 
 add_compile_definitions(SR_DEBUG_MODE)
@@ -162,5 +162,5 @@ target_link_libraries(syrius-core-d ${SYRIUS_CORE_LIBS})
 include_directories(/include/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(SyriusCoreDev main.cpp OpenGLTest.cpp)
+add_executable(SyriusCoreDev main.cpp )
 target_link_libraries(SyriusCoreDev -lsyrius-core-d)

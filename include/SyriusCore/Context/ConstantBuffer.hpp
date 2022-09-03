@@ -7,10 +7,10 @@ namespace Syrius{
 
     struct SR_API ConstantBufferDesc{
         std::string m_BlockName;
-        uint32 m_Size;
-        uint32 m_BindingIndex;
-        const void* m_Data;
-        SR_BUFFER_TYPE m_Type;
+        uint32 m_Size           = 0;
+        uint32 m_BindingIndex   = 0;
+        const void* m_Data      = nullptr;
+        SR_BUFFER_TYPE m_Type   = SR_BUFFER_DEFAULT;
     };
 
     class SR_API ConstantBuffer{

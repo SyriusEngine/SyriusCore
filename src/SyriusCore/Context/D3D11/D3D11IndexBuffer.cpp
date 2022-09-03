@@ -44,6 +44,10 @@ namespace Syrius{
         m_Context->IASetIndexBuffer(m_Buffer, m_DxgiDataType, 0);
     }
 
+    void D3D11IndexBuffer::setData(const void *data){
+
+    }
+
     uint64 D3D11IndexBuffer::getIdentifier() const {
         return reinterpret_cast<uint64>(m_Buffer);
     }

@@ -5,9 +5,9 @@
 namespace Syrius{
 
     struct SR_API IndexBufferDesc{
-        const void* m_Data = nullptr;
-        uint32 m_Count = 0;
-        SR_BUFFER_TYPE m_Type = SR_BUFFER_DEFAULT;
+        const void* m_Data      = nullptr;
+        uint32 m_Count          = 0;
+        SR_BUFFER_TYPE m_Type   = SR_BUFFER_DEFAULT;
         SR_DATA_TYPE m_DataType = SR_UINT32;
     };
 
@@ -18,6 +18,8 @@ namespace Syrius{
         virtual ~IndexBuffer();
 
         virtual void bind() = 0;
+
+        virtual void setData(const void* data) = 0;
 
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 

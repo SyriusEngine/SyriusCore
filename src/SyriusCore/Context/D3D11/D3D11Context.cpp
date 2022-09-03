@@ -241,7 +241,7 @@ namespace Syrius{
         return nullptr;
     }
 
-    Texture2D *D3D11Context::createTexture2D() {
+    Texture2D *D3D11Context::createTexture2D(const Texture2DDesc& desc) {
         return nullptr;
     }
 }

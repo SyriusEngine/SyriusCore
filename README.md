@@ -18,7 +18,7 @@ graphics API, there is a specific implementation of the library.
 ### Requirements
 * A c++17 compiler
 * A CMake build system
-* A CMake version >= 3.21
+* A CMake version >= 3.16
 
 ## Build
 Just use cmake to build the library. In the cmake file, a macro is defined that can be toggled to switch between

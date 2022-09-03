@@ -2,6 +2,8 @@
 
 #include "VulkanContext.hpp"
 
+#if defined(SR_PLATFORM_WIN64)
+
 namespace Syrius{
 
     class VulkanContextWin32: public VulkanContext{
@@ -30,4 +32,6 @@ namespace Syrius{
     };
 
 }
+
+#endif
 

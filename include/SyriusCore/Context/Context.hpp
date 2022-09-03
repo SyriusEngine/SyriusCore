@@ -14,8 +14,8 @@
 namespace Syrius{
 
     struct FramebufferSize{
-        uint32 m_Width;
-        uint32 m_Height;
+        uint32 m_Width  = 0;
+        uint32 m_Height = 0;
     };
 
     class SR_API Context{
@@ -93,7 +93,7 @@ namespace Syrius{
 
         virtual FrameBuffer* createFrameBuffer(const FrameBufferDesc& desc) = 0;
 
-        virtual Texture2D* createTexture2D() = 0;
+        virtual Texture2D* createTexture2D(const Texture2DDesc& desc) = 0;
 
     protected:
 

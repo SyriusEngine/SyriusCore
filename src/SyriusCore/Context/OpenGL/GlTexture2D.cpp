@@ -2,35 +2,22 @@
 
 namespace Syrius{
 
-    GlTexture2D::GlTexture2D()
-    : Texture2D(),
+    GlTexture2D::GlTexture2D(const Texture2DDesc& desc)
+    : Texture2D(desc),
     m_TextureID(0){
         glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
 
-    }
+        glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, getGlTextureFilter(desc.m_MinFilter));
+        glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, getGlTextureFilter(desc.m_MagFilter));
 
-    GlTexture2D::~GlTexture2D() {
-        glDeleteTextures(1, &m_TextureID);
-    }
-
-    void GlTexture2D::bind(uint32_t slot) {
-        glBindTextureUnit(slot, m_TextureID);
-    }
-
-    void GlTexture2D::unbind() {
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
-
-    void GlTexture2D::upload(Image *image) {
-        glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, getGlTextureWrap(desc.m_WrapAddressU));
+        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, getGlTextureWrap(desc.m_WrapAddressU));
 
         GLenum format;
         GLint internalFormat;
-        switch (image->getChannelCount()){
+        uint32 width = desc.m_Image->getWidth();
+        uint32 height = desc.m_Image->getHeight();
+        switch (desc.m_Image->getChannelCount()){
             case 4:
                 format = GL_RGBA;
                 internalFormat = GL_RGBA8;
@@ -53,9 +40,22 @@ namespace Syrius{
                 break;
         }
 
-        glTextureStorage2D(m_TextureID, 1, internalFormat, image->getWidth(), image->getHeight());
-        glTextureSubImage2D(m_TextureID, 0, 0, 0, image->getWidth(), image->getHeight(), format, GL_UNSIGNED_BYTE, &image->getData()[0]);
+        glTextureStorage2D(m_TextureID, 1, internalFormat, width, height);
+        glTextureSubImage2D(m_TextureID, 0, 0, 0, width, height, format, GL_UNSIGNED_BYTE, &desc.m_Image->getData()[0]);
         glGenerateTextureMipmap(m_TextureID);
+
+    }
+
+    GlTexture2D::~GlTexture2D() {
+        glDeleteTextures(1, &m_TextureID);
+    }
+
+    void GlTexture2D::bind(uint32_t slot) {
+        glBindTextureUnit(slot, m_TextureID);
+    }
+
+    void GlTexture2D::unbind() {
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     uint64 GlTexture2D::getIdentifier() const {

@@ -43,6 +43,10 @@ namespace Syrius{
         m_Context->IASetVertexBuffers(0, 1, &m_Buffer, &stride, &offset);
     }
 
+    void D3D11VertexBuffer::setData(const void *data){
+
+    }
+
     uint64 D3D11VertexBuffer::getIdentifier() const {
         return reinterpret_cast<uint64>(m_Buffer);
     }

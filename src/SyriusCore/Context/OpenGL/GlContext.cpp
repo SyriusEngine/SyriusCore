@@ -156,8 +156,8 @@ namespace Syrius{
         return new GlFrameBuffer(desc);
     }
 
-    Texture2D *GlContext::createTexture2D() {
-        return new GlTexture2D();
+    Texture2D *GlContext::createTexture2D(const Texture2DDesc& desc) {
+        return new GlTexture2D(desc);
     }
 
 }

@@ -20,5 +20,9 @@ namespace Syrius{
 
     GLenum getGlDepthFunc(SR_DEPTH_FUNC func);
 
+    GLint getGlTextureFilter(SR_TEXTURE_FILTER);
+
+    GLint getGlTextureWrap(SR_TEXTURE_WRAP);
+
 }
 

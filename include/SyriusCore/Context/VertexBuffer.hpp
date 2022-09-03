@@ -6,10 +6,10 @@
 namespace Syrius{
 
     struct SR_API VertexBufferDesc{
-        const void* m_Data = nullptr;
-        uint32 m_Count = 0;
-        SR_BUFFER_TYPE m_Type = SR_BUFFER_DEFAULT;
-        VertexDescription* m_Layout = nullptr;
+        const void* m_Data              = nullptr;
+        uint32 m_Count                  = 0;
+        SR_BUFFER_TYPE m_Type           = SR_BUFFER_DEFAULT;
+        VertexDescription* m_Layout     = nullptr;
     };
 
     class SR_API VertexBuffer{
@@ -19,6 +19,8 @@ namespace Syrius{
         virtual ~VertexBuffer();
 
         virtual void bind() = 0;
+
+        virtual void setData(const void* data) = 0;
 
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 
