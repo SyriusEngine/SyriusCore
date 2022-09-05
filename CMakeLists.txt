@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(Dependencies/Vulkan/1.3.211.0/Include/)
 link_directories(Dependencies/Vulkan/1.3.211.0/Bin/)
+link_directories(Dependencies/Vulkan/1.3.211.0/Lib/)
 
 if (WIN32)
     set(GLAD_PLATFORM_SRC
@@ -119,8 +120,7 @@ set(SYRIUSCORE_SRC
         ${SYRIUSCORE_GRAPHICS_API_SRC}
         src/SyriusCore/SyriusCore.cpp )
 
-add_library(syrius-core STATIC ${SYRIUSCORE_SRC})
-add_library(syrius-core-d SHARED ${SYRIUSCORE_SRC})
+add_library(syrius-core SHARED ${SYRIUSCORE_SRC})
 
 if (WIN32)
     file(GLOB VULKAN_DLL "./Dependencies/Vulkan/1.3.211.0/Bin/*.dll")
@@ -146,6 +146,7 @@ if (WIN32)
                 dwmapi
                 user32
                 dxgi
+                dxguid
                 vulkan-1
                 openGL32
                 d3d11
@@ -157,10 +158,13 @@ elseif(UNIX)
 endif()
 
 target_link_libraries(syrius-core ${SYRIUS_CORE_LIBS})
-target_link_libraries(syrius-core-d ${SYRIUS_CORE_LIBS})
 
 include_directories(/include/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(SyriusCoreDev main.cpp )
-target_link_libraries(SyriusCoreDev -lsyrius-core-d)
+if (MSVC)
+    target_link_libraries(SyriusCoreDev syrius-core)
+else()
+    target_link_libraries(SyriusCoreDev -lsyrius-core)
+endif()

@@ -29,8 +29,8 @@ const std::vector<Vertex> vertices = {
 };
 
 const std::vector<uint32> indices = {
-    0, 1, 2,
-    2, 3, 0
+    0, 2, 1,
+    0, 3, 2
 };
 
 int main() {
@@ -46,7 +46,7 @@ int main() {
         wDesc.m_Title = " The pubes, farts and other spices";
 
         auto window = createWindow(wDesc);
-        auto context = window->createContext(SR_API_OPENGL);
+        auto context = window->createContext(SR_API_D3D11);
         context->setVerticalSynchronisation(true);
         context->setClearColor(0.2f, 0.3f, 0.5f, 1.0f);
         window->createImGuiContext();
@@ -71,8 +71,8 @@ int main() {
 
         ShaderModuleDesc vsDesc;
         vsDesc.m_Type = SR_SHADER_VERTEX;
-        vsDesc.m_CodeType = SR_SHADER_CODE_GLSL;
-        vsDesc.m_Code = "./Resources/Shaders/GLSL/Basic.vert";
+        vsDesc.m_CodeType = SR_SHADER_CODE_HLSL;
+        vsDesc.m_Code = "./Resources/Shaders/HLSL/Basic-vs.hlsl";
         vsDesc.m_LoadType = SR_LOAD_FROM_FILE;
         vsDesc.m_EntryPoint = "main";
         vsDesc.m_CodeLength = 0;
@@ -80,8 +80,8 @@ int main() {
 
         ShaderModuleDesc fsDesc;
         fsDesc.m_Type = SR_SHADER_FRAGMENT;
-        fsDesc.m_CodeType = SR_SHADER_CODE_GLSL;
-        fsDesc.m_Code = "./Resources/Shaders/GLSL/Basic.frag";
+        fsDesc.m_CodeType = SR_SHADER_CODE_HLSL;
+        fsDesc.m_Code = "./Resources/Shaders/HLSL/Basic-fs.hlsl";
         fsDesc.m_LoadType = SR_LOAD_FROM_FILE;
         fsDesc.m_EntryPoint = "main";
         fsDesc.m_CodeLength = 0;
@@ -99,11 +99,6 @@ int main() {
         vaoDesc.m_IndexBuffer = ibo;
         auto vao = context->createVertexArray(vaoDesc);
 
-        auto texImg = createImage("./Resources/Textures/Logo.jpg");
-        Texture2DDesc tDesc;
-        tDesc.m_Image = texImg;
-        auto texture = context->createTexture2D(tDesc);
-
         while (window->isOpen()){
 
             window->pollEvents();
@@ -120,7 +115,6 @@ int main() {
             context->clear();
 
             shader->bind();
-            texture->bind(0);
             context->draw(vao);
 
             window->onImGuiBegin();
