@@ -111,6 +111,12 @@ namespace Syrius{
         return m_ColorAttachments[attachmentIndex]->readColorAttachment();
     }
 
+    uint64 GlFrameBuffer::getColorAttachmentIdentifier(uint32 attachmentIndex) {
+        SR_CORE_PRECONDITION(attachmentIndex < m_ColorAttachments.size(), "Attachment index out of bounds!");
+
+        return m_ColorAttachments[attachmentIndex]->getIdentifier();
+    }
+
     GlDefaultFramebuffer::GlDefaultFramebuffer(const FrameBufferDesc &desc)
     : FrameBuffer(desc),
     m_GlDepthFunc(getGlDepthFunc(desc.m_DepthFunc)),
@@ -187,5 +193,11 @@ namespace Syrius{
         SR_CORE_WARNING("Reading the color attachment of the default framebuffer is not supported!");
 
         return nullptr;
+    }
+
+    uint64 GlDefaultFramebuffer::getColorAttachmentIdentifier(uint32 attachmentIndex) {
+        SR_CORE_WARNING("Reading the color attachment of the default framebuffer is not supported!");
+
+        return 0;
     }
 }

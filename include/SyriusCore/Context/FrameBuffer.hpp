@@ -47,6 +47,8 @@ namespace Syrius{
 
         virtual Image* readColorAttachment(uint32 attachmentIndex) = 0;
 
+        virtual uint64 getColorAttachmentIdentifier(uint32 attachmentIndex) = 0;
+
         [[nodiscard]] uint32 getWidth() const;
 
         [[nodiscard]] uint32 getHeight() const;

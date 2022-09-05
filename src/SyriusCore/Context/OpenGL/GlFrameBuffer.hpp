@@ -34,6 +34,9 @@ namespace Syrius{
 
         Image* readColorAttachment(uint32 attachmentIndex) override;
 
+        uint64 getColorAttachmentIdentifier(uint32 attachmentIndex) override;
+
+
     private:
         uint32 m_FrameBufferID;
         GLbitfield m_ClearMask;
@@ -72,6 +75,8 @@ namespace Syrius{
         void bindColorAttachment(uint32 slot, uint32 attachmentIndex) override;
 
         Image* readColorAttachment(uint32 attachmentIndex) override;
+
+        uint64 getColorAttachmentIdentifier(uint32 attachmentIndex) override;
 
     private:
         GLbitfield m_ClearMask;
