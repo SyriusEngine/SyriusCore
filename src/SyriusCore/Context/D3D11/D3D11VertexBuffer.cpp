@@ -44,7 +44,10 @@ namespace Syrius{
     }
 
     void D3D11VertexBuffer::setData(const void *data){
-
+        D3D11_MAPPED_SUBRESOURCE mappedResource;
+        SR_D3D11_CALL(m_Context->Map(m_Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+        memcpy(mappedResource.pData, data, m_Size);
+        m_Context->Unmap(m_Buffer, 0);
     }
 
     uint64 D3D11VertexBuffer::getIdentifier() const {

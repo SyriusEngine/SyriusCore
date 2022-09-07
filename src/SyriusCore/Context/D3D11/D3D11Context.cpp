@@ -167,7 +167,7 @@ namespace Syrius{
     }
 
     int32 D3D11Context::getMaxTexture2DSize() {
-        return 0;
+        return D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION;
     }
 
     int32 D3D11Context::getMaxConstantBufferSize() {
@@ -234,7 +234,16 @@ namespace Syrius{
     }
 
     ConstantBuffer *D3D11Context::createConstantBuffer(const ConstantBufferDesc &desc) {
-        return nullptr;
+        auto shaderStage = desc.m_ShaderStage;
+        switch (shaderStage) {
+            case SR_SHADER_VERTEX:      return new D3D11ConstantBufferVertex(desc, m_Device, m_DeviceContext);
+            case SR_SHADER_FRAGMENT:    return new D3D11ConstantBufferPixel(desc, m_Device, m_DeviceContext);
+            case SR_SHADER_GEOMETRY:    return new D3D11ConstantBufferGeometry(desc, m_Device, m_DeviceContext);
+            default: {
+                SR_CORE_EXCEPTION("Unsupported shader stage for constant buffer");
+                return nullptr;
+            }
+        }
     }
 
     FrameBuffer *D3D11Context::createFrameBuffer(const FrameBufferDesc &desc) {
