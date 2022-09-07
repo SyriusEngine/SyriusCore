@@ -44,5 +44,8 @@ namespace Syrius {
 
     SR_API Time getTimeMilli();
 
+    template<typename T>
+    SR_API T getRandom(T min, T max);
+
 }
 
