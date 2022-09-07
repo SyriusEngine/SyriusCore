@@ -4,15 +4,7 @@
 
 #include <vector>
 #include <string>
-#include <sstream>
-#include <fstream>
-#include <utility>
 #include <deque>
-#include <thread>
-#include <iostream>
-#include <chrono>
-#include <random>
-#include <map>
 
 namespace Syrius{
 
@@ -56,18 +48,6 @@ namespace Syrius{
     typedef size_t Size;
     typedef uint64 Index;
     typedef uint64 Time;
-
-    inline Time getTimeSinceEpoch(){
-        return std::chrono::duration_cast<std::chrono::seconds>(
-                std::chrono::system_clock::now().time_since_epoch())
-                .count();
-    }
-
-    inline Time getTimeSinceEpochMilli(){
-        return std::chrono::duration_cast<std::chrono::milliseconds>(
-                std::chrono::system_clock::now().time_since_epoch())
-                .count();
-    }
 
 #if defined(SR_DEBUG_MODE)
     const static bool s_SyriusDebugMode = true;

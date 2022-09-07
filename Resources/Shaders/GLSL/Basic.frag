@@ -1,6 +1,6 @@
 #version 460
 
-layout(location = 2) in vec2 texCoords;
+in vec2 texCoords;
 
 out vec4 FragColor;
 

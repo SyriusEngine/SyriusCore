@@ -28,7 +28,7 @@ if (WIN32)
             src/SyriusCore/Context/D3D11/D3D11Shader.cpp
             src/SyriusCore/Context/D3D11/D3D11VertexBuffer.cpp
             src/SyriusCore/Context/D3D11/D3D11IndexBuffer.cpp
-            src/SyriusCore/Context/D3D11/D3D11VertexArray.cpp )
+            src/SyriusCore/Context/D3D11/D3D11VertexArray.cpp src/SyriusCore/Context/D3D11/D3D11ConstantBuffer.cpp src/SyriusCore/Context/D3D11/D3D11ConstantBuffer.hpp)
 
 endif()
 

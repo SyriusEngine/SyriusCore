@@ -102,10 +102,14 @@ namespace Syrius{
     }
 
     void GlContext::draw(VertexArray *vao) {
+        SR_CORE_PRECONDITION(vao != nullptr, "VertexArray is null");
+
         vao->drawBuffers();
     }
 
     void GlContext::drawInstanced(VertexArray *vao, uint32 instanceCount) {
+        SR_CORE_PRECONDITION(vao != nullptr, "VertexArray is null");
+
         vao->drawBuffersInstanced(instanceCount);
     }
 
@@ -157,6 +161,10 @@ namespace Syrius{
     }
 
     Texture2D *GlContext::createTexture2D(const Texture2DDesc& desc) {
+        SR_CORE_PRECONDITION(desc.m_Image != nullptr, "Texture image is null");
+        SR_CORE_PRECONDITION(desc.m_Image->getWidth() <= getMaxTexture2DSize(), "Texture width is too large");
+        SR_CORE_PRECONDITION(desc.m_Image->getHeight() <= getMaxTexture2DSize(), "Texture height is too large");
+
         return new GlTexture2D(desc);
     }
 

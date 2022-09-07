@@ -33,6 +33,13 @@ const std::vector<uint32> indices = {
     0, 3, 2
 };
 
+struct Transformation{
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+    float w = 0.0f;
+};
+
 int main() {
     try{
         syriusInit();
@@ -46,7 +53,7 @@ int main() {
         wDesc.m_Title = " The pubes, farts and other spices";
 
         auto window = createWindow(wDesc);
-        auto context = window->createContext(SR_API_D3D11);
+        auto context = window->createContext(Syrius::SR_API_OPENGL);
         context->setVerticalSynchronisation(true);
         context->setClearColor(0.2f, 0.3f, 0.5f, 1.0f);
         window->createImGuiContext();
@@ -71,8 +78,8 @@ int main() {
 
         ShaderModuleDesc vsDesc;
         vsDesc.m_Type = SR_SHADER_VERTEX;
-        vsDesc.m_CodeType = SR_SHADER_CODE_HLSL;
-        vsDesc.m_Code = "./Resources/Shaders/HLSL/Basic-vs.hlsl";
+        vsDesc.m_CodeType = SR_SHADER_CODE_GLSL;
+        vsDesc.m_Code = "./Resources/Shaders/GLSL/Basic.vert";
         vsDesc.m_LoadType = SR_LOAD_FROM_FILE;
         vsDesc.m_EntryPoint = "main";
         vsDesc.m_CodeLength = 0;
@@ -80,8 +87,8 @@ int main() {
 
         ShaderModuleDesc fsDesc;
         fsDesc.m_Type = SR_SHADER_FRAGMENT;
-        fsDesc.m_CodeType = SR_SHADER_CODE_HLSL;
-        fsDesc.m_Code = "./Resources/Shaders/HLSL/Basic-fs.hlsl";
+        fsDesc.m_CodeType = SR_SHADER_CODE_GLSL;
+        fsDesc.m_Code = "./Resources/Shaders/GLSL/Basic.frag";
         fsDesc.m_LoadType = SR_LOAD_FROM_FILE;
         fsDesc.m_EntryPoint = "main";
         fsDesc.m_CodeLength = 0;
@@ -99,6 +106,17 @@ int main() {
         vaoDesc.m_IndexBuffer = ibo;
         auto vao = context->createVertexArray(vaoDesc);
 
+        auto basicTrans = Transformation();
+        ConstantBufferDesc cbDesc;
+        cbDesc.m_Size = sizeof(Transformation);
+        cbDesc.m_Type = SR_BUFFER_DYNAMIC;
+        cbDesc.m_Data = &basicTrans;
+        cbDesc.m_BlockName = "Transform";
+        cbDesc.m_BindingIndex = 0;
+        cbDesc.m_ShaderStage = SR_SHADER_VERTEX;
+        auto cb = context->createConstantBuffer(cbDesc);
+
+
         while (window->isOpen()){
 
             window->pollEvents();
@@ -114,6 +132,7 @@ int main() {
 
             context->clear();
 
+            cb->bind();
             shader->bind();
             context->draw(vao);
 
@@ -122,6 +141,9 @@ int main() {
             static float bgc[3] = {0.2f, 0.3f, 0.5f};
             if (ImGui::ColorPicker3("BackGroundColor", bgc)){
                 context->setClearColor(bgc[0], bgc[1], bgc[2], 1.0f);
+            }
+            if (ImGui::SliderFloat3("Transform", &basicTrans.x, -1.0f, 1.0f)){
+                cb->setData(&basicTrans);
             }
             ImGui::End();
 

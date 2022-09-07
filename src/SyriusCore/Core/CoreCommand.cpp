@@ -14,7 +14,9 @@ namespace Syrius{
 
     void CoreCommand::init() {
         if (!m_CoreCommandInstances){
-            m_StartupTime = getTimeSinceEpochMilli();
+            m_StartupTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::system_clock::now().time_since_epoch())
+                    .count();
 
             SR_CORE_MESSAGE("Initializing Syrius")
 
@@ -113,7 +115,10 @@ namespace Syrius{
     }
 
     Time CoreCommand::getElapsedTimeSinceStart() {
-        return getTimeSinceEpochMilli() - m_StartupTime;
+        Time currTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::system_clock::now().time_since_epoch())
+                .count();
+        return currTime - m_StartupTime;
     }
 
     uint32 CoreCommand::getPrimaryScreenWidth() {

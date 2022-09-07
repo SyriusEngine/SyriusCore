@@ -40,5 +40,9 @@ namespace Syrius {
 
     SR_API void setDebugMessageCallback(handleDebugMessageFunc callback);
 
+    SR_API Time getTime();
+
+    SR_API Time getTimeMilli();
+
 }
 

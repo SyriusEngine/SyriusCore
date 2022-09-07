@@ -14,18 +14,17 @@ namespace Syrius{
     }
 
     void GlConstantBuffer::bind() {
-        glBindBuffer(GL_UNIFORM_BUFFER, m_BufferID);
+        glBindBufferBase(GL_UNIFORM_BUFFER, m_BindingIndex, m_BufferID);
     }
 
     void GlConstantBuffer::setData(const void *data) {
         glNamedBufferSubData(m_BufferID, 0, m_Size, data);
     }
 
-    void GlConstantBuffer::addShader(Shader *shader, SR_SHADER_TYPE shaderType) {
+    void GlConstantBuffer::addShader(Shader *shader) {
         auto shaderID = shader->getIdentifier();
         auto index = glGetUniformBlockIndex(shaderID, m_BlockName.c_str());
         glUniformBlockBinding(shaderID, index, m_BindingIndex);
-        glBindBufferBase(GL_UNIFORM_BUFFER, m_BindingIndex, m_BufferID);
     }
 
     uint64 GlConstantBuffer::getIdentifier() const {
