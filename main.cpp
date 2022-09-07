@@ -116,6 +116,11 @@ int main() {
         cbDesc.m_ShaderStage = SR_SHADER_VERTEX;
         auto cb = context->createConstantBuffer(cbDesc);
 
+        auto img = createImage("./Resources/Textures/awesomeface.png");
+        Texture2DDesc texDesc;
+        texDesc.m_Image = img;
+        auto texture = context->createTexture2D(texDesc);
+        delete img;
 
         while (window->isOpen()){
 
@@ -133,6 +138,7 @@ int main() {
             context->clear();
 
             cb->bind();
+            texture->bind(0);
             shader->bind();
             context->draw(vao);
 

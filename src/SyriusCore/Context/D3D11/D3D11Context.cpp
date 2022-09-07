@@ -194,6 +194,8 @@ namespace Syrius{
     }
 
     void D3D11Context::draw(VertexArray *vao) {
+        SR_DXGI_GET_MESSAGES();
+
         m_DeviceContext->OMSetRenderTargets(1, &m_RenderTarget, nullptr);
 
         vao->drawBuffers();
@@ -251,7 +253,7 @@ namespace Syrius{
     }
 
     Texture2D *D3D11Context::createTexture2D(const Texture2DDesc& desc) {
-        return nullptr;
+        return new D3D11Texture2D(desc, m_Device, m_DeviceContext);
     }
 }
 

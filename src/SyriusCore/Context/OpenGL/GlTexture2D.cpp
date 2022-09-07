@@ -11,7 +11,7 @@ namespace Syrius{
         glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, getGlTextureFilter(desc.m_MagFilter));
 
         glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, getGlTextureWrap(desc.m_WrapAddressU));
-        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, getGlTextureWrap(desc.m_WrapAddressU));
+        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, getGlTextureWrap(desc.m_WrapAddressV));
 
         GLenum format;
         GLint internalFormat;
@@ -34,10 +34,12 @@ namespace Syrius{
                 format = GL_RED;
                 internalFormat = GL_R8;
                 break;
-            default:
+            default: {
                 SR_CORE_WARNING("Invalid texture format, default format RGBA will be picked");
                 format = GL_RGBA8;
+                internalFormat = GL_RGBA8;
                 break;
+            }
         }
 
         glTextureStorage2D(m_TextureID, 1, internalFormat, width, height);

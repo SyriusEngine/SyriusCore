@@ -1,7 +1,15 @@
+struct SharedResource{
+    float2 texCoords: TexCoords;
+    float4 pos: SV_Position;
+};
+
 cbuffer Transform: register (b0){
     float4 translate;
 }
 
-float4 main(float3 pos: Position): SV_Position {
-    return float4(pos.x + translate.x, pos.y + translate.y, 0, 1);
+SharedResource main(float3 pos: Position, float2 texCoords: TexCoords) {
+    SharedResource output;
+    output.pos = float4(pos.x + translate.x, pos.y + translate.y, 0, 1);
+    output.texCoords = texCoords;
+    return output;
 }

@@ -18,7 +18,7 @@ namespace Syrius{
             D3D11_INPUT_ELEMENT_DESC element;
             element.SemanticName = attr.m_Name.c_str();
             element.SemanticIndex = index;
-            element.Format = getD3D11ScalarType(attr.m_Type);
+            element.Format = getD3d11ScalarType(attr.m_Type);
             element.InputSlot = 0;
             element.AlignedByteOffset = offset;
             element.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;

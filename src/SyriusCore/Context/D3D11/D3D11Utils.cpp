@@ -33,7 +33,7 @@ namespace Syrius{
         }
     }
 
-    DXGI_FORMAT getD3D11ScalarType(SR_SCALAR_TYPE scalarType){
+    DXGI_FORMAT getD3d11ScalarType(SR_SCALAR_TYPE scalarType){
         switch (scalarType){
             case SR_UINT8_1:        return DXGI_FORMAT_R8_UINT;
             case SR_UINT8_2:        return DXGI_FORMAT_R8G8_UINT;
@@ -119,6 +119,38 @@ namespace Syrius{
                 SR_CORE_WARNING("Invalid type given to converter, return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST");
                 return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
             }
+        }
+    }
+
+    D3D11_TEXTURE_ADDRESS_MODE getD3d11TextureAddressMode(SR_TEXTURE_ADDRESS_WRAP addressMode){
+        switch (addressMode) {
+            case SR_TEXTURE_WRAP_REPEAT:                return D3D11_TEXTURE_ADDRESS_WRAP;
+            case SR_TEXTURE_WRAP_MIRROR_REPEAT:         return D3D11_TEXTURE_ADDRESS_MIRROR;
+            case SR_TEXTURE_WRAP_CLAMP_EDGE:            return D3D11_TEXTURE_ADDRESS_CLAMP;
+            case SR_TEXTURE_WRAP_CLAMP_BORDER:          return D3D11_TEXTURE_ADDRESS_BORDER;
+            default: {
+                SR_CORE_WARNING("Invalid type given to converter, return D3D11_TEXTURE_ADDRESS_WRAP");
+                return D3D11_TEXTURE_ADDRESS_WRAP;
+            }
+        }
+    }
+
+    D3D11_FILTER getD3d11TextureFilter(SR_TEXTURE_FILTER minFilter, SR_TEXTURE_FILTER magFilter){
+        if (minFilter == SR_TEXTURE_FILTER_LINEAR and magFilter == SR_TEXTURE_FILTER_LINEAR){
+            return D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+        }
+        else if (minFilter == SR_TEXTURE_FILTER_LINEAR and magFilter == SR_TEXTURE_FILTER_POINT){
+            return D3D11_FILTER_MIN_LINEAR_MAG_POINT_MIP_LINEAR;
+        }
+        else if (minFilter == SR_TEXTURE_FILTER_POINT and magFilter == SR_TEXTURE_FILTER_LINEAR){
+            return D3D11_FILTER_MIN_POINT_MAG_LINEAR_MIP_POINT;
+        }
+        else if (minFilter == SR_TEXTURE_FILTER_POINT and magFilter == SR_TEXTURE_FILTER_POINT){
+            return D3D11_FILTER_MIN_MAG_MIP_POINT;
+        }
+        else {
+            SR_CORE_WARNING("Invalid type given to converter, return D3D11_FILTER_MIN_MAG_MIP_LINEAR");
+            return D3D11_FILTER_MIN_MAG_MIP_LINEAR;
         }
     }
 

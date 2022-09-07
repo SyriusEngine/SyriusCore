@@ -11,6 +11,7 @@
 #include "D3D11IndexBuffer.hpp"
 #include "D3D11VertexArray.hpp"
 #include "D3D11ConstantBuffer.hpp"
+#include "D3D11Texture2D.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 
