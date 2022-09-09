@@ -64,6 +64,11 @@ namespace Syrius{
     }
 
     void D3D11VertexArray::drawBuffersInstanced(uint32 instanceCount) {
+        m_VertexBuffer->bind();
+        m_Context->IASetInputLayout(m_InputLayout);
+        m_Context->IASetPrimitiveTopology(m_D3d11DrawMode);
+
+        m_Context->DrawInstanced(m_VertexBuffer->getCount(), instanceCount, 0, 0);
 
     }
 
@@ -97,7 +102,12 @@ namespace Syrius{
     }
 
     void D3D11VertexArrayIndexed::drawBuffersInstanced(uint32 instanceCount) {
+        m_VertexBuffer->bind();
+        m_IndexBuffer->bind();
+        m_Context->IASetInputLayout(m_InputLayout);
+        m_Context->IASetPrimitiveTopology(m_D3d11DrawMode);
 
+        m_Context->DrawIndexedInstanced(m_IndexBuffer->getCount(), instanceCount, 0, 0, 0);
     }
 }
 

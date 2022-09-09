@@ -22,10 +22,10 @@ struct Vertex{
 };
 
 const std::vector<Vertex> vertices = {
-        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
-        {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
-        {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}},
-        {{-0.5f, 0.5f, 0.0f}, {0.0f, 1.0f}}
+        {{-0.05f, -0.05f, 0.0f}, {0.0f, 0.0f}},
+        {{0.05f, -0.05f, 0.0f}, {1.0f, 0.0f}},
+        {{0.05f, 0.05f, 0.0f}, {1.0f, 1.0f}},
+        {{-0.05f, 0.05f, 0.0f}, {0.0f, 1.0f}}
 };
 
 const std::vector<uint32> indices = {
@@ -106,11 +106,21 @@ int main() {
         vaoDesc.m_IndexBuffer = ibo;
         auto vao = context->createVertexArray(vaoDesc);
 
-        auto basicTrans = Transformation();
+        Transformation transData[100];
+        int32 index = 0;
+        for (int32 x = -5; x < 5; x++){
+            for (int32 y = -5; y < 5; y++){
+                transData[index].x = (float) x / 10.0f;
+                transData[index].y = (float) y / 10.0f;
+                transData[index].z = 0.0f;
+                transData[index].w = 1.0f;
+                index++;
+            }
+        }
         ConstantBufferDesc cbDesc;
-        cbDesc.m_Size = sizeof(Transformation);
+        cbDesc.m_Size = sizeof(transData);
         cbDesc.m_Type = SR_BUFFER_DYNAMIC;
-        cbDesc.m_Data = &basicTrans;
+        cbDesc.m_Data = &transData[0];
         cbDesc.m_BlockName = "Transform";
         cbDesc.m_BindingIndex = 0;
         cbDesc.m_ShaderStage = SR_SHADER_VERTEX;
@@ -140,16 +150,13 @@ int main() {
             cb->bind();
             texture->bind(0);
             shader->bind();
-            context->draw(vao);
+            context->drawInstanced(vao, 100);
 
             window->onImGuiBegin();
             ImGui::Begin("Info");
             static float bgc[3] = {0.2f, 0.3f, 0.5f};
             if (ImGui::ColorPicker3("BackGroundColor", bgc)){
                 context->setClearColor(bgc[0], bgc[1], bgc[2], 1.0f);
-            }
-            if (ImGui::SliderFloat3("Transform", &basicTrans.x, -1.0f, 1.0f)){
-                cb->setData(&basicTrans);
             }
             ImGui::End();
 

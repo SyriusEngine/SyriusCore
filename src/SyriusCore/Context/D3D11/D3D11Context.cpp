@@ -208,7 +208,6 @@ namespace Syrius{
     }
 
     void D3D11Context::draw(VertexArray *vao) {
-
         m_DeviceContext->OMSetRenderTargets(1, &m_RenderTarget, nullptr);
 
         vao->drawBuffers();
@@ -216,7 +215,9 @@ namespace Syrius{
     }
 
     void D3D11Context::drawInstanced(VertexArray *vao, uint32 instanceCount) {
+        m_DeviceContext->OMSetRenderTargets(1, &m_RenderTarget, nullptr);
 
+        vao->drawBuffersInstanced(instanceCount);
     }
 
     void D3D11Context::onResize(uint32 width, uint32 height) {
