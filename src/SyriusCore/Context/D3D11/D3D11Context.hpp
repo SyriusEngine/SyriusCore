@@ -94,6 +94,8 @@ namespace Syrius{
 
         ImGuiContext *m_ImGuiContext;
 
+        D3D_FEATURE_LEVEL m_D3DVersion;
+
         float m_BackgroundColor[4];
         ID3D11RenderTargetView* m_RenderTarget;
     };

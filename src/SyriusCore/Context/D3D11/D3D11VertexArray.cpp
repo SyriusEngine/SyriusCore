@@ -17,7 +17,7 @@ namespace Syrius{
         for (const auto& attr: m_VertexBuffer->getVertexDescription()->getAttributes()){
             D3D11_INPUT_ELEMENT_DESC element;
             element.SemanticName = attr.m_Name.c_str();
-            element.SemanticIndex = index;
+            element.SemanticIndex = 0;
             element.Format = getD3d11ScalarType(attr.m_Type);
             element.InputSlot = 0;
             element.AlignedByteOffset = offset;

@@ -13,7 +13,9 @@ namespace Syrius{
         SR_CORE_PRECONDITION(desc.m_CodeType == SR_SHADER_CODE_HLSL, "D3D11 shader module only supports HLSL code");
 
 #if defined(SR_DEBUG_MODE)
-        m_Flags |= D3DCOMPILE_DEBUG;
+        m_Flags |= D3DCOMPILE_DEBUG | D3DCOMPILE_WARNINGS_ARE_ERRORS;
+#else
+        m_Flags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
 #endif
         std::string shaderCode = desc.m_Code;
         if (desc.m_LoadType == SR_LOAD_FROM_FILE){

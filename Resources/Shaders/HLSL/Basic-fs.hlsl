@@ -1,8 +1,11 @@
-Texture2D tex: register(t0); // Texture
+Texture2D tex;
 
-SamplerState splr: register(s0); // Sampler
+SamplerState splr;
 
-float4 main(float2 texCoords: TexCoords): SV_Target {
-    float4 color = tex.Sample(splr, texCoords);
-    return color;
+float4 main(float2 texCoords : TexCoord ) : SV_Target {
+	float4 color = tex.Sample(splr, texCoords);
+	if (color.a < 0.1){
+	    discard;
+	}
+	return color;
 }

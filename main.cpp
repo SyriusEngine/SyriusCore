@@ -60,7 +60,7 @@ int main() {
 
         auto layout = context->createVertexDescription();
         layout->addAttribute("Position", SR_FLOAT32_3);
-        layout->addAttribute("TexCoords", SR_FLOAT32_2);
+        layout->addAttribute("TexCoord", SR_FLOAT32_2);
 
         VertexBufferDesc vboDesc;
         vboDesc.m_Type = SR_BUFFER_DEFAULT;

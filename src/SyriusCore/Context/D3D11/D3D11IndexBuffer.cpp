@@ -15,7 +15,7 @@ namespace Syrius{
         D3D11_BUFFER_DESC bufferDesc;
         bufferDesc.ByteWidth = m_Size;
         bufferDesc.Usage = getD3d11BufferType(m_Type);
-        bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
         if (m_Type == SR_BUFFER_DYNAMIC){
             bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
         }

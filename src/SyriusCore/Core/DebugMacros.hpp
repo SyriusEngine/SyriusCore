@@ -11,9 +11,6 @@
 #define SR_CORE_EXCEPTION(message) \
     DebugMessageHandler::pushMessage(SR_MESSAGE_SEVERITY_HIGH, message, SR_FUNC, SR_FILE, SR_LINE);
 
-#define SR_CORE_HRESULT(hr) \
-    DebugMessageHandler::formatHresultMessage(hr, SR_FUNC, SR_FILE, SR_LINE);
-
 #define SR_OPENGL_CLEAR_ERROR() \
     while (glGetError() != GL_NO_ERROR){}
 
@@ -50,6 +47,9 @@
     }
 
 #if defined(SR_PLATFORM_WIN64)
+
+#define SR_CORE_HRESULT(hr) \
+    DebugMessageHandler::formatHresultMessage(hr, SR_FUNC, SR_FILE, SR_LINE);
 
 #define SR_D3D11_CALL(x) \
     do {                 \
@@ -100,11 +100,14 @@
 
 #if defined(SR_PLATFORM_WIN64)
 
+#define SR_CORE_HRESULT(hr)
+
 #define SR_D3D11_CALL(x) x;
 #define SR_D3D11_CHECK_DEVICE_REMOVED(x, device) x;
 
 #if defined(SR_COMPILER_MSVC)
 #define SR_DXGI_GET_MESSAGES()
+
 #endif
 
 #endif

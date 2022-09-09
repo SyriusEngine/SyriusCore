@@ -39,7 +39,7 @@ namespace Syrius{
                 &scDesc,
                 &m_SwapChain,
                 &m_Device,
-                nullptr,
+                &m_D3DVersion,
                 &m_DeviceContext
                 ));
 
@@ -86,6 +86,8 @@ namespace Syrius{
 
     void D3D11Context::swapBuffers() {
         SR_CORE_PRECONDITION(m_SwapChain != nullptr, "SwapChain is nullptr");
+
+        SR_DXGI_GET_MESSAGES();
 
         SR_D3D11_CHECK_DEVICE_REMOVED(m_SwapChain->Present(m_VerticalSync, 0), m_Device);
     }
@@ -139,7 +141,19 @@ namespace Syrius{
     }
 
     std::string D3D11Context::getAPIVersion() {
-        return std::string();
+        switch (m_D3DVersion) {
+            case D3D_FEATURE_LEVEL_1_0_CORE:    return "D3D_FEATURE_LEVEL_1_0_CORE";
+            case D3D_FEATURE_LEVEL_9_1:         return "D3D_FEATURE_LEVEL_9_1";
+            case D3D_FEATURE_LEVEL_9_2:         return "D3D_FEATURE_LEVEL_9_2";
+            case D3D_FEATURE_LEVEL_9_3:         return "D3D_FEATURE_LEVEL_9_3";
+            case D3D_FEATURE_LEVEL_10_0:        return "D3D_FEATURE_LEVEL_10_0";
+            case D3D_FEATURE_LEVEL_10_1:        return "D3D_FEATURE_LEVEL_10_1";
+            case D3D_FEATURE_LEVEL_11_0:        return "D3D_FEATURE_LEVEL_11_0";
+            case D3D_FEATURE_LEVEL_11_1:        return "D3D_FEATURE_LEVEL_11_1";
+            case D3D_FEATURE_LEVEL_12_0:        return "D3D_FEATURE_LEVEL_12_0";
+            case D3D_FEATURE_LEVEL_12_1:        return "D3D_FEATURE_LEVEL_12_1";
+            default:                            return "Unknown";
+        }
     }
 
     std::string D3D11Context::getDeviceName() {
@@ -163,7 +177,7 @@ namespace Syrius{
     }
 
     int32 D3D11Context::getMaxTextureSlots() {
-        return 0;
+        return D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT ;
     }
 
     int32 D3D11Context::getMaxTexture2DSize() {
@@ -194,7 +208,6 @@ namespace Syrius{
     }
 
     void D3D11Context::draw(VertexArray *vao) {
-        SR_DXGI_GET_MESSAGES();
 
         m_DeviceContext->OMSetRenderTargets(1, &m_RenderTarget, nullptr);
 
