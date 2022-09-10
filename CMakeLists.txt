@@ -30,7 +30,7 @@ if (WIN32)
             src/SyriusCore/Context/D3D11/D3D11IndexBuffer.cpp
             src/SyriusCore/Context/D3D11/D3D11VertexArray.cpp
             src/SyriusCore/Context/D3D11/D3D11ConstantBuffer.cpp
-            src/SyriusCore/Context/D3D11/D3D11Texture2D.cpp src/SyriusCore/Context/D3D11/D3D11FrameBuffer.cpp src/SyriusCore/Context/D3D11/D3D11FrameBuffer.hpp)
+            src/SyriusCore/Context/D3D11/D3D11Texture2D.cpp src/SyriusCore/Context/D3D11/D3D11FrameBuffer.cpp src/SyriusCore/Context/D3D11/D3D11FrameBuffer.hpp src/SyriusCore/Context/D3D11/D3D11ColorAttachment.cpp src/SyriusCore/Context/D3D11/D3D11ColorAttachment.hpp)
 
 endif()
 
@@ -103,6 +103,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/OpenGL/GlTexture2D.cpp
         src/SyriusCore/Context/OpenGL/GlConstantBuffer.cpp
         src/SyriusCore/Context/OpenGL/GlFrameBuffer.cpp
+        src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp
         src/SyriusCore/Context/OpenGL/Internal/GlRenderBuffer.cpp
 
         src/SyriusCore/Context/Vulkan/VulkanContext.cpp
@@ -114,7 +115,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/Vulkan/VulkanShaderModule.cpp
         src/SyriusCore/Context/Vulkan/VulkanShader.cpp
         src/SyriusCore/Context/Vulkan/VulkanPipeline.cpp
-        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp src/SyriusCore/Context/OpenGL/GlColorAttachment.hpp)
+        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp )
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}
@@ -165,7 +166,7 @@ target_link_libraries(syrius-core ${SYRIUS_CORE_LIBS})
 include_directories(/include/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(SyriusCoreDev main.cpp openGLTest.cpp)
+add_executable(SyriusCoreDev main.cpp )
 if (MSVC)
     target_link_libraries(SyriusCoreDev syrius-core)
 else()

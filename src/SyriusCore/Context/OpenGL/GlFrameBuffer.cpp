@@ -30,9 +30,6 @@ namespace Syrius{
     }
 
     GlFrameBuffer::~GlFrameBuffer() {
-        for (auto attachment : m_ColorAttachments){
-            delete attachment;
-        }
         delete m_RenderBuffer;
 
         glDeleteFramebuffers(1, &m_FrameBufferID);

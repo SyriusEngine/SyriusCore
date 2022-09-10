@@ -41,9 +41,8 @@ struct Transformation{
 };
 
 int main() {
-    Test::runOpenGLTest();
-    return 0;
     try{
+
         syriusInit();
         setDebugMessageCallback(messageCallback);
 
@@ -148,6 +147,8 @@ int main() {
             }
 
             context->clear();
+
+            context->getDefaultFrameBuffer()->bind();
 
             cb->bind();
             texture->bind(0);

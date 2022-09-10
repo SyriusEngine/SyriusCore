@@ -43,36 +43,23 @@ namespace Syrius{
                 &m_DeviceContext
                 ));
 
-        m_BackgroundColor[0] = 2.0f;
-        m_BackgroundColor[1] = 3.0f;
-        m_BackgroundColor[2] = 8.0f;
-        m_BackgroundColor[3] = 1.0f;
+        auto size = getFramebufferSize();
 
-        ID3D11Texture2D* backBuffer = nullptr;
-        SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
-        if (backBuffer){
-            SR_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_RenderTarget));
-            m_DeviceContext->OMSetRenderTargets(1, &m_RenderTarget, nullptr);
-            backBuffer->Release();
-        }
+        FrameBufferDesc fbDesc;
+        fbDesc.m_Width = size.m_Width;
+        fbDesc.m_Height = size.m_Height;
+        fbDesc.m_ClearColor[0] = 0.2f;
+        fbDesc.m_ClearColor[1] = 0.3f;
+        fbDesc.m_ClearColor[2] = 0.8f;
+        fbDesc.m_ClearColor[3] = 1.0f;
 
-        auto fbSize = getFramebufferSize();
+        m_DefaultFrameBuffer = new D3D11DefaultFrameBuffer(fbDesc, m_Device, m_DeviceContext, m_SwapChain);
 
-        D3D11_VIEWPORT vp;
-        vp.Width = fbSize.m_Width;
-        vp.Height = fbSize.m_Height;
-        vp.MinDepth = 0.0f;
-        vp.MaxDepth = 1.0f;
-        vp.TopLeftX = 0;
-        vp.TopLeftY = 0;
-        m_DeviceContext->RSSetViewports(1, &vp);
 
     }
 
     D3D11Context::~D3D11Context() {
-        if (m_RenderTarget){
-            m_RenderTarget->Release();
-        }
+        delete m_DefaultFrameBuffer;
         if (m_SwapChain) {
             m_SwapChain->Release();
         }
@@ -192,30 +179,23 @@ namespace Syrius{
     }
 
     FrameBuffer *D3D11Context::getDefaultFrameBuffer() {
-        return nullptr;
+        return m_DefaultFrameBuffer;
     }
 
     void D3D11Context::setClearColor(float r, float g, float b, float a) {
-        m_BackgroundColor[0] = r;
-        m_BackgroundColor[1] = g;
-        m_BackgroundColor[2] = b;
-        m_BackgroundColor[3] = a;
+        m_DefaultFrameBuffer->setClearColor(r, g, b, a);
     }
 
     void D3D11Context::clear() {
-        m_DeviceContext->ClearRenderTargetView(m_RenderTarget, m_BackgroundColor);
+        m_DefaultFrameBuffer->clear();
     }
 
     void D3D11Context::draw(VertexArray *vao) {
-        m_DeviceContext->OMSetRenderTargets(1, &m_RenderTarget, nullptr);
-
         vao->drawBuffers();
 
     }
 
     void D3D11Context::drawInstanced(VertexArray *vao, uint32 instanceCount) {
-        m_DeviceContext->OMSetRenderTargets(1, &m_RenderTarget, nullptr);
-
         vao->drawBuffersInstanced(instanceCount);
     }
 
@@ -262,7 +242,7 @@ namespace Syrius{
     }
 
     FrameBuffer *D3D11Context::createFrameBuffer(const FrameBufferDesc &desc) {
-        return nullptr;
+        return new D3D11FrameBuffer(desc, m_Device, m_DeviceContext);
     }
 
     Texture2D *D3D11Context::createTexture2D(const Texture2DDesc& desc) {

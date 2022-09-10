@@ -12,6 +12,8 @@
 #include "D3D11VertexArray.hpp"
 #include "D3D11ConstantBuffer.hpp"
 #include "D3D11Texture2D.hpp"
+#include "D3D11FrameBuffer.hpp"
+#include "D3D11ColorAttachment.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 
@@ -96,8 +98,8 @@ namespace Syrius{
 
         D3D_FEATURE_LEVEL m_D3DVersion;
 
-        float m_BackgroundColor[4];
-        ID3D11RenderTargetView* m_RenderTarget;
+        D3D11DefaultFrameBuffer* m_DefaultFrameBuffer;
+
     };
 
 }

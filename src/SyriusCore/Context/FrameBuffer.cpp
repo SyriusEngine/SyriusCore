@@ -17,7 +17,9 @@ namespace Syrius{
     }
 
     FrameBuffer::~FrameBuffer() {
-
+        for (auto attachment : m_ColorAttachments){
+            delete attachment;
+        }
     }
 
     uint32 FrameBuffer::getWidth() const {

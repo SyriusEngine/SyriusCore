@@ -3,7 +3,8 @@
 namespace Syrius{
 
     GlContext::GlContext()
-    : Context(SR_API_OPENGL){
+    : Context(SR_API_OPENGL),
+    m_DefaultFramebuffer(nullptr){
 
     }
 
@@ -23,6 +24,10 @@ namespace Syrius{
         desc.m_Height = fbSize.m_Height;
         desc.m_XPos = 0;
         desc.m_YPos = 0;
+        desc.m_ClearColor[0] = 0.2f;
+        desc.m_ClearColor[1] = 0.3f;
+        desc.m_ClearColor[2] = 0.8f;
+        desc.m_ClearColor[3] = 1.0f;
         m_DefaultFramebuffer = new GlDefaultFramebuffer(desc);
     }
 
