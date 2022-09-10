@@ -13,8 +13,8 @@ namespace Syrius{
         glCreateFramebuffers(1, &m_FrameBufferID);
 
         GLenum attachmentIndex = GL_COLOR_ATTACHMENT0;
-        for (const auto& format : desc.m_ColorAttachments){
-            auto colorAttachment = new GlColorAttachment(m_Width, m_Height, format);
+        for (const auto& colorAttachmentDesc : desc.m_ColorAttachments){
+            auto colorAttachment = new GlColorAttachment(colorAttachmentDesc);
             m_ColorAttachments.push_back(colorAttachment);
             glNamedFramebufferTexture(m_FrameBufferID, attachmentIndex, colorAttachment->getIdentifier(), 0);
             attachmentIndex++;
@@ -99,23 +99,7 @@ namespace Syrius{
         glClear(m_ClearMask);
     }
 
-    void GlFrameBuffer::bindColorAttachment(uint32 slot, uint32 attachmentIndex) {
-        SR_CORE_PRECONDITION(attachmentIndex < m_ColorAttachments.size(), "Attachment index out of bounds!");
 
-        m_ColorAttachments[attachmentIndex]->bind(slot);
-    }
-
-    Image *GlFrameBuffer::readColorAttachment(uint32 attachmentIndex) {
-        SR_CORE_PRECONDITION(attachmentIndex < m_ColorAttachments.size(), "Attachment index out of bounds!");
-
-        return m_ColorAttachments[attachmentIndex]->readColorAttachment();
-    }
-
-    uint64 GlFrameBuffer::getColorAttachmentIdentifier(uint32 attachmentIndex) {
-        SR_CORE_PRECONDITION(attachmentIndex < m_ColorAttachments.size(), "Attachment index out of bounds!");
-
-        return m_ColorAttachments[attachmentIndex]->getIdentifier();
-    }
 
     GlDefaultFramebuffer::GlDefaultFramebuffer(const FrameBufferDesc &desc)
     : FrameBuffer(desc),
@@ -182,22 +166,7 @@ namespace Syrius{
 
     void GlDefaultFramebuffer::clear() {
         bind();
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(m_ClearMask);
     }
 
-    void GlDefaultFramebuffer::bindColorAttachment(uint32 slot, uint32 attachmentIndex) {
-        SR_CORE_WARNING("Default framebuffer does not support color attachments!");
-    }
-
-    Image *GlDefaultFramebuffer::readColorAttachment(uint32 attachmentIndex) {
-        SR_CORE_WARNING("Reading the color attachment of the default framebuffer is not supported!");
-
-        return nullptr;
-    }
-
-    uint64 GlDefaultFramebuffer::getColorAttachmentIdentifier(uint32 attachmentIndex) {
-        SR_CORE_WARNING("Reading the color attachment of the default framebuffer is not supported!");
-
-        return 0;
-    }
 }

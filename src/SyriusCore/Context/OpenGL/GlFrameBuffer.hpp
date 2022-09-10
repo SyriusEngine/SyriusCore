@@ -2,7 +2,8 @@
 
 #include "../../../../include/SyriusCore/Context/FrameBuffer.hpp"
 #include "GlUtils.hpp"
-#include "GlRenderTarget.hpp"
+#include "Internal/GlRenderBuffer.hpp"
+#include "GlColorAttachment.hpp"
 
 namespace Syrius{
     
@@ -30,19 +31,11 @@ namespace Syrius{
 
         void clear() override;
 
-        void bindColorAttachment(uint32 slot, uint32 attachmentIndex) override;
-
-        Image* readColorAttachment(uint32 attachmentIndex) override;
-
-        uint64 getColorAttachmentIdentifier(uint32 attachmentIndex) override;
-
-
     private:
         uint32 m_FrameBufferID;
         GLbitfield m_ClearMask;
         GLenum m_GlDepthFunc;
 
-        std::vector<GlColorAttachment*> m_ColorAttachments;
         GlRenderBuffer* m_RenderBuffer;
         
     };
@@ -71,12 +64,6 @@ namespace Syrius{
         void disableDepthTest() override;
 
         void clear() override;
-
-        void bindColorAttachment(uint32 slot, uint32 attachmentIndex) override;
-
-        Image* readColorAttachment(uint32 attachmentIndex) override;
-
-        uint64 getColorAttachmentIdentifier(uint32 attachmentIndex) override;
 
     private:
         GLbitfield m_ClearMask;

@@ -48,8 +48,8 @@ namespace Syrius{
         m_BackgroundColor[2] = 8.0f;
         m_BackgroundColor[3] = 1.0f;
 
-        ID3D11Resource* backBuffer = nullptr;
-        SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Resource), reinterpret_cast<void**>(&backBuffer)));
+        ID3D11Texture2D* backBuffer = nullptr;
+        SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
         if (backBuffer){
             SR_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_RenderTarget));
             m_DeviceContext->OMSetRenderTargets(1, &m_RenderTarget, nullptr);

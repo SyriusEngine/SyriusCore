@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Utils.hpp"
-#include "../Utils/Image.hpp"
+#include "ColorAttachment.hpp"
 
 namespace Syrius{
 
@@ -16,7 +16,7 @@ namespace Syrius{
         bool m_EnableDepthTest = false;
         SR_DEPTH_FUNC m_DepthFunc = SR_DEPTH_FUNC_LESS;
         uint32 m_NumColorAttachments = 1;
-        std::vector<SR_TEXTURE_DATA_FORMAT> m_ColorAttachments = {SR_TEXTURE_DATA_FORMAT_RGBA_8};
+        std::vector<ColorAttachmentDesc> m_ColorAttachments = {ColorAttachmentDesc()};
     };
 
     class SR_API FrameBuffer{
@@ -43,12 +43,6 @@ namespace Syrius{
 
         virtual void clear() = 0;
 
-        virtual void bindColorAttachment(uint32 slot, uint32 attachmentIndex) = 0;
-
-        virtual Image* readColorAttachment(uint32 attachmentIndex) = 0;
-
-        virtual uint64 getColorAttachmentIdentifier(uint32 attachmentIndex) = 0;
-
         [[nodiscard]] uint32 getWidth() const;
 
         [[nodiscard]] uint32 getHeight() const;
@@ -65,6 +59,8 @@ namespace Syrius{
 
         [[nodiscard]] SR_DEPTH_FUNC getDepthFunc() const;
 
+        [[nodiscard]] ColorAttachment* getColorAttachment(uint32 index) const;
+
     protected:
         uint32 m_Width;
         uint32 m_Height;
@@ -77,6 +73,8 @@ namespace Syrius{
         SR_DEPTH_FUNC m_DepthFunc;
 
         float m_ClearColor[4];
+
+        std::vector<ColorAttachment*> m_ColorAttachments;
 
     };
 

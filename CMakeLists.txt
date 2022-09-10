@@ -93,7 +93,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/ColorAttachment.cpp
 
         src/SyriusCore/Context/OpenGL/GlContext.cpp
-        src/SyriusCore/Context/OpenGL/WglContext.cpp
+        src/SyriusCore/Context/OpenGL/Internal/WglContext.cpp
         src/SyriusCore/Context/OpenGL/GlUtils.cpp
         src/SyriusCore/Context/OpenGL/GlShaderModule.cpp
         src/SyriusCore/Context/OpenGL/GlShader.cpp
@@ -103,7 +103,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/OpenGL/GlTexture2D.cpp
         src/SyriusCore/Context/OpenGL/GlConstantBuffer.cpp
         src/SyriusCore/Context/OpenGL/GlFrameBuffer.cpp
-        src/SyriusCore/Context/OpenGL/GlRenderTarget.cpp
+        src/SyriusCore/Context/OpenGL/Internal/GlRenderBuffer.cpp
 
         src/SyriusCore/Context/Vulkan/VulkanContext.cpp
         src/SyriusCore/Context/Vulkan/VulkanContextWin32.cpp
@@ -114,7 +114,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/Vulkan/VulkanShaderModule.cpp
         src/SyriusCore/Context/Vulkan/VulkanShader.cpp
         src/SyriusCore/Context/Vulkan/VulkanPipeline.cpp
-        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp )
+        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp src/SyriusCore/Context/OpenGL/GlColorAttachment.hpp)
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}

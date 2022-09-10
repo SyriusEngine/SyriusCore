@@ -110,7 +110,7 @@ namespace Test{
             FrameBufferDesc fbDesc;
             fbDesc.m_Width = 1280;
             fbDesc.m_Height = 720;
-            fbDesc.m_ColorAttachments.push_back(SR_TEXTURE_DATA_FORMAT_RGBA_8);
+            fbDesc.m_ColorAttachments.emplace_back();
             fbDesc.m_NumColorAttachments = 1;
             auto fbo = context->createFrameBuffer(fbDesc);
             fbo->setClearColor(0.6f, 0.5f, 0.2f, 1.0f);
@@ -139,7 +139,8 @@ namespace Test{
 
                 context->clear();
 
-                fbo->bindColorAttachment(0, 0);
+                context->getDefaultFrameBuffer()->bind();
+                fbo->getColorAttachment(0)->bind(0);
                 context->draw(vao);
 
 
@@ -157,11 +158,7 @@ namespace Test{
 
 
             window->releaseImGuiContext();
-            delete texture;
-            delete shaderProgram;
-            delete vao;
-            delete ibo;
-            delete vbo;
+
             window->releaseContext();
             delete window;
 

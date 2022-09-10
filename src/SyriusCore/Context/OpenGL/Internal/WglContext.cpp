@@ -1,6 +1,6 @@
 #include "WglContext.hpp"
-#include "../../Core/CoreCommand.hpp"
-#include "../../Core/PlatformAPIWin32Impl.hpp"
+#include "../../../Core/CoreCommand.hpp"
+#include "../../../Core/PlatformAPIWin32Impl.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 

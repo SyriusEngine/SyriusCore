@@ -52,4 +52,10 @@ namespace Syrius{
         return m_DepthFunc;
     }
 
+    ColorAttachment *FrameBuffer::getColorAttachment(uint32 index) const {
+        SR_CORE_PRECONDITION(index < m_ColorAttachments.size(), "Index out of bounds");
+
+        return m_ColorAttachments[index];
+    }
+
 }
