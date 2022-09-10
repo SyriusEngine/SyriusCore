@@ -98,8 +98,13 @@ namespace Test{
             delete vertexShader;
 
             auto imgLogo = createImage("./Resources/Textures/Logo.jpg", true);
-            auto texture = context->createTexture2D();
-            texture->upload(imgLogo);
+            Texture2DDesc t2ddesc;
+            t2ddesc.m_Image = imgLogo;
+            t2ddesc.m_WrapAddressU = Syrius::SR_TEXTURE_WRAP_REPEAT;
+            t2ddesc.m_WrapAddressV = SR_TEXTURE_WRAP_REPEAT;
+            t2ddesc.m_MinFilter = Syrius::SR_TEXTURE_FILTER_LINEAR;
+            t2ddesc.m_MagFilter = SR_TEXTURE_FILTER_LINEAR;
+            auto texture = context->createTexture2D(t2ddesc);
             delete imgLogo;
 
             FrameBufferDesc fbDesc;

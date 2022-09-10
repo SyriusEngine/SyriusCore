@@ -10,6 +10,7 @@
 #include "Texture2D.hpp"
 #include "ConstantBuffer.hpp"
 #include "FrameBuffer.hpp"
+#include "ColorAttachment.hpp"
 
 namespace Syrius{
 

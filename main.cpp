@@ -41,6 +41,8 @@ struct Transformation{
 };
 
 int main() {
+    Test::runOpenGLTest();
+    return 0;
     try{
         syriusInit();
         setDebugMessageCallback(messageCallback);

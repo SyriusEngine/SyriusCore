@@ -142,7 +142,6 @@ namespace Syrius{
 
     std::string D3D11Context::getAPIVersion() {
         switch (m_D3DVersion) {
-            case D3D_FEATURE_LEVEL_1_0_CORE:    return "D3D_FEATURE_LEVEL_1_0_CORE";
             case D3D_FEATURE_LEVEL_9_1:         return "D3D_FEATURE_LEVEL_9_1";
             case D3D_FEATURE_LEVEL_9_2:         return "D3D_FEATURE_LEVEL_9_2";
             case D3D_FEATURE_LEVEL_9_3:         return "D3D_FEATURE_LEVEL_9_3";

@@ -75,6 +75,8 @@
 
 #if defined(SR_COMPILER_MSVC)
 #define SR_DXGI_GET_MESSAGES() DebugMessageHandler::dxgiGetMessages();
+#else
+#define SR_DXGI_GET_MESSAGES()
 #endif
 
 #endif
