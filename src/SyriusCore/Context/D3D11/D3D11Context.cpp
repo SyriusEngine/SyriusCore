@@ -143,23 +143,23 @@ namespace Syrius{
     }
 
     std::string D3D11Context::getDeviceName() {
-        return std::string();
+        return {};
     }
 
     std::string D3D11Context::getShadingLanguageVersion() {
-        return std::string();
+        return "HLSL 5.0";
     }
 
     int32 D3D11Context::getMaxFramebufferWidth() {
-        return 0;
+        return 16384;
     }
 
     int32 D3D11Context::getMaxFramebufferHeight() {
-        return 0;
+        return 16384;
     }
 
     int32 D3D11Context::getMaxFramebufferTextureAttachments() {
-        return 0;
+        return 8;
     }
 
     int32 D3D11Context::getMaxTextureSlots() {
@@ -171,11 +171,11 @@ namespace Syrius{
     }
 
     int32 D3D11Context::getMaxConstantBufferSize() {
-        return 0;
+        return 65536;
     }
 
     int32 D3D11Context::getMaxDepthBufferBits() {
-        return 0;
+        return 32;
     }
 
     FrameBuffer *D3D11Context::getDefaultFrameBuffer() {
