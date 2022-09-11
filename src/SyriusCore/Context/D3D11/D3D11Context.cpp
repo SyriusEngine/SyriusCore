@@ -200,7 +200,7 @@ namespace Syrius{
     }
 
     void D3D11Context::onResize(uint32 width, uint32 height) {
-
+        m_DefaultFrameBuffer->onResize(width, height);
     }
 
     ShaderModule *D3D11Context::createShaderModule(const ShaderModuleDesc &desc) {

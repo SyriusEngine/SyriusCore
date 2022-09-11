@@ -75,6 +75,7 @@ namespace Syrius{
         D3D11_VIEWPORT m_Viewport;
 
         ID3D11RenderTargetView* m_BackRenderTarget;
+        DXGI_FORMAT m_BackBufferFormat;
 
     };
 

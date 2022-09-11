@@ -87,7 +87,8 @@ namespace Syrius{
     m_Device(device),
     m_DeviceContext(deviceContext),
     m_SwapChain(swapChain),
-    m_BackRenderTarget(nullptr){
+    m_BackRenderTarget(nullptr),
+    m_BackBufferFormat(DXGI_FORMAT_R8G8B8A8_UNORM){
         m_Viewport.Width = static_cast<float>(m_Width);
         m_Viewport.Height = static_cast<float>(m_Height);
         m_Viewport.MinDepth = desc.m_MinDepth;
@@ -99,6 +100,9 @@ namespace Syrius{
         SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
         if (backBuffer){
             SR_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_BackRenderTarget));
+            D3D11_TEXTURE2D_DESC backBufferDesc;
+            backBuffer->GetDesc(&backBufferDesc);
+            m_BackBufferFormat = backBufferDesc.Format;
             backBuffer->Release();
 
         }
@@ -146,6 +150,26 @@ namespace Syrius{
         m_Height = height;
         m_Viewport.Width = static_cast<float>(m_Width);
         m_Viewport.Height = static_cast<float>(m_Height);
+
+        if (m_BackRenderTarget){
+            m_BackRenderTarget->Release();
+        }
+
+        SR_D3D11_CALL(m_SwapChain->ResizeBuffers(1, m_Width, m_Height, m_BackBufferFormat, 0));
+
+        ID3D11Texture2D* backBuffer = nullptr;
+        SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
+        if (backBuffer){
+            SR_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_BackRenderTarget));
+            D3D11_TEXTURE2D_DESC backBufferDesc;
+            backBuffer->GetDesc(&backBufferDesc);
+            m_BackBufferFormat = backBufferDesc.Format;
+            backBuffer->Release();
+
+        }
+        else{
+            SR_CORE_EXCEPTION("Failed to get back buffer from swap chain");
+        }
     }
 
     void D3D11DefaultFrameBuffer::enableDepthTest() {
