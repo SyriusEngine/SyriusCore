@@ -133,6 +133,14 @@ int main() {
         auto texture = context->createTexture2D(texDesc);
         delete img;
 
+        FrameBufferDesc fbDesc;
+        fbDesc.m_Width = 1280;
+        fbDesc.m_Height = 720;
+        fbDesc.m_NumColorAttachments = 1;
+        fbDesc.m_ColorAttachments.emplace_back();
+        auto fbo = context->createFrameBuffer(fbDesc);
+        fbo->setClearColor(0.6f, 0.5f, 0.2f, 1.0f);
+
         while (window->isOpen()){
 
             window->pollEvents();
@@ -146,14 +154,21 @@ int main() {
                 }
             }
 
-            context->clear();
 
-            context->getDefaultFrameBuffer()->bind();
+            fbo->bind();
+            fbo->clear();
 
             cb->bind();
             texture->bind(0);
             shader->bind();
             context->drawInstanced(vao, 100);
+            fbo->unbind();
+
+            context->getDefaultFrameBuffer()->bind();
+            context->clear();
+
+            fbo->getColorAttachment(0)->bind(0);
+            context->drawInstanced(vao, 1);
 
             window->onImGuiBegin();
             ImGui::Begin("Info");

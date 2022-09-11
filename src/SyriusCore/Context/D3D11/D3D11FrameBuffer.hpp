@@ -33,6 +33,13 @@ namespace Syrius{
         void clear() override;
 
     private:
+        ID3D11Device* m_Device;
+        ID3D11DeviceContext* m_DeviceContext;
+
+        D3D11_VIEWPORT m_Viewport;
+
+        std::vector<ID3D11RenderTargetView*> m_RenderTargetViews;
+        std::vector<ID3D11RenderTargetView*> m_Nullable;
 
     };
 
