@@ -108,12 +108,6 @@ namespace Syrius{
         m_EventQueue.push_back(event);
     }
 
-    void SyriusWindow::update() {
-        SR_CORE_PRECONDITION(m_Context, "A valid context must be created in order to destroy an ImGui context")
-
-        m_Context->swapBuffers();
-    }
-
     void SyriusWindow::releaseContext() {
         SR_CORE_PRECONDITION(m_Context, "A valid context must be created in order to destroy the context")
         SR_CORE_PRECONDITION(!m_UseImGui, "ImGui is still using this context, cannot destroy the context")

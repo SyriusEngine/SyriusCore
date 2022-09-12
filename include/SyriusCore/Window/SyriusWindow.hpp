@@ -73,8 +73,6 @@ namespace Syrius{
 
         void onImGuiEnd();
 
-        void update();
-
         void releaseContext();
 
         virtual void close() = 0;

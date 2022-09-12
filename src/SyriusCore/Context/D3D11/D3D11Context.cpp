@@ -14,7 +14,7 @@ namespace Syrius{
         DXGI_SWAP_CHAIN_DESC scDesc = { 0 };
         scDesc.BufferDesc.Width = 0;
         scDesc.BufferDesc.Height = 0;
-        scDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;  // Is this the correct format, seems like R8G8B8A8 is the correct format?
+        scDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;  // DWM uses BGRA format, this is supposed to be slightly faster than RGBA
         scDesc.BufferDesc.RefreshRate.Numerator = 0;
         scDesc.BufferDesc.RefreshRate.Denominator = 0;
         scDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
