@@ -14,7 +14,18 @@
 
 namespace Syrius{
 
-    struct FramebufferSize{
+    struct SR_API ContextDesc{
+        FrameBufferDesc m_DefaultFrameBufferDesc    = FrameBufferDesc();
+        uint32 m_BackBufferCount    = 1;
+        uint32 m_DepthBits          = 24;
+        uint32 m_StencilBits        = 8;
+        uint32 m_RedBits            = 8;
+        uint32 m_BlueBits           = 8;
+        uint32 m_GreenBits          = 8;
+        SR_SUPPORTED_API m_API      = SR_API_OPENGL;
+    };
+
+    struct SR_API FramebufferSize{
         uint32 m_Width  = 0;
         uint32 m_Height = 0;
     };
@@ -98,7 +109,7 @@ namespace Syrius{
 
     protected:
 
-        explicit Context(SR_SUPPORTED_API type);
+        explicit Context(const ContextDesc& desc);
 
     protected:
 

@@ -4,8 +4,8 @@
 
 namespace Syrius{
 
-    D3D11Context::D3D11Context(HWND &hwnd)
-    : Context(SR_API_D3D11),
+    D3D11Context::D3D11Context(HWND &hwnd, const ContextDesc& desc)
+    : Context(desc),
     m_Hwnd(hwnd),
     m_DeviceContext(nullptr),
     m_Device(nullptr),

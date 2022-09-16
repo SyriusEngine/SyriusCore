@@ -20,6 +20,8 @@ namespace Syrius{
 
     D3D11_FILTER getD3d11TextureFilter(SR_TEXTURE_FILTER minFilter, SR_TEXTURE_FILTER magFilter);
 
+    D3D11_COMPARISON_FUNC getD3d11DepthFunc(SR_DEPTH_FUNC func);
+
 }
 
 #endif

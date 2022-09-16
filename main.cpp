@@ -54,7 +54,11 @@ int main() {
         wDesc.m_Title = " The pubes, farts and other spices";
 
         auto window = createWindow(wDesc);
-        auto context = window->createContext(Syrius::SR_API_D3D11);
+        ContextDesc cDesc;
+        cDesc.m_DefaultFrameBufferDesc.m_Width = 1280;
+        cDesc.m_DefaultFrameBufferDesc.m_Height = 720;
+        cDesc.m_API = SR_API_D3D11;
+        auto context = window->createContext(cDesc);
         context->setVerticalSynchronisation(true);
         context->setClearColor(0.2f, 0.3f, 0.5f, 1.0f);
         window->createImGuiContext();

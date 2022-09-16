@@ -6,12 +6,12 @@
 
 namespace Syrius{
 
-    WglContext::WglContext(HWND &hwnd)
-            : GlContext(),
-              m_Hwnd(hwnd),
-              m_Context(nullptr),
-              m_HardwareDeviceContext(nullptr),
-              m_ImGuiContext(nullptr){
+    WglContext::WglContext(HWND &hwnd, const ContextDesc& desc)
+    : GlContext(desc),
+      m_Hwnd(hwnd),
+      m_Context(nullptr),
+      m_HardwareDeviceContext(nullptr),
+      m_ImGuiContext(nullptr){
         DWORD pixelFormatFlags = PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_DOUBLEBUFFER;
         PIXELFORMATDESCRIPTOR pixelDesc = {
                 sizeof(pixelDesc),

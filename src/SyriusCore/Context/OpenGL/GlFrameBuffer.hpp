@@ -25,10 +25,6 @@ namespace Syrius{
 
         void onResize(uint32 width, uint32 height) override;
 
-        void enableDepthTest() override;
-
-        void disableDepthTest() override;
-
         void clear() override;
 
     private:
@@ -58,10 +54,6 @@ namespace Syrius{
         void setDepthFunc(SR_DEPTH_FUNC func) override;
 
         void onResize(uint32 width, uint32 height) override;
-
-        void enableDepthTest() override;
-
-        void disableDepthTest() override;
 
         void clear() override;
 

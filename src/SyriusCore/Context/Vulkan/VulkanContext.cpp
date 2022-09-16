@@ -2,8 +2,8 @@
 
 namespace Syrius{
 
-    VulkanContext::VulkanContext()
-    : Context(SR_API_VULKAN),
+    VulkanContext::VulkanContext(const ContextDesc& desc)
+    : Context(desc),
     m_Surface(nullptr),
     m_Instance(nullptr),
     m_PhysicalDevice(nullptr),

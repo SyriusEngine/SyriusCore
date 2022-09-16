@@ -9,7 +9,7 @@ namespace Syrius{
     class VulkanContextWin32: public VulkanContext{
     public:
 
-        explicit VulkanContextWin32(HWND& hwnd);
+        explicit VulkanContextWin32(HWND& hwnd, const ContextDesc& desc);
 
         ~VulkanContextWin32() override;
 

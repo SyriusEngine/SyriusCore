@@ -154,6 +154,23 @@ namespace Syrius{
         }
     }
 
+    D3D11_COMPARISON_FUNC getD3d11DepthFunc(SR_DEPTH_FUNC func){
+        switch (func){
+            case SR_DEPTH_FUNC_ALWAYS:          return D3D11_COMPARISON_ALWAYS;
+            case SR_DEPTH_FUNC_NEVER:           return D3D11_COMPARISON_NEVER;
+            case SR_DEPTH_FUNC_LESS:            return D3D11_COMPARISON_LESS;
+            case SR_DEPTH_FUNC_EQUAL:           return D3D11_COMPARISON_EQUAL;
+            case SR_DEPTH_FUNC_LESS_EQUAL:      return D3D11_COMPARISON_LESS_EQUAL;
+            case SR_DEPTH_FUNC_GREATER:         return D3D11_COMPARISON_GREATER;
+            case SR_DEPTH_FUNC_GREATER_EQUAL:   return D3D11_COMPARISON_GREATER_EQUAL;
+            case SR_DEPTH_FUNC_NOT_EQUAL:       return D3D11_COMPARISON_NOT_EQUAL;
+            default: {
+                SR_CORE_WARNING("Invalid type given to converter, return D3D11_COMPARISON_LESS");
+                return D3D11_COMPARISON_LESS;
+            }
+        }
+    }
+
 }
 
 #endif

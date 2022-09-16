@@ -69,7 +69,7 @@ namespace Syrius{
         Texture2D* createTexture2D(const Texture2DDesc& desc) override;
 
     protected:
-        GlContext();
+        explicit GlContext(const ContextDesc& desc);
         
         void initGl();
 

@@ -83,14 +83,6 @@ namespace Syrius{
         }
     }
 
-    void GlFrameBuffer::enableDepthTest() {
-        m_EnableDepthTest = true;
-    }
-
-    void GlFrameBuffer::disableDepthTest() {
-        m_EnableDepthTest = false;
-    }
-
     void GlFrameBuffer::clear() {
         bind();
         glClear(m_ClearMask);
@@ -151,14 +143,6 @@ namespace Syrius{
     void GlDefaultFramebuffer::onResize(uint32 width, uint32 height) {
         m_Width = width;
         m_Height = height;
-    }
-
-    void GlDefaultFramebuffer::enableDepthTest() {
-        m_EnableDepthTest = true;
-    }
-
-    void GlDefaultFramebuffer::disableDepthTest() {
-        m_EnableDepthTest = false;
     }
 
     void GlDefaultFramebuffer::clear() {

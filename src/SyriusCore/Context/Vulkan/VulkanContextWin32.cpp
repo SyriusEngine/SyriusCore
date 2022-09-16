@@ -18,8 +18,8 @@ namespace Syrius{
 
     typedef VkResult (APIENTRY *PFN_vkCreateWin32SurfaceKHR)(VkInstance,const VkWin32SurfaceCreateInfoKHR*,const VkAllocationCallbacks*,VkSurfaceKHR*);
 
-    VulkanContextWin32::VulkanContextWin32(HWND &hwnd)
-    : VulkanContext(),
+    VulkanContextWin32::VulkanContextWin32(HWND &hwnd, const ContextDesc& desc)
+    : VulkanContext(desc),
     m_Hwnd(hwnd){
         // find the win32CreateSurface function
         auto vkCreateWin32SurfaceKHR = (PFN_vkCreateWin32SurfaceKHR) vkGetInstanceProcAddr(m_Instance, "vkCreateWin32SurfaceKHR");

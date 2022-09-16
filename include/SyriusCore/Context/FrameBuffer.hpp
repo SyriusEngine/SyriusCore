@@ -14,6 +14,7 @@ namespace Syrius{
         float m_MaxDepth = 1.0f;
         float m_ClearColor[4] = {0.0f, 0.0f, 0.0f, 1.0f};
         bool m_EnableDepthTest = false;
+        bool m_DepthTestReadOnly = false;
         SR_DEPTH_FUNC m_DepthFunc = SR_DEPTH_FUNC_LESS;
         uint32 m_NumColorAttachments = 1;
         std::vector<ColorAttachmentDesc> m_ColorAttachments = {ColorAttachmentDesc()};
@@ -36,10 +37,6 @@ namespace Syrius{
         virtual void setDepthFunc(SR_DEPTH_FUNC func) = 0;
 
         virtual void onResize(uint32 width, uint32 height) = 0;
-
-        virtual void enableDepthTest() = 0;
-
-        virtual void disableDepthTest() = 0;
 
         virtual void clear() = 0;
 

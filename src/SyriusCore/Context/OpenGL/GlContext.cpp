@@ -2,8 +2,8 @@
 
 namespace Syrius{
 
-    GlContext::GlContext()
-    : Context(SR_API_OPENGL),
+    GlContext::GlContext(const ContextDesc& desc)
+    : Context(desc),
     m_DefaultFramebuffer(nullptr){
 
     }

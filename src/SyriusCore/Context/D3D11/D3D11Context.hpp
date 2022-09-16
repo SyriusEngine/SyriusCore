@@ -21,7 +21,7 @@ namespace Syrius{
 
     class D3D11Context: public Context{
     public:
-        explicit D3D11Context(HWND& hwnd);
+        D3D11Context(HWND& hwnd, const ContextDesc& desc);
 
         ~D3D11Context() override;
 

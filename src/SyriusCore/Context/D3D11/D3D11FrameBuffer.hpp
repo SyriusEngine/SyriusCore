@@ -26,10 +26,6 @@ namespace Syrius{
 
         void onResize(uint32 width, uint32 height) override;
 
-        void enableDepthTest() override;
-
-        void disableDepthTest() override;
-
         void clear() override;
 
     private:
@@ -61,10 +57,6 @@ namespace Syrius{
 
         void onResize(uint32 width, uint32 height) override;
 
-        void enableDepthTest() override;
-
-        void disableDepthTest() override;
-
         void clear() override;
 
     private:
@@ -75,6 +67,11 @@ namespace Syrius{
         D3D11_VIEWPORT m_Viewport;
 
         ID3D11RenderTargetView* m_BackRenderTarget;
+
+        ID3D11DepthStencilView* m_DepthStencil;
+        ID3D11Texture2D* m_DepthStencilResource;
+        ID3D11DepthStencilState* m_DepthStencilState;
+
         DXGI_FORMAT m_BackBufferFormat;
 
     };

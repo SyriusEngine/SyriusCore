@@ -2,9 +2,9 @@
 
 namespace Syrius{
 
-    Context::Context(SR_SUPPORTED_API type)
+    Context::Context(const ContextDesc& desc)
     : m_VerticalSync(false),
-    m_Type(type){
+    m_Type(desc.m_API){
 
     }
 

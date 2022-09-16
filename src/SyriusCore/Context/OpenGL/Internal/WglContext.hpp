@@ -13,7 +13,7 @@ namespace Syrius {
 
     class SR_API WglContext : public GlContext {
     public:
-        explicit WglContext(HWND &hwnd);
+        WglContext(HWND &hwnd, const ContextDesc& desc);
 
         ~WglContext() override;
 

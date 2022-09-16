@@ -17,7 +17,7 @@ namespace Syrius{
     class VulkanContext: public Context{
     public:
 
-        VulkanContext();
+        explicit VulkanContext(const ContextDesc& desc);
 
         ~VulkanContext() override;
 
