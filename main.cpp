@@ -43,7 +43,7 @@ struct Transformation{
 int main() {
     try{
 
-        syriusInit();
+        syriusCoreInit();
         setDebugMessageCallback(messageCallback);
 
         WindowDesc wDesc;
@@ -192,7 +192,7 @@ int main() {
         window->releaseContext();
         delete window;
 
-        syriusTerminate();
+        syriusCoreTerminate();
 
     } catch (std::exception& e){
         std::cerr << e.what() << std::endl;

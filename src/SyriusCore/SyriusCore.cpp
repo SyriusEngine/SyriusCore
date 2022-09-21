@@ -3,11 +3,11 @@
 
 namespace Syrius {
 
-    void syriusInit(){
+    void syriusCoreInit(){
         CoreCommand::init();
     }
 
-    void syriusTerminate(){
+    void syriusCoreTerminate(){
         CoreCommand::terminate();
     }
 
