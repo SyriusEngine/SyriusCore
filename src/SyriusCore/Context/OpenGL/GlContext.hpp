@@ -40,12 +40,6 @@ namespace Syrius{
 
         int32 getMaxDepthBufferBits() override;
 
-        FrameBuffer* getDefaultFrameBuffer() override;
-
-        void setClearColor(float r, float g, float b, float a) override;
-
-        void clear() override;
-
         void draw(VertexArray* vao) override;
 
         void drawInstanced(VertexArray* vao, uint32 instanceCount) override;
@@ -71,10 +65,8 @@ namespace Syrius{
     protected:
         explicit GlContext(const ContextDesc& desc);
         
-        void initGl();
+        void initGl(const FrameBufferDesc& desc);
 
-    private:
-        GlDefaultFramebuffer* m_DefaultFramebuffer;
     };
 
 }

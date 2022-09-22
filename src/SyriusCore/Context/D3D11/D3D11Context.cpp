@@ -43,17 +43,8 @@ namespace Syrius{
                 &m_DeviceContext
                 ));
 
-        auto size = getFramebufferSize();
 
-        FrameBufferDesc fbDesc;
-        fbDesc.m_Width = size.m_Width;
-        fbDesc.m_Height = size.m_Height;
-        fbDesc.m_ClearColor[0] = 0.2f;
-        fbDesc.m_ClearColor[1] = 0.3f;
-        fbDesc.m_ClearColor[2] = 0.8f;
-        fbDesc.m_ClearColor[3] = 1.0f;
-
-        m_DefaultFrameBuffer = new D3D11DefaultFrameBuffer(fbDesc, m_Device, m_DeviceContext, m_SwapChain);
+        m_DefaultFrameBuffer = new D3D11DefaultFrameBuffer(desc.m_DefaultFrameBufferDesc, m_Device, m_DeviceContext, m_SwapChain);
 
 
     }
@@ -176,18 +167,6 @@ namespace Syrius{
 
     int32 D3D11Context::getMaxDepthBufferBits() {
         return 32;
-    }
-
-    FrameBuffer *D3D11Context::getDefaultFrameBuffer() {
-        return m_DefaultFrameBuffer;
-    }
-
-    void D3D11Context::setClearColor(float r, float g, float b, float a) {
-        m_DefaultFrameBuffer->setClearColor(r, g, b, a);
-    }
-
-    void D3D11Context::clear() {
-        m_DefaultFrameBuffer->clear();
     }
 
     void D3D11Context::draw(VertexArray *vao) {

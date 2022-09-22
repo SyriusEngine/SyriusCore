@@ -74,18 +74,6 @@ namespace Syrius{
         return 0;
     }
 
-    FrameBuffer *VulkanContext::getDefaultFrameBuffer() {
-        return nullptr;
-    }
-
-    void VulkanContext::setClearColor(float r, float g, float b, float a) {
-
-    }
-
-    void VulkanContext::clear() {
-
-    }
-
     void VulkanContext::draw(VertexArray *vao) {
 
     }

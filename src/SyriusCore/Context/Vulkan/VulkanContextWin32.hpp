@@ -17,6 +17,10 @@ namespace Syrius{
 
         void setVerticalSynchronisation(bool enable) override;
 
+        FramebufferSize getFramebufferSize() override;
+
+    protected:
+
         void createImGuiContext() override;
 
         void destroyImGuiContext() override;
@@ -24,8 +28,6 @@ namespace Syrius{
         void onImGuiBegin() override;
 
         void onImGuiEnd() override;
-
-        FramebufferSize getFramebufferSize() override;
 
     private:
         HWND& m_Hwnd;

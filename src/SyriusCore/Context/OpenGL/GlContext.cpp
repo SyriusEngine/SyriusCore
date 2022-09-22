@@ -3,32 +3,20 @@
 namespace Syrius{
 
     GlContext::GlContext(const ContextDesc& desc)
-    : Context(desc),
-    m_DefaultFramebuffer(nullptr){
+    : Context(desc){
 
     }
 
     GlContext::~GlContext() {
-        delete m_DefaultFramebuffer;
+        delete m_DefaultFrameBuffer;
 
         CoreCommand::terminateGlad();
     }
 
-    void GlContext::initGl() {
+    void GlContext::initGl(const FrameBufferDesc& desc) {
         CoreCommand::initGlad();
 
-        FramebufferSize fbSize = getFramebufferSize();
-
-        FrameBufferDesc desc;
-        desc.m_Width = fbSize.m_Width;
-        desc.m_Height = fbSize.m_Height;
-        desc.m_XPos = 0;
-        desc.m_YPos = 0;
-        desc.m_ClearColor[0] = 0.2f;
-        desc.m_ClearColor[1] = 0.3f;
-        desc.m_ClearColor[2] = 0.8f;
-        desc.m_ClearColor[3] = 1.0f;
-        m_DefaultFramebuffer = new GlDefaultFramebuffer(desc);
+        m_DefaultFrameBuffer = new GlDefaultFramebuffer(desc);
     }
 
     std::string GlContext::getAPIVersion() {
@@ -94,18 +82,6 @@ namespace Syrius{
         return depthBufferBits;
     }
 
-    FrameBuffer *GlContext::getDefaultFrameBuffer() {
-        return m_DefaultFramebuffer;
-    }
-
-    void GlContext::setClearColor(float r, float g, float b, float a) {
-        m_DefaultFramebuffer->setClearColor(r, g, b, a);
-    }
-
-    void GlContext::clear() {
-        m_DefaultFramebuffer->clear();
-    }
-
     void GlContext::draw(VertexArray *vao) {
         SR_CORE_PRECONDITION(vao != nullptr, "VertexArray is null");
 
@@ -121,7 +97,7 @@ namespace Syrius{
     void GlContext::onResize(uint32 width, uint32 height) {
         SR_CORE_PRECONDITION(width <= getMaxFramebufferWidth(), "Framebuffer width is too large");
         SR_CORE_PRECONDITION(height <= getMaxFramebufferHeight(), "Framebuffer height is too large");
-        m_DefaultFramebuffer->onResize(width, height);
+        m_DefaultFrameBuffer->onResize(width, height);
     }
 
 
