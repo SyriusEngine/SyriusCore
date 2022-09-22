@@ -169,19 +169,6 @@ namespace Syrius{
         return 32;
     }
 
-    void D3D11Context::draw(VertexArray *vao) {
-        vao->drawBuffers();
-
-    }
-
-    void D3D11Context::drawInstanced(VertexArray *vao, uint32 instanceCount) {
-        vao->drawBuffersInstanced(instanceCount);
-    }
-
-    void D3D11Context::onResize(uint32 width, uint32 height) {
-        m_DefaultFrameBuffer->onResize(width, height);
-    }
-
     ShaderModule *D3D11Context::createShaderModule(const ShaderModuleDesc &desc) {
         return new D3D11ShaderModule(desc, m_Device, m_DeviceContext);
     }

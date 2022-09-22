@@ -1,4 +1,5 @@
 #include "../../../include/SyriusCore/Context/Context.hpp"
+#include "../Core/DebugMacros.hpp"
 
 namespace Syrius{
 
@@ -43,6 +44,34 @@ namespace Syrius{
 
     void Context::clear(FrameBuffer *frameBuffer) {
         frameBuffer->clear();
+    }
+
+    void Context::draw(VertexArray *vao) {
+        vao->drawBuffers();
+    }
+
+    void Context::drawInstanced(VertexArray *vao, uint32 instanceCount) {
+        SR_CORE_PRECONDITION(instanceCount > 0, "Instance count must be greater than 0");
+
+        vao->drawBuffersInstanced(instanceCount);
+    }
+
+    void Context::onResize(uint32 width, uint32 height) {
+        SR_CORE_PRECONDITION(width > 0, "Width must be greater than 0");
+        SR_CORE_PRECONDITION(height > 0, "Height must be greater than 0");
+        SR_CORE_PRECONDITION(width <= getMaxFramebufferWidth(), "Width must be less than or equal to the maximum framebuffer width");
+        SR_CORE_PRECONDITION(height <= getMaxFramebufferHeight(), "Height must be less than or equal to the maximum framebuffer height");
+
+        m_DefaultFrameBuffer->onResize(width, height);
+    }
+
+    void Context::onResize(FrameBuffer *frameBuffer, uint32 width, uint32 height) {
+        SR_CORE_PRECONDITION(width > 0, "Width must be greater than 0");
+        SR_CORE_PRECONDITION(height > 0, "Height must be greater than 0");
+        SR_CORE_PRECONDITION(width <= getMaxFramebufferWidth(), "Width must be less than or equal to the maximum framebuffer width");
+        SR_CORE_PRECONDITION(height <= getMaxFramebufferHeight(), "Height must be less than or equal to the maximum framebuffer height");
+
+        frameBuffer->onResize(width, height);
     }
 
 }

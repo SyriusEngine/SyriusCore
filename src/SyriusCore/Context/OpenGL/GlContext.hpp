@@ -40,12 +40,6 @@ namespace Syrius{
 
         int32 getMaxDepthBufferBits() override;
 
-        void draw(VertexArray* vao) override;
-
-        void drawInstanced(VertexArray* vao, uint32 instanceCount) override;
-
-        void onResize(uint32 width, uint32 height) override;
-
         ShaderModule* createShaderModule(const ShaderModuleDesc& desc) override;
 
         Shader* createShader(const ShaderDesc& desc) override;

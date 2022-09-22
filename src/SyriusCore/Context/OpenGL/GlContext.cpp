@@ -82,25 +82,6 @@ namespace Syrius{
         return depthBufferBits;
     }
 
-    void GlContext::draw(VertexArray *vao) {
-        SR_CORE_PRECONDITION(vao != nullptr, "VertexArray is null");
-
-        vao->drawBuffers();
-    }
-
-    void GlContext::drawInstanced(VertexArray *vao, uint32 instanceCount) {
-        SR_CORE_PRECONDITION(vao != nullptr, "VertexArray is null");
-
-        vao->drawBuffersInstanced(instanceCount);
-    }
-
-    void GlContext::onResize(uint32 width, uint32 height) {
-        SR_CORE_PRECONDITION(width <= getMaxFramebufferWidth(), "Framebuffer width is too large");
-        SR_CORE_PRECONDITION(height <= getMaxFramebufferHeight(), "Framebuffer height is too large");
-        m_DefaultFrameBuffer->onResize(width, height);
-    }
-
-
     ShaderModule *GlContext::createShaderModule(const ShaderModuleDesc &desc) {
         return new GlShaderModule(desc);
     }

@@ -81,11 +81,13 @@ namespace Syrius{
 
         void clear(FrameBuffer* frameBuffer);
 
-        virtual void draw(VertexArray* vao) = 0;
+        void draw(VertexArray* vao);
 
-        virtual void drawInstanced(VertexArray* vao, uint32 instanceCount) = 0;
+        void drawInstanced(VertexArray* vao, uint32 instanceCount);
 
-        virtual void onResize(uint32 width, uint32 height) = 0;
+        void onResize(uint32 width, uint32 height);
+
+        void onResize(FrameBuffer* frameBuffer, uint32 width, uint32 height);
 
         virtual ShaderModule* createShaderModule(const ShaderModuleDesc& desc) = 0;
 
