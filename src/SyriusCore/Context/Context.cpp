@@ -62,7 +62,7 @@ namespace Syrius{
         SR_CORE_PRECONDITION(width <= getMaxFramebufferWidth(), "Width must be less than or equal to the maximum framebuffer width");
         SR_CORE_PRECONDITION(height <= getMaxFramebufferHeight(), "Height must be less than or equal to the maximum framebuffer height");
 
-        m_DefaultFrameBuffer->onResize(width, height);
+        m_DefaultFrameBuffer->setSize(width, height);
     }
 
     void Context::onResize(FrameBuffer *frameBuffer, uint32 width, uint32 height) {
@@ -71,7 +71,7 @@ namespace Syrius{
         SR_CORE_PRECONDITION(width <= getMaxFramebufferWidth(), "Width must be less than or equal to the maximum framebuffer width");
         SR_CORE_PRECONDITION(height <= getMaxFramebufferHeight(), "Height must be less than or equal to the maximum framebuffer height");
 
-        frameBuffer->onResize(width, height);
+        frameBuffer->setSize(width, height);
     }
 
 }

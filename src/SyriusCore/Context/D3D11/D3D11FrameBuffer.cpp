@@ -7,7 +7,8 @@ namespace Syrius{
     D3D11FrameBuffer::D3D11FrameBuffer(const FrameBufferDesc &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext)
     : FrameBuffer(desc),
     m_Device(device),
-    m_DeviceContext(deviceContext){
+    m_DeviceContext(deviceContext),
+    m_Nullable(m_ColorAttachments.size(), nullptr){
         m_Viewport.Width = static_cast<float>(m_Width);
         m_Viewport.Height = static_cast<float>(m_Height);
         m_Viewport.MinDepth = desc.m_MinDepth;
@@ -28,9 +29,7 @@ namespace Syrius{
     }
 
     void D3D11FrameBuffer::bind() {
-        // unbind all shader inputs, a render target cannot be bound as a shader input if it is still bound as a texture
-        std::vector<ID3D11ShaderResourceView*> nullSRV(m_RenderTargetViews.size(), nullptr);
-        m_DeviceContext->PSSetShaderResources(0, m_RenderTargetViews.size(), &nullSRV[0]);
+        m_DeviceContext->PSSetShaderResources(0, m_RenderTargetViews.size(), &m_Nullable[0]);
 
         m_DeviceContext->OMSetRenderTargets(m_RenderTargetViews.size(), &m_RenderTargetViews[0], nullptr);
         m_DeviceContext->RSSetViewports(1, &m_Viewport);
@@ -40,12 +39,13 @@ namespace Syrius{
 
     }
 
-    void D3D11FrameBuffer::setClearColor(float red, float green, float blue, float alpha) {
-        m_ClearColor[0] = red;
-        m_ClearColor[1] = green;
-        m_ClearColor[2] = blue;
-        m_ClearColor[3] = alpha;
+    void D3D11FrameBuffer::clear() {
+        bind();
+        for (const auto renderTargetView : m_RenderTargetViews){
+            m_DeviceContext->ClearRenderTargetView(renderTargetView, m_ClearColor);
+        }
     }
+
 
     void D3D11FrameBuffer::setPosition(int32 xPos, int32 yPos) {
         m_XPos = xPos;
@@ -54,11 +54,7 @@ namespace Syrius{
         m_Viewport.TopLeftY = static_cast<float>(m_YPos);
     }
 
-    void D3D11FrameBuffer::setDepthFunc(SR_COMPARISON_FUNC func) {
-
-    }
-
-    void D3D11FrameBuffer::onResize(uint32 width, uint32 height) {
+    void D3D11FrameBuffer::setSize(uint32 width, uint32 height) {
         m_Width = width;
         m_Height = height;
         m_Viewport.Width = static_cast<float>(m_Width);
@@ -68,12 +64,14 @@ namespace Syrius{
         }
     }
 
-    void D3D11FrameBuffer::clear() {
-        bind();
-        for (const auto renderTargetView : m_RenderTargetViews){
-            m_DeviceContext->ClearRenderTargetView(renderTargetView, m_ClearColor);
-        }
+    void D3D11FrameBuffer::setDepthFunc(SR_COMPARISON_FUNC func) {
+        m_DepthFunc = func;
     }
+
+    void D3D11FrameBuffer::setStencilFunc(SR_COMPARISON_FUNC func) {
+        m_StencilFunc = func;
+    }
+
 
     D3D11DefaultFrameBuffer::D3D11DefaultFrameBuffer(const FrameBufferDesc &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext, IDXGISwapChain *swapChain)
     : FrameBuffer(desc),
@@ -171,11 +169,9 @@ namespace Syrius{
 
     }
 
-    void D3D11DefaultFrameBuffer::setClearColor(float red, float green, float blue, float alpha) {
-        m_ClearColor[0] = red;
-        m_ClearColor[1] = green;
-        m_ClearColor[2] = blue;
-        m_ClearColor[3] = alpha;
+    void D3D11DefaultFrameBuffer::clear() {
+        bind();
+        m_DeviceContext->ClearRenderTargetView(m_BackRenderTarget, m_ClearColor);
     }
 
     void D3D11DefaultFrameBuffer::setPosition(int32 xPos, int32 yPos) {
@@ -185,11 +181,7 @@ namespace Syrius{
         m_Viewport.TopLeftY = static_cast<float>(m_YPos);
     }
 
-    void D3D11DefaultFrameBuffer::setDepthFunc(SR_COMPARISON_FUNC func) {
-
-    }
-
-    void D3D11DefaultFrameBuffer::onResize(uint32 width, uint32 height) {
+    void D3D11DefaultFrameBuffer::setSize(uint32 width, uint32 height) {
         bind();
         m_Width = width;
         m_Height = height;
@@ -217,10 +209,15 @@ namespace Syrius{
         }
     }
 
-    void D3D11DefaultFrameBuffer::clear() {
-        bind();
-        m_DeviceContext->ClearRenderTargetView(m_BackRenderTarget, m_ClearColor);
+    void D3D11DefaultFrameBuffer::setDepthFunc(SR_COMPARISON_FUNC func) {
+        m_DepthFunc = func;
     }
+
+    void D3D11DefaultFrameBuffer::setStencilFunc(SR_COMPARISON_FUNC func) {
+        m_StencilFunc = func;
+    }
+
+
 }
 
 #endif

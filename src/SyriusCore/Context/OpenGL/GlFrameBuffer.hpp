@@ -17,20 +17,20 @@ namespace Syrius{
 
         void unbind() override;
 
-        void setClearColor(float red, float green, float blue, float alpha) override;
+        void clear() override;
 
         void setPosition(int32 xPos, int32 yPos) override;
 
+        void setSize(uint32 width, uint32 height) override;
+
         void setDepthFunc(SR_COMPARISON_FUNC func) override;
 
-        void onResize(uint32 width, uint32 height) override;
-
-        void clear() override;
+        void setStencilFunc(SR_COMPARISON_FUNC func) override;
 
     private:
         uint32 m_FrameBufferID;
-        GLbitfield m_ClearMask;
         GLenum m_GlDepthFunc;
+        GLenum m_GlStencilFunc;
 
         GlRenderBuffer* m_RenderBuffer;
         
@@ -47,19 +47,20 @@ namespace Syrius{
 
         void unbind() override;
 
-        void setClearColor(float red, float green, float blue, float alpha) override;
+        void clear() override;
 
         void setPosition(int32 xPos, int32 yPos) override;
 
+        void setSize(uint32 width, uint32 height) override;
+
         void setDepthFunc(SR_COMPARISON_FUNC func) override;
 
-        void onResize(uint32 width, uint32 height) override;
+        void setStencilFunc(SR_COMPARISON_FUNC func) override;
 
-        void clear() override;
 
     private:
-        GLbitfield m_ClearMask;
         GLenum m_GlDepthFunc;
+        GLenum m_GlStencilFunc;
 
     };
     

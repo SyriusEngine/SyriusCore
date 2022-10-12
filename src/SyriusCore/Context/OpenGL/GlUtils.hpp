@@ -18,7 +18,7 @@ namespace Syrius{
 
     GLint getGlTextureInternalFormat(SR_TEXTURE_DATA_FORMAT format);
 
-    GLenum getGlDepthFunc(SR_COMPARISON_FUNC func);
+    GLenum getGlComparisonFunc(SR_COMPARISON_FUNC func);
 
     GLint getGlTextureFilter(SR_TEXTURE_FILTER);
 

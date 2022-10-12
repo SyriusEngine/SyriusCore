@@ -57,7 +57,7 @@ int main() {
         ContextDesc cDesc;
         cDesc.m_DefaultFrameBufferDesc.m_Width = 1280;
         cDesc.m_DefaultFrameBufferDesc.m_Height = 720;
-        cDesc.m_API = SR_API_D3D11;
+        cDesc.m_API = Syrius::SR_API_OPENGL;
         auto context = window->createContext(cDesc);
         context->setVerticalSynchronisation(true);
         context->setClearColor(0.2f, 0.3f, 0.5f, 1.0f);
@@ -83,8 +83,8 @@ int main() {
 
         ShaderModuleDesc vsDesc;
         vsDesc.m_Type = SR_SHADER_VERTEX;
-        vsDesc.m_CodeType = SR_SHADER_CODE_HLSL;
-        vsDesc.m_Code = "./Resources/Shaders/HLSL/Basic-vs.hlsl";
+        vsDesc.m_CodeType = SR_SHADER_CODE_GLSL;
+        vsDesc.m_Code = "./Resources/Shaders/GLSL/Basic.vert";
         vsDesc.m_LoadType = SR_LOAD_FROM_FILE;
         vsDesc.m_EntryPoint = "main";
         vsDesc.m_CodeLength = 0;
@@ -92,8 +92,8 @@ int main() {
 
         ShaderModuleDesc fsDesc;
         fsDesc.m_Type = SR_SHADER_FRAGMENT;
-        fsDesc.m_CodeType = SR_SHADER_CODE_HLSL;
-        fsDesc.m_Code = "./Resources/Shaders/HLSL/Basic-fs.hlsl";
+        fsDesc.m_CodeType = SR_SHADER_CODE_GLSL;
+        fsDesc.m_Code = "./Resources/Shaders/GLSL/Basic.frag";
         fsDesc.m_LoadType = SR_LOAD_FROM_FILE;
         fsDesc.m_EntryPoint = "main";
         fsDesc.m_CodeLength = 0;

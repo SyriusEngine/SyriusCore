@@ -18,15 +18,15 @@ namespace Syrius{
 
         void unbind() override;
 
-        void setClearColor(float red, float green, float blue, float alpha) override;
+        void clear() override;
 
         void setPosition(int32 xPos, int32 yPos) override;
 
+        void setSize(uint32 width, uint32 height) override;
+
         void setDepthFunc(SR_COMPARISON_FUNC func) override;
 
-        void onResize(uint32 width, uint32 height) override;
-
-        void clear() override;
+        void setStencilFunc(SR_COMPARISON_FUNC func) override;
 
     private:
         ID3D11Device* m_Device;
@@ -35,7 +35,7 @@ namespace Syrius{
         D3D11_VIEWPORT m_Viewport;
 
         std::vector<ID3D11RenderTargetView*> m_RenderTargetViews;
-        std::vector<ID3D11RenderTargetView*> m_Nullable;
+        std::vector<ID3D11ShaderResourceView*> m_Nullable;
 
     };
 
@@ -49,15 +49,15 @@ namespace Syrius{
 
         void unbind() override;
 
-        void setClearColor(float red, float green, float blue, float alpha) override;
+        void clear() override;
 
         void setPosition(int32 xPos, int32 yPos) override;
 
+        void setSize(uint32 width, uint32 height) override;
+
         void setDepthFunc(SR_COMPARISON_FUNC func) override;
 
-        void onResize(uint32 width, uint32 height) override;
-
-        void clear() override;
+        void setStencilFunc(SR_COMPARISON_FUNC func) override;
 
     private:
         ID3D11Device* m_Device;

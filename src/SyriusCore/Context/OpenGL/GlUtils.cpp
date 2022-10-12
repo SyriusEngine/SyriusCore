@@ -121,7 +121,7 @@ namespace Syrius{
         return GL_RGBA8;
     }
 
-    GLenum getGlDepthFunc(SR_COMPARISON_FUNC func){
+    GLenum getGlComparisonFunc(SR_COMPARISON_FUNC func){
         switch (func){
             case SR_COMPARISON_FUNC_NEVER:           return GL_NEVER;
             case SR_COMPARISON_FUNC_LESS:            return GL_LESS;

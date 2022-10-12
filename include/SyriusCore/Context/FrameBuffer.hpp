@@ -13,18 +13,21 @@ namespace Syrius{
         int32 m_YPos                    = 0;
         float m_MinDepth                = 0.0f;
         float m_MaxDepth                = 1.0f;
+
         // clear parameters
         float m_ClearColor[4]           = {0.8f, 0.2f, 0.3f, 1.0f};
         float m_ClearDepth              = 1.0f;
+
         // depth parameters
         bool m_EnableDepthTest          = false;
-        bool m_DepthTestReadOnly        = false;
+        bool m_DepthBufferReadOnly      = false;
         SR_COMPARISON_FUNC m_DepthFunc  = SR_COMPARISON_FUNC_LESS;
+
         // stencil parameters
         bool m_EnableStencilTest        = false;
-        bool m_StencilTestReadOnly      = false;
+        bool m_StencilBufferReadOnly    = false;
         SR_COMPARISON_FUNC m_StencilFunc = SR_COMPARISON_FUNC_ALWAYS;
-        uint32 m_StencilRef             = 0;
+        uint32 m_StencilReference       = 0;
         uint32 m_StencilMask            = 0xFFFFFFFF;
 
         // color attachment desc
@@ -41,15 +44,27 @@ namespace Syrius{
 
         virtual void unbind() = 0;
 
-        virtual void setClearColor(float red, float green, float blue, float alpha) = 0;
+        virtual void clear() = 0;
 
         virtual void setPosition(int32 xPos, int32 yPos) = 0;
 
+        virtual void setSize(uint32 width, uint32 height) = 0;
+
         virtual void setDepthFunc(SR_COMPARISON_FUNC func) = 0;
 
-        virtual void onResize(uint32 width, uint32 height) = 0;
+        virtual void setStencilFunc(SR_COMPARISON_FUNC func) = 0;
 
-        virtual void clear() = 0;
+        void setDepthBufferReadOnly(bool readOnly);
+
+        void setStencilBufferReadOnly(bool readOnly);
+
+        void setClearColor(float red, float green, float blue, float alpha);
+
+        void setClearDepth(float depth);
+
+        void setStencilReference(uint32 reference);
+
+        void setStencilMask(uint32 mask);
 
         [[nodiscard]] uint32 getWidth() const;
 
@@ -63,9 +78,17 @@ namespace Syrius{
 
         [[nodiscard]] float getMaxDepth() const;
 
-        [[nodiscard]] bool isDepthTestEnabled() const;
-
         [[nodiscard]] SR_COMPARISON_FUNC getDepthFunc() const;
+
+        [[nodiscard]] bool isDepthBufferReadOnly() const;
+
+        [[nodiscard]] bool isStencilBufferReadOnly() const;
+
+        [[nodiscard]] SR_COMPARISON_FUNC getStencilFunc() const;
+
+        [[nodiscard]] uint32 getStencilReference() const;
+
+        [[nodiscard]] uint32 getStencilMask() const;
 
         [[nodiscard]] ColorAttachment* getColorAttachment(uint32 index) const;
 
@@ -74,11 +97,18 @@ namespace Syrius{
         uint32 m_Height;
         int32 m_XPos;
         int32 m_YPos;
-
         float m_MinDepth;
         float m_MaxDepth;
-        bool m_EnableDepthTest;
+
+        const bool m_EnableDepthTest;
+        bool m_DepthBufferReadOnly;
+        float m_ClearDepth;
+        const bool m_EnableStencilTest;
+        bool m_StencilBufferReadOnly;
         SR_COMPARISON_FUNC m_DepthFunc;
+        SR_COMPARISON_FUNC m_StencilFunc;
+        uint32 m_StencilReference;
+        uint32 m_StencilMask;
 
         float m_ClearColor[4];
 
