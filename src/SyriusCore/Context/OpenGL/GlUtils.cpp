@@ -121,16 +121,16 @@ namespace Syrius{
         return GL_RGBA8;
     }
 
-    GLenum getGlDepthFunc(SR_DEPTH_FUNC func){
+    GLenum getGlDepthFunc(SR_COMPARISON_FUNC func){
         switch (func){
-            case SR_DEPTH_FUNC_NEVER:           return GL_NEVER;
-            case SR_DEPTH_FUNC_LESS:            return GL_LESS;
-            case SR_DEPTH_FUNC_EQUAL:           return GL_EQUAL;
-            case SR_DEPTH_FUNC_LESS_EQUAL:      return GL_LEQUAL;
-            case SR_DEPTH_FUNC_GREATER:         return GL_GREATER;
-            case SR_DEPTH_FUNC_NOT_EQUAL:       return GL_NOTEQUAL;
-            case SR_DEPTH_FUNC_GREATER_EQUAL:   return GL_GEQUAL;
-            case SR_DEPTH_FUNC_ALWAYS:          return GL_ALWAYS;
+            case SR_COMPARISON_FUNC_NEVER:           return GL_NEVER;
+            case SR_COMPARISON_FUNC_LESS:            return GL_LESS;
+            case SR_COMPARISON_FUNC_EQUAL:           return GL_EQUAL;
+            case SR_COMPARISON_FUNC_LESS_EQUAL:      return GL_LEQUAL;
+            case SR_COMPARISON_FUNC_GREATER:         return GL_GREATER;
+            case SR_COMPARISON_FUNC_NOT_EQUAL:       return GL_NOTEQUAL;
+            case SR_COMPARISON_FUNC_GREATER_EQUAL:   return GL_GEQUAL;
+            case SR_COMPARISON_FUNC_ALWAYS:          return GL_ALWAYS;
             default: {
                 SR_CORE_WARNING("Invalid depth func given to converter, defaulting to GL_LESS");
                 return GL_LESS;

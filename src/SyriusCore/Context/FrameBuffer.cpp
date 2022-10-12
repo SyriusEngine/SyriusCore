@@ -50,7 +50,7 @@ namespace Syrius{
         return m_EnableDepthTest;
     }
 
-    SR_DEPTH_FUNC FrameBuffer::getDepthFunc() const {
+    SR_COMPARISON_FUNC FrameBuffer::getDepthFunc() const {
         return m_DepthFunc;
     }
 

@@ -30,7 +30,9 @@ if (WIN32)
             src/SyriusCore/Context/D3D11/D3D11IndexBuffer.cpp
             src/SyriusCore/Context/D3D11/D3D11VertexArray.cpp
             src/SyriusCore/Context/D3D11/D3D11ConstantBuffer.cpp
-            src/SyriusCore/Context/D3D11/D3D11Texture2D.cpp src/SyriusCore/Context/D3D11/D3D11FrameBuffer.cpp src/SyriusCore/Context/D3D11/D3D11FrameBuffer.hpp src/SyriusCore/Context/D3D11/D3D11ColorAttachment.cpp src/SyriusCore/Context/D3D11/D3D11ColorAttachment.hpp)
+            src/SyriusCore/Context/D3D11/D3D11Texture2D.cpp
+            src/SyriusCore/Context/D3D11/D3D11FrameBuffer.cpp
+            src/SyriusCore/Context/D3D11/D3D11ColorAttachment.cpp)
 
 endif()
 

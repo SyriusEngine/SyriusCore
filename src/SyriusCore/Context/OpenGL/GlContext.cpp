@@ -117,7 +117,6 @@ namespace Syrius{
         SR_CORE_PRECONDITION(!desc.m_ColorAttachments.empty(), "Framebuffer must have at least one color attachment");
         SR_CORE_PRECONDITION(desc.m_Width <= getMaxFramebufferWidth(), "Framebuffer width is too large");
         SR_CORE_PRECONDITION(desc.m_Height <= getMaxFramebufferHeight(), "Framebuffer height is too large");
-        SR_CORE_PRECONDITION(desc.m_NumColorAttachments <= getMaxFramebufferTextureAttachments(), "Framebuffer has too many color attachments");
 
         return new GlFrameBuffer(desc);
     }

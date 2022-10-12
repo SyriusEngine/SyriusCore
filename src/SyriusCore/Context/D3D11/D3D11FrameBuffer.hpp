@@ -22,7 +22,7 @@ namespace Syrius{
 
         void setPosition(int32 xPos, int32 yPos) override;
 
-        void setDepthFunc(SR_DEPTH_FUNC func) override;
+        void setDepthFunc(SR_COMPARISON_FUNC func) override;
 
         void onResize(uint32 width, uint32 height) override;
 
@@ -53,7 +53,7 @@ namespace Syrius{
 
         void setPosition(int32 xPos, int32 yPos) override;
 
-        void setDepthFunc(SR_DEPTH_FUNC func) override;
+        void setDepthFunc(SR_COMPARISON_FUNC func) override;
 
         void onResize(uint32 width, uint32 height) override;
 

@@ -6,6 +6,9 @@
 #include <string>
 #include <deque>
 
+#define SR_DEFAULT_WIDTH 800
+#define SR_DEFAULT_HEIGHT 600
+
 namespace Syrius{
 
     typedef enum SR_SUPPORTED_API{

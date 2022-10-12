@@ -130,16 +130,16 @@ namespace Syrius{
     } SR_DRAW_MODE;
 
     // depth functions
-    typedef enum SR_DEPTH_FUNC {
-        SR_DEPTH_FUNC_ALWAYS        = 0x01,
-        SR_DEPTH_FUNC_NEVER         = 0x02,
-        SR_DEPTH_FUNC_LESS          = 0x03,
-        SR_DEPTH_FUNC_EQUAL         = 0x04,
-        SR_DEPTH_FUNC_LESS_EQUAL    = 0x05,
-        SR_DEPTH_FUNC_GREATER       = 0x06,
-        SR_DEPTH_FUNC_GREATER_EQUAL = 0x07,
-        SR_DEPTH_FUNC_NOT_EQUAL     = 0x08
-    } SR_DEPTH_FUNC;
+    typedef enum SR_COMPARISON_FUNC {
+        SR_COMPARISON_FUNC_ALWAYS        = 0x01,
+        SR_COMPARISON_FUNC_NEVER         = 0x02,
+        SR_COMPARISON_FUNC_LESS          = 0x03,
+        SR_COMPARISON_FUNC_EQUAL         = 0x04,
+        SR_COMPARISON_FUNC_LESS_EQUAL    = 0x05,
+        SR_COMPARISON_FUNC_GREATER       = 0x06,
+        SR_COMPARISON_FUNC_GREATER_EQUAL = 0x07,
+        SR_COMPARISON_FUNC_NOT_EQUAL     = 0x08
+    } SR_COMPARISON_FUNC;
 
     // base texture formats, the upper 4 bits represent the number of channels
     typedef enum SR_TEXTURE_FORMAT: uint8 {

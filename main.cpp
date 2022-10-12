@@ -140,7 +140,6 @@ int main() {
         FrameBufferDesc fbDesc;
         fbDesc.m_Width = 1280;
         fbDesc.m_Height = 720;
-        fbDesc.m_NumColorAttachments = 1;
         fbDesc.m_ColorAttachments.emplace_back();
         auto fbo = context->createFrameBuffer(fbDesc);
         fbo->setClearColor(0.6f, 0.5f, 0.2f, 1.0f);

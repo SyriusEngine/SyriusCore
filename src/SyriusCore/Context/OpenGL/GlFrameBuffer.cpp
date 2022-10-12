@@ -70,7 +70,7 @@ namespace Syrius{
         m_YPos = yPos;
     }
 
-    void GlFrameBuffer::setDepthFunc(SR_DEPTH_FUNC func) {
+    void GlFrameBuffer::setDepthFunc(SR_COMPARISON_FUNC func) {
         m_DepthFunc = func;
         m_GlDepthFunc = getGlDepthFunc(func);
     }
@@ -135,7 +135,7 @@ namespace Syrius{
         m_YPos = yPos;
     }
 
-    void GlDefaultFramebuffer::setDepthFunc(SR_DEPTH_FUNC func) {
+    void GlDefaultFramebuffer::setDepthFunc(SR_COMPARISON_FUNC func) {
         m_DepthFunc = func;
         m_GlDepthFunc = getGlDepthFunc(func);
     }

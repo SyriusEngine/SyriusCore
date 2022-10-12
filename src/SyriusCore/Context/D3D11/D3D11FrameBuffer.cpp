@@ -54,12 +54,11 @@ namespace Syrius{
         m_Viewport.TopLeftY = static_cast<float>(m_YPos);
     }
 
-    void D3D11FrameBuffer::setDepthFunc(SR_DEPTH_FUNC func) {
+    void D3D11FrameBuffer::setDepthFunc(SR_COMPARISON_FUNC func) {
 
     }
 
     void D3D11FrameBuffer::onResize(uint32 width, uint32 height) {
-        bind();
         m_Width = width;
         m_Height = height;
         m_Viewport.Width = static_cast<float>(m_Width);
@@ -186,7 +185,7 @@ namespace Syrius{
         m_Viewport.TopLeftY = static_cast<float>(m_YPos);
     }
 
-    void D3D11DefaultFrameBuffer::setDepthFunc(SR_DEPTH_FUNC func) {
+    void D3D11DefaultFrameBuffer::setDepthFunc(SR_COMPARISON_FUNC func) {
 
     }
 
