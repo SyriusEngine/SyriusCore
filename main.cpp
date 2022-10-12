@@ -158,6 +158,7 @@ int main() {
             }
 
             context->clear(fbo);
+            fbo->bind();
             cb->bind();
             texture->bind(0);
             shader->bind();
@@ -165,6 +166,7 @@ int main() {
 
             context->clear();
 
+            context->getDefaultFrameBuffer()->bind();
             fbo->getColorAttachment(0)->bind(0);
             context->drawInstanced(vao, 1);
 
@@ -189,7 +191,13 @@ int main() {
         window->destroyContext();
         destroyWindow(window);
 
+        printf("Allocated Memory: %zu\n", getAllocatedMemory());
+        printf("Freed Memory: %zu\n", getFreedMemory());
+        printf("Memory Usage: %zu\n", getMemoryUsage());
+
+
         syriusCoreTerminate();
+
 
     } catch (std::exception& e){
         std::cerr << e.what() << std::endl;

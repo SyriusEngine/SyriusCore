@@ -89,6 +89,24 @@ namespace Syrius{
 
         void onResize(FrameBuffer* frameBuffer, uint32 width, uint32 height);
 
+        void destroyShaderModule(ShaderModule* shaderModule);
+
+        void destroyShader(Shader* shader);
+
+        void destroyVertexDescription(VertexDescription* vertexDescription);
+
+        void destroyVertexBuffer(VertexBuffer* vertexBuffer);
+
+        void destroyIndexBuffer(IndexBuffer* indexBuffer);
+
+        void destroyVertexArray(VertexArray* vertexArray);
+
+        void destroyConstantBuffer(ConstantBuffer* constantBuffer);
+
+        void destroyFrameBuffer(FrameBuffer* frameBuffer);
+
+        void destroyTexture2D(Texture2D* texture2D);
+
         virtual ShaderModule* createShaderModule(const ShaderModuleDesc& desc) = 0;
 
         virtual Shader* createShader(const ShaderDesc& desc) = 0;
@@ -119,12 +137,25 @@ namespace Syrius{
 
         virtual void onImGuiEnd() = 0;
 
+    protected:
+
         friend SyriusWindow;
 
     protected:
 
         bool m_VerticalSync;
         FrameBuffer* m_DefaultFrameBuffer;
+
+        std::vector<ShaderModule*> m_ShaderModules;
+        std::vector<Shader*> m_Shaders;
+        std::vector<VertexDescription*> m_VertexDescriptions;
+        std::vector<VertexBuffer*> m_VertexBuffers;
+        std::vector<IndexBuffer*> m_IndexBuffers;
+        std::vector<VertexArray*> m_VertexArrays;
+        std::vector<ConstantBuffer*> m_ConstantBuffers;
+        std::vector<FrameBuffer*> m_FrameBuffers;
+        std::vector<Texture2D*> m_Textures2D;
+
 
     private:
 

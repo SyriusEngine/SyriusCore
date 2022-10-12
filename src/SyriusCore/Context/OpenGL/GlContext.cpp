@@ -83,34 +83,47 @@ namespace Syrius{
     }
 
     ShaderModule *GlContext::createShaderModule(const ShaderModuleDesc &desc) {
-        return new GlShaderModule(desc);
+        auto ptr = new GlShaderModule(desc);
+        m_ShaderModules.push_back(ptr);
+        return ptr;
     }
 
     Shader *GlContext::createShader(const ShaderDesc& desc) {
-        return new GlShader(desc);
+        auto ptr = new GlShader(desc);
+        m_Shaders.push_back(ptr);
+        return ptr;
     }
 
     VertexBuffer *GlContext::createVertexBuffer(const VertexBufferDesc &desc) {
-        return new GlVertexBuffer(desc);
+        auto ptr = new GlVertexBuffer(desc);
+        m_VertexBuffers.push_back(ptr);
+        return ptr;
     }
 
     IndexBuffer *GlContext::createIndexBuffer(const IndexBufferDesc &desc) {
-        return new GlIndexBuffer(desc);
+        auto ptr = new GlIndexBuffer(desc);
+        m_IndexBuffers.push_back(ptr);
+        return ptr;
     }
 
     VertexArray *GlContext::createVertexArray(const VertexArrayDesc &desc) {
+        VertexArray* ptr;
         if (desc.m_IndexBuffer != nullptr) {
-            return new GlVertexArrayIndexed(desc);
+            ptr = new GlVertexArrayIndexed(desc);
         }
         else {
-            return new GlVertexArray(desc);
+            ptr = new GlVertexArray(desc);
         }
+        m_VertexArrays.push_back(ptr);
+        return ptr;
     }
 
     ConstantBuffer *GlContext::createConstantBuffer(const ConstantBufferDesc &desc) {
         SR_CORE_PRECONDITION(desc.m_Size <= getMaxConstantBufferSize(), "Constant buffer size is too large");
 
-        return new GlConstantBuffer(desc);
+        auto ptr = new GlConstantBuffer(desc);
+        m_ConstantBuffers.push_back(ptr);
+        return ptr;
     }
 
     FrameBuffer *GlContext::createFrameBuffer(const FrameBufferDesc &desc) {
@@ -118,7 +131,9 @@ namespace Syrius{
         SR_CORE_PRECONDITION(desc.m_Width <= getMaxFramebufferWidth(), "Framebuffer width is too large");
         SR_CORE_PRECONDITION(desc.m_Height <= getMaxFramebufferHeight(), "Framebuffer height is too large");
 
-        return new GlFrameBuffer(desc);
+        auto ptr = new GlFrameBuffer(desc);
+        m_FrameBuffers.push_back(ptr);
+        return ptr;
     }
 
     Texture2D *GlContext::createTexture2D(const Texture2DDesc& desc) {
@@ -126,7 +141,9 @@ namespace Syrius{
         SR_CORE_PRECONDITION(desc.m_Image->getWidth() <= getMaxTexture2DSize(), "Texture width is too large");
         SR_CORE_PRECONDITION(desc.m_Image->getHeight() <= getMaxTexture2DSize(), "Texture height is too large");
 
-        return new GlTexture2D(desc);
+        auto ptr = new GlTexture2D(desc);
+        m_Textures2D.push_back(ptr);
+        return ptr;
     }
 
 }

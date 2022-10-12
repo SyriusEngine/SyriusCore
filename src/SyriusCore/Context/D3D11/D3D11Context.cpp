@@ -170,49 +170,67 @@ namespace Syrius{
     }
 
     ShaderModule *D3D11Context::createShaderModule(const ShaderModuleDesc &desc) {
-        return new D3D11ShaderModule(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11ShaderModule(desc, m_Device, m_DeviceContext);
+        m_ShaderModules.push_back(ptr);
+        return ptr;
     }
 
     Shader *D3D11Context::createShader(const ShaderDesc &desc) {
-        return new D3D11Shader(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11Shader(desc, m_Device, m_DeviceContext);
+        m_Shaders.push_back(ptr);
+        return ptr;
     }
 
     VertexBuffer *D3D11Context::createVertexBuffer(const VertexBufferDesc &desc) {
-        return new D3D11VertexBuffer(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11VertexBuffer(desc, m_Device, m_DeviceContext);
+        m_VertexBuffers.push_back(ptr);
+        return ptr;
     }
 
     IndexBuffer *D3D11Context::createIndexBuffer(const IndexBufferDesc &desc) {
-        return new D3D11IndexBuffer(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11IndexBuffer(desc, m_Device, m_DeviceContext);
+        m_IndexBuffers.push_back(ptr);
+        return ptr;
     }
 
     VertexArray *D3D11Context::createVertexArray(const VertexArrayDesc &desc) {
+        VertexArray* ptr;
         if (desc.m_IndexBuffer != nullptr) {
-            return new D3D11VertexArrayIndexed(desc, m_Device, m_DeviceContext);
+            ptr =  new D3D11VertexArrayIndexed(desc, m_Device, m_DeviceContext);
         }
         else {
-            return new D3D11VertexArray(desc, m_Device, m_DeviceContext);
+            ptr =  new D3D11VertexArray(desc, m_Device, m_DeviceContext);
         }
+        m_VertexArrays.push_back(ptr);
+        return ptr;
     }
 
     ConstantBuffer *D3D11Context::createConstantBuffer(const ConstantBufferDesc &desc) {
+        ConstantBuffer* ptr;
         auto shaderStage = desc.m_ShaderStage;
         switch (shaderStage) {
-            case SR_SHADER_VERTEX:      return new D3D11ConstantBufferVertex(desc, m_Device, m_DeviceContext);
-            case SR_SHADER_FRAGMENT:    return new D3D11ConstantBufferPixel(desc, m_Device, m_DeviceContext);
-            case SR_SHADER_GEOMETRY:    return new D3D11ConstantBufferGeometry(desc, m_Device, m_DeviceContext);
+            case SR_SHADER_VERTEX:      ptr = new D3D11ConstantBufferVertex(desc, m_Device, m_DeviceContext); break;
+            case SR_SHADER_FRAGMENT:    ptr = new D3D11ConstantBufferPixel(desc, m_Device, m_DeviceContext); break;
+            case SR_SHADER_GEOMETRY:    ptr = new D3D11ConstantBufferGeometry(desc, m_Device, m_DeviceContext); break;
             default: {
                 SR_CORE_EXCEPTION("Unsupported shader stage for constant buffer");
                 return nullptr;
             }
         }
+        m_ConstantBuffers.push_back(ptr);
+        return ptr;
     }
 
     FrameBuffer *D3D11Context::createFrameBuffer(const FrameBufferDesc &desc) {
-        return new D3D11FrameBuffer(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11FrameBuffer(desc, m_Device, m_DeviceContext);
+        m_FrameBuffers.push_back(ptr);
+        return ptr;
     }
 
     Texture2D *D3D11Context::createTexture2D(const Texture2DDesc& desc) {
-        return new D3D11Texture2D(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11Texture2D(desc, m_Device, m_DeviceContext);
+        m_Textures2D.push_back(ptr);
+        return ptr;
     }
 }
 
