@@ -29,14 +29,6 @@ namespace Syrius{
 
         void setVerticalSynchronisation(bool enable) override;
 
-        void createImGuiContext() override;
-
-        void destroyImGuiContext() override;
-
-        void onImGuiBegin() override;
-
-        void onImGuiEnd() override;
-
         FramebufferSize getFramebufferSize() override;
 
         std::string getAPIVersion() override;
@@ -59,18 +51,6 @@ namespace Syrius{
 
         int32 getMaxDepthBufferBits() override;
 
-        FrameBuffer* getDefaultFrameBuffer() override;
-
-        void setClearColor(float r, float g, float b, float a) override;
-
-        void clear() override;
-
-        void draw(VertexArray* vao) override;
-
-        void drawInstanced(VertexArray* vao, uint32 instanceCount) override;
-
-        void onResize(uint32 width, uint32 height) override;
-
         ShaderModule* createShaderModule(const ShaderModuleDesc& desc) override;
 
         Shader* createShader(const ShaderDesc& desc) override;
@@ -87,6 +67,16 @@ namespace Syrius{
 
         Texture2D* createTexture2D(const Texture2DDesc& desc) override;
 
+    protected:
+
+        void createImGuiContext() override;
+
+        void destroyImGuiContext() override;
+
+        void onImGuiBegin() override;
+
+        void onImGuiEnd() override;
+
     private:
         HWND& m_Hwnd;
 
@@ -97,8 +87,6 @@ namespace Syrius{
         ImGuiContext *m_ImGuiContext;
 
         D3D_FEATURE_LEVEL m_D3DVersion;
-
-        D3D11DefaultFrameBuffer* m_DefaultFrameBuffer;
 
     };
 

@@ -14,6 +14,8 @@
 
 namespace Syrius{
 
+    class SyriusWindow;
+
     struct SR_API ContextDesc{
         FrameBufferDesc m_DefaultFrameBufferDesc    = FrameBufferDesc();
         uint32 m_BackBufferCount    = 1;
@@ -43,14 +45,6 @@ namespace Syrius{
 
         virtual void setVerticalSynchronisation(bool enable) = 0;
 
-        virtual void createImGuiContext() = 0;
-
-        virtual void destroyImGuiContext() = 0;
-
-        virtual void onImGuiBegin() = 0;
-
-        virtual void onImGuiEnd() = 0;
-
         [[nodiscard]] SR_SUPPORTED_API getType() const;
 
         [[nodiscard]] bool isVerticalSyncEnabled() const;
@@ -77,17 +71,23 @@ namespace Syrius{
 
         virtual FramebufferSize getFramebufferSize() = 0;
 
-        virtual FrameBuffer* getDefaultFrameBuffer() = 0;
+        FrameBuffer* getDefaultFrameBuffer();
 
-        virtual void setClearColor(float r, float g, float b, float a) = 0;
+        void setClearColor(float r, float g, float b, float a);
 
-        virtual void clear() = 0;
+        void setClearColor(FrameBuffer* frameBuffer, float r, float g, float b, float a);
 
-        virtual void draw(VertexArray* vao) = 0;
+        void clear();
 
-        virtual void drawInstanced(VertexArray* vao, uint32 instanceCount) = 0;
+        void clear(FrameBuffer* frameBuffer);
 
-        virtual void onResize(uint32 width, uint32 height) = 0;
+        void draw(VertexArray* vao);
+
+        void drawInstanced(VertexArray* vao, uint32 instanceCount);
+
+        void onResize(uint32 width, uint32 height);
+
+        void onResize(FrameBuffer* frameBuffer, uint32 width, uint32 height);
 
         virtual ShaderModule* createShaderModule(const ShaderModuleDesc& desc) = 0;
 
@@ -111,9 +111,20 @@ namespace Syrius{
 
         explicit Context(const ContextDesc& desc);
 
+        virtual void createImGuiContext() = 0;
+
+        virtual void destroyImGuiContext() = 0;
+
+        virtual void onImGuiBegin() = 0;
+
+        virtual void onImGuiEnd() = 0;
+
+        friend SyriusWindow;
+
     protected:
 
         bool m_VerticalSync;
+        FrameBuffer* m_DefaultFrameBuffer;
 
     private:
 

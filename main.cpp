@@ -43,7 +43,7 @@ struct Transformation{
 int main() {
     try{
 
-        syriusInit();
+        syriusCoreInit();
         setDebugMessageCallback(messageCallback);
 
         WindowDesc wDesc;
@@ -158,17 +158,12 @@ int main() {
                 }
             }
 
-
-            fbo->bind();
-            fbo->clear();
-
+            context->clear(fbo);
             cb->bind();
             texture->bind(0);
             shader->bind();
             context->drawInstanced(vao, 100);
-            fbo->unbind();
 
-            context->getDefaultFrameBuffer()->bind();
             context->clear();
 
             fbo->getColorAttachment(0)->bind(0);
@@ -195,7 +190,7 @@ int main() {
         window->releaseContext();
         delete window;
 
-        syriusTerminate();
+        syriusCoreTerminate();
 
     } catch (std::exception& e){
         std::cerr << e.what() << std::endl;

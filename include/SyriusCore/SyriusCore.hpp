@@ -24,9 +24,9 @@
 
 namespace Syrius {
 
-    SR_API void syriusInit();
+    SR_API void syriusCoreInit();
 
-    SR_API void syriusTerminate();
+    SR_API void syriusCoreTerminate();
 
     SR_API Time getStartupTime();
 

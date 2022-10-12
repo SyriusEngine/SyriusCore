@@ -59,6 +59,7 @@ namespace Syrius{
     }
 
     void D3D11FrameBuffer::onResize(uint32 width, uint32 height) {
+        bind();
         m_Width = width;
         m_Height = height;
         m_Viewport.Width = static_cast<float>(m_Width);
@@ -69,6 +70,7 @@ namespace Syrius{
     }
 
     void D3D11FrameBuffer::clear() {
+        bind();
         for (const auto renderTargetView : m_RenderTargetViews){
             m_DeviceContext->ClearRenderTargetView(renderTargetView, m_ClearColor);
         }
@@ -189,6 +191,7 @@ namespace Syrius{
     }
 
     void D3D11DefaultFrameBuffer::onResize(uint32 width, uint32 height) {
+        bind();
         m_Width = width;
         m_Height = height;
         m_Viewport.Width = static_cast<float>(m_Width);
@@ -216,6 +219,7 @@ namespace Syrius{
     }
 
     void D3D11DefaultFrameBuffer::clear() {
+        bind();
         m_DeviceContext->ClearRenderTargetView(m_BackRenderTarget, m_ClearColor);
     }
 }

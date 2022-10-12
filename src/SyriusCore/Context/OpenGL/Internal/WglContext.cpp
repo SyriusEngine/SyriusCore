@@ -52,7 +52,7 @@ namespace Syrius{
         wglMakeCurrent(m_HardwareDeviceContext, m_Context);
         loadExtensions();
 
-        initGl();
+        initGl(desc.m_DefaultFrameBufferDesc);
 
         SR_CORE_POSTCONDITION(m_HardwareDeviceContext, "Failed to create hardware device context")
         SR_CORE_POSTCONDITION(m_Context, "Failed to create context")

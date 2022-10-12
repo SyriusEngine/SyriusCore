@@ -74,30 +74,6 @@ namespace Syrius{
         return 0;
     }
 
-    FrameBuffer *VulkanContext::getDefaultFrameBuffer() {
-        return nullptr;
-    }
-
-    void VulkanContext::setClearColor(float r, float g, float b, float a) {
-
-    }
-
-    void VulkanContext::clear() {
-
-    }
-
-    void VulkanContext::draw(VertexArray *vao) {
-
-    }
-
-    void VulkanContext::drawInstanced(VertexArray *vao, uint32 instanceCount) {
-
-    }
-
-    void VulkanContext::onResize(uint32 width, uint32 height) {
-
-    }
-
     ShaderModule *VulkanContext::createShaderModule(const ShaderModuleDesc &desc) {
         return new VulkanShaderModule(desc, m_Device);
     }
