@@ -31,10 +31,10 @@ namespace Syrius{
     } SR_WINDOW_ICON;
 
     struct WindowDesc{
-        int32 m_PosX = 200;
-        int32 m_PosY = 200;
-        uint32 m_Width = 800;
-        uint32 m_Height = 600;
+        int32 m_PosX            = 200;
+        int32 m_PosY            = 200;
+        uint32 m_Width          = SR_DEFAULT_WIDTH;
+        uint32 m_Height         = SR_DEFAULT_HEIGHT;
         std::string m_Title;
         SR_WINDOW_STYLE m_Style = SR_WINDOW_STYLE_DEFAULT;
     };
@@ -67,13 +67,13 @@ namespace Syrius{
 
         void createImGuiContext();
 
-        void releaseImGuiContext();
+        void destroyImGuiContext();
 
         void onImGuiBegin();
 
         void onImGuiEnd();
 
-        void releaseContext();
+        void destroyContext();
 
         virtual void close() = 0;
 

@@ -38,6 +38,8 @@ namespace Syrius {
 
     SR_API SyriusWindow* createWindow(const WindowDesc& windowDesc);
 
+    SR_API void destroyWindow(SyriusWindow* window);
+
     SR_API void setDebugMessageCallback(handleDebugMessageFunc callback);
 
     SR_API Time getTime();

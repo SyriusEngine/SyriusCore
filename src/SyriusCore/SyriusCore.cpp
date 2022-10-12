@@ -31,6 +31,10 @@ namespace Syrius {
         return CoreCommand::createWindow(windowDesc);
     }
 
+    void destroyWindow(SyriusWindow* window){
+        CoreCommand::destroyWindow(window);
+    }
+
     void setDebugMessageCallback(handleDebugMessageFunc callback){
         DebugMessageHandler::setDebugMessageHandler(callback);
     }

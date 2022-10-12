@@ -37,6 +37,8 @@ namespace Syrius{
 
         static SyriusWindow* createWindow(const WindowDesc& windowDesc);
 
+        static void destroyWindow(SyriusWindow* window);
+
         static std::vector<std::string> getVulkanExtensionNames();
 
         static std::vector<std::string> getVulkanLayerNames();
@@ -51,6 +53,8 @@ namespace Syrius{
 
         static PlatformAPI* m_PlatformAPI;
         static VulkanInterface* m_VulkanInterface;
+
+        static std::vector<SyriusWindow*> m_WindowInstances;
     };
 
 }

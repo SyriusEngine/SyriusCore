@@ -11,6 +11,8 @@ namespace Syrius{
     PlatformAPI* CoreCommand::m_PlatformAPI = nullptr;
     VulkanInterface* CoreCommand::m_VulkanInterface = nullptr;
 
+    std::vector<SyriusWindow*> CoreCommand::m_WindowInstances;
+
 
     void CoreCommand::init() {
         if (!m_CoreCommandInstances){
@@ -130,7 +132,14 @@ namespace Syrius{
     }
 
     SyriusWindow *CoreCommand::createWindow(const WindowDesc &windowDesc) {
-        return m_PlatformAPI->createWindow(windowDesc);
+        auto ptr = m_PlatformAPI->createWindow(windowDesc);
+        m_WindowInstances.push_back(ptr);
+        return ptr;
+    }
+
+    void CoreCommand::destroyWindow(SyriusWindow *window) {
+        m_WindowInstances.erase(std::remove(m_WindowInstances.begin(), m_WindowInstances.end(), window), m_WindowInstances.end());
+        delete window;
     }
 
     std::vector<std::string> CoreCommand::getVulkanExtensionNames() {
@@ -144,5 +153,6 @@ namespace Syrius{
     VulkanInstance *CoreCommand::getVulkanInstance() {
         return m_VulkanInterface->getInstance();
     }
+
 
 }

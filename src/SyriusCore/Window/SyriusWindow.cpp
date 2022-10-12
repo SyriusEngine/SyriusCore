@@ -81,7 +81,7 @@ namespace Syrius{
         m_ImGuiInstances++;
     }
 
-    void SyriusWindow::releaseImGuiContext() {
+    void SyriusWindow::destroyImGuiContext() {
         SR_CORE_PRECONDITION(m_Context, "A valid context must be created in order to destroy an ImGui context")
         SR_CORE_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
 
@@ -108,7 +108,7 @@ namespace Syrius{
         m_EventQueue.push_back(event);
     }
 
-    void SyriusWindow::releaseContext() {
+    void SyriusWindow::destroyContext() {
         SR_CORE_PRECONDITION(m_Context, "A valid context must be created in order to destroy the context")
         SR_CORE_PRECONDITION(!m_UseImGui, "ImGui is still using this context, cannot destroy the context")
 

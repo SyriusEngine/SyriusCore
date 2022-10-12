@@ -185,9 +185,9 @@ int main() {
         }
 
 
-        window->releaseImGuiContext();
-        window->releaseContext();
-        delete window;
+        window->destroyImGuiContext();
+        window->destroyContext();
+        destroyWindow(window);
 
         syriusCoreTerminate();
 
