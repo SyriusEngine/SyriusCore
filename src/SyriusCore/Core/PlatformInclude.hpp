@@ -13,6 +13,7 @@
 #include <map>
 
 #include "../../../../include/SyriusCore/Core/SyriusCoreInclude.hpp"
+#include "MemoryAllocationTracker.hpp"
 
 #include <vulkan/vulkan.hpp>
 
@@ -49,5 +50,6 @@ namespace Syrius{
                 std::chrono::system_clock::now().time_since_epoch())
                 .count();
     }
+
 }
 

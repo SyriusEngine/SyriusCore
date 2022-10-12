@@ -44,6 +44,12 @@ namespace Syrius {
 
     SR_API Time getTimeMilli();
 
+    SR_API Size getAllocatedMemory();
+
+    SR_API Size getFreedMemory();
+
+    SR_API Size getMemoryUsage();
+
     template<typename T>
     SR_API T getRandom(T min, T max);
 

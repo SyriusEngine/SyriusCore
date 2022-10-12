@@ -43,6 +43,18 @@ namespace Syrius {
         return getTimeSinceEpochMilli();
     }
 
+    Size getAllocatedMemory(){
+        return MemoryAllocationTracker::getTotalAllocated();
+    }
+
+    Size getFreedMemory(){
+        return MemoryAllocationTracker::getTotalFreed();
+    }
+
+    Size getMemoryUsage(){
+        return MemoryAllocationTracker::getUsage();
+    }
+
     template<>
     SR_API float getRandom(float min, float max){
         SR_CORE_PRECONDITION(min < max, "Min value must be smaller than max value");

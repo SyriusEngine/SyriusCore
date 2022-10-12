@@ -13,6 +13,7 @@ namespace Syrius{
         float m_MinDepth = 0.0f;
         float m_MaxDepth = 1.0f;
         float m_ClearColor[4] = {0.0f, 0.0f, 0.0f, 1.0f};
+        float m_ClearDepth = 1.0f;
         bool m_EnableDepthTest = false;
         bool m_DepthTestReadOnly = false;
         SR_DEPTH_FUNC m_DepthFunc = SR_DEPTH_FUNC_LESS;

@@ -180,6 +180,9 @@ int main() {
             if (ImGui::ColorPicker3("BackGroundColor", bgc)){
                 context->setClearColor(bgc[0], bgc[1], bgc[2], 1.0f);
             }
+            ImGui::Text("Allocated Memory: %zu", getAllocatedMemory());
+            ImGui::Text("Freed Memory: %zu", getFreedMemory());
+            ImGui::Text("Memory Usage: %zu", getMemoryUsage());
             ImGui::End();
 
             window->onImGuiEnd();
