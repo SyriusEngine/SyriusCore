@@ -57,8 +57,6 @@ namespace Syrius{
         CoreCommand::initPlatformGlad(gDesc);
         delete gDesc;
 
-        CoreCommand::init();
-
         // create the actual context
         const int attribList[] =
             {
@@ -90,7 +88,6 @@ namespace Syrius{
 
         // delete the throwaway context
         wglDeleteContext(tempContext);
-        CoreCommand::terminateGlad();
 
         initGl(desc.m_DefaultFrameBufferDesc);
         loadExtensions();
