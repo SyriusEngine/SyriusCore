@@ -19,11 +19,12 @@ namespace Syrius{
     struct SR_API ContextDesc{
         FrameBufferDesc m_DefaultFrameBufferDesc    = FrameBufferDesc();
         uint32 m_BackBufferCount    = 1;
-        uint32 m_DepthBits          = 24;
-        uint32 m_StencilBits        = 8;
-        uint32 m_RedBits            = 8;
-        uint32 m_BlueBits           = 8;
-        uint32 m_GreenBits          = 8;
+        uint8 m_DepthBits          = 24;
+        uint8 m_StencilBits        = 8;
+        uint8 m_RedBits            = 8;
+        uint8 m_BlueBits           = 8;
+        uint8 m_GreenBits          = 8;
+        uint8 m_AlphaBits          = 8;
         SR_SUPPORTED_API m_API      = SR_API_OPENGL;
     };
 

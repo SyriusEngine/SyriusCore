@@ -8,51 +8,92 @@ namespace Syrius{
 
     WglContext::WglContext(HWND &hwnd, const ContextDesc& desc)
     : GlContext(desc),
-      m_Hwnd(hwnd),
-      m_Context(nullptr),
-      m_HardwareDeviceContext(nullptr),
-      m_ImGuiContext(nullptr){
+    m_Hwnd(hwnd),
+    m_Context(nullptr),
+    m_HardwareDeviceContext(nullptr),
+    m_ImGuiContext(nullptr){
+        m_HardwareDeviceContext = GetDC(m_Hwnd);
+
+        uint8_t pixelType = desc.m_RedBits + desc.m_GreenBits + desc.m_BlueBits + desc.m_AlphaBits;
+
         DWORD pixelFormatFlags = PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_DOUBLEBUFFER;
         PIXELFORMATDESCRIPTOR pixelDesc = {
                 sizeof(pixelDesc),
                 1,
                 pixelFormatFlags,
-                32,
+                pixelType,
+                0,
+                desc.m_RedBits,
+                0,
+                desc.m_GreenBits,
+                0,
+                desc.m_BlueBits,
+                0,
+                desc.m_AlphaBits,
                 0,
                 0,
                 0,
                 0,
                 0,
                 0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                24,
-                8,
+                desc.m_DepthBits,
+                desc.m_StencilBits,
                 PFD_MAIN_PLANE,
                 0,
                 0,
                 0,
                 0
         };
-        m_HardwareDeviceContext = GetDC(m_Hwnd);
+
+        int32 tempPixelFormat = ChoosePixelFormat(m_HardwareDeviceContext, &pixelDesc);
+        bool pfRes = SetPixelFormat(m_HardwareDeviceContext, tempPixelFormat, &pixelDesc);
+        SR_CORE_ASSERT(pfRes, "Failed to set pixel format");
+
+        //create a throwaway context to get the function pointers
+        HGLRC tempContext = wglCreateContext(m_HardwareDeviceContext);
+        wglMakeCurrent(m_HardwareDeviceContext, tempContext);
 
         auto gDesc = new GlPlatformDescWin32(m_HardwareDeviceContext);
         CoreCommand::initPlatformGlad(gDesc);
         delete gDesc;
 
-        int pixelFormat = ChoosePixelFormat(m_HardwareDeviceContext, &pixelDesc);
-        SetPixelFormat(m_HardwareDeviceContext, pixelFormat, &pixelDesc);
-        m_Context = wglCreateContext(m_HardwareDeviceContext);
+        CoreCommand::init();
+
+        // create the actual context
+        const int attribList[] =
+            {
+                WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
+                WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
+                WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
+                WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
+                WGL_COLOR_BITS_ARB, pixelType,
+                WGL_DEPTH_BITS_ARB, desc.m_DepthBits,
+                WGL_STENCIL_BITS_ARB, desc.m_StencilBits,
+                0, // End
+            };
+
+        int pixelFormat;
+        UINT numFormats;
+
+        BOOL result = wglChoosePixelFormatARB(m_HardwareDeviceContext, attribList, nullptr, 1, &pixelFormat, &numFormats);
+        SR_CORE_ASSERT(result, "Failed to choose pixel format");
+        int attributes[] =
+            {
+                WGL_CONTEXT_MAJOR_VERSION_ARB,	4,
+                WGL_CONTEXT_MINOR_VERSION_ARB,	6,
+                WGL_CONTEXT_PROFILE_MASK_ARB,	WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+                0 // End of attributes
+            };
+        m_Context = wglCreateContextAttribsARB(m_HardwareDeviceContext, nullptr, attributes);
+        // set the actual context as the current context
         wglMakeCurrent(m_HardwareDeviceContext, m_Context);
-        loadExtensions();
+
+        // delete the throwaway context
+        wglDeleteContext(tempContext);
+        CoreCommand::terminateGlad();
 
         initGl(desc.m_DefaultFrameBufferDesc);
+        loadExtensions();
 
         SR_CORE_POSTCONDITION(m_HardwareDeviceContext, "Failed to create hardware device context")
         SR_CORE_POSTCONDITION(m_Context, "Failed to create context")
