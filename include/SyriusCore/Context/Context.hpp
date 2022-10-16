@@ -90,6 +90,8 @@ namespace Syrius{
 
         void onResize(FrameBuffer* frameBuffer, uint32 width, uint32 height);
 
+        void bindDefaultFrameBuffer();
+
         void destroyShaderModule(ShaderModule* shaderModule);
 
         void destroyShader(Shader* shader);

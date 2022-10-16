@@ -163,10 +163,10 @@ int main() {
             texture->bind(0);
             shader->bind();
             context->drawInstanced(vao, 100);
+            fbo->unbind();
 
             context->clear();
-
-            context->getDefaultFrameBuffer()->bind();
+            context->bindDefaultFrameBuffer();
             fbo->getColorAttachment(0)->bind(0);
             context->drawInstanced(vao, 1);
 

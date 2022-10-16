@@ -90,6 +90,10 @@ namespace Syrius{
         frameBuffer->setSize(width, height);
     }
 
+    void Context::bindDefaultFrameBuffer() {
+        m_DefaultFrameBuffer->bind();
+    }
+
     void Context::destroyShaderModule(ShaderModule *shaderModule) {
         m_ShaderModules.erase(std::remove(m_ShaderModules.begin(), m_ShaderModules.end(), shaderModule), m_ShaderModules.end());
         delete shaderModule;
