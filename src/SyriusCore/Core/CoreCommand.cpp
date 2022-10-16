@@ -60,7 +60,12 @@ namespace Syrius{
                 SR_CORE_MESSAGE("OpenGL initialized with version: " + std::to_string(major) + "." + std::to_string(minor))
                 glEnable(GL_DEBUG_OUTPUT);
                 glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+#if defined(SR_COMPILER_MSVC)
+                auto func = (GLDEBUGPROC) DebugMessageHandler::pushOpenGLMessageCallback;
+                glDebugMessageCallback(func, nullptr);
+#else
                 glDebugMessageCallback(DebugMessageHandler::pushOpenGLMessageCallback, nullptr);
+#endif
 
             }
             else {
