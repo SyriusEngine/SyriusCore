@@ -64,7 +64,9 @@ set(SYRIUSCORE_CORE_SRC
         src/SyriusCore/Core/CoreCommand.cpp
         src/SyriusCore/Core/Message.cpp
         src/SyriusCore/Core/Vulkan/VulkanInstance.cpp
-        src/SyriusCore/Core/Vulkan/VulkanInterface.cpp src/SyriusCore/Core/MemoryAllocationTracker.cpp src/SyriusCore/Core/MemoryAllocationTracker.hpp)
+        src/SyriusCore/Core/Vulkan/VulkanInterface.cpp
+        src/SyriusCore/Core/MemoryAllocationTracker.cpp
+        src/SyriusCore/Core/MemoryAllocationTracker.hpp)
 
 set(SYRIUSCORE_UTILS_SRC
         src/SyriusCore/Utils/Image.cpp)
