@@ -6,10 +6,10 @@ layout(location = 1) in vec2 textureCoords;
 out vec2 texCoords;
 
 layout(std140, binding = 0) uniform Transform {
-    vec4 trans;
+    mat4 trans;
 };
 
 void main(){
     texCoords = textureCoords;
-    gl_Position = vec4(position.xyz + trans.xyz, 1.0) ;
+    gl_Position = trans * vec4(position, 1.0);
 }

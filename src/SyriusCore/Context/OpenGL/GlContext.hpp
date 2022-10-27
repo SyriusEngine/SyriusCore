@@ -20,6 +20,13 @@ namespace Syrius{
 
         virtual void makeCurrent() = 0;
 
+        inline void ensureCurrentContext(){
+            if (m_ActiveContextID != m_ID){
+                makeCurrent();
+                m_ActiveContextID = m_ID;
+            }
+        }
+
         std::string getAPIVersion() override;
 
         std::string getDeviceName() override;
@@ -60,6 +67,13 @@ namespace Syrius{
         explicit GlContext(const ContextDesc& desc);
         
         void initGl(const FrameBufferDesc& desc);
+
+    private:
+
+        static std::unordered_map<uint64, GlContext*> m_Contexts;
+        static uint64 m_ActiveContextID;
+
+        uint64 m_ID;
 
     };
 

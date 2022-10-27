@@ -1,5 +1,5 @@
 cbuffer Transform: register (b0){
-    float4 translate[100];
+    matrix<float, 4, 4> translate;
 }
 
 struct VSOut {
@@ -9,7 +9,8 @@ struct VSOut {
 
 VSOut main( float3 pos : Position, float2 texCoords : TexCoord, uint iid: SV_InstanceID){
 	VSOut vso;
-	vso.pos = float4(pos.x + translate[iid].x, pos.y + translate[iid].y, pos.z,1.0f);
+	float4 extPos = float4(pos, 1.0f);
+	vso.pos = mul(extPos, translate);
 	vso.texCoords = texCoords;
 	return vso;
 }

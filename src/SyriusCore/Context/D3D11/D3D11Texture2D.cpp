@@ -11,6 +11,10 @@ namespace Syrius{
     m_Texture(nullptr),
     m_TextureView(nullptr),
     m_Sampler(nullptr){
+        if (desc.m_Image->getChannelCount() == 3){
+            desc.m_Image->extendAlpha();
+        }
+
         D3D11_TEXTURE2D_DESC textureDesc = { 0 };
         textureDesc.Width = desc.m_Image->getWidth();
         textureDesc.Height = desc.m_Image->getHeight();

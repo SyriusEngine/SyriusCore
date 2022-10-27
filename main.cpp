@@ -3,6 +3,9 @@
 #include "include/SyriusCore/SyriusCore.hpp"
 #include "OpenGLTest.hpp"
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 using namespace Syrius;
 
 void messageCallback(const Syrius::Message& msg){
@@ -22,10 +25,10 @@ struct Vertex{
 };
 
 const std::vector<Vertex> vertices = {
-        {{-0.05f, -0.05f, 0.0f}, {0.0f, 0.0f}},
-        {{0.05f, -0.05f, 0.0f}, {1.0f, 0.0f}},
-        {{0.05f, 0.05f, 0.0f}, {1.0f, 1.0f}},
-        {{-0.05f, 0.05f, 0.0f}, {0.0f, 1.0f}}
+        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
+        {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
+        {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}},
+        {{-0.5f, 0.5f, 0.0f}, {0.0f, 1.0f}}
 };
 
 const std::vector<uint32> indices = {
@@ -43,6 +46,17 @@ struct Transformation{
 int main() {
     try{
 
+        const SR_SUPPORTED_API api = Syrius::SR_API_OPENGL;
+        SR_SHADER_CODE_TYPE shaderCodeType = SR_SHADER_CODE_GLSL;
+        std::string vertexShaderPath = "./Resources/Shaders/GLSL/Basic.vert";
+        std::string fragmentShaderPath = "./Resources/Shaders/GLSL/Basic.frag";
+        if (api == SR_API_D3D11){
+            shaderCodeType = SR_SHADER_CODE_HLSL;
+            vertexShaderPath = "./Resources/Shaders/HLSL/Basic-vs.hlsl";
+            fragmentShaderPath = "./Resources/Shaders/HLSL/Basic-fs.hlsl";
+        }
+
+
         syriusCoreInit();
         setDebugMessageCallback(messageCallback);
 
@@ -57,7 +71,7 @@ int main() {
         ContextDesc cDesc;
         cDesc.m_DefaultFrameBufferDesc.m_Width = 1280;
         cDesc.m_DefaultFrameBufferDesc.m_Height = 720;
-        cDesc.m_API = Syrius::SR_API_OPENGL;
+        cDesc.m_API = api;
         auto context = window->createContext(cDesc);
         context->setVerticalSynchronisation(true);
         context->setClearColor(0.2f, 0.3f, 0.5f, 1.0f);
@@ -83,8 +97,8 @@ int main() {
 
         ShaderModuleDesc vsDesc;
         vsDesc.m_Type = SR_SHADER_VERTEX;
-        vsDesc.m_CodeType = SR_SHADER_CODE_GLSL;
-        vsDesc.m_Code = "./Resources/Shaders/GLSL/Basic.vert";
+        vsDesc.m_CodeType = shaderCodeType;
+        vsDesc.m_Code = vertexShaderPath;
         vsDesc.m_LoadType = SR_LOAD_FROM_FILE;
         vsDesc.m_EntryPoint = "main";
         vsDesc.m_CodeLength = 0;
@@ -92,8 +106,8 @@ int main() {
 
         ShaderModuleDesc fsDesc;
         fsDesc.m_Type = SR_SHADER_FRAGMENT;
-        fsDesc.m_CodeType = SR_SHADER_CODE_GLSL;
-        fsDesc.m_Code = "./Resources/Shaders/GLSL/Basic.frag";
+        fsDesc.m_CodeType = shaderCodeType;
+        fsDesc.m_Code = fragmentShaderPath;
         fsDesc.m_LoadType = SR_LOAD_FROM_FILE;
         fsDesc.m_EntryPoint = "main";
         fsDesc.m_CodeLength = 0;
@@ -111,21 +125,12 @@ int main() {
         vaoDesc.m_IndexBuffer = ibo;
         auto vao = context->createVertexArray(vaoDesc);
 
-        Transformation transData[100];
-        int32 index = 0;
-        for (int32 x = -5; x < 5; x++){
-            for (int32 y = -5; y < 5; y++){
-                transData[index].x = (float) x / 10.0f;
-                transData[index].y = (float) y / 10.0f;
-                transData[index].z = 0.0f;
-                transData[index].w = 1.0f;
-                index++;
-            }
-        }
+        glm::mat4 transform = glm::mat4(1.0f);
+
         ConstantBufferDesc cbDesc;
-        cbDesc.m_Size = sizeof(transData);
+        cbDesc.m_Size = sizeof(transform);
         cbDesc.m_Type = SR_BUFFER_DYNAMIC;
-        cbDesc.m_Data = &transData[0];
+        cbDesc.m_Data = &transform[0];
         cbDesc.m_BlockName = "Transform";
         cbDesc.m_BindingIndex = 0;
         cbDesc.m_ShaderStage = SR_SHADER_VERTEX;
@@ -134,15 +139,12 @@ int main() {
         auto img = createImage("./Resources/Textures/awesomeface.png");
         Texture2DDesc texDesc;
         texDesc.m_Image = img;
-        auto texture = context->createTexture2D(texDesc);
+        auto texture1 = context->createTexture2D(texDesc);
         delete img;
-
-        FrameBufferDesc fbDesc;
-        fbDesc.m_Width = 1280;
-        fbDesc.m_Height = 720;
-        fbDesc.m_ColorAttachments.emplace_back();
-        auto fbo = context->createFrameBuffer(fbDesc);
-        fbo->setClearColor(0.6f, 0.5f, 0.2f, 1.0f);
+        img = createImage("./Resources/Textures/Logo.jpg");
+        texDesc.m_Image = img;
+        auto texture2 = context->createTexture2D(texDesc);
+        delete img;
 
         while (window->isOpen()){
 
@@ -157,24 +159,23 @@ int main() {
                 }
             }
 
-            context->clear(fbo);
-            fbo->bind();
+            context->clear();
             cb->bind();
-            texture->bind(0);
+            texture1->bind(0);
+            texture2->bind(1);
             shader->bind();
             context->drawInstanced(vao, 100);
-            fbo->unbind();
-
-            context->clear();
-            context->bindDefaultFrameBuffer();
-            fbo->getColorAttachment(0)->bind(0);
-            context->drawInstanced(vao, 1);
 
             window->onImGuiBegin();
             ImGui::Begin("Info");
             static float bgc[3] = {0.2f, 0.3f, 0.5f};
             if (ImGui::ColorPicker3("BackGroundColor", bgc)){
                 context->setClearColor(bgc[0], bgc[1], bgc[2], 1.0f);
+            }
+            static glm::vec3 translation(0.0f, 0.0f, 0.0f);
+            if (ImGui::SliderFloat3("Translation", &translation.x, -1.0f, 1.0f)){
+                transform = glm::translate(glm::mat4(1.0f), translation);
+                cb->setData(&transform[0]);
             }
             ImGui::Text("Allocated Memory: %zu", getAllocatedMemory());
             ImGui::Text("Freed Memory: %zu", getFreedMemory());
