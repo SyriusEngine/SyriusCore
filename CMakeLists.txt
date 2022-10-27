@@ -168,9 +168,10 @@ endif()
 target_link_libraries(syrius-core ${SYRIUS_CORE_LIBS})
 
 include_directories(/include/)
+include_directories(/glm/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(SyriusCoreDev main.cpp )
+add_executable(SyriusCoreDev main.cpp Driver.cpp Driver.hpp)
 if (MSVC)
     target_link_libraries(SyriusCoreDev syrius-core)
 else()

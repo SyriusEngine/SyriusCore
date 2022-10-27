@@ -1,7 +1,6 @@
 #include <iostream>
 #define SR_IMPORT_DLL
 #include "include/SyriusCore/SyriusCore.hpp"
-#include "OpenGLTest.hpp"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -24,24 +23,37 @@ struct Vertex{
     float m_TexCoords[2];
 };
 
-const std::vector<Vertex> vertices = {
-        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
-        {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}},
-        {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}},
-        {{-0.5f, 0.5f, 0.0f}, {0.0f, 1.0f}}
+struct Mesh{
+    std::vector<Vertex> vertices;
+    std::vector<uint32> indices;
 };
 
-const std::vector<uint32> indices = {
-    0, 2, 1,
-    0, 3, 2
-};
+Mesh createSphere(uint32 rings, uint32 sectors){
+    Mesh mesh;
+    float const R = 1.0f/(float)(rings-1);
+    float const S = 1.0f/(float)(sectors-1);
+    uint32 r, s;
 
-struct Transformation{
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
-    float w = 0.0f;
-};
+    for(r = 0; r < rings; r++) for(s = 0; s < sectors; s++) {
+            float const y = sin( -M_PI_2 + M_PI * r * R );
+            float const x = cos(2*M_PI * s * S) * sin( M_PI * r * R );
+            float const z = sin(2*M_PI * s * S) * sin( M_PI * r * R );
+
+            mesh.vertices.push_back({{x, y, z},  {s*S, r*R}});
+        }
+
+    for(r = 0; r < rings-1; r++) for(s = 0; s < sectors-1; s++) {
+            mesh.indices.push_back(r * sectors + s);
+            mesh.indices.push_back(r * sectors + (s+1));
+            mesh.indices.push_back((r+1) * sectors + (s+1));
+
+            mesh.indices.push_back(r * sectors + s);
+            mesh.indices.push_back((r+1) * sectors + (s+1));
+            mesh.indices.push_back((r+1) * sectors + s);
+        }
+    return mesh;
+}
+
 
 int main() {
     try{
@@ -59,6 +71,8 @@ int main() {
 
         syriusCoreInit();
         setDebugMessageCallback(messageCallback);
+
+        Mesh sphere = createSphere(32, 32);
 
         WindowDesc wDesc;
         wDesc.m_PosX = 200;
@@ -83,14 +97,14 @@ int main() {
 
         VertexBufferDesc vboDesc;
         vboDesc.m_Type = SR_BUFFER_DEFAULT;
-        vboDesc.m_Data = &vertices[0];
+        vboDesc.m_Data = &sphere.vertices[0];
         vboDesc.m_Layout = layout;
-        vboDesc.m_Count = vertices.size();
+        vboDesc.m_Count = sphere.vertices.size();
         auto vbo = context->createVertexBuffer(vboDesc);
 
         IndexBufferDesc iboDesc;
-        iboDesc.m_Data = &indices[0];
-        iboDesc.m_Count = indices.size();
+        iboDesc.m_Data = &sphere.indices[0];
+        iboDesc.m_Count = sphere.indices.size();
         iboDesc.m_Type = SR_BUFFER_DEFAULT;
         iboDesc.m_DataType = SR_UINT32;
         auto ibo = context->createIndexBuffer(iboDesc);
