@@ -46,7 +46,6 @@ namespace Syrius{
         samplerDesc.Filter = getD3d11TextureFilter(desc.m_MinFilter, desc.m_MagFilter);
         samplerDesc.AddressU = getD3d11TextureAddressMode(desc.m_WrapAddressU);
         samplerDesc.AddressV = getD3d11TextureAddressMode(desc.m_WrapAddressV);
-        samplerDesc.AddressW = getD3d11TextureAddressMode(desc.m_WrapAddressU);
 
         SR_D3D11_CALL(m_Device->CreateSamplerState(&samplerDesc, &m_Sampler));
     }

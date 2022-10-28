@@ -2,11 +2,13 @@
 
 #include "../Utils/Image.hpp"
 #include "Utils.hpp"
+#include "Sampler2D.hpp"
 
 namespace Syrius{
 
     struct SR_API Texture2DDesc{
         Image* m_Image                  = nullptr;
+        Sampler2D* m_Sampler2D          = nullptr;
         SR_TEXTURE_FILTER m_MinFilter   = SR_TEXTURE_FILTER_LINEAR;
         SR_TEXTURE_FILTER m_MagFilter   = SR_TEXTURE_FILTER_LINEAR;
         SR_TEXTURE_WRAP m_WrapAddressU  = SR_TEXTURE_WRAP_REPEAT;

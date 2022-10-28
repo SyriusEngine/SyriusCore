@@ -7,11 +7,12 @@ namespace Syrius{
     m_TextureID(0){
         glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
 
-        glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, getGlTextureFilter(desc.m_MinFilter));
-        glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, getGlTextureFilter(desc.m_MagFilter));
+        auto& samplerDesc = desc.m_Sampler2D->getDesc();
+        glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, getGlTextureFilter(samplerDesc.m_MinFilter));
+        glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, getGlTextureFilter(samplerDesc.m_MagFilter));
 
-        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, getGlTextureWrap(desc.m_WrapAddressU));
-        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, getGlTextureWrap(desc.m_WrapAddressV));
+        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, getGlTextureWrap(samplerDesc.m_WrapU));
+        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, getGlTextureWrap(samplerDesc.m_WrapV));
 
         GLenum format;
         GLint internalFormat;

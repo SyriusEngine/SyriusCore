@@ -10,6 +10,7 @@
 #include "GlTexture2D.hpp"
 #include "GlConstantBuffer.hpp"
 #include "GlFrameBuffer.hpp"
+#include "GlSampler2D.hpp"
 
 namespace Syrius{
 
@@ -63,6 +64,8 @@ namespace Syrius{
 
         Texture2D* createTexture2D(const Texture2DDesc& desc) override;
 
+        Sampler2D* createSampler2D(const Sampler2DDesc& desc) override;
+
     protected:
         explicit GlContext(const ContextDesc& desc);
         
@@ -70,7 +73,6 @@ namespace Syrius{
 
     private:
 
-        static std::unordered_map<uint64, GlContext*> m_Contexts;
         static uint64 m_ActiveContextID;
 
         uint64 m_ID;

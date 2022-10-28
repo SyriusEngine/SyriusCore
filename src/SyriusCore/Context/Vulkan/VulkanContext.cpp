@@ -106,5 +106,9 @@ namespace Syrius{
         return nullptr;
     }
 
+    Sampler2D *VulkanContext::createSampler2D(const Sampler2DDesc &desc) {
+        return nullptr;
+    }
+
 }
 

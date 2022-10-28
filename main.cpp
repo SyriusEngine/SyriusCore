@@ -150,9 +150,16 @@ int main() {
         cbDesc.m_ShaderStage = SR_SHADER_VERTEX;
         auto cb = context->createConstantBuffer(cbDesc);
 
+        Sampler2DDesc samplerDesc;
+        samplerDesc.m_MinFilter = SR_TEXTURE_FILTER_LINEAR;
+        samplerDesc.m_MagFilter = SR_TEXTURE_FILTER_LINEAR;
+
+        auto sampler = context->createSampler2D(samplerDesc);
+
         auto img = createImage("./Resources/Textures/awesomeface.png");
         Texture2DDesc texDesc;
         texDesc.m_Image = img;
+        texDesc.m_Sampler2D = sampler;
         auto texture1 = context->createTexture2D(texDesc);
         delete img;
         img = createImage("./Resources/Textures/Logo.jpg");
@@ -175,6 +182,7 @@ int main() {
 
             context->clear();
             cb->bind();
+            sampler->bind(0);
             texture1->bind(0);
             texture2->bind(1);
             shader->bind();

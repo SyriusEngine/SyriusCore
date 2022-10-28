@@ -232,6 +232,10 @@ namespace Syrius{
         m_Textures2D.push_back(ptr);
         return ptr;
     }
+
+    Sampler2D *D3D11Context::createSampler2D(const Sampler2DDesc &desc) {
+        return nullptr;
+    }
 }
 
 #endif
