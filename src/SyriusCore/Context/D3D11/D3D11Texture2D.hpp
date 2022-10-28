@@ -29,7 +29,6 @@ namespace Syrius{
 
         ID3D11Texture2D* m_Texture;
         ID3D11ShaderResourceView* m_TextureView;
-        ID3D11SamplerState* m_Sampler;
     };
 
 }

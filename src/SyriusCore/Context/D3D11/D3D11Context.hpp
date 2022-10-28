@@ -14,6 +14,7 @@
 #include "D3D11Texture2D.hpp"
 #include "D3D11FrameBuffer.hpp"
 #include "D3D11ColorAttachment.hpp"
+#include "D3D11Sampler2D.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 

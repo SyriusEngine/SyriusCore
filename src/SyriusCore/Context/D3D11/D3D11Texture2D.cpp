@@ -9,8 +9,7 @@ namespace Syrius{
     m_Device(device),
     m_Context(context),
     m_Texture(nullptr),
-    m_TextureView(nullptr),
-    m_Sampler(nullptr){
+    m_TextureView(nullptr){
         if (desc.m_Image->getChannelCount() == 3){
             desc.m_Image->extendAlpha();
         }
@@ -41,19 +40,9 @@ namespace Syrius{
         textureViewDesc.Texture2D.MostDetailedMip = 0;
 
         SR_D3D11_CALL(m_Device->CreateShaderResourceView(m_Texture, &textureViewDesc, &m_TextureView));
-
-        D3D11_SAMPLER_DESC samplerDesc = {  };
-        samplerDesc.Filter = getD3d11TextureFilter(desc.m_MinFilter, desc.m_MagFilter);
-        samplerDesc.AddressU = getD3d11TextureAddressMode(desc.m_WrapAddressU);
-        samplerDesc.AddressV = getD3d11TextureAddressMode(desc.m_WrapAddressV);
-
-        SR_D3D11_CALL(m_Device->CreateSamplerState(&samplerDesc, &m_Sampler));
     }
 
     D3D11Texture2D::~D3D11Texture2D() {
-        if (m_Sampler) {
-            m_Sampler->Release();
-        }
         if (m_TextureView) {
             m_TextureView->Release();
         }
@@ -65,7 +54,6 @@ namespace Syrius{
 
     void D3D11Texture2D::bind(uint32_t slot) {
         m_Context->PSSetShaderResources(slot, 1, &m_TextureView);
-        m_Context->PSSetSamplers(slot, 1, &m_Sampler);
     }
 
     void D3D11Texture2D::unbind() {

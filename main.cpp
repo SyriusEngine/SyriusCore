@@ -58,7 +58,7 @@ Mesh createSphere(uint32 rings, uint32 sectors){
 int main() {
     try{
 
-        const SR_SUPPORTED_API api = Syrius::SR_API_OPENGL;
+        const SR_SUPPORTED_API api = Syrius::SR_API_D3D11;
         SR_SHADER_CODE_TYPE shaderCodeType = SR_SHADER_CODE_GLSL;
         std::string vertexShaderPath = "./Resources/Shaders/GLSL/Basic.vert";
         std::string fragmentShaderPath = "./Resources/Shaders/GLSL/Basic.frag";
