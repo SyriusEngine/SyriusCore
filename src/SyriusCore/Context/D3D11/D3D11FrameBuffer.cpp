@@ -119,7 +119,7 @@ namespace Syrius{
                 // Depth test parameters
                 dsDesc.DepthEnable = true;
                 dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-                dsDesc.DepthFunc = getD3d11DepthFunc(desc.m_DepthFunc);
+                dsDesc.DepthFunc = getD3d11ComparisonFunc(desc.m_DepthFunc);
 //                // Stencil test parameters
 //                dsDesc.StencilEnable = true;
 //                dsDesc.StencilReadMask = 0xFF;

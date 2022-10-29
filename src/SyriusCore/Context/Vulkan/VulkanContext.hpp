@@ -57,7 +57,7 @@ namespace Syrius{
 
         Texture2D* createTexture2D(const Texture2DDesc& desc) override;
 
-        Sampler2D* createSampler2D(const Sampler2DDesc& desc) override;
+        Sampler* createSampler2D(const Sampler2DDesc& desc) override;
 
     protected:
 

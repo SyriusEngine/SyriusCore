@@ -233,8 +233,8 @@ namespace Syrius{
         return ptr;
     }
 
-    Sampler2D *D3D11Context::createSampler2D(const Sampler2DDesc &desc) {
-        auto ptr = new D3D11Sampler2D(desc, m_Device, m_DeviceContext);
+    Sampler *D3D11Context::createSampler2D(const Sampler2DDesc &desc) {
+        auto ptr = new D3D11Sampler(desc, m_Device, m_DeviceContext);
         m_Samplers2D.push_back(ptr);
         return ptr;
     }

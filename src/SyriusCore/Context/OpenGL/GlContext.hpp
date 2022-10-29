@@ -10,7 +10,7 @@
 #include "GlTexture2D.hpp"
 #include "GlConstantBuffer.hpp"
 #include "GlFrameBuffer.hpp"
-#include "GlSampler2D.hpp"
+#include "GlSampler.hpp"
 
 namespace Syrius{
 
@@ -64,7 +64,7 @@ namespace Syrius{
 
         Texture2D* createTexture2D(const Texture2DDesc& desc) override;
 
-        Sampler2D* createSampler2D(const Sampler2DDesc& desc) override;
+        Sampler* createSampler2D(const Sampler2DDesc& desc) override;
 
     protected:
         explicit GlContext(const ContextDesc& desc);

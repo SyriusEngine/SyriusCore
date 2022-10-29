@@ -1,17 +1,17 @@
 #pragma once
 
-#include "../../../../include/SyriusCore/Context/Sampler2D.hpp"
+#include "../../../../include/SyriusCore/Context/Sampler.hpp"
 #include "D3D11Utils.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
-    class D3D11Sampler2D: public Sampler2D{
+    class D3D11Sampler: public Sampler{
     public:
-        D3D11Sampler2D(const Sampler2DDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11Sampler(const Sampler2DDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
 
-        ~D3D11Sampler2D() override;
+        ~D3D11Sampler() override;
 
         void bind(uint32 slot) override;
 

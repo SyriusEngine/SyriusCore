@@ -9,13 +9,19 @@ namespace Syrius{
         SR_TEXTURE_FILTER m_MagFilter   = SR_TEXTURE_FILTER_LINEAR;
         SR_TEXTURE_WRAP m_WrapU  = SR_TEXTURE_WRAP_REPEAT;
         SR_TEXTURE_WRAP m_WrapV  = SR_TEXTURE_WRAP_REPEAT;
+        SR_TEXTURE_WRAP m_WrapW  = SR_TEXTURE_WRAP_REPEAT;
+        SR_COMPARISON_FUNC m_ComparisonFunc = SR_COMPARISON_FUNC_NEVER;
+        float m_BorderColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+        float m_MinLOD = 0.0f;
+        float m_MaxLOD = 0.0f;
+        float m_LODBias = 0.0f;
     };
 
-    class Sampler2D{
+    class Sampler{
     public:
-        explicit Sampler2D(const Sampler2DDesc& desc);
+        explicit Sampler(const Sampler2DDesc& desc);
 
-        virtual ~Sampler2D();
+        virtual ~Sampler();
 
         virtual void bind(uint32 slot) = 0;
 

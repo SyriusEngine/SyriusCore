@@ -154,7 +154,7 @@ namespace Syrius{
         }
     }
 
-    D3D11_COMPARISON_FUNC getD3d11DepthFunc(SR_COMPARISON_FUNC func){
+    D3D11_COMPARISON_FUNC getD3d11ComparisonFunc(SR_COMPARISON_FUNC func){
         switch (func){
             case SR_COMPARISON_FUNC_ALWAYS:          return D3D11_COMPARISON_ALWAYS;
             case SR_COMPARISON_FUNC_NEVER:           return D3D11_COMPARISON_NEVER;

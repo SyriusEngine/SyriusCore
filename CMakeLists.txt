@@ -33,7 +33,7 @@ if (WIN32)
             src/SyriusCore/Context/D3D11/D3D11Texture2D.cpp
             src/SyriusCore/Context/D3D11/D3D11FrameBuffer.cpp
             src/SyriusCore/Context/D3D11/D3D11ColorAttachment.cpp
-            src/SyriusCore/Context/D3D11/D3D11Sampler2D.cpp)
+            src/SyriusCore/Context/D3D11/D3D11Sampler.cpp)
 
 endif()
 
@@ -96,7 +96,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/ConstantBuffer.cpp
         src/SyriusCore/Context/FrameBuffer.cpp
         src/SyriusCore/Context/ColorAttachment.cpp
-        src/SyriusCore/Context/Sampler2D.cpp
+        src/SyriusCore/Context/Sampler.cpp
 
         src/SyriusCore/Context/OpenGL/GlContext.cpp
         src/SyriusCore/Context/OpenGL/Internal/WglContext.cpp
@@ -111,7 +111,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/OpenGL/GlFrameBuffer.cpp
         src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp
         src/SyriusCore/Context/OpenGL/Internal/GlRenderBuffer.cpp
-        src/SyriusCore/Context/OpenGL/GlSampler2D.cpp
+        src/SyriusCore/Context/OpenGL/GlSampler.cpp
 
 
         src/SyriusCore/Context/Vulkan/VulkanContext.cpp

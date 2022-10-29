@@ -140,7 +140,7 @@ namespace Syrius{
         delete texture2D;
     }
 
-    void Context::destroySampler2D(Sampler2D *sampler2D) {
+    void Context::destroySampler2D(Sampler *sampler2D) {
         m_Samplers2D.erase(std::remove(m_Samplers2D.begin(), m_Samplers2D.end(), sampler2D), m_Samplers2D.end());
         delete sampler2D;
     }

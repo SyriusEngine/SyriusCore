@@ -1,15 +1,15 @@
 #pragma once
 
 #include "GlUtils.hpp"
-#include "../../../../include/SyriusCore/Context/Sampler2D.hpp"
+#include "../../../../include/SyriusCore/Context/Sampler.hpp"
 
 namespace Syrius{
 
-    class GlSampler2D: public Sampler2D{
+    class GlSampler: public Sampler{
     public:
-        explicit GlSampler2D(const Sampler2DDesc& desc);
+        explicit GlSampler(const Sampler2DDesc& desc);
 
-        ~GlSampler2D() override;
+        ~GlSampler() override;
 
         void bind(uint32 slot) override;
 
