@@ -31,10 +31,9 @@ namespace Syrius{
         ID3D11Device* m_Device;
         ID3D11DeviceContext* m_Context;
 
-        ID3D11Texture2D* m_Texture;
+        ID3D11Texture2D* m_ColorBuffer;
         ID3D11RenderTargetView* m_RenderTargetView;
-        ID3D11ShaderResourceView* m_TextureView;
-        ID3D11SamplerState* m_Sampler;
+        ID3D11ShaderResourceView* m_BufferView;
 
     };
 

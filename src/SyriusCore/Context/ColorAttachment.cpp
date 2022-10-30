@@ -12,4 +12,12 @@ namespace Syrius{
     ColorAttachment::~ColorAttachment() {
 
     }
+
+    uint32 ColorAttachment::getWidth() const {
+        return m_Width;
+    }
+
+    uint32 ColorAttachment::getHeight() const {
+        return m_Height;
+    }
 }

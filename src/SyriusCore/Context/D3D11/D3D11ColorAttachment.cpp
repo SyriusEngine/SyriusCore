@@ -6,12 +6,11 @@ namespace Syrius{
 
     D3D11ColorAttachment::D3D11ColorAttachment(const ColorAttachmentDesc &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext)
     : ColorAttachment(desc),
-    m_Device(device),
-    m_Context(deviceContext),
-    m_Texture(nullptr),
-    m_RenderTargetView(nullptr),
-    m_TextureView(nullptr),
-    m_Sampler(nullptr){
+      m_Device(device),
+      m_Context(deviceContext),
+      m_ColorBuffer(nullptr),
+      m_RenderTargetView(nullptr),
+      m_BufferView(nullptr){
 
         SR_TEXTURE_FORMAT sF = getTextureFormat(desc.m_Format);
         auto channelCount = getTextureChannelCount(sF);
@@ -29,14 +28,14 @@ namespace Syrius{
         textureDesc.CPUAccessFlags = 0;
         textureDesc.MiscFlags = 0;
 
-        SR_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_Texture));
+        SR_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_ColorBuffer));
 
         D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc = {  };
         renderTargetViewDesc.Format = textureDesc.Format;
         renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
         renderTargetViewDesc.Texture2D.MipSlice = 0;
 
-        SR_D3D11_CALL(m_Device->CreateRenderTargetView(m_Texture, &renderTargetViewDesc, &m_RenderTargetView));
+        SR_D3D11_CALL(m_Device->CreateRenderTargetView(m_ColorBuffer, &renderTargetViewDesc, &m_RenderTargetView));
 
         D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc = {  };
         textureViewDesc.Format = textureDesc.Format;
@@ -44,36 +43,24 @@ namespace Syrius{
         textureViewDesc.Texture2D.MipLevels = 1;
         textureViewDesc.Texture2D.MostDetailedMip = 0;
 
-        SR_D3D11_CALL(m_Device->CreateShaderResourceView(m_Texture, &textureViewDesc, &m_TextureView));
-
-        D3D11_SAMPLER_DESC samplerDesc = {  };
-        samplerDesc.Filter = getD3d11TextureFilter(desc.m_MinFilter, desc.m_MagFilter);
-        samplerDesc.AddressU = getD3d11TextureAddressMode(desc.m_WrapAddressU);
-        samplerDesc.AddressV = getD3d11TextureAddressMode(desc.m_WrapAddressV);
-        samplerDesc.AddressW = getD3d11TextureAddressMode(desc.m_WrapAddressU);
-
-        SR_D3D11_CALL(m_Device->CreateSamplerState(&samplerDesc, &m_Sampler));
+        SR_D3D11_CALL(m_Device->CreateShaderResourceView(m_ColorBuffer, &textureViewDesc, &m_BufferView));
 
     }
 
     D3D11ColorAttachment::~D3D11ColorAttachment() {
-        if (m_Sampler) {
-            m_Sampler->Release();
-        }
-        if (m_TextureView) {
-            m_TextureView->Release();
+        if (m_BufferView) {
+            m_BufferView->Release();
         }
         if (m_RenderTargetView) {
             m_RenderTargetView->Release();
         }
-        if (m_Texture) {
-            m_Texture->Release();
+        if (m_ColorBuffer) {
+            m_ColorBuffer->Release();
         }
     }
 
     void D3D11ColorAttachment::bind(uint32 slot) {
-        m_Context->PSSetShaderResources(slot, 1, &m_TextureView);
-        m_Context->PSSetSamplers(slot, 1, &m_Sampler);
+        m_Context->PSSetShaderResources(slot, 1, &m_BufferView);
     }
 
     Image *D3D11ColorAttachment::getData() {
@@ -83,8 +70,8 @@ namespace Syrius{
     void D3D11ColorAttachment::onResize(uint32 width, uint32 height) {
         m_Width = width;
         m_Height = height;
-        if (m_Texture) {
-            m_Texture->Release();
+        if (m_ColorBuffer) {
+            m_ColorBuffer->Release();
         }
 
         SR_TEXTURE_FORMAT sF = getTextureFormat(m_Format);
@@ -103,12 +90,12 @@ namespace Syrius{
         textureDesc.CPUAccessFlags = 0;
         textureDesc.MiscFlags = 0;
 
-        SR_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_Texture));
+        SR_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_ColorBuffer));
 
     }
 
     uint64 D3D11ColorAttachment::getIdentifier() const {
-        return reinterpret_cast<uint64>(m_Texture);;
+        return reinterpret_cast<uint64>(m_ColorBuffer);
     }
 
     DXGI_FORMAT D3D11ColorAttachment::getFormat(uint32 channelCount) {

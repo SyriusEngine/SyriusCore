@@ -22,6 +22,8 @@ namespace Syrius{
 
     D3D11_COMPARISON_FUNC getD3d11ComparisonFunc(SR_COMPARISON_FUNC func);
 
+    D3D11_STENCIL_OP getD3d11StencilFunc(SR_STENCIL_FUNC func);
+
 }
 
 #endif

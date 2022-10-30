@@ -171,6 +171,23 @@ namespace Syrius{
         }
     }
 
+    D3D11_STENCIL_OP getD3d11StencilFunc(SR_STENCIL_FUNC func){
+        switch (func){
+            case SR_STENCIL_FUNC_KEEP:          return D3D11_STENCIL_OP_KEEP;
+            case SR_STENCIL_FUNC_ZERO:          return D3D11_STENCIL_OP_ZERO;
+            case SR_STENCIL_FUNC_REPLACE:       return D3D11_STENCIL_OP_REPLACE;
+            case SR_STENCIL_FUNC_INCR:          return D3D11_STENCIL_OP_INCR;
+            case SR_STENCIL_FUNC_INCR_WRAP:     return D3D11_STENCIL_OP_INCR_SAT;
+            case SR_STENCIL_FUNC_DECR:          return D3D11_STENCIL_OP_DECR;
+            case SR_STENCIL_FUNC_DECR_WRAP:     return D3D11_STENCIL_OP_DECR_SAT;
+            case SR_STENCIL_FUNC_INVERT:        return D3D11_STENCIL_OP_INVERT;
+            default: {
+                SR_CORE_WARNING("Invalid type given to converter, return D3D11_STENCIL_OP_KEEP");
+                return D3D11_STENCIL_OP_KEEP;
+            }
+        }
+    }
+
 }
 
 #endif

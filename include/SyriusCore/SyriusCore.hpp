@@ -36,6 +36,8 @@ namespace Syrius {
 
     SR_API Image* createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount);
 
+    SR_API void destroyImage(Image* image);
+
     SR_API SyriusWindow* createWindow(const WindowDesc& windowDesc);
 
     SR_API void destroyWindow(SyriusWindow* window);

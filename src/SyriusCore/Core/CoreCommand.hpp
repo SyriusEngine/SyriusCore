@@ -45,6 +45,12 @@ namespace Syrius{
 
         static VulkanInstance* getVulkanInstance();
 
+        static Image* createImage(const std::string& fileName, bool flipOnLoad = true);
+
+        static Image* createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount);
+
+        static void destroyImage(Image* image);
+
     private:
         static Time m_StartupTime;
         static uint32 m_CoreCommandInstances;
@@ -55,6 +61,8 @@ namespace Syrius{
         static VulkanInterface* m_VulkanInterface;
 
         static std::vector<SyriusWindow*> m_WindowInstances;
+
+        static std::vector<Image*> m_Images;
     };
 
 }

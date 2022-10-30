@@ -23,10 +23,6 @@ namespace Syrius{
 
         void setSize(uint32 width, uint32 height) override;
 
-        void setDepthFunc(SR_COMPARISON_FUNC func) override;
-
-        void setStencilFunc(SR_COMPARISON_FUNC func) override;
-
     private:
         uint32 m_FrameBufferID;
         GLenum m_GlDepthFunc;
@@ -52,10 +48,6 @@ namespace Syrius{
         void setPosition(int32 xPos, int32 yPos) override;
 
         void setSize(uint32 width, uint32 height) override;
-
-        void setDepthFunc(SR_COMPARISON_FUNC func) override;
-
-        void setStencilFunc(SR_COMPARISON_FUNC func) override;
 
 
     private:

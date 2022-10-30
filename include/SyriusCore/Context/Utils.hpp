@@ -141,6 +141,18 @@ namespace Syrius{
         SR_COMPARISON_FUNC_NOT_EQUAL     = 0x08
     } SR_COMPARISON_FUNC;
 
+    // stencil operations
+    typedef enum SR_STENCIL_FUNC{
+        SR_STENCIL_FUNC_KEEP             = 0x01,
+        SR_STENCIL_FUNC_ZERO             = 0x02,
+        SR_STENCIL_FUNC_REPLACE          = 0x03,
+        SR_STENCIL_FUNC_INCR             = 0x04,
+        SR_STENCIL_FUNC_INCR_WRAP        = 0x05,
+        SR_STENCIL_FUNC_DECR             = 0x06,
+        SR_STENCIL_FUNC_DECR_WRAP        = 0x07,
+        SR_STENCIL_FUNC_INVERT           = 0x08
+    } SR_STENCIL_FUNC;
+
     // base texture formats, the upper 4 bits represent the number of channels
     typedef enum SR_TEXTURE_FORMAT: uint8 {
         SR_TEXTURE_FORMAT_R     = 0x10,

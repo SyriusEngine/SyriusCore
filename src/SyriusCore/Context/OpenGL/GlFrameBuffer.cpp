@@ -20,10 +20,10 @@ namespace Syrius{
             attachmentIndex++;
         }
 
-        if (m_EnableDepthTest or m_EnableStencilTest){
-            m_RenderBuffer = new GlRenderBuffer(m_Width, m_Height);
-            glNamedFramebufferRenderbuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RenderBuffer->getIdentifier());
-        }
+//        if (m_EnableDepthTest or m_EnableStencilTest){
+//            m_RenderBuffer = new GlRenderBuffer(m_Width, m_Height);
+//            glNamedFramebufferRenderbuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RenderBuffer->getIdentifier());
+//        }
 
 
         SR_CORE_POSTCONDITION(glCheckNamedFramebufferStatus(m_FrameBufferID, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer creation failed!");
@@ -43,26 +43,26 @@ namespace Syrius{
         // call every time a different framebuffer is bound, this must happen because the viewport is not a part of the framebuffer state
         glViewport(m_XPos, m_YPos, m_Width, m_Height);
 
-        if (m_EnableDepthTest or m_EnableStencilTest){
-            m_RenderBuffer->bind();
-            if (m_EnableDepthTest){
-                glEnable(GL_DEPTH_TEST);
-                glDepthFunc(m_GlDepthFunc);
-                glDepthMask(!m_DepthBufferReadOnly);
-            }
-            else{
-                glDisable(GL_DEPTH_TEST);
-            }
-
-            if (m_EnableStencilTest){
-                glEnable(GL_STENCIL_TEST);
-                glStencilFunc(m_GlStencilFunc, m_StencilReference, m_StencilMask);
-                glStencilMask(!m_StencilBufferReadOnly);
-            }
-            else{
-                glDisable(GL_STENCIL_TEST);
-            }
-        }
+//        if (m_EnableDepthTest or m_EnableStencilTest){
+//            m_RenderBuffer->bind();
+//            if (m_EnableDepthTest){
+//                glEnable(GL_DEPTH_TEST);
+//                glDepthFunc(m_GlDepthFunc);
+//                glDepthMask(!m_DepthBufferReadOnly);
+//            }
+//            else{
+//                glDisable(GL_DEPTH_TEST);
+//            }
+//
+//            if (m_EnableStencilTest){
+//                glEnable(GL_STENCIL_TEST);
+//                glStencilFunc(m_GlStencilFunc, m_ClearStencil, m_StencilMask);
+//                glStencilMask(!m_StencilBufferReadOnly);
+//            }
+//            else{
+//                glDisable(GL_STENCIL_TEST);
+//            }
+//        }
 
     }
 
@@ -74,12 +74,12 @@ namespace Syrius{
         for (int32 i = 0; i < m_ColorAttachments.size(); i++){
             glClearNamedFramebufferfv(m_FrameBufferID, GL_COLOR, i, m_ClearColor);
         }
-        if (m_EnableDepthTest){
-            glClearNamedFramebufferfv(m_FrameBufferID, GL_DEPTH, 0, &m_ClearDepth);
-        }
-        if (m_EnableStencilTest){
-            glClearNamedFramebufferuiv(m_FrameBufferID, GL_STENCIL, 0, &m_StencilReference);
-        }
+//        if (m_EnableDepthTest){
+//            glClearNamedFramebufferfv(m_FrameBufferID, GL_DEPTH, 0, &m_ClearDepth);
+//        }
+//        if (m_EnableStencilTest){
+//            glClearNamedFramebufferuiv(m_FrameBufferID, GL_STENCIL, 0, &m_ClearStencil);
+//        }
     }
 
 
@@ -100,16 +100,6 @@ namespace Syrius{
 
     }
 
-    void GlFrameBuffer::setDepthFunc(SR_COMPARISON_FUNC func) {
-        m_DepthFunc = func;
-        m_GlDepthFunc = getGlComparisonFunc(func);
-    }
-
-    void GlFrameBuffer::setStencilFunc(SR_COMPARISON_FUNC func) {
-        m_StencilFunc = func;
-        m_GlStencilFunc = getGlComparisonFunc(func);
-    }
-
 
     GlDefaultFramebuffer::GlDefaultFramebuffer(const FrameBufferDesc &desc)
     : FrameBuffer(desc),
@@ -128,23 +118,23 @@ namespace Syrius{
         // call every time a different framebuffer is bound, this must happen because the viewport is not a part of the framebuffer state
         glViewport(m_XPos, m_YPos, m_Width, m_Height);
 
-        if (m_EnableDepthTest){
-            glEnable(GL_DEPTH_TEST);
-            glDepthFunc(m_GlDepthFunc);
-            glDepthMask(!m_DepthBufferReadOnly);
-        }
-        else{
-            glDisable(GL_DEPTH_TEST);
-        }
-
-        if (m_EnableStencilTest){
-            glEnable(GL_STENCIL_TEST);
-            glStencilFunc(m_GlStencilFunc, m_StencilReference, m_StencilMask);
-            glStencilMask(!m_StencilBufferReadOnly);
-        }
-        else{
-            glDisable(GL_STENCIL_TEST);
-        }
+//        if (m_EnableDepthTest){
+//            glEnable(GL_DEPTH_TEST);
+//            glDepthFunc(m_GlDepthFunc);
+//            glDepthMask(!m_DepthBufferReadOnly);
+//        }
+//        else{
+//            glDisable(GL_DEPTH_TEST);
+//        }
+//
+//        if (m_EnableStencilTest){
+//            glEnable(GL_STENCIL_TEST);
+//            glStencilFunc(m_GlStencilFunc, m_ClearStencil, m_StencilMask);
+//            glStencilMask(!m_StencilBufferReadOnly);
+//        }
+//        else{
+//            glDisable(GL_STENCIL_TEST);
+//        }
     }
 
     void GlDefaultFramebuffer::unbind() {
@@ -153,12 +143,12 @@ namespace Syrius{
 
     void GlDefaultFramebuffer::clear() {
         glClearNamedFramebufferfv(0, GL_COLOR, 0, m_ClearColor);
-        if (m_EnableDepthTest){
-            glClearNamedFramebufferfv(0, GL_DEPTH, 0, &m_ClearDepth);
-        }
-        if (m_EnableStencilTest){
-            glClearNamedFramebufferuiv(0, GL_STENCIL, 0, &m_StencilReference);
-        }
+//        if (m_EnableDepthTest){
+//            glClearNamedFramebufferfv(0, GL_DEPTH, 0, &m_ClearDepth);
+//        }
+//        if (m_EnableStencilTest){
+//            glClearNamedFramebufferuiv(0, GL_STENCIL, 0, &m_ClearStencil);
+//        }
     }
 
     void GlDefaultFramebuffer::setPosition(int32 xPos, int32 yPos) {
@@ -169,17 +159,6 @@ namespace Syrius{
     void GlDefaultFramebuffer::setSize(uint32 width, uint32 height) {
         m_Width = width;
         m_Height = height;
-    }
-
-    void GlDefaultFramebuffer::setDepthFunc(SR_COMPARISON_FUNC func) {
-        m_DepthFunc = func;
-        m_GlDepthFunc = getGlComparisonFunc(func);
-    }
-
-    void GlDefaultFramebuffer::setStencilFunc(SR_COMPARISON_FUNC func) {
-        m_StencilFunc = func;
-        m_GlStencilFunc = getGlComparisonFunc(func);
-
     }
 
 

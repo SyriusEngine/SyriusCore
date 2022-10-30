@@ -20,11 +20,15 @@ namespace Syrius {
     }
 
     Image* createImage(const std::string& fileName, bool flipOnLoad){
-        return new Image(fileName, flipOnLoad);
+        return CoreCommand::createImage(fileName, flipOnLoad);
     }
 
     Image* createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount){
-        return new Image(pixelData, width, height, channelCount);
+        return CoreCommand::createImage(pixelData, width, height, channelCount);
+    }
+
+    void destroyImage(Image* image){
+        CoreCommand::destroyImage(image);
     }
 
     SyriusWindow* createWindow(const WindowDesc& windowDesc){

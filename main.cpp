@@ -5,6 +5,8 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+#include "Driver.hpp"
+
 using namespace Syrius;
 
 void messageCallback(const Syrius::Message& msg){
@@ -58,6 +60,8 @@ Mesh createSphere(uint32 rings, uint32 sectors){
 int main() {
     try{
 
+        Camera camera(0.1f, 0.1f);
+
         const SR_SUPPORTED_API api = Syrius::SR_API_D3D11;
         SR_SHADER_CODE_TYPE shaderCodeType = SR_SHADER_CODE_GLSL;
         std::string vertexShaderPath = "./Resources/Shaders/GLSL/Basic.vert";
@@ -85,6 +89,7 @@ int main() {
         ContextDesc cDesc;
         cDesc.m_DefaultFrameBufferDesc.m_Width = 1280;
         cDesc.m_DefaultFrameBufferDesc.m_Height = 720;
+        cDesc.m_DefaultFrameBufferDesc.m_EnableDepthTest = false;
         cDesc.m_API = api;
         auto context = window->createContext(cDesc);
         context->setVerticalSynchronisation(true);
@@ -140,6 +145,7 @@ int main() {
         auto vao = context->createVertexArray(vaoDesc);
 
         glm::mat4 transform = glm::mat4(1.0f);
+        glm::mat4 projection = glm::perspective(45.0f, 1280.0f / 720.0f, 0.1f, 100.0f);
 
         ConstantBufferDesc cbDesc;
         cbDesc.m_Size = sizeof(transform);
@@ -161,11 +167,9 @@ int main() {
         texDesc.m_Image = img;
         texDesc.m_Sampler2D = sampler;
         auto texture1 = context->createTexture2D(texDesc);
-        delete img;
         img = createImage("./Resources/Textures/Logo.jpg");
         texDesc.m_Image = img;
         auto texture2 = context->createTexture2D(texDesc);
-        delete img;
 
         while (window->isOpen()){
 
@@ -178,9 +182,36 @@ int main() {
                 else if (event.type == Syrius::SR_EVENT_WINDOW_RESIZED){
                     context->onResize(event.windowWidth, event.windowHeight);
                 }
+                else if (event.type == Syrius::SR_EVENT_KEYBOARD_KEY_PRESSED){
+                    if (event.keyCode == Syrius::SR_KEY_W){
+                        camera.moveForward();
+                    }
+                    else if (event.keyCode == Syrius::SR_KEY_S){
+                        camera.moveBackwards();
+                    }
+                    else if (event.keyCode == Syrius::SR_KEY_A){
+                        camera.moveLeft();
+                    }
+                    else if (event.keyCode == Syrius::SR_KEY_D){
+                        camera.moveRight();
+                    }
+                    else if (event.keyCode == Syrius::SR_KEY_ESCAPE){
+                        window->close();
+                    }
+                    else if (event.keyCode == Syrius::SR_KEY_SPACE){
+                        camera.moveUp();
+                    }
+                    else if (event.keyCode == Syrius::SR_KEY_LEFT_SHIFT){
+                        camera.moveDown();
+                    }
+                }
+                else if (event.type == Syrius::SR_EVENT_MOUSE_MOVED){
+                    camera.update(event.mousePosX, event.mousePosY);
+                }
             }
 
             context->clear();
+            context->bindDefaultFrameBuffer();
             cb->bind();
             sampler->bind(0);
             texture1->bind(0);
@@ -195,10 +226,14 @@ int main() {
                 context->setClearColor(bgc[0], bgc[1], bgc[2], 1.0f);
             }
             static glm::vec3 translation(0.0f, 0.0f, 0.0f);
+            static glm::mat4 model = glm::mat4(1.0f);
             if (ImGui::SliderFloat3("Translation", &translation.x, -1.0f, 1.0f)){
-                transform = glm::translate(glm::mat4(1.0f), translation);
-                cb->setData(&transform[0]);
+                model = glm::translate(glm::mat4(1.0f), translation);
             }
+
+            transform = projection * camera.getViewMatrix() * model;
+            cb->setData(&transform[0]);
+
             ImGui::Text("Allocated Memory: %zu", getAllocatedMemory());
             ImGui::Text("Freed Memory: %zu", getFreedMemory());
             ImGui::Text("Memory Usage: %zu", getMemoryUsage());
@@ -214,12 +249,12 @@ int main() {
         window->destroyContext();
         destroyWindow(window);
 
+        syriusCoreTerminate();
+
         printf("Allocated Memory: %zu\n", getAllocatedMemory());
         printf("Freed Memory: %zu\n", getFreedMemory());
         printf("Memory Usage: %zu\n", getMemoryUsage());
 
-
-        syriusCoreTerminate();
 
 
     } catch (std::exception& e){

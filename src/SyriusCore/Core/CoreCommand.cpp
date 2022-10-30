@@ -12,6 +12,7 @@ namespace Syrius{
     VulkanInterface* CoreCommand::m_VulkanInterface = nullptr;
 
     std::vector<SyriusWindow*> CoreCommand::m_WindowInstances;
+    std::vector<Image*> CoreCommand::m_Images;
 
 
     void CoreCommand::init() {
@@ -33,6 +34,9 @@ namespace Syrius{
     }
 
     void CoreCommand::terminate() {
+        for (auto img: m_Images) {
+            delete img;
+        }
         if (m_GladInstances > 0){
             SR_CORE_WARNING("Syrius is terminated but some objects still depend on glad, glad will be terminated too!");
             m_GladInstances = 0;
@@ -159,5 +163,20 @@ namespace Syrius{
         return m_VulkanInterface->getInstance();
     }
 
+    Image* CoreCommand::createImage(const std::string& fileName, bool flipOnLoad){
+        auto ptr = new Image(fileName, flipOnLoad);
+        m_Images.push_back(ptr);
+        return ptr;
+    }
 
+    Image* CoreCommand::createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount){
+        auto ptr = new Image(pixelData, width, height, channelCount);
+        m_Images.push_back(ptr);
+        return ptr;
+    }
+
+    void CoreCommand::destroyImage(Image* image){
+        m_Images.erase(std::remove(m_Images.begin(), m_Images.end(), image), m_Images.end());
+        delete image;
+    }
 }

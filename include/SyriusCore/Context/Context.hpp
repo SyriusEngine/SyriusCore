@@ -12,6 +12,7 @@
 #include "FrameBuffer.hpp"
 #include "ColorAttachment.hpp"
 #include "Sampler.hpp"
+#include "DepthStencilAttachment.hpp"
 
 namespace Syrius{
 

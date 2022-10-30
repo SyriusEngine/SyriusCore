@@ -3,6 +3,7 @@
 #include "../../../../include/SyriusCore/Context/FrameBuffer.hpp"
 #include "D3D11Utils.hpp"
 #include "D3D11ColorAttachment.hpp"
+#include "D3D11DepthStencilAttachment.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 
@@ -24,10 +25,6 @@ namespace Syrius{
 
         void setSize(uint32 width, uint32 height) override;
 
-        void setDepthFunc(SR_COMPARISON_FUNC func) override;
-
-        void setStencilFunc(SR_COMPARISON_FUNC func) override;
-
     private:
         ID3D11Device* m_Device;
         ID3D11DeviceContext* m_DeviceContext;
@@ -36,6 +33,7 @@ namespace Syrius{
 
         std::vector<ID3D11RenderTargetView*> m_RenderTargetViews;
         std::vector<ID3D11ShaderResourceView*> m_Nullable;
+        ID3D11DepthStencilView* m_DepthStencilView;
 
     };
 
@@ -55,10 +53,6 @@ namespace Syrius{
 
         void setSize(uint32 width, uint32 height) override;
 
-        void setDepthFunc(SR_COMPARISON_FUNC func) override;
-
-        void setStencilFunc(SR_COMPARISON_FUNC func) override;
-
     private:
         ID3D11Device* m_Device;
         ID3D11DeviceContext* m_DeviceContext;
@@ -68,9 +62,7 @@ namespace Syrius{
 
         ID3D11RenderTargetView* m_BackRenderTarget;
 
-        ID3D11DepthStencilView* m_DepthStencil;
-        ID3D11Texture2D* m_DepthStencilResource;
-        ID3D11DepthStencilState* m_DepthStencilState;
+        ID3D11DepthStencilView* m_DepthStencilView;
 
         DXGI_FORMAT m_BackBufferFormat;
 
