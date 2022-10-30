@@ -9,6 +9,7 @@ namespace Syrius{
       m_GlStencilFail(getGlStencilFunc(desc.m_StencilFail)),
       m_GlStencilPass(getGlStencilFunc(desc.m_StencilPass)),
       m_GlStencilPassDepthFail(getGlStencilFunc(desc.m_StencilPassDepthFail)){
+
         glCreateRenderbuffers(1, &m_BufferID);
         glNamedRenderbufferStorage(m_BufferID, GL_DEPTH24_STENCIL8, m_Width, m_Height);
     }

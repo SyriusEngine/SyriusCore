@@ -8,10 +8,6 @@ namespace Syrius{
         uint32 m_Width                      = SR_DEFAULT_WIDTH;
         uint32 m_Height                     = SR_DEFAULT_HEIGHT;
         SR_TEXTURE_DATA_FORMAT  m_Format    = SR_TEXTURE_DATA_FORMAT_RGBA_8;
-        SR_TEXTURE_FILTER m_MinFilter       = SR_TEXTURE_FILTER_LINEAR;
-        SR_TEXTURE_FILTER m_MagFilter       = SR_TEXTURE_FILTER_LINEAR;
-        SR_TEXTURE_WRAP m_WrapAddressU      = SR_TEXTURE_WRAP_REPEAT;
-        SR_TEXTURE_WRAP m_WrapAddressV      = SR_TEXTURE_WRAP_REPEAT;
     };
 
     class SR_API ColorAttachment{

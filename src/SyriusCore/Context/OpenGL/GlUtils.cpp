@@ -115,10 +115,16 @@ namespace Syrius{
             case SR_TEXTURE_DATA_FORMAT_RGBA_UI32:  return GL_RGBA32UI;
             case SR_TEXTURE_DATA_FORMAT_RGBA_F16:   return GL_RGBA16F;
             case SR_TEXTURE_DATA_FORMAT_RGBA_F32:   return GL_RGBA32F;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_16:   return GL_DEPTH_COMPONENT16;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_24:   return GL_DEPTH_COMPONENT24;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_32:   return GL_DEPTH_COMPONENT32;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8: return GL_DEPTH24_STENCIL8;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_32_STENCIL_8: return GL_DEPTH32F_STENCIL8;
+            default: {
+                SR_CORE_WARNING("Invalid type given to converter, return default: GL_RGBA8");
+                return GL_RGBA8;
+            }
         }
-
-        SR_CORE_WARNING("Invalid texture data format given to converter, defaulting to GL_RGBA8");
-        return GL_RGBA8;
     }
 
     GLenum getGlComparisonFunc(SR_COMPARISON_FUNC func){

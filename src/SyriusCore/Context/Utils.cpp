@@ -43,6 +43,8 @@ namespace Syrius{
     }
 
     SR_TEXTURE_FORMAT getTextureFormat(SR_TEXTURE_DATA_FORMAT format){
+        auto temp = (format >> 4);
+        SR_CORE_ASSERT(temp < 5, "Invalid texture format");
         return static_cast<SR_TEXTURE_FORMAT>((format >> 4) << 4);
     }
 

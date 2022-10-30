@@ -100,7 +100,6 @@ int main() {
         FrameBufferDesc fbDesc;
         fbDesc.m_Width = 1280;
         fbDesc.m_Height = 720;
-        fbDesc.m_ColorAttachments.emplace_back();
         fbDesc.m_EnableDepthTest = true;
         auto fbo = context->createFrameBuffer(fbDesc);
 

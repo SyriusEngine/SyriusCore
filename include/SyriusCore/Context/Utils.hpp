@@ -165,6 +165,7 @@ namespace Syrius{
 
     // Texture formats with data types, upper 4 bits represent the number of channels
     typedef enum SR_TEXTURE_DATA_FORMAT: uint8 {
+        // single channel
         SR_TEXTURE_DATA_FORMAT_R8           = 0x11,
         SR_TEXTURE_DATA_FORMAT_R_I8         = 0x12,
         SR_TEXTURE_DATA_FORMAT_R_I16        = 0x13,
@@ -175,6 +176,7 @@ namespace Syrius{
         SR_TEXTURE_DATA_FORMAT_R_F16        = 0x18,
         SR_TEXTURE_DATA_FORMAT_R_F32        = 0x19,
 
+        // two channels
         SR_TEXTURE_DATA_FORMAT_RG_8         = 0x21,
         SR_TEXTURE_DATA_FORMAT_RG_I8        = 0x22,
         SR_TEXTURE_DATA_FORMAT_RG_I16       = 0x23,
@@ -185,6 +187,7 @@ namespace Syrius{
         SR_TEXTURE_DATA_FORMAT_RG_F16       = 0x28,
         SR_TEXTURE_DATA_FORMAT_RG_F32       = 0x29,
 
+        // three channels
         SR_TEXTURE_DATA_FORMAT_RGB_8        = 0x31,
         SR_TEXTURE_DATA_FORMAT_RGB_I8       = 0x32,
         SR_TEXTURE_DATA_FORMAT_RGB_I16      = 0x33,
@@ -195,6 +198,7 @@ namespace Syrius{
         SR_TEXTURE_DATA_FORMAT_RGB_F16      = 0x38,
         SR_TEXTURE_DATA_FORMAT_RGB_F32      = 0x39,
 
+        // four channels
         SR_TEXTURE_DATA_FORMAT_RGBA_8       = 0x41,
         SR_TEXTURE_DATA_FORMAT_RGBA_I8      = 0x42,
         SR_TEXTURE_DATA_FORMAT_RGBA_I16     = 0x43,
@@ -204,6 +208,13 @@ namespace Syrius{
         SR_TEXTURE_DATA_FORMAT_RGBA_UI32    = 0x47,
         SR_TEXTURE_DATA_FORMAT_RGBA_F16     = 0x48,
         SR_TEXTURE_DATA_FORMAT_RGBA_F32     = 0x49,
+
+        // special formats
+        SR_TEXTURE_DATA_FORMAT_DEPTH_16     = 0x51,
+        SR_TEXTURE_DATA_FORMAT_DEPTH_24     = 0x52,
+        SR_TEXTURE_DATA_FORMAT_DEPTH_32     = 0x53,
+        SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8    = 0x54,
+        SR_TEXTURE_DATA_FORMAT_DEPTH_32_STENCIL_8    = 0x55
 
     } SR_TEXTURE_DATA_FORMAT;
 

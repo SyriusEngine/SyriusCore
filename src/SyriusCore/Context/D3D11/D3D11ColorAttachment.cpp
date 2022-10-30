@@ -11,6 +11,11 @@ namespace Syrius{
       m_ColorBuffer(nullptr),
       m_RenderTargetView(nullptr),
       m_BufferView(nullptr){
+        SR_CORE_PRECONDITION(desc.m_Format != SR_TEXTURE_DATA_FORMAT_DEPTH_16 and
+                             desc.m_Format != SR_TEXTURE_DATA_FORMAT_DEPTH_24 and
+                             desc.m_Format != SR_TEXTURE_DATA_FORMAT_DEPTH_32 and
+                             desc.m_Format != SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8 and
+                             desc.m_Format != SR_TEXTURE_DATA_FORMAT_DEPTH_32_STENCIL_8 , "Depth/stencil format is not supported for color attachment");
 
         SR_TEXTURE_FORMAT sF = getTextureFormat(desc.m_Format);
         auto channelCount = getTextureChannelCount(sF);

@@ -6,17 +6,17 @@ namespace Syrius{
     : ColorAttachment(desc),
     m_InternalFormat(getGlTextureInternalFormat(desc.m_Format)),
     m_TextureID(0){
+        SR_CORE_PRECONDITION(desc.m_Format != SR_TEXTURE_DATA_FORMAT_DEPTH_16 and
+                             desc.m_Format != SR_TEXTURE_DATA_FORMAT_DEPTH_24 and
+                             desc.m_Format != SR_TEXTURE_DATA_FORMAT_DEPTH_32 and
+                             desc.m_Format != SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8 and
+                             desc.m_Format != SR_TEXTURE_DATA_FORMAT_DEPTH_32_STENCIL_8 , "Depth/stencil format is not supported for color attachment");
+
         SR_TEXTURE_FORMAT baseFormat = getTextureFormat(desc.m_Format);
         m_GlFormat = getGlTextureType(baseFormat);
         m_ChannelCount = getTextureChannelCount(baseFormat);
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
-
-        glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, getGlTextureFilter(desc.m_MinFilter));
-        glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, getGlTextureFilter(desc.m_MagFilter));
-
-        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, getGlTextureWrap(desc.m_WrapAddressU));
-        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, getGlTextureWrap(desc.m_WrapAddressV));
 
         glTextureStorage2D(m_TextureID, 1, m_InternalFormat, m_Width, m_Height);
     }

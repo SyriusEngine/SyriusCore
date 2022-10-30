@@ -146,7 +146,7 @@ namespace Syrius{
     }
 
     FrameBuffer *GlContext::createFrameBuffer(const FrameBufferDesc &desc) {
-        SR_CORE_PRECONDITION(!desc.m_ColorAttachments.empty(), "Framebuffer must have at least one color attachment");
+        SR_CORE_PRECONDITION(!desc.m_ColorAttachmentFormats.empty(), "Framebuffer must have at least one color attachment");
         SR_CORE_PRECONDITION(desc.m_Width <= getMaxFramebufferWidth(), "Framebuffer width is too large");
         SR_CORE_PRECONDITION(desc.m_Height <= getMaxFramebufferHeight(), "Framebuffer height is too large");
 

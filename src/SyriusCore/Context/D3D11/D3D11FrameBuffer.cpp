@@ -8,7 +8,7 @@ namespace Syrius{
     : FrameBuffer(desc),
     m_Device(device),
     m_DeviceContext(deviceContext),
-    m_Nullable(m_ColorAttachments.size(), nullptr),
+    m_Nullable(desc.m_ColorAttachmentFormats.size(), nullptr),
     m_DepthStencilView(nullptr){
         m_Viewport.Width = static_cast<float>(m_Width);
         m_Viewport.Height = static_cast<float>(m_Height);
@@ -17,11 +17,12 @@ namespace Syrius{
         m_Viewport.TopLeftX = static_cast<float>(m_XPos);
         m_Viewport.TopLeftY = static_cast<float>(m_YPos);
 
-        for (auto& attachmentDesc: desc.m_ColorAttachments){
+        for (auto& format: desc.m_ColorAttachmentFormats){
             // really annoying but yeah
-            ColorAttachmentDesc caDesc = attachmentDesc;
+            ColorAttachmentDesc caDesc;
             caDesc.m_Width = m_Width;
             caDesc.m_Height = m_Height;
+            caDesc.m_Format = format;
             auto attachment = new D3D11ColorAttachment(caDesc, m_Device, m_DeviceContext);
             m_ColorAttachments.push_back(attachment);
             m_RenderTargetViews.push_back(attachment->getRenderTargetView());
