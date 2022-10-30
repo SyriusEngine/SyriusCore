@@ -95,6 +95,10 @@ namespace Syrius{
         m_Context->PSSetShaderResources(slot, 1, &m_BufferView);
     }
 
+    void D3D11DepthStencilAttachment::unbind() {
+        m_Context->OMSetDepthStencilState(nullptr, 1);
+    }
+
     void D3D11DepthStencilAttachment::clear() {
         m_Context->ClearDepthStencilView(m_DepthStencilView, m_ClearFlag, m_ClearDepth, m_ClearStencil);
     }

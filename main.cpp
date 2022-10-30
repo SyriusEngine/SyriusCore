@@ -20,56 +20,24 @@ void messageCallback(const Syrius::Message& msg){
     }
 }
 
-struct Vertex{
-    float m_Position[3];
-    float m_TexCoords[2];
-};
-
-struct Mesh{
-    std::vector<Vertex> vertices;
-    std::vector<uint32> indices;
-};
-
-Mesh createSphere(uint32 rings, uint32 sectors){
-    Mesh mesh;
-    float const R = 1.0f/(float)(rings-1);
-    float const S = 1.0f/(float)(sectors-1);
-    uint32 r, s;
-
-    for(r = 0; r < rings; r++) for(s = 0; s < sectors; s++) {
-            float const y = sin( -M_PI_2 + M_PI * r * R );
-            float const x = cos(2*M_PI * s * S) * sin( M_PI * r * R );
-            float const z = sin(2*M_PI * s * S) * sin( M_PI * r * R );
-
-            mesh.vertices.push_back({{x, y, z},  {s*S, r*R}});
-        }
-
-    for(r = 0; r < rings-1; r++) for(s = 0; s < sectors-1; s++) {
-            mesh.indices.push_back(r * sectors + s);
-            mesh.indices.push_back(r * sectors + (s+1));
-            mesh.indices.push_back((r+1) * sectors + (s+1));
-
-            mesh.indices.push_back(r * sectors + s);
-            mesh.indices.push_back((r+1) * sectors + (s+1));
-            mesh.indices.push_back((r+1) * sectors + s);
-        }
-    return mesh;
-}
-
 
 int main() {
     try{
 
-        Camera camera(0.1f, 0.1f);
+        Camera camera(0.3f, 0.1f);
 
         const SR_SUPPORTED_API api = Syrius::SR_API_OPENGL;
         SR_SHADER_CODE_TYPE shaderCodeType = SR_SHADER_CODE_GLSL;
         std::string vertexShaderPath = "./Resources/Shaders/GLSL/Basic.vert";
         std::string fragmentShaderPath = "./Resources/Shaders/GLSL/Basic.frag";
+        std::string screenVertexShaderPath = "./Resources/Shaders/GLSL/Screen.vert";
+        std::string screenFragmentShaderPath = "./Resources/Shaders/GLSL/Screen.frag";
         if (api == SR_API_D3D11){
             shaderCodeType = SR_SHADER_CODE_HLSL;
             vertexShaderPath = "./Resources/Shaders/HLSL/Basic-vs.hlsl";
             fragmentShaderPath = "./Resources/Shaders/HLSL/Basic-fs.hlsl";
+            screenVertexShaderPath = "./Resources/Shaders/HLSL/Screen-vs.hlsl";
+            screenFragmentShaderPath = "./Resources/Shaders/HLSL/Screen-fs.hlsl";
         }
 
 
@@ -77,6 +45,7 @@ int main() {
         setDebugMessageCallback(messageCallback);
 
         Mesh sphere = createSphere(32, 32);
+        Mesh rectangle = createRectangle();
 
         WindowDesc wDesc;
         wDesc.m_PosX = 200;
@@ -89,60 +58,19 @@ int main() {
         ContextDesc cDesc;
         cDesc.m_DefaultFrameBufferDesc.m_Width = 1280;
         cDesc.m_DefaultFrameBufferDesc.m_Height = 720;
-        cDesc.m_DefaultFrameBufferDesc.m_EnableDepthTest = true;
+        cDesc.m_DefaultFrameBufferDesc.m_EnableDepthTest = false;
         cDesc.m_API = api;
         auto context = window->createContext(cDesc);
         context->setVerticalSynchronisation(true);
         context->setClearColor(0.2f, 0.3f, 0.5f, 1.0f);
         window->createImGuiContext();
 
-        auto layout = context->createVertexDescription();
-        layout->addAttribute("Position", SR_FLOAT32_3);
-        layout->addAttribute("TexCoord", SR_FLOAT32_2);
 
-        VertexBufferDesc vboDesc;
-        vboDesc.m_Type = SR_BUFFER_DEFAULT;
-        vboDesc.m_Data = &sphere.vertices[0];
-        vboDesc.m_Layout = layout;
-        vboDesc.m_Count = sphere.vertices.size();
-        auto vbo = context->createVertexBuffer(vboDesc);
+        auto shader = loadShader(vertexShaderPath, fragmentShaderPath, shaderCodeType, context);
+        auto screenShader = loadShader(screenVertexShaderPath, screenFragmentShaderPath, shaderCodeType, context);
 
-        IndexBufferDesc iboDesc;
-        iboDesc.m_Data = &sphere.indices[0];
-        iboDesc.m_Count = sphere.indices.size();
-        iboDesc.m_Type = SR_BUFFER_DEFAULT;
-        iboDesc.m_DataType = SR_UINT32;
-        auto ibo = context->createIndexBuffer(iboDesc);
-
-        ShaderModuleDesc vsDesc;
-        vsDesc.m_Type = SR_SHADER_VERTEX;
-        vsDesc.m_CodeType = shaderCodeType;
-        vsDesc.m_Code = vertexShaderPath;
-        vsDesc.m_LoadType = SR_LOAD_FROM_FILE;
-        vsDesc.m_EntryPoint = "main";
-        vsDesc.m_CodeLength = 0;
-        auto vsm = context->createShaderModule(vsDesc);
-
-        ShaderModuleDesc fsDesc;
-        fsDesc.m_Type = SR_SHADER_FRAGMENT;
-        fsDesc.m_CodeType = shaderCodeType;
-        fsDesc.m_Code = fragmentShaderPath;
-        fsDesc.m_LoadType = SR_LOAD_FROM_FILE;
-        fsDesc.m_EntryPoint = "main";
-        fsDesc.m_CodeLength = 0;
-        auto fsm = context->createShaderModule(fsDesc);
-
-        ShaderDesc sDesc;
-        sDesc.m_VertexShader = vsm;
-        sDesc.m_FragmentShader = fsm;
-        auto shader = context->createShader(sDesc);
-
-        VertexArrayDesc vaoDesc;
-        vaoDesc.m_DrawMode = SR_DRAW_TRIANGLES;
-        vaoDesc.m_VertexShader = vsm;
-        vaoDesc.m_VertexBuffer = vbo;
-        vaoDesc.m_IndexBuffer = ibo;
-        auto vao = context->createVertexArray(vaoDesc);
+        auto sphereVAO = loadMesh(sphere, shader, context);
+        auto screenVAO = loadMesh(rectangle, screenShader, context);
 
         glm::mat4 transform = glm::mat4(1.0f);
         glm::mat4 projection = glm::perspective(45.0f, 1280.0f / 720.0f, 0.1f, 100.0f);
@@ -170,6 +98,13 @@ int main() {
         img = createImage("./Resources/Textures/Logo.jpg");
         texDesc.m_Image = img;
         auto texture2 = context->createTexture2D(texDesc);
+
+        FrameBufferDesc fbDesc;
+        fbDesc.m_Width = 1280;
+        fbDesc.m_Height = 720;
+        fbDesc.m_ColorAttachments.emplace_back();
+        fbDesc.m_EnableDepthTest = true;
+        auto fbo = context->createFrameBuffer(fbDesc);
 
         while (window->isOpen()){
 
@@ -210,14 +145,25 @@ int main() {
                 }
             }
 
-            context->clear();
-            context->bindDefaultFrameBuffer();
+            // first pass
+            context->clear(fbo);
+            fbo->bind();
             cb->bind();
             sampler->bind(0);
             texture1->bind(0);
             texture2->bind(1);
-            shader->bind();
-            context->drawInstanced(vao, 100);
+            shader.shaderProgram->bind();
+            context->draw(sphereVAO);
+            fbo->unbind();
+
+            // second pass
+            context->clear();
+            context->getDefaultFrameBuffer()->bind();
+            screenShader.shaderProgram->bind();
+            fbo->getColorAttachment(0)->bind(0);
+            context->draw(screenVAO);
+
+
 
             window->onImGuiBegin();
             ImGui::Begin("Info");

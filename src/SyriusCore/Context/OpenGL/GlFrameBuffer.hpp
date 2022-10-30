@@ -2,7 +2,6 @@
 
 #include "../../../../include/SyriusCore/Context/FrameBuffer.hpp"
 #include "GlUtils.hpp"
-#include "Internal/GlRenderBuffer.hpp"
 #include "GlColorAttachment.hpp"
 #include "GlDepthStencilAttachment.hpp"
 
@@ -26,11 +25,9 @@ namespace Syrius{
 
     private:
         uint32 m_FrameBufferID;
-        GLenum m_GlDepthFunc;
-        GLenum m_GlStencilFunc;
 
-        GlRenderBuffer* m_RenderBuffer;
-        
+        bool m_EnableDepthTest;
+        bool m_EnableStencilTest;
     };
 
 

@@ -7,6 +7,32 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "include/SyriusCore/SyriusCore.hpp"
 
+using namespace Syrius;
+
+struct Vertex{
+    float m_Position[3];
+    float m_TexCoords[2];
+};
+
+struct Mesh{
+    std::vector<Vertex> vertices;
+    std::vector<uint32> indices;
+};
+
+Mesh createRectangle();
+
+Mesh createSphere(uint32 rings, uint32 sectors);
+
+struct ShaderProgram{
+    Shader* shaderProgram;
+    ShaderModule* vertexShader;
+    ShaderModule* fragmentShader;
+};
+
+ShaderProgram loadShader(const std::string& vertexPath, const std::string& fragmentPath, SR_SHADER_CODE_TYPE type, Context* context);
+
+VertexArray* loadMesh(Mesh& mesh, ShaderProgram& prg, Context* context);
+
 class Camera{
 public:
     Camera(float sensitivity = 0.1f, float speed = 0.1f);
@@ -44,6 +70,7 @@ private:
     bool m_FirstMouse;
 
 };
+
 
 
 class Driver {

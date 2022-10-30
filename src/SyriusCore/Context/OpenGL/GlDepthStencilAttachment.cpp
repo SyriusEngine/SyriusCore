@@ -25,9 +25,6 @@ namespace Syrius{
             glDepthFunc(m_GlDepthFunc);
             glDepthMask(!m_DepthBufferReadOnly);
         }
-        else{
-            glDisable(GL_DEPTH_TEST);
-        }
 
         if (m_EnableStencilTest){
             glEnable(GL_STENCIL_TEST);
@@ -35,12 +32,21 @@ namespace Syrius{
             glStencilMask(!m_StencilBufferReadOnly);
             glStencilOp(m_GlStencilFail, m_GlStencilPassDepthFail, m_GlStencilPass);
         }
-        else{
-            glDisable(GL_STENCIL_TEST);
-        }
     }
 
     void GlDepthStencilAttachment::bindAsTexture(uint32 slot) {
+
+    }
+
+    void GlDepthStencilAttachment::unbind() {
+        glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+        if (m_EnableDepthTest){
+            glDisable(GL_DEPTH_TEST);
+        }
+        if (m_EnableStencilTest){
+            glDisable(GL_STENCIL_TEST);
+        }
 
     }
 
@@ -80,6 +86,7 @@ namespace Syrius{
         return m_BufferID;
     }
 
+
     GlDefaultDepthStencilAttachment::GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc)
     : DepthStencilAttachment(desc),
     m_GlDepthFunc(getGlComparisonFunc(desc.m_DepthFunc)),
@@ -98,9 +105,6 @@ namespace Syrius{
             glDepthFunc(m_GlDepthFunc);
             glDepthMask(!m_DepthBufferReadOnly);
         }
-        else{
-            glDisable(GL_DEPTH_TEST);
-        }
 
         if (m_EnableStencilTest){
             glEnable(GL_STENCIL_TEST);
@@ -108,14 +112,20 @@ namespace Syrius{
             glStencilMask(!m_StencilBufferReadOnly);
             glStencilOp(m_GlStencilFail, m_GlStencilPassDepthFail, m_GlStencilPass);
         }
-        else{
-            glDisable(GL_STENCIL_TEST);
-        }
 
     }
 
     void GlDefaultDepthStencilAttachment::bindAsTexture(uint32 slot) {
         SR_CORE_WARNING("OpenGL does not allow reading from the default depth stencil attachment")
+    }
+
+    void GlDefaultDepthStencilAttachment::unbind() {
+        if (m_EnableDepthTest){
+            glDisable(GL_DEPTH_TEST);
+        }
+        if (m_EnableStencilTest){
+            glDisable(GL_STENCIL_TEST);
+        }
     }
 
     void GlDefaultDepthStencilAttachment::clear() {
@@ -152,4 +162,5 @@ namespace Syrius{
     uint64 GlDefaultDepthStencilAttachment::getIdentifier() {
         return 0;
     }
+
 }

@@ -1,5 +1,103 @@
 #include "Driver.hpp"
 
+Mesh createRectangle(){
+    Mesh mesh;
+    mesh.vertices = {
+            {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
+            {{0.5f, -0.5f, 0.0f},  {1.0f, 0.0f}},
+            {{0.5f, 0.5f, 0.0f},   {1.0f, 1.0f}},
+            {{-0.5f, 0.5f, 0.0f},  {0.0f, 1.0f}}
+    };
+    mesh.indices = {
+            0, 1, 2, 2, 3, 0
+    };
+    return mesh;
+}
+
+Mesh createSphere(uint32 rings, uint32 sectors){
+    Mesh mesh;
+    float const R = 1.0f/(float)(rings-1);
+    float const S = 1.0f/(float)(sectors-1);
+    uint32 r, s;
+
+    for(r = 0; r < rings; r++) for(s = 0; s < sectors; s++) {
+            float const y = sin( -M_PI_2 + M_PI * r * R );
+            float const x = cos(2*M_PI * s * S) * sin( M_PI * r * R );
+            float const z = sin(2*M_PI * s * S) * sin( M_PI * r * R );
+
+            mesh.vertices.push_back({{x, y, z},  {s*S, r*R}});
+        }
+
+    for(r = 0; r < rings-1; r++) for(s = 0; s < sectors-1; s++) {
+            mesh.indices.push_back(r * sectors + s);
+            mesh.indices.push_back(r * sectors + (s+1));
+            mesh.indices.push_back((r+1) * sectors + (s+1));
+
+            mesh.indices.push_back(r * sectors + s);
+            mesh.indices.push_back((r+1) * sectors + (s+1));
+            mesh.indices.push_back((r+1) * sectors + s);
+        }
+    return mesh;
+}
+
+ShaderProgram loadShader(const std::string& vertexPath, const std::string& fragmentPath, SR_SHADER_CODE_TYPE type, Context* context){
+    ShaderProgram prg;
+
+    ShaderModuleDesc vsDesc;
+    vsDesc.m_Type = SR_SHADER_VERTEX;
+    vsDesc.m_CodeType = type;
+    vsDesc.m_Code = vertexPath;
+    vsDesc.m_LoadType = SR_LOAD_FROM_FILE;
+    vsDesc.m_EntryPoint = "main";
+    vsDesc.m_CodeLength = 0;
+    prg.vertexShader = context->createShaderModule(vsDesc);
+
+    ShaderModuleDesc fsDesc;
+    fsDesc.m_Type = SR_SHADER_FRAGMENT;
+    fsDesc.m_CodeType = type;
+    fsDesc.m_Code = fragmentPath;
+    fsDesc.m_LoadType = SR_LOAD_FROM_FILE;
+    fsDesc.m_EntryPoint = "main";
+    fsDesc.m_CodeLength = 0;
+    prg.fragmentShader = context->createShaderModule(fsDesc);
+
+    ShaderDesc sDesc;
+    sDesc.m_VertexShader = prg.vertexShader;
+    sDesc.m_FragmentShader = prg.fragmentShader;
+    prg.shaderProgram = context->createShader(sDesc);
+
+    return prg;
+}
+
+VertexArray* loadMesh(Mesh& mesh, ShaderProgram& prg, Context* context){
+    auto layout = context->createVertexDescription();
+    layout->addAttribute("Position", SR_FLOAT32_3);
+    layout->addAttribute("TexCoord", SR_FLOAT32_2);
+
+    VertexBufferDesc vboDesc;
+    vboDesc.m_Type = SR_BUFFER_DEFAULT;
+    vboDesc.m_Data = &mesh.vertices[0];
+    vboDesc.m_Layout = layout;
+    vboDesc.m_Count = mesh.vertices.size();
+    auto vbo = context->createVertexBuffer(vboDesc);
+
+    IndexBufferDesc iboDesc;
+    iboDesc.m_Data = &mesh.indices[0];
+    iboDesc.m_Count = mesh.indices.size();
+    iboDesc.m_Type = SR_BUFFER_DEFAULT;
+    iboDesc.m_DataType = SR_UINT32;
+    auto ibo = context->createIndexBuffer(iboDesc);
+
+    VertexArrayDesc vaoDesc;
+    vaoDesc.m_DrawMode = SR_DRAW_TRIANGLES;
+    vaoDesc.m_VertexShader = prg.vertexShader;
+    vaoDesc.m_VertexBuffer = vbo;
+    vaoDesc.m_IndexBuffer = ibo;
+    auto vao = context->createVertexArray(vaoDesc);
+
+    return vao;
+}
+
 Camera::Camera(float sensitivity, float speed)
     : m_Position(glm::vec3(0.0f, 0.0f, 2.0f)),
       m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),

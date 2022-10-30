@@ -31,7 +31,7 @@ namespace Syrius{
 
     Image *GlColorAttachment::getData() {
         auto bufSize = m_Width * m_Height * m_ChannelCount;
-        auto buf = new uint8_t[bufSize];
+        auto buf = new uint8[bufSize];
         glGetTextureImage(m_TextureID, 0, m_Format, GL_UNSIGNED_BYTE, bufSize, buf);
         auto img = new Image(buf, m_Width, m_Height, m_ChannelCount);
         delete[] buf;

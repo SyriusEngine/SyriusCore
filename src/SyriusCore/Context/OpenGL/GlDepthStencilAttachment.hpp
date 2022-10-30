@@ -15,6 +15,8 @@ namespace Syrius{
 
         void bindAsTexture(uint32 slot) override;
 
+        void unbind() override;
+
         void clear() override;
 
         void onResize(uint32 width, uint32 height) override;
@@ -51,6 +53,8 @@ namespace Syrius{
         void bind() override;
 
         void bindAsTexture(uint32 slot) override;
+
+        void unbind() override;
 
         void clear() override;
 

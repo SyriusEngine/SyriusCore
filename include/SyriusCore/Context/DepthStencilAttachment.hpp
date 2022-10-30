@@ -36,6 +36,8 @@ namespace Syrius{
 
         virtual void bindAsTexture(uint32 slot) = 0;
 
+        virtual void unbind() = 0;
+
         virtual void clear() = 0;
 
         virtual void onResize(uint32 width, uint32 height) = 0;
