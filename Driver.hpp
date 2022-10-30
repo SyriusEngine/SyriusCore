@@ -5,6 +5,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#define SR_IMPORT_DLL
 #include "include/SyriusCore/SyriusCore.hpp"
 
 using namespace Syrius;

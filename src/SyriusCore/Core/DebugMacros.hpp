@@ -51,15 +51,6 @@
 #define SR_CORE_HRESULT(hr) \
     DebugMessageHandler::formatHresultMessage(hr, SR_FUNC, SR_FILE, SR_LINE);
 
-#define SR_D3D11_CALL(x) \
-    do {                 \
-        HRESULT _hr = x;\
-        if (FAILED(_hr)){ \
-            DebugMessageHandler::formatHresultMessage(_hr, #x, SR_FILE, SR_LINE);               \
-        }                 \
-        \
-    } while (0);         \
-
 #define SR_D3D11_CHECK_DEVICE_REMOVED(x, device) \
     do {                 \
         HRESULT _hr = x;\
@@ -75,8 +66,29 @@
 
 #if defined(SR_COMPILER_MSVC)
 #define SR_DXGI_GET_MESSAGES() DebugMessageHandler::dxgiGetMessages();
+
+#define SR_D3D11_CALL(x) \
+    do {                 \
+        HRESULT _hr = x;\
+        if (FAILED(_hr)){ \
+            DebugMessageHandler::formatHresultMessage(_hr, #x, SR_FILE, SR_LINE); \
+            DebugMessageHandler::dxgiGetMessages();     \
+        }                 \
+        \
+    } while (0);         \
+
 #else
 #define SR_DXGI_GET_MESSAGES()
+
+#define SR_D3D11_CALL(x) \
+    do {                 \
+        HRESULT _hr = x;\
+        if (FAILED(_hr)){ \
+            DebugMessageHandler::formatHresultMessage(_hr, #x, SR_FILE, SR_LINE);               \
+        }                 \
+        \
+    } while (0);         \
+
 #endif
 
 #endif

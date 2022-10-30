@@ -10,7 +10,6 @@ namespace Syrius{
       m_Context(deviceContext),
       m_DepthStencilBuffer(nullptr),
       m_DepthStencilState(nullptr),
-      m_BufferView(nullptr),
       m_DepthStencilView(nullptr){
         uint32 flags = 0;
         if (m_EnableDepthTest){
@@ -30,12 +29,12 @@ namespace Syrius{
         bufferDesc.SampleDesc.Count = 1;
         bufferDesc.SampleDesc.Quality = 0;
         bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-        bufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+        bufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
         bufferDesc.CPUAccessFlags = 0;
         bufferDesc.MiscFlags = 0;
         SR_D3D11_CALL(m_Device->CreateTexture2D(&bufferDesc, nullptr, &m_DepthStencilBuffer));
 
-        D3D11_DEPTH_STENCIL_DESC stateDesc;
+        D3D11_DEPTH_STENCIL_DESC stateDesc = { 0 };
         // Depth test parameters
         stateDesc.DepthEnable = desc.m_EnableDepthTest;
         stateDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
@@ -57,18 +56,11 @@ namespace Syrius{
         SR_D3D11_CALL(m_Device->CreateDepthStencilState(&stateDesc, &m_DepthStencilState));
 
         D3D11_DEPTH_STENCIL_VIEW_DESC viewDesc;
-        viewDesc.Format = DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
+        viewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
         viewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
         viewDesc.Texture2D.MipSlice = 0;
+        viewDesc.Flags = 0;
         SR_D3D11_CALL(m_Device->CreateDepthStencilView(m_DepthStencilBuffer, &viewDesc, &m_DepthStencilView));
-
-        D3D11_SHADER_RESOURCE_VIEW_DESC bufferViewDesc = {  };
-        bufferViewDesc.Format = DXGI_FORMAT_R32_TYPELESS;
-        bufferViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-        bufferViewDesc.Texture2D.MipLevels = 1;
-        bufferViewDesc.Texture2D.MostDetailedMip = 0;
-
-        SR_D3D11_CALL(m_Device->CreateShaderResourceView(m_DepthStencilBuffer, &bufferViewDesc, &m_BufferView));
 
     }
 
@@ -78,9 +70,6 @@ namespace Syrius{
         }
         if (m_DepthStencilState){
             m_DepthStencilState->Release();
-        }
-        if (m_BufferView){
-            m_BufferView->Release();
         }
         if (m_DepthStencilView){
             m_DepthStencilView->Release();
@@ -92,7 +81,7 @@ namespace Syrius{
     }
 
     void D3D11DepthStencilAttachment::bindAsTexture(uint32 slot) {
-        m_Context->PSSetShaderResources(slot, 1, &m_BufferView);
+
     }
 
     void D3D11DepthStencilAttachment::unbind() {

@@ -9,10 +9,16 @@ Mesh createRectangle(){
             {{-0.5f, 0.5f, 0.0f},  {0.0f, 1.0f}}
     };
     mesh.indices = {
-            0, 1, 2, 2, 3, 0
+            0, 2, 1,
+            0, 3, 2
     };
     return mesh;
 }
+
+#if defined(SR_COMPILER_MSVC)
+#define M_PI 3.14159265358979323846
+#define M_PI_2 1.57079632679489661923
+#endif
 
 Mesh createSphere(uint32 rings, uint32 sectors){
     Mesh mesh;

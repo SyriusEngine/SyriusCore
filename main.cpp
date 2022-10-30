@@ -1,6 +1,4 @@
 #include <iostream>
-#define SR_IMPORT_DLL
-#include "include/SyriusCore/SyriusCore.hpp"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -26,7 +24,7 @@ int main() {
 
         Camera camera(0.3f, 0.1f);
 
-        const SR_SUPPORTED_API api = Syrius::SR_API_OPENGL;
+        const SR_SUPPORTED_API api = Syrius::SR_API_D3D11;
         SR_SHADER_CODE_TYPE shaderCodeType = SR_SHADER_CODE_GLSL;
         std::string vertexShaderPath = "./Resources/Shaders/GLSL/Basic.vert";
         std::string fragmentShaderPath = "./Resources/Shaders/GLSL/Basic.frag";
@@ -103,6 +101,8 @@ int main() {
         fbDesc.m_Width = 1280;
         fbDesc.m_Height = 720;
         fbDesc.m_ColorAttachments.emplace_back();
+        fbDesc.m_ColorAttachments[0].m_Width = 1280;
+        fbDesc.m_ColorAttachments[0].m_Height = 720;
         fbDesc.m_EnableDepthTest = true;
         auto fbo = context->createFrameBuffer(fbDesc);
 

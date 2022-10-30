@@ -17,8 +17,12 @@ namespace Syrius{
         m_Viewport.TopLeftX = static_cast<float>(m_XPos);
         m_Viewport.TopLeftY = static_cast<float>(m_YPos);
 
-        for (const auto& attachmentDesc: desc.m_ColorAttachments){
-            auto attachment = new D3D11ColorAttachment(attachmentDesc, m_Device, m_DeviceContext);
+        for (auto& attachmentDesc: desc.m_ColorAttachments){
+            // really annoying but yeah
+            ColorAttachmentDesc caDesc = attachmentDesc;
+            caDesc.m_Width = m_Width;
+            caDesc.m_Height = m_Height;
+            auto attachment = new D3D11ColorAttachment(caDesc, m_Device, m_DeviceContext);
             m_ColorAttachments.push_back(attachment);
             m_RenderTargetViews.push_back(attachment->getRenderTargetView());
             m_Nullable.emplace_back(nullptr);
