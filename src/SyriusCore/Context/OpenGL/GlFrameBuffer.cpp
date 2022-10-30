@@ -13,7 +13,10 @@ namespace Syrius{
 
         GLenum attachmentIndex = GL_COLOR_ATTACHMENT0;
         for (const auto& colorAttachmentDesc : desc.m_ColorAttachments){
-            auto colorAttachment = new GlColorAttachment(colorAttachmentDesc);
+            ColorAttachmentDesc caDesc = colorAttachmentDesc;
+            caDesc.m_Width = m_Width;
+            caDesc.m_Height = m_Height;
+            auto colorAttachment = new GlColorAttachment(caDesc);
             m_ColorAttachments.push_back(colorAttachment);
             glNamedFramebufferTexture(m_FrameBufferID, attachmentIndex, colorAttachment->getIdentifier(), 0);
             attachmentIndex++;
