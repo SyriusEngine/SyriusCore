@@ -33,6 +33,13 @@ namespace Syrius{
 
     private:
         uint32 m_BufferID;
+
+        GLenum m_GlDepthFunc;
+
+        GLenum m_GlStencilFunc;
+        GLenum m_GlStencilFail;
+        GLenum m_GlStencilPassDepthFail;
+        GLenum m_GlStencilPass;
     };
 
     class GlDefaultDepthStencilAttachment: public DepthStencilAttachment{
