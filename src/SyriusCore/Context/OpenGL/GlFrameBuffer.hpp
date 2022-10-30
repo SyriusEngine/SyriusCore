@@ -4,6 +4,7 @@
 #include "GlUtils.hpp"
 #include "Internal/GlRenderBuffer.hpp"
 #include "GlColorAttachment.hpp"
+#include "GlDepthStencilAttachment.hpp"
 
 namespace Syrius{
     
@@ -51,8 +52,8 @@ namespace Syrius{
 
 
     private:
-        GLenum m_GlDepthFunc;
-        GLenum m_GlStencilFunc;
+        bool m_EnableDepthTest;
+        bool m_EnableStencilTest;
 
     };
     

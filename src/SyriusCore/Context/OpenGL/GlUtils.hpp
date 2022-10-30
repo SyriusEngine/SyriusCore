@@ -29,5 +29,7 @@ namespace Syrius{
 
     GLint getGlTextureWrap(SR_TEXTURE_WRAP);
 
+    GLint getGlStencilFunc(SR_STENCIL_FUNC);
+
 }
 

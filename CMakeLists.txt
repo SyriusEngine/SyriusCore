@@ -124,7 +124,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/Vulkan/VulkanShaderModule.cpp
         src/SyriusCore/Context/Vulkan/VulkanShader.cpp
         src/SyriusCore/Context/Vulkan/VulkanPipeline.cpp
-        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp )
+        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.hpp)
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}

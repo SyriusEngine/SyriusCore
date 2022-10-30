@@ -10,9 +10,7 @@ namespace Syrius{
       m_YPos(desc.m_YPos),
       m_MinDepth(desc.m_MinDepth),
       m_MaxDepth(desc.m_MaxDepth),
-      m_ClearDepth(desc.m_ClearDepth),
       m_ClearColor{desc.m_ClearColor[0], desc.m_ClearColor[1], desc.m_ClearColor[2], desc.m_ClearColor[3]},
-      m_ClearStencil{desc.m_ClearStencil},
       m_DepthStencilAttachment(nullptr){
 
     }

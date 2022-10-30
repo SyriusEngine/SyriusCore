@@ -161,4 +161,22 @@ namespace Syrius{
             }
         }
     }
+
+    GLint getGlStencilFunc(SR_STENCIL_FUNC func){
+        switch (func) {
+            case SR_STENCIL_FUNC_KEEP:      return GL_KEEP;
+            case SR_STENCIL_FUNC_ZERO:      return GL_ZERO;
+            case SR_STENCIL_FUNC_REPLACE:   return GL_REPLACE;
+            case SR_STENCIL_FUNC_INCR:      return GL_INCR;
+            case SR_STENCIL_FUNC_INCR_WRAP: return GL_INCR_WRAP;
+            case SR_STENCIL_FUNC_DECR:      return GL_DECR;
+            case SR_STENCIL_FUNC_DECR_WRAP: return GL_DECR_WRAP;
+            case SR_STENCIL_FUNC_INVERT:    return GL_INVERT;
+            default: {
+                SR_CORE_WARNING("Invalid texture wrap given to converter, defaulting to GL_KEEP");
+                return GL_KEEP;
+            }
+                
+        }
+    }
 }

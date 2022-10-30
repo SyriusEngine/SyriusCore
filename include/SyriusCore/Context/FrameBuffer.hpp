@@ -79,8 +79,6 @@ namespace Syrius{
         float m_MaxDepth;
 
         float m_ClearColor[4];
-        float m_ClearDepth;
-        uint32 m_ClearStencil;
 
         std::vector<ColorAttachment*> m_ColorAttachments;
         DepthStencilAttachment* m_DepthStencilAttachment;
