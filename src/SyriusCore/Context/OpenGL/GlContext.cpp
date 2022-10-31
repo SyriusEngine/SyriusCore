@@ -169,9 +169,9 @@ namespace Syrius{
         return ptr;
     }
 
-    Sampler *GlContext::createSampler2D(const Sampler2DDesc &desc) {
+    Sampler *GlContext::createSampler(const SamplerDesc &desc) {
         auto ptr = new GlSampler(desc);
-        m_Samplers2D.push_back(ptr);
+        m_Samplers.push_back(ptr);
         return ptr;
     }
 

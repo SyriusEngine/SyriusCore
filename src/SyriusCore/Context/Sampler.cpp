@@ -2,7 +2,7 @@
 
 namespace Syrius{
 
-    Sampler::Sampler(const Sampler2DDesc &desc) {
+    Sampler::Sampler(const SamplerDesc &desc) {
 
     }
 
@@ -10,7 +10,4 @@ namespace Syrius{
 
     }
 
-    const Sampler2DDesc &Sampler::getDesc() const {
-        return m_Desc;
-    }
 }

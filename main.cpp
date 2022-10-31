@@ -24,7 +24,7 @@ int main() {
 
         Camera camera(0.3f, 0.1f);
 
-        const SR_SUPPORTED_API api = Syrius::SR_API_D3D11;
+        const SR_SUPPORTED_API api = Syrius::SR_API_OPENGL;
         SR_SHADER_CODE_TYPE shaderCodeType = SR_SHADER_CODE_GLSL;
         std::string vertexShaderPath = "./Resources/Shaders/GLSL/Basic.vert";
         std::string fragmentShaderPath = "./Resources/Shaders/GLSL/Basic.frag";
@@ -82,11 +82,11 @@ int main() {
         cbDesc.m_ShaderStage = SR_SHADER_VERTEX;
         auto cb = context->createConstantBuffer(cbDesc);
 
-        Sampler2DDesc samplerDesc;
+        SamplerDesc samplerDesc;
         samplerDesc.m_MinFilter = SR_TEXTURE_FILTER_LINEAR;
         samplerDesc.m_MagFilter = SR_TEXTURE_FILTER_LINEAR;
 
-        auto sampler = context->createSampler2D(samplerDesc);
+        auto sampler = context->createSampler(samplerDesc);
 
         auto img = createImage("./Resources/Textures/awesomeface.png");
         Texture2DDesc texDesc;

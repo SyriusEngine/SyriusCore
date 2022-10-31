@@ -4,7 +4,7 @@
 
 namespace Syrius{
 
-    D3D11Sampler::D3D11Sampler(const Sampler2DDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context)
+    D3D11Sampler::D3D11Sampler(const SamplerDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context)
     : Sampler(desc),
       m_Context(context),
       m_Device(device){

@@ -17,9 +17,7 @@ namespace Syrius{
         
     }
 
-    DepthStencilAttachment::~DepthStencilAttachment() {
-
-    }
+    DepthStencilAttachment::~DepthStencilAttachment() = default;
 
     uint32 DepthStencilAttachment::getWidth() const {
         return m_Width;

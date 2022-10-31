@@ -7,7 +7,7 @@ namespace Syrius{
 
     class GlSampler: public Sampler{
     public:
-        explicit GlSampler(const Sampler2DDesc& desc);
+        explicit GlSampler(const SamplerDesc& desc);
 
         ~GlSampler() override;
 

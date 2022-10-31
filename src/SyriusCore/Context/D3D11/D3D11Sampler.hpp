@@ -9,7 +9,7 @@ namespace Syrius{
 
     class D3D11Sampler: public Sampler{
     public:
-        D3D11Sampler(const Sampler2DDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11Sampler(const SamplerDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
 
         ~D3D11Sampler() override;
 

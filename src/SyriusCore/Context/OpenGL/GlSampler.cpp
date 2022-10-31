@@ -2,7 +2,7 @@
 
 namespace Syrius{
 
-    GlSampler::GlSampler(const Sampler2DDesc &desc)
+    GlSampler::GlSampler(const SamplerDesc &desc)
     : Sampler(desc),
       m_SamplerID(0){
         glCreateSamplers(1, &m_SamplerID);

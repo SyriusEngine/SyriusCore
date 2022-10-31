@@ -4,7 +4,7 @@
 
 namespace Syrius{
 
-    struct Sampler2DDesc{
+    struct SamplerDesc{
         SR_TEXTURE_FILTER m_MinFilter   = SR_TEXTURE_FILTER_LINEAR;
         SR_TEXTURE_FILTER m_MagFilter   = SR_TEXTURE_FILTER_LINEAR;
         SR_TEXTURE_WRAP m_WrapU  = SR_TEXTURE_WRAP_REPEAT;
@@ -19,7 +19,7 @@ namespace Syrius{
 
     class Sampler{
     public:
-        explicit Sampler(const Sampler2DDesc& desc);
+        explicit Sampler(const SamplerDesc& desc);
 
         virtual ~Sampler();
 
@@ -27,10 +27,6 @@ namespace Syrius{
 
         [[nodiscard]] virtual uint64 getIdentifier() = 0;
 
-        [[nodiscard]] const Sampler2DDesc& getDesc() const;
-
-    protected:
-        Sampler2DDesc m_Desc;
     };
 
 }

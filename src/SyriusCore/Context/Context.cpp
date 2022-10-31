@@ -28,7 +28,7 @@ namespace Syrius{
         destroyObjects(m_ConstantBuffers);
         destroyObjects(m_FrameBuffers);
         destroyObjects(m_Textures2D);
-        destroyObjects(m_Samplers2D);
+        destroyObjects(m_Samplers);
     }
 
     SR_SUPPORTED_API Context::getType() const {
@@ -140,9 +140,9 @@ namespace Syrius{
         delete texture2D;
     }
 
-    void Context::destroySampler2D(Sampler *sampler2D) {
-        m_Samplers2D.erase(std::remove(m_Samplers2D.begin(), m_Samplers2D.end(), sampler2D), m_Samplers2D.end());
-        delete sampler2D;
+    void Context::destroySampler(Sampler *sampler) {
+        m_Samplers.erase(std::remove(m_Samplers.begin(), m_Samplers.end(), sampler), m_Samplers.end());
+        delete sampler;
     }
 
 }

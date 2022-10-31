@@ -112,7 +112,7 @@ namespace Syrius{
 
         void destroyTexture2D(Texture2D* texture2D);
 
-        void destroySampler2D(Sampler* sampler2D);
+        void destroySampler(Sampler* sampler);
 
         virtual ShaderModule* createShaderModule(const ShaderModuleDesc& desc) = 0;
 
@@ -132,7 +132,7 @@ namespace Syrius{
 
         virtual Texture2D* createTexture2D(const Texture2DDesc& desc) = 0;
 
-        virtual Sampler* createSampler2D(const Sampler2DDesc& desc) = 0;
+        virtual Sampler* createSampler(const SamplerDesc& desc) = 0;
 
     protected:
 
@@ -164,7 +164,7 @@ namespace Syrius{
         std::vector<ConstantBuffer*> m_ConstantBuffers;
         std::vector<FrameBuffer*> m_FrameBuffers;
         std::vector<Texture2D*> m_Textures2D;
-        std::vector<Sampler*> m_Samplers2D;
+        std::vector<Sampler*> m_Samplers;
 
 
     private:
