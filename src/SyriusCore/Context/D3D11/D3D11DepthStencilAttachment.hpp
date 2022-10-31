@@ -48,6 +48,9 @@ namespace Syrius{
         ID3D11DepthStencilView* m_DepthStencilView;
 
         D3D11_CLEAR_FLAG m_ClearFlag;
+
+        DXGI_FORMAT m_BufferFormat;
+        DXGI_FORMAT m_ViewFormat;
     };
     
 }

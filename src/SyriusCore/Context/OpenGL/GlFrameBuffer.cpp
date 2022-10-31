@@ -27,6 +27,7 @@ namespace Syrius{
             DepthStencilAttachmentDesc dsaDesc;
             dsaDesc.m_Width = m_Width;
             dsaDesc.m_Height = m_Height;
+            dsaDesc.m_Format = desc.m_BufferFormat;
             dsaDesc.m_EnableDepthTest = desc.m_EnableDepthTest;
             dsaDesc.m_DepthBufferReadOnly = desc.m_DepthBufferReadOnly;
             dsaDesc.m_DepthFunc = desc.m_DepthFunc;
@@ -112,6 +113,7 @@ namespace Syrius{
             DepthStencilAttachmentDesc dsaDesc;
             dsaDesc.m_Width = m_Width;
             dsaDesc.m_Height = m_Height;
+            dsaDesc.m_Format = desc.m_BufferFormat;
             dsaDesc.m_EnableDepthTest = desc.m_EnableDepthTest;
             dsaDesc.m_DepthBufferReadOnly = desc.m_DepthBufferReadOnly;
             dsaDesc.m_DepthFunc = desc.m_DepthFunc;

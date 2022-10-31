@@ -37,7 +37,7 @@ namespace Syrius{
         // color attachment desc
         std::vector<SR_TEXTURE_DATA_FORMAT> m_ColorAttachmentFormats = { SR_TEXTURE_DATA_FORMAT_RGBA_8 };
         // depth attachment desc
-        SR_TEXTURE_DATA_FORMAT m_DepthAttachmentFormat = SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8;
+        SR_TEXTURE_DATA_FORMAT m_BufferFormat = SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8;
     };
 
     class SR_API FrameBuffer{

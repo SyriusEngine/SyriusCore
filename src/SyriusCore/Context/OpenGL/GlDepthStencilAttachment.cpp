@@ -2,16 +2,31 @@
 
 namespace Syrius{
 
+    GLenum getGlDepthStencilFormat(SR_TEXTURE_DATA_FORMAT format){
+        switch(format){
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_16: return GL_DEPTH_COMPONENT16;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_24: return GL_DEPTH_COMPONENT24;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_32: return GL_DEPTH_COMPONENT32;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8: return GL_DEPTH24_STENCIL8;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_32_STENCIL_8: return GL_DEPTH32F_STENCIL8;
+            default: {
+                SR_CORE_WARNING("Invalid depth stencil format, defaulting to depth 24 stencil 8");
+                return GL_DEPTH24_STENCIL8;
+            }
+        }
+    }
+
     GlDepthStencilAttachment::GlDepthStencilAttachment(const DepthStencilAttachmentDesc &desc)
     : DepthStencilAttachment(desc),
       m_GlDepthFunc(getGlComparisonFunc(desc.m_DepthFunc)),
       m_GlStencilFunc(getGlComparisonFunc(desc.m_StencilFunc)),
       m_GlStencilFail(getGlStencilFunc(desc.m_StencilFail)),
       m_GlStencilPass(getGlStencilFunc(desc.m_StencilPass)),
-      m_GlStencilPassDepthFail(getGlStencilFunc(desc.m_StencilPassDepthFail)){
+      m_GlStencilPassDepthFail(getGlStencilFunc(desc.m_StencilPassDepthFail)),
+      m_GlFormat(getGlDepthStencilFormat(desc.m_Format)){
 
         glCreateRenderbuffers(1, &m_BufferID);
-        glNamedRenderbufferStorage(m_BufferID, GL_DEPTH24_STENCIL8, m_Width, m_Height);
+        glNamedRenderbufferStorage(m_BufferID, m_GlFormat, m_Width, m_Height);
     }
 
     GlDepthStencilAttachment::~GlDepthStencilAttachment() {
@@ -58,7 +73,7 @@ namespace Syrius{
     void GlDepthStencilAttachment::onResize(uint32 width, uint32 height) {
         m_Width = width;
         m_Height = height;
-        glNamedRenderbufferStorage(m_BufferID, GL_DEPTH24_STENCIL8, m_Width, m_Height);
+        glNamedRenderbufferStorage(m_BufferID, m_GlFormat, m_Width, m_Height);
     }
 
     void GlDepthStencilAttachment::setDepthFunc(SR_COMPARISON_FUNC func) {

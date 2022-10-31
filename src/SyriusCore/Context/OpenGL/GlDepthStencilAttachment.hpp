@@ -42,6 +42,8 @@ namespace Syrius{
         GLenum m_GlStencilFail;
         GLenum m_GlStencilPassDepthFail;
         GLenum m_GlStencilPass;
+
+        GLenum m_GlFormat;
     };
 
     class GlDefaultDepthStencilAttachment: public DepthStencilAttachment{

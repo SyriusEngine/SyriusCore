@@ -4,13 +4,43 @@
 
 namespace Syrius{
 
+    DXGI_FORMAT getD3d11DepthStencilBufferFormat(SR_TEXTURE_DATA_FORMAT format){
+        switch (format){
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_16: return DXGI_FORMAT_D16_UNORM;
+//            case SR_TEXTURE_DATA_FORMAT_DEPTH_24: return DXGI_FORMAT_D24_UNORM;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_32: return DXGI_FORMAT_D32_FLOAT;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8: return DXGI_FORMAT_D24_UNORM_S8_UINT;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_32_STENCIL_8: return DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
+            default: {
+                SR_CORE_WARNING("Invalid depth stencil buffer format, defaulting to depth 24 stencil 8");
+                return DXGI_FORMAT_D24_UNORM_S8_UINT;
+            }
+        }
+    }
+
+    DXGI_FORMAT getD3d11DepthStencilViewFormat(SR_TEXTURE_DATA_FORMAT format){
+        switch (format){
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_16: return DXGI_FORMAT_D16_UNORM;
+//            case SR_TEXTURE_DATA_FORMAT_DEPTH_24: return DXGI_FORMAT_D24_UNORM;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_32: return DXGI_FORMAT_D32_FLOAT;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8: return DXGI_FORMAT_D24_UNORM_S8_UINT;
+            case SR_TEXTURE_DATA_FORMAT_DEPTH_32_STENCIL_8: return DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
+            default: {
+                SR_CORE_WARNING("Invalid depth stencil buffer format, defaulting to depth 24 stencil 8");
+                return DXGI_FORMAT_D24_UNORM_S8_UINT;
+            }
+        }
+    }
+
     D3D11DepthStencilAttachment::D3D11DepthStencilAttachment(const DepthStencilAttachmentDesc &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext)
     : DepthStencilAttachment(desc),
       m_Device(device),
       m_Context(deviceContext),
       m_DepthStencilBuffer(nullptr),
       m_DepthStencilState(nullptr),
-      m_DepthStencilView(nullptr){
+      m_DepthStencilView(nullptr),
+      m_BufferFormat(getD3d11DepthStencilBufferFormat(desc.m_Format)),
+      m_ViewFormat(getD3d11DepthStencilViewFormat(desc.m_Format)){
         uint32 flags = 0;
         if (m_EnableDepthTest){
             flags |= D3D11_CLEAR_DEPTH;
@@ -25,7 +55,7 @@ namespace Syrius{
         bufferDesc.Height = m_Height;
         bufferDesc.MipLevels = 1;
         bufferDesc.ArraySize = 1;
-        bufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+        bufferDesc.Format = m_BufferFormat;
         bufferDesc.SampleDesc.Count = 1;
         bufferDesc.SampleDesc.Quality = 0;
         bufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -56,7 +86,7 @@ namespace Syrius{
         SR_D3D11_CALL(m_Device->CreateDepthStencilState(&stateDesc, &m_DepthStencilState));
 
         D3D11_DEPTH_STENCIL_VIEW_DESC viewDesc;
-        viewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+        viewDesc.Format = m_ViewFormat;
         viewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
         viewDesc.Texture2D.MipSlice = 0;
         viewDesc.Flags = 0;
