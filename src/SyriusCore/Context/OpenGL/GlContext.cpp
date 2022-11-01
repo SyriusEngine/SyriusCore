@@ -158,7 +158,6 @@ namespace Syrius{
 
     Texture2D *GlContext::createTexture2D(const Texture2DDesc& desc) {
         SR_CORE_PRECONDITION(desc.m_Image != nullptr, "Texture image is null");
-        SR_CORE_PRECONDITION(desc.m_Sampler2D != nullptr, "Texture sampler is null");
         SR_CORE_PRECONDITION(desc.m_Image->getWidth() <= getMaxTexture2DSize(), "Texture width is too large");
         SR_CORE_PRECONDITION(desc.m_Image->getHeight() <= getMaxTexture2DSize(), "Texture height is too large");
 

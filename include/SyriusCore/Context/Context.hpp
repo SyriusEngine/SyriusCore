@@ -76,11 +76,15 @@ namespace Syrius{
 
         FrameBuffer* getDefaultFrameBuffer();
 
-        void setClearColor(float r, float g, float b, float a);
+        inline void setClearColor(float r, float g, float b, float a){
+            m_DefaultFrameBuffer->setClearColor(r, g, b, a);
+        }
 
-        void setClearColor(FrameBuffer* frameBuffer, float r, float g, float b, float a);
+        void setClearColor(float r, float g, float b, float a, FrameBuffer *frameBuffer);
 
-        void clear();
+        inline void clear(){
+            clear(m_DefaultFrameBuffer);
+        }
 
         void clear(FrameBuffer* frameBuffer);
 
@@ -88,11 +92,25 @@ namespace Syrius{
 
         void drawInstanced(VertexArray* vao, uint32 instanceCount);
 
-        void onResize(uint32 width, uint32 height);
+        inline void onResize(uint32 width, uint32 height){
+            onResize(width, height, m_DefaultFrameBuffer);
+        }
 
-        void onResize(FrameBuffer* frameBuffer, uint32 width, uint32 height);
+        void onResize(uint32 width, uint32 height, FrameBuffer* frameBuffer);
 
         void bindDefaultFrameBuffer();
+
+        inline void beginRenderPass(){
+            beginRenderPass(m_DefaultFrameBuffer);
+        }
+
+        void beginRenderPass(FrameBuffer* frameBuffer);
+
+        inline void endRenderPass(){
+            endRenderPass(m_DefaultFrameBuffer);
+        }
+
+        void endRenderPass(FrameBuffer* frameBuffer);
 
         void destroyShaderModule(ShaderModule* shaderModule);
 

@@ -8,7 +8,6 @@ namespace Syrius{
 
     struct SR_API Texture2DDesc{
         Image* m_Image          = nullptr;
-        Sampler* m_Sampler2D    = nullptr;
 
     };
 

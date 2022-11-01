@@ -1,4 +1,5 @@
 #include <iostream>
+#include <thread>
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -24,7 +25,7 @@ int main() {
 
         Camera camera(0.3f, 0.1f);
 
-        const SR_SUPPORTED_API api = Syrius::SR_API_OPENGL;
+        const SR_SUPPORTED_API api = Syrius::SR_API_D3D11;
         SR_SHADER_CODE_TYPE shaderCodeType = SR_SHADER_CODE_GLSL;
         std::string vertexShaderPath = "./Resources/Shaders/GLSL/Basic.vert";
         std::string fragmentShaderPath = "./Resources/Shaders/GLSL/Basic.frag";
@@ -91,7 +92,6 @@ int main() {
         auto img = createImage("./Resources/Textures/awesomeface.png");
         Texture2DDesc texDesc;
         texDesc.m_Image = img;
-        texDesc.m_Sampler2D = sampler;
         auto texture1 = context->createTexture2D(texDesc);
         img = createImage("./Resources/Textures/Logo.jpg");
         texDesc.m_Image = img;
@@ -100,7 +100,6 @@ int main() {
         FrameBufferDesc fbDesc;
         fbDesc.m_Width = 1280;
         fbDesc.m_Height = 720;
-        fbDesc.m_EnableDepthTest = true;
         auto fbo = context->createFrameBuffer(fbDesc);
 
         while (window->isOpen()){
@@ -143,19 +142,20 @@ int main() {
             }
 
             // first pass
-            context->clear(fbo);
+
+            // for some reason D3D11 only shows the first frame, all subsequent frames are the clear color (=red)
             fbo->bind();
+            fbo->clear();
             cb->bind();
             sampler->bind(0);
             texture1->bind(0);
             texture2->bind(1);
             shader.shaderProgram->bind();
             context->draw(sphereVAO);
-            fbo->unbind();
+            context->endRenderPass(fbo);
 
             // second pass
-            context->clear();
-            context->getDefaultFrameBuffer()->bind();
+            context->beginRenderPass();
             screenShader.shaderProgram->bind();
             fbo->getColorAttachment(0)->bind(0);
             context->draw(screenVAO);
@@ -184,7 +184,10 @@ int main() {
 
             window->onImGuiEnd();
 
+            context->endRenderPass();
+
             context->swapBuffers();
+
         }
 
 

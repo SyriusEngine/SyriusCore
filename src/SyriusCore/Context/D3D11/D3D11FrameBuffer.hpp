@@ -32,6 +32,7 @@ namespace Syrius{
         D3D11_VIEWPORT m_Viewport;
 
         std::vector<ID3D11RenderTargetView*> m_RenderTargetViews;
+        std::vector<ID3D11RenderTargetView*> m_NullableRenderTargetViews;
         std::vector<ID3D11ShaderResourceView*> m_Nullable;
         ID3D11DepthStencilView* m_DepthStencilView;
 

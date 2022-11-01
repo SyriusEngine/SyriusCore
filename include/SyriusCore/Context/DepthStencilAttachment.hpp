@@ -31,7 +31,7 @@ namespace Syrius{
     public:
         explicit DepthStencilAttachment(const DepthStencilAttachmentDesc& desc);
 
-        virtual ~DepthStencilAttachment();
+        virtual ~DepthStencilAttachment() = default;
 
         virtual void bind() = 0;
 

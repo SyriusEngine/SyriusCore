@@ -27,6 +27,7 @@ namespace Syrius{
             m_ColorAttachments.push_back(attachment);
             m_RenderTargetViews.push_back(attachment->getRenderTargetView());
             m_Nullable.emplace_back(nullptr);
+            m_NullableRenderTargetViews.emplace_back(nullptr);
         }
 
         if (desc.m_EnableDepthTest or desc.m_EnableStencilTest){
@@ -56,6 +57,7 @@ namespace Syrius{
     }
 
     void D3D11FrameBuffer::bind() {
+        // unbind all shader inputs, a render target cannot be bound as a shader input if it is still bound as a texture
         m_DeviceContext->PSSetShaderResources(0, m_RenderTargetViews.size(), &m_Nullable[0]);
 
         if (m_DepthStencilAttachment){
@@ -69,6 +71,7 @@ namespace Syrius{
     }
 
     void D3D11FrameBuffer::unbind() {
+        m_DeviceContext->OMSetRenderTargets(m_RenderTargetViews.size(), &m_NullableRenderTargetViews[0], nullptr);
 
     }
 

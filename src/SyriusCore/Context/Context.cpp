@@ -47,17 +47,10 @@ namespace Syrius{
         return m_DefaultFrameBuffer;
     }
 
-    void Context::setClearColor(float r, float g, float b, float a) {
-        m_DefaultFrameBuffer->setClearColor(r, g, b, a);
-    }
-
-    void Context::setClearColor(FrameBuffer *frameBuffer, float r, float g, float b, float a) {
+    void Context::setClearColor(float r, float g, float b, float a, FrameBuffer *frameBuffer) {
         frameBuffer->setClearColor(r, g, b, a);
     }
 
-    void Context::clear() {
-        m_DefaultFrameBuffer->clear();
-    }
 
     void Context::clear(FrameBuffer *frameBuffer) {
         frameBuffer->clear();
@@ -73,16 +66,7 @@ namespace Syrius{
         vao->drawBuffersInstanced(instanceCount);
     }
 
-    void Context::onResize(uint32 width, uint32 height) {
-        SR_CORE_PRECONDITION(width > 0, "Width must be greater than 0");
-        SR_CORE_PRECONDITION(height > 0, "Height must be greater than 0");
-        SR_CORE_PRECONDITION(width <= getMaxFramebufferWidth(), "Width must be less than or equal to the maximum framebuffer width");
-        SR_CORE_PRECONDITION(height <= getMaxFramebufferHeight(), "Height must be less than or equal to the maximum framebuffer height");
-
-        m_DefaultFrameBuffer->setSize(width, height);
-    }
-
-    void Context::onResize(FrameBuffer *frameBuffer, uint32 width, uint32 height) {
+    void Context::onResize(uint32 width, uint32 height, FrameBuffer* frameBuffer) {
         SR_CORE_PRECONDITION(width > 0, "Width must be greater than 0");
         SR_CORE_PRECONDITION(height > 0, "Height must be greater than 0");
         SR_CORE_PRECONDITION(width <= getMaxFramebufferWidth(), "Width must be less than or equal to the maximum framebuffer width");
@@ -93,6 +77,15 @@ namespace Syrius{
 
     void Context::bindDefaultFrameBuffer() {
         m_DefaultFrameBuffer->bind();
+    }
+
+    void Context::beginRenderPass(FrameBuffer *frameBuffer) {
+        frameBuffer->bind();
+        frameBuffer->clear();
+    }
+
+    void Context::endRenderPass(FrameBuffer *frameBuffer) {
+        frameBuffer->unbind();
     }
 
     void Context::destroyShaderModule(ShaderModule *shaderModule) {
@@ -144,5 +137,6 @@ namespace Syrius{
         m_Samplers.erase(std::remove(m_Samplers.begin(), m_Samplers.end(), sampler), m_Samplers.end());
         delete sampler;
     }
+
 
 }
