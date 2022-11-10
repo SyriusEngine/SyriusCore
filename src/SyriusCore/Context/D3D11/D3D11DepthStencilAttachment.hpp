@@ -34,7 +34,7 @@ namespace Syrius{
         void setStencilMask(uint32 mask) override;
 
         [[nodiscard]] uint64 getIdentifier() override;
-        
+
         [[nodiscard]] ID3D11DepthStencilView* getDepthStencilView() const;
 
         [[nodiscard]] ID3D11DepthStencilState* getDepthStencilState() const;

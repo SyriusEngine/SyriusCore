@@ -123,6 +123,41 @@ namespace Syrius{
     }
 
     void D3D11DepthStencilAttachment::onResize(uint32 width, uint32 height) {
+        m_DepthStencilView->Release();
+        m_DepthStencilBuffer->Release();
+
+        m_Width = width;
+        m_Height = height;
+
+        uint32 flags = 0;
+        if (m_EnableDepthTest){
+            flags |= D3D11_CLEAR_DEPTH;
+        }
+        if (m_EnableStencilTest){
+            flags |= D3D11_CLEAR_STENCIL;
+        }
+        m_ClearFlag = static_cast<D3D11_CLEAR_FLAG>(flags);
+
+        D3D11_TEXTURE2D_DESC bufferDesc;
+        bufferDesc.Width = m_Width;
+        bufferDesc.Height = m_Height;
+        bufferDesc.MipLevels = 1;
+        bufferDesc.ArraySize = 1;
+        bufferDesc.Format = m_BufferFormat;
+        bufferDesc.SampleDesc.Count = 1;
+        bufferDesc.SampleDesc.Quality = 0;
+        bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+        bufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+        bufferDesc.CPUAccessFlags = 0;
+        bufferDesc.MiscFlags = 0;
+        SR_D3D11_CALL(m_Device->CreateTexture2D(&bufferDesc, nullptr, &m_DepthStencilBuffer));
+
+        D3D11_DEPTH_STENCIL_VIEW_DESC viewDesc;
+        viewDesc.Format = m_ViewFormat;
+        viewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+        viewDesc.Texture2D.MipSlice = 0;
+        viewDesc.Flags = 0;
+        SR_D3D11_CALL(m_Device->CreateDepthStencilView(m_DepthStencilBuffer, &viewDesc, &m_DepthStencilView));
 
     }
 
