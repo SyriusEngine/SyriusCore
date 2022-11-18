@@ -43,7 +43,7 @@ int main() {
         syriusCoreInit();
         setDebugMessageCallback(messageCallback);
 
-        Mesh sphere = createSphere(32, 32);
+        Mesh sphere = createRectangle(); //createSphere(32, 32);
         Mesh rectangle = createRectangle();
 
         WindowDesc wDesc;
@@ -146,21 +146,20 @@ int main() {
             // first pass
 
             // for some reason D3D11 only shows the first frame, all subsequent frames are the clear color (=red)
-            fbo->bind();
-            fbo->clear();
-            cb->bind();
+            context->beginRenderPass();
             sampler->bind(0);
+            cb->bind();
             texture1->bind(0);
             texture2->bind(1);
             shader.shaderProgram->bind();
             context->draw(sphereVAO);
-            context->endRenderPass(fbo);
+            context->endRenderPass();
 
             // second pass
-            context->beginRenderPass();
-            screenShader.shaderProgram->bind();
-            fbo->getColorAttachment(0)->bind(0);
-            context->draw(screenVAO);
+//            context->beginRenderPass();
+//            screenShader.shaderProgram->bind();
+//            fbo->getColorAttachment(0)->bind(0);
+//            context->draw(screenVAO);
 
 
 
