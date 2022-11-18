@@ -137,6 +137,10 @@ namespace Syrius{
         return {};
     }
 
+    std::string D3D11Context::getDeviceVendor() {
+        return {};
+    }
+
     std::string D3D11Context::getShadingLanguageVersion() {
         return "HLSL 5.0";
     }
@@ -238,6 +242,7 @@ namespace Syrius{
         m_Samplers.push_back(ptr);
         return ptr;
     }
+
 }
 
 #endif

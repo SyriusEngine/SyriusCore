@@ -42,6 +42,10 @@ namespace Syrius{
         return m_PhysicalDevice->getDeviceProperties().deviceName;
     }
 
+    std::string VulkanContext::getDeviceVendor() {
+        return std::to_string(m_PhysicalDevice->getDeviceProperties().vendorID);
+    }
+
     std::string VulkanContext::getShadingLanguageVersion() {
         return {};
     }
@@ -109,6 +113,7 @@ namespace Syrius{
     Sampler *VulkanContext::createSampler(const SamplerDesc &desc) {
         return nullptr;
     }
+
 
 }
 

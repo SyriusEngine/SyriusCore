@@ -38,6 +38,14 @@ namespace Syrius{
         return retVal;
     }
 
+    std::string GlContext::getDeviceVendor() {
+        const unsigned char* version = glGetString(GL_VENDOR);
+        char* temp = (char*) version;
+        std::string retVal = temp;
+        return retVal;
+    }
+
+
     std::string GlContext::getShadingLanguageVersion() {
         ensureCurrentContext();
         const unsigned char* version = glGetString(GL_SHADING_LANGUAGE_VERSION);
@@ -173,6 +181,5 @@ namespace Syrius{
         m_Samplers.push_back(ptr);
         return ptr;
     }
-
 }
 

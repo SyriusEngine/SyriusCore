@@ -1,4 +1,5 @@
 #include "Driver.hpp"
+#include <iostream>
 
 Mesh createRectangle(){
     Mesh mesh;
@@ -102,6 +103,22 @@ VertexArray* loadMesh(Mesh& mesh, ShaderProgram& prg, Context* context){
     auto vao = context->createVertexArray(vaoDesc);
 
     return vao;
+}
+
+void printInfo(Context* context){
+    std::string deviceInfo = "\n";
+    deviceInfo += "Device name                          : " + context->getDeviceName() + "\n";
+    deviceInfo += "API Version                          : " + context->getAPIVersion() + "\n";
+    deviceInfo += "Shading language version             : " + context->getShadingLanguageVersion() + "\n";
+    deviceInfo += "Max Framebuffer width                : " + std::to_string(context->getMaxFramebufferWidth()) + "\n";
+    deviceInfo += "Max Framebuffer width                : " + std::to_string(context->getMaxFramebufferHeight()) + "\n";
+    deviceInfo += "Max framebuffer texture attachments  : " + std::to_string(context->getMaxFramebufferTextureAttachments()) + "\n";
+    deviceInfo += "Max Texture Slots                    : " + std::to_string(context->getMaxTextureSlots()) + " slots\n";
+    deviceInfo += "Max Texture2D Size                   : " + std::to_string(context->getMaxTexture2DSize()) + " bytes\n";
+    deviceInfo += "Max constant buffer size             : " + std::to_string(context->getMaxConstantBufferSize()) + " bytes\n";
+    deviceInfo += "Depth buffer depth                   : " + std::to_string(context->getMaxDepthBufferBits()) + " bits\n";
+
+    std::cout << deviceInfo << std::endl;
 }
 
 Camera::Camera(float sensitivity, float speed)

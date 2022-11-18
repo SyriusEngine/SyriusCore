@@ -34,6 +34,8 @@ ShaderProgram loadShader(const std::string& vertexPath, const std::string& fragm
 
 VertexArray* loadMesh(Mesh& mesh, ShaderProgram& prg, Context* context);
 
+void printInfo(Context* context);
+
 class Camera{
 public:
     Camera(float sensitivity = 0.1f, float speed = 0.1f);

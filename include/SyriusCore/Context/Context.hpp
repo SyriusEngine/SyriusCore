@@ -56,6 +56,8 @@ namespace Syrius{
 
         virtual std::string getDeviceName() = 0;
 
+        virtual std::string getDeviceVendor() = 0;
+
         virtual std::string getShadingLanguageVersion() = 0;
 
         virtual int32 getMaxFramebufferWidth() = 0;

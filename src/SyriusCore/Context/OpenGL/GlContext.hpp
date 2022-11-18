@@ -32,6 +32,8 @@ namespace Syrius{
 
         std::string getDeviceName() override;
 
+        std::string getDeviceVendor() override;
+
         std::string getShadingLanguageVersion() override;
 
         int32 getMaxFramebufferWidth() override;
