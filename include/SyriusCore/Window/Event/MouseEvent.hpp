@@ -26,12 +26,12 @@ namespace Syrius{
 
     class SR_API MouseMovedEvent: public MouseEvent{
     public:
-        MouseMovedEvent(int32_t posX, int32_t posY);
+        MouseMovedEvent(int32 posX, int32 posY);
     };
 
     class SR_API MouseScrolledEvent: public MouseEvent{
     public:
-        MouseScrolledEvent(int32_t scrollX, int32_t scrollY);
+        MouseScrolledEvent(int32 scrollX, int32 scrollY);
     };
 
     class SR_API MouseButtonPressedEvent: public MouseEvent{
@@ -52,6 +52,11 @@ namespace Syrius{
     class SR_API MouseLeftEvent: public MouseEvent{
     public:
         MouseLeftEvent();
+    };
+
+    class SR_API RawMouseMovedEvent: public MouseEvent{
+    public:
+        RawMouseMovedEvent(int32 posX, int32 posY);
     };
 
 }

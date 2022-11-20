@@ -138,20 +138,10 @@ Camera::~Camera() {
 }
 
 void Camera::update(float mouseX, float mouseY) {
-    if (m_FirstMouse){
-        m_LastX = mouseX;
-        m_LastY = mouseY;
-        m_FirstMouse = false;
-    }
-    float xOffset = mouseX - m_LastX;
-    float yOffset = m_LastY - mouseY;
-    m_LastX = mouseX;
-    m_LastY = mouseY;
-
-    xOffset *= m_Sensitivity;
-    yOffset *= m_Sensitivity;
-    m_Yaw += xOffset;
-    m_Pitch += yOffset;
+    mouseX *= m_Sensitivity;
+    mouseY *= m_Sensitivity;
+    m_Yaw += mouseX;
+    m_Pitch += mouseY;
     // when dragged to far, make sure the screen doesn't get flipped
     if (m_Pitch > 89.0f) {
         m_Pitch = 89.0f;

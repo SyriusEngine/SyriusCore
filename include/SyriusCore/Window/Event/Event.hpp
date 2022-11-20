@@ -29,11 +29,11 @@ namespace Syrius {
         SR_EVENT_MOUSE_BUTTON_RELEASED =    0x24,  // 0010 0100
         SR_EVENT_MOUSE_ENTERED =            0x25,  // 0010 0101
         SR_EVENT_MOUSE_LEFT =               0x26,  // 0010 0110
-
+        SR_EVENT_RAW_MOUSE_MOVED =          0x27,  // 0010 0111
 
         SR_EVENT_KEYBOARD_KEY_TYPED =       0x41,  // 0100 0001
         SR_EVENT_KEYBOARD_KEY_PRESSED =     0x42,  // 0100 0010
-        SR_EVENT_KEYBOARD_KEY_RELEASED =    0x43  // 0100 0011
+        SR_EVENT_KEYBOARD_KEY_RELEASED =    0x43,  // 0100 0011
 
     } SR_EVENT_TYPE;
 

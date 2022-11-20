@@ -43,6 +43,14 @@ namespace Syrius{
             SetWindowLongPtrW(m_Hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
             m_Callback = SetWindowLongPtrW(m_Hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&SyriusWindowWin32Impl::windowEventProc));
 
+            //register raw input devices
+            RAWINPUTDEVICE rid;
+            rid.usUsagePage = 0x01; //mouse
+            rid.usUsage = 0x02;     //mouse
+            rid.dwFlags = 0;
+            rid.hwndTarget = nullptr; // register to all windows, maybe change this later to only register to this window
+            SR_CORE_CHECK_CALL(RegisterRawInputDevices(&rid, 1, sizeof(rid)), "Failed to register raw input devices");
+
         }
         else{
             SR_CORE_WARNING("Failed to create window");
@@ -465,6 +473,35 @@ namespace Syrius{
                     int32_t yOffset = HIWORD(lparam);
                     MouseScrolledEvent event(xOffset, yOffset);
                     dispatchEvent(event);
+                }
+                break;
+            }
+            // raw input from devices
+            case WM_INPUT: {
+                uint32 size;
+                if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lparam), RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == -1){
+                    break;
+                }
+                else{
+                    std::vector<uint8> buffer(size);
+                    if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lparam), RID_INPUT, buffer.data(), &size, sizeof(RAWINPUTHEADER)) != size){
+                        break;
+                    }
+                    else{
+                        auto raw = reinterpret_cast<RAWINPUT*>(buffer.data());
+                        switch (raw->header.dwType) {
+                            case RIM_TYPEMOUSE: {
+                                if (m_MouseInside){
+                                    if (raw->data.mouse.lLastX != 0 and raw->data.mouse.lLastY != 0){
+                                        RawMouseMovedEvent event(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
+                                        dispatchEvent(event);
+                                    }
+                                }
+                                break;
+                            }
+                            default: break;
+                        }
+                    }
                 }
                 break;
             }

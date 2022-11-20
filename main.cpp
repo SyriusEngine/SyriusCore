@@ -25,7 +25,7 @@ int main() {
 
         Camera camera(0.3f, 0.1f);
 
-        const SR_SUPPORTED_API api = Syrius::SR_API_D3D11;
+        const SR_SUPPORTED_API api = Syrius::SR_API_OPENGL;
         SR_SHADER_CODE_TYPE shaderCodeType = SR_SHADER_CODE_GLSL;
         std::string vertexShaderPath = "./Resources/Shaders/GLSL/Basic.vert";
         std::string fragmentShaderPath = "./Resources/Shaders/GLSL/Basic.frag";
@@ -63,9 +63,7 @@ int main() {
         context->setVerticalSynchronisation(true);
         context->setClearColor(0.2f, 0.3f, 0.5f, 1.0f);
         window->createImGuiContext();
-
-        printInfo(context);
-
+        window->grabMouse();
 
         auto shader = loadShader(vertexShaderPath, fragmentShaderPath, shaderCodeType, context);
         auto screenShader = loadShader(screenVertexShaderPath, screenFragmentShaderPath, shaderCodeType, context);
@@ -138,7 +136,8 @@ int main() {
                         camera.moveDown();
                     }
                 }
-                else if (event.type == Syrius::SR_EVENT_MOUSE_MOVED){
+                else if (event.type == Syrius::SR_EVENT_RAW_MOUSE_MOVED){
+                    printf("Mouse moved: %d, %d\n", event.mousePosX, event.mousePosY);
                     camera.update(event.mousePosX, event.mousePosY);
                 }
             }
