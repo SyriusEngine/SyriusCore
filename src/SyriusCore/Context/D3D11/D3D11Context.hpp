@@ -89,6 +89,8 @@ namespace Syrius{
         ID3D11DeviceContext* m_DeviceContext;
         IDXGISwapChain* m_SwapChain;
 
+        ID3D11RasterizerState* m_RasterizerState;
+
         ImGuiContext *m_ImGuiContext;
 
         D3D_FEATURE_LEVEL m_D3DVersion;

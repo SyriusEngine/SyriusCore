@@ -99,6 +99,12 @@ int main() {
         texDesc.m_Image = img;
         auto texture2 = context->createTexture2D(texDesc);
 
+        FrameBufferDesc fbDesc;
+        fbDesc.m_ColorAttachments = {caDesc};
+        fbDesc.m_Width = 1280;
+        fbDesc.m_Height = 720;
+        auto frameBuffer = context->createFrameBuffer(fbDesc);
+
         while (window->isOpen()){
 
             window->pollEvents();
@@ -141,13 +147,19 @@ int main() {
             // first pass
 
             // for some reason D3D11 only shows the first frame, all subsequent frames are the clear color (=red)
-            context->beginRenderPass();
+            context->beginRenderPass(frameBuffer);
             sampler->bind(0);
             cb->bind();
             texture1->bind(0);
             texture2->bind(1);
             shader.shaderProgram->bind();
             context->draw(sphereVAO);
+            context->endRenderPass(frameBuffer);
+
+            context->beginRenderPass();
+            screenShader.shaderProgram->bind();
+            frameBuffer->getColorAttachment(0)->bind(0);
+            context->draw(screenVAO);
             context->endRenderPass();
 
 
@@ -165,7 +177,7 @@ int main() {
                 model = glm::translate(glm::mat4(1.0f), translation);
             }
 
-            transform = projection * camera.getViewMatrix() * model;
+            transform = model;
             cb->setData(&transform[0]);
 
             ImGui::Text("Allocated Memory: %zu", getAllocatedMemory());

@@ -46,7 +46,20 @@ namespace Syrius{
 
         m_DefaultFrameBuffer = new D3D11DefaultFrameBuffer(desc.m_DefaultFrameBufferDesc, m_Device, m_DeviceContext, m_SwapChain);
 
+        D3D11_RASTERIZER_DESC rasterizerDesc = {};
+        rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+        rasterizerDesc.CullMode = D3D11_CULL_NONE;
+        rasterizerDesc.FrontCounterClockwise = false;
+        rasterizerDesc.DepthBias = 0;
+        rasterizerDesc.DepthBiasClamp = 0.0f;
+        rasterizerDesc.SlopeScaledDepthBias = 0.0f;
+        rasterizerDesc.DepthClipEnable = true;
+        rasterizerDesc.ScissorEnable = false;
+        rasterizerDesc.MultisampleEnable = false;
+        rasterizerDesc.AntialiasedLineEnable = false;
 
+        SR_D3D11_CALL(m_Device->CreateRasterizerState(&rasterizerDesc, &m_RasterizerState));
+        m_DeviceContext->RSSetState(m_RasterizerState);
     }
 
     D3D11Context::~D3D11Context() {

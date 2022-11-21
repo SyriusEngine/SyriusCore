@@ -111,7 +111,7 @@ namespace Syrius{
     }
 
     D3D11DefaultFrameBuffer::~D3D11DefaultFrameBuffer() {
-        delete m_BackRenderTarget;
+
     }
 
     void D3D11DefaultFrameBuffer::bind() {
