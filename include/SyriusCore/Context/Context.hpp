@@ -79,10 +79,12 @@ namespace Syrius{
         FrameBuffer* getDefaultFrameBuffer();
 
         inline void setClearColor(float r, float g, float b, float a){
-            m_DefaultFrameBuffer->setClearColor(r, g, b, a);
+            setClearColor(r, g, b, a, m_DefaultFrameBuffer);
         }
 
-        void setClearColor(float r, float g, float b, float a, FrameBuffer *frameBuffer);
+        inline void setClearColor(float r, float g, float b, float a, FrameBuffer *frameBuffer){
+            frameBuffer->getColorAttachment(0)->setClearColor(r, g, b, a);
+        }
 
         inline void clear(){
             clear(m_DefaultFrameBuffer);

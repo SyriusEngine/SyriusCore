@@ -15,29 +15,10 @@ namespace Syrius{
         float m_MinDepth                = 0.0f;
         float m_MaxDepth                = 1.0f;
 
-        // clear parameters
-        float m_ClearColor[4]           = {0.8f, 0.2f, 0.3f, 1.0f};
-        float m_ClearDepth              = 1.0f;
-        uint32 m_ClearStencil           = 0;
-
-        // depth parameters
-        bool m_EnableDepthTest          = false;
-        bool m_DepthBufferReadOnly      = false;
-        SR_COMPARISON_FUNC m_DepthFunc  = SR_COMPARISON_FUNC_LESS;
-
-        // stencil parameters
-        bool m_EnableStencilTest        = false;
-        bool m_StencilBufferReadOnly    = false;
-        SR_COMPARISON_FUNC m_StencilFunc = SR_COMPARISON_FUNC_ALWAYS;
-        uint32 m_StencilMask            = 0xFFFFFFFF;
-        SR_STENCIL_FUNC m_StencilFail   = SR_STENCIL_FUNC_KEEP;
-        SR_STENCIL_FUNC m_StencilPass   = SR_STENCIL_FUNC_KEEP;
-        SR_STENCIL_FUNC m_StencilPassDepthFail = SR_STENCIL_FUNC_KEEP;
-
-        // color attachment desc
+        // color attachments desc
         std::vector<ColorAttachmentDesc> m_ColorAttachments;
         // depth attachment desc
-        SR_TEXTURE_DATA_FORMAT m_BufferFormat = SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8;
+        DepthStencilAttachmentDesc m_DepthStencilAttachment;
     };
 
     class SR_API FrameBuffer{
@@ -55,8 +36,6 @@ namespace Syrius{
         virtual void setPosition(int32 xPos, int32 yPos) = 0;
 
         virtual void setSize(uint32 width, uint32 height) = 0;
-
-        void setClearColor(float red, float green, float blue, float alpha);
 
         [[nodiscard]] uint32 getWidth() const;
 
@@ -79,8 +58,6 @@ namespace Syrius{
         int32 m_YPos;
         float m_MinDepth;
         float m_MaxDepth;
-
-        float m_ClearColor[4];
 
         std::vector<ColorAttachment*> m_ColorAttachments;
         DepthStencilAttachment* m_DepthStencilAttachment;

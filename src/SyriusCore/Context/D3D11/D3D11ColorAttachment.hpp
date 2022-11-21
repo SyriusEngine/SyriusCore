@@ -13,6 +13,8 @@ namespace Syrius{
 
         ~D3D11ColorAttachment() override;
 
+        void clear() override;
+
         void bind(uint32 slot) override;
 
         [[nodiscard]] Image* getData() override;
@@ -35,6 +37,33 @@ namespace Syrius{
         ID3D11RenderTargetView* m_RenderTargetView;
         ID3D11ShaderResourceView* m_BufferView;
 
+    };
+
+    class D3D11BackBufferColorAttachment: public ColorAttachment{
+    public:
+        D3D11BackBufferColorAttachment(const ColorAttachmentDesc& desc, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* swapChain);
+
+        ~D3D11BackBufferColorAttachment() override;
+
+        void clear() override;
+
+        void bind(uint32 slot) override;
+
+        [[nodiscard]] Image* getData() override;
+
+        void onResize(uint32 width, uint32 height) override;
+
+        [[nodiscard]] uint64 getIdentifier() const override;
+
+        [[nodiscard]] ID3D11RenderTargetView* getRenderTargetView() const;
+
+    private:
+        ID3D11Device* m_Device;
+        ID3D11DeviceContext* m_Context;
+        IDXGISwapChain* m_SwapChain;
+
+        DXGI_FORMAT m_BackBufferFormat;
+        ID3D11RenderTargetView* m_BackRenderTarget;
     };
 
 }

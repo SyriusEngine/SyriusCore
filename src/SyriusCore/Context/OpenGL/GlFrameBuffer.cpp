@@ -5,8 +5,8 @@ namespace Syrius{
     GlFrameBuffer::GlFrameBuffer(const FrameBufferDesc &desc)
     : FrameBuffer(desc),
     m_FrameBufferID(0),
-    m_EnableDepthTest(desc.m_EnableDepthTest),
-    m_EnableStencilTest(desc.m_EnableStencilTest){
+      m_EnableStencilTest(desc.m_DepthStencilAttachment.m_EnableStencilTest),
+      m_EnableDepthTest(desc.m_DepthStencilAttachment.m_EnableDepthTest){
         glCreateFramebuffers(1, &m_FrameBufferID);
 
         GLenum attachmentIndex = GL_COLOR_ATTACHMENT0;
@@ -19,22 +19,8 @@ namespace Syrius{
             attachmentIndex++;
         }
 
-        if (desc.m_EnableDepthTest or desc.m_EnableStencilTest){
-            DepthStencilAttachmentDesc dsaDesc;
-            dsaDesc.m_Width = m_Width;
-            dsaDesc.m_Height = m_Height;
-            dsaDesc.m_Format = desc.m_BufferFormat;
-            dsaDesc.m_EnableDepthTest = desc.m_EnableDepthTest;
-            dsaDesc.m_DepthBufferReadOnly = desc.m_DepthBufferReadOnly;
-            dsaDesc.m_DepthFunc = desc.m_DepthFunc;
-            dsaDesc.m_EnableStencilTest = desc.m_EnableStencilTest;
-            dsaDesc.m_StencilBufferReadOnly = desc.m_StencilBufferReadOnly;
-            dsaDesc.m_StencilFunc = desc.m_StencilFunc;
-            dsaDesc.m_StencilMask = desc.m_StencilMask;
-            dsaDesc.m_StencilFail = desc.m_StencilFail;
-            dsaDesc.m_StencilPassDepthFail = desc.m_StencilPassDepthFail;
-            dsaDesc.m_StencilPass = desc.m_StencilPass;
-            m_DepthStencilAttachment = new GlDepthStencilAttachment(dsaDesc);
+        if (desc.m_DepthStencilAttachment.m_EnableDepthTest or desc.m_DepthStencilAttachment.m_EnableStencilTest){
+            m_DepthStencilAttachment = new GlDepthStencilAttachment(desc.m_DepthStencilAttachment);
             glNamedFramebufferRenderbuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_DepthStencilAttachment->getIdentifier());
         }
 
@@ -57,7 +43,6 @@ namespace Syrius{
             m_DepthStencilAttachment->bind();
         }
 
-
     }
 
     void GlFrameBuffer::unbind() {
@@ -69,7 +54,7 @@ namespace Syrius{
 
     void GlFrameBuffer::clear() {
         for (int32 i = 0; i < m_ColorAttachments.size(); i++){
-            glClearNamedFramebufferfv(m_FrameBufferID, GL_COLOR, i, m_ClearColor);
+            glClearNamedFramebufferfv(m_FrameBufferID, GL_COLOR, i, m_ColorAttachments[i]->getClearColor());
         }
         if (m_EnableDepthTest){
             float clearDepth = m_DepthStencilAttachment->getClearDepth();
@@ -102,25 +87,14 @@ namespace Syrius{
 
     GlDefaultFramebuffer::GlDefaultFramebuffer(const FrameBufferDesc &desc)
     : FrameBuffer(desc),
-    m_EnableStencilTest(desc.m_EnableStencilTest),
-    m_EnableDepthTest(desc.m_EnableDepthTest){
+    m_EnableStencilTest(desc.m_DepthStencilAttachment.m_EnableStencilTest),
+    m_EnableDepthTest(desc.m_DepthStencilAttachment.m_EnableDepthTest){
+        SR_CORE_PRECONDITION(desc.m_ColorAttachments.size() == 1, "Default framebuffer must have exactly one color attachment");
 
-        if (desc.m_EnableDepthTest or desc.m_EnableStencilTest){
-            DepthStencilAttachmentDesc dsaDesc;
-            dsaDesc.m_Width = m_Width;
-            dsaDesc.m_Height = m_Height;
-            dsaDesc.m_Format = desc.m_BufferFormat;
-            dsaDesc.m_EnableDepthTest = desc.m_EnableDepthTest;
-            dsaDesc.m_DepthBufferReadOnly = desc.m_DepthBufferReadOnly;
-            dsaDesc.m_DepthFunc = desc.m_DepthFunc;
-            dsaDesc.m_EnableStencilTest = desc.m_EnableStencilTest;
-            dsaDesc.m_StencilBufferReadOnly = desc.m_StencilBufferReadOnly;
-            dsaDesc.m_StencilFunc = desc.m_StencilFunc;
-            dsaDesc.m_StencilMask = desc.m_StencilMask;
-            dsaDesc.m_StencilFail = desc.m_StencilFail;
-            dsaDesc.m_StencilPassDepthFail = desc.m_StencilPassDepthFail;
-            dsaDesc.m_StencilPass = desc.m_StencilPass;
-            m_DepthStencilAttachment = new GlDefaultDepthStencilAttachment(dsaDesc);
+        m_ColorAttachments.push_back(new GlDefaultColorAttachment(desc.m_ColorAttachments[0]));
+
+        if (desc.m_DepthStencilAttachment.m_EnableDepthTest or desc.m_DepthStencilAttachment.m_EnableStencilTest){
+            m_DepthStencilAttachment = new GlDefaultDepthStencilAttachment(desc.m_DepthStencilAttachment);
         }
 
     }
@@ -146,7 +120,7 @@ namespace Syrius{
     }
 
     void GlDefaultFramebuffer::clear() {
-        glClearNamedFramebufferfv(0, GL_COLOR, 0, m_ClearColor);
+        m_ColorAttachments[0]->clear();
         if (m_EnableDepthTest){
             float clearDepth = m_DepthStencilAttachment->getClearDepth();
             glClearNamedFramebufferfv(0, GL_DEPTH, 0, &clearDepth);

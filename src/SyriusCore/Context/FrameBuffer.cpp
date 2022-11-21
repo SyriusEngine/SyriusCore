@@ -10,7 +10,6 @@ namespace Syrius{
       m_YPos(desc.m_YPos),
       m_MinDepth(desc.m_MinDepth),
       m_MaxDepth(desc.m_MaxDepth),
-      m_ClearColor{desc.m_ClearColor[0], desc.m_ClearColor[1], desc.m_ClearColor[2], desc.m_ClearColor[3]},
       m_DepthStencilAttachment(nullptr){
 
     }
@@ -20,13 +19,6 @@ namespace Syrius{
             delete attachment;
         }
         delete m_DepthStencilAttachment;
-    }
-
-    void FrameBuffer::setClearColor(float red, float green, float blue, float alpha) {
-        m_ClearColor[0] = red;
-        m_ClearColor[1] = green;
-        m_ClearColor[2] = blue;
-        m_ClearColor[3] = alpha;
     }
 
     uint32 FrameBuffer::getWidth() const {

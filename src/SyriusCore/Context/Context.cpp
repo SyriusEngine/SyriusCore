@@ -47,10 +47,6 @@ namespace Syrius{
         return m_DefaultFrameBuffer;
     }
 
-    void Context::setClearColor(float r, float g, float b, float a, FrameBuffer *frameBuffer) {
-        frameBuffer->setClearColor(r, g, b, a);
-    }
-
 
     void Context::clear(FrameBuffer *frameBuffer) {
         frameBuffer->clear();

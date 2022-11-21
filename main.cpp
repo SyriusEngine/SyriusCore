@@ -25,7 +25,7 @@ int main() {
 
         Camera camera(0.3f, 0.1f);
 
-        const SR_SUPPORTED_API api = Syrius::SR_API_OPENGL;
+        const SR_SUPPORTED_API api = Syrius::SR_API_D3D11;
         SR_SHADER_CODE_TYPE shaderCodeType = SR_SHADER_CODE_GLSL;
         std::string vertexShaderPath = "./Resources/Shaders/GLSL/Basic.vert";
         std::string fragmentShaderPath = "./Resources/Shaders/GLSL/Basic.frag";
@@ -54,10 +54,13 @@ int main() {
         wDesc.m_Title = " The pubes, farts and other spices";
 
         auto window = createWindow(wDesc);
+        ColorAttachmentDesc caDesc;
+        caDesc.m_Width = 1280;
+        caDesc.m_Height = 720;
         ContextDesc cDesc;
         cDesc.m_DefaultFrameBufferDesc.m_Width = 1280;
         cDesc.m_DefaultFrameBufferDesc.m_Height = 720;
-        cDesc.m_DefaultFrameBufferDesc.m_EnableDepthTest = false;
+        cDesc.m_DefaultFrameBufferDesc.m_ColorAttachments = {caDesc};
         cDesc.m_API = api;
         auto context = window->createContext(cDesc);
         context->setVerticalSynchronisation(true);
@@ -95,11 +98,6 @@ int main() {
         img = createImage("./Resources/Textures/Logo.jpg");
         texDesc.m_Image = img;
         auto texture2 = context->createTexture2D(texDesc);
-
-        FrameBufferDesc fbDesc;
-        fbDesc.m_Width = 1280;
-        fbDesc.m_Height = 720;
-        auto fbo = context->createFrameBuffer(fbDesc);
 
         while (window->isOpen()){
 

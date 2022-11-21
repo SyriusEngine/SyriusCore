@@ -29,6 +29,7 @@ namespace Syrius{
 
         m_Attributes.emplace_back(name, dataType, size, elementCount);
         m_Stride += size;
+        m_AttributeCount++;
 
     }
 

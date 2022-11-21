@@ -64,6 +64,10 @@ namespace Syrius{
         }
     }
 
+    void D3D11ColorAttachment::clear() {
+        m_Context->ClearRenderTargetView(m_RenderTargetView, m_ClearColor);
+    }
+
     void D3D11ColorAttachment::bind(uint32 slot) {
         m_Context->PSSetShaderResources(slot, 1, &m_BufferView);
     }
@@ -122,6 +126,76 @@ namespace Syrius{
         return m_RenderTargetView;
     }
 
+
+    D3D11BackBufferColorAttachment::D3D11BackBufferColorAttachment(const ColorAttachmentDesc &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext, IDXGISwapChain* swapChain)
+    : ColorAttachment(desc),
+    m_Device(device),
+    m_Context(deviceContext),
+    m_SwapChain(swapChain),
+    m_BackRenderTarget(nullptr){
+        ID3D11Texture2D* backBuffer = nullptr;
+        SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
+        if (backBuffer){
+            SR_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_BackRenderTarget));
+            D3D11_TEXTURE2D_DESC backBufferDesc;
+            backBuffer->GetDesc(&backBufferDesc);
+            m_BackBufferFormat = backBufferDesc.Format;
+            backBuffer->Release();
+
+        }
+        else{
+            SR_CORE_EXCEPTION("Failed to get back buffer from swap chain");
+        }
+
+    }
+
+    D3D11BackBufferColorAttachment::~D3D11BackBufferColorAttachment() {
+        if (m_BackRenderTarget){
+            m_BackRenderTarget->Release();
+        }
+    }
+
+    void D3D11BackBufferColorAttachment::clear() {
+        m_Context->ClearRenderTargetView(m_BackRenderTarget, m_ClearColor);
+    }
+
+    void D3D11BackBufferColorAttachment::bind(uint32 slot) {
+
+    }
+
+    Image *D3D11BackBufferColorAttachment::getData() {
+        return nullptr;
+    }
+
+    void D3D11BackBufferColorAttachment::onResize(uint32 width, uint32 height) {
+        if (m_BackRenderTarget){
+            m_BackRenderTarget->Release();
+        }
+
+        SR_D3D11_CALL(m_SwapChain->ResizeBuffers(1, m_Width, m_Height, m_BackBufferFormat, 0));
+
+        ID3D11Texture2D* backBuffer = nullptr;
+        SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
+        if (backBuffer){
+            SR_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_BackRenderTarget));
+            D3D11_TEXTURE2D_DESC backBufferDesc;
+            backBuffer->GetDesc(&backBufferDesc);
+            m_BackBufferFormat = backBufferDesc.Format;
+            backBuffer->Release();
+
+        }
+        else{
+            SR_CORE_EXCEPTION("Failed to get back buffer from swap chain");
+        }
+    }
+
+    uint64 D3D11BackBufferColorAttachment::getIdentifier() const {
+        return 0;
+    }
+
+    ID3D11RenderTargetView *D3D11BackBufferColorAttachment::getRenderTargetView() const {
+        return m_BackRenderTarget;
+    }
 }
 
 #endif

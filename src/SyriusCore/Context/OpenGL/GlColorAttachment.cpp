@@ -25,6 +25,10 @@ namespace Syrius{
         glDeleteTextures(1, &m_TextureID);
     }
 
+    void GlColorAttachment::clear() {
+        glClearTexImage(m_TextureID, 0, m_GlFormat, GL_FLOAT, nullptr);
+    }
+
     void GlColorAttachment::bind(uint32 slot) {
         glBindTextureUnit(slot, m_TextureID);
     }
@@ -48,4 +52,35 @@ namespace Syrius{
         return m_TextureID;
     }
 
+    GlDefaultColorAttachment::GlDefaultColorAttachment(const ColorAttachmentDesc &desc)
+    : ColorAttachment(desc) {
+
+    }
+
+    GlDefaultColorAttachment::~GlDefaultColorAttachment() {
+
+    }
+
+    void GlDefaultColorAttachment::clear() {
+        glClearNamedFramebufferfv(0, GL_COLOR, 0, m_ClearColor);
+    }
+
+    void GlDefaultColorAttachment::bind(uint32 slot) {
+        // Impossible to bind default color attachment as a texture
+    }
+
+    Image *GlDefaultColorAttachment::getData() {
+        // Impossible to get data from default color attachment
+        return nullptr;
+    }
+
+    void GlDefaultColorAttachment::onResize(uint32 width, uint32 height) {
+        // Impossible to resize default color attachment as this is not our responsibility
+
+    }
+
+    uint64 GlDefaultColorAttachment::getIdentifier() const {
+        // Impossible to get identifier from default color attachment
+        return 0;
+    }
 }

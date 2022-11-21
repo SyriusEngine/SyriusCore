@@ -8,7 +8,7 @@ namespace Syrius{
     : FrameBuffer(desc),
     m_Device(device),
     m_DeviceContext(deviceContext),
-    m_Nullable(desc.m_ColorAttachmentFormats.size(), nullptr),
+    m_Nullable(desc.m_ColorAttachments.size(), nullptr),
     m_DepthStencilView(nullptr){
         m_Viewport.Width = static_cast<float>(m_Width);
         m_Viewport.Height = static_cast<float>(m_Height);
@@ -17,12 +17,7 @@ namespace Syrius{
         m_Viewport.TopLeftX = static_cast<float>(m_XPos);
         m_Viewport.TopLeftY = static_cast<float>(m_YPos);
 
-        for (auto& format: desc.m_ColorAttachmentFormats){
-            // really annoying but yeah
-            ColorAttachmentDesc caDesc;
-            caDesc.m_Width = m_Width;
-            caDesc.m_Height = m_Height;
-            caDesc.m_Format = format;
+        for (auto& caDesc: desc.m_ColorAttachments){
             auto attachment = new D3D11ColorAttachment(caDesc, m_Device, m_DeviceContext);
             m_ColorAttachments.push_back(attachment);
             m_RenderTargetViews.push_back(attachment->getRenderTargetView());
@@ -30,22 +25,8 @@ namespace Syrius{
             m_NullableRenderTargetViews.emplace_back(nullptr);
         }
 
-        if (desc.m_EnableDepthTest or desc.m_EnableStencilTest){
-            DepthStencilAttachmentDesc dsaDesc;
-            dsaDesc.m_Width = m_Width;
-            dsaDesc.m_Height = m_Height;
-            dsaDesc.m_Format = desc.m_BufferFormat;
-            dsaDesc.m_EnableDepthTest = desc.m_EnableDepthTest;
-            dsaDesc.m_DepthBufferReadOnly = desc.m_DepthBufferReadOnly;
-            dsaDesc.m_DepthFunc = desc.m_DepthFunc;
-            dsaDesc.m_EnableStencilTest = desc.m_EnableStencilTest;
-            dsaDesc.m_StencilBufferReadOnly = desc.m_StencilBufferReadOnly;
-            dsaDesc.m_StencilFunc = desc.m_StencilFunc;
-            dsaDesc.m_StencilMask = desc.m_StencilMask;
-            dsaDesc.m_StencilFail = desc.m_StencilFail;
-            dsaDesc.m_StencilPassDepthFail = desc.m_StencilPassDepthFail;
-            dsaDesc.m_StencilPass = desc.m_StencilPass;
-            auto attachment = new D3D11DepthStencilAttachment(dsaDesc, m_Device, m_DeviceContext);
+        if (desc.m_DepthStencilAttachment.m_EnableDepthTest or desc.m_DepthStencilAttachment.m_EnableStencilTest){
+            auto attachment = new D3D11DepthStencilAttachment(desc.m_DepthStencilAttachment, m_Device, m_DeviceContext);
             m_DepthStencilAttachment = attachment;
             m_DepthStencilView = attachment->getDepthStencilView();
         }
@@ -76,8 +57,8 @@ namespace Syrius{
     }
 
     void D3D11FrameBuffer::clear() {
-        for (const auto renderTargetView : m_RenderTargetViews){
-            m_DeviceContext->ClearRenderTargetView(renderTargetView, m_ClearColor);
+        for (const auto colorAttachment: m_ColorAttachments){
+            colorAttachment->clear();
         }
         if (m_DepthStencilAttachment){
             m_DepthStencilAttachment->clear();
@@ -109,7 +90,14 @@ namespace Syrius{
     m_DeviceContext(deviceContext),
     m_SwapChain(swapChain),
     m_BackRenderTarget(nullptr),
-    m_BackBufferFormat(DXGI_FORMAT_R8G8B8A8_UNORM){
+    m_DepthStencilView(nullptr){
+        SR_CORE_PRECONDITION(m_SwapChain != nullptr, "Swap chain cannot be null");
+        SR_CORE_PRECONDITION(m_Device != nullptr, "Device cannot be null");
+        SR_CORE_PRECONDITION(m_DeviceContext != nullptr, "Device context cannot be null");
+        SR_CORE_PRECONDITION(m_Width > 0, "Width must be greater than 0");
+        SR_CORE_PRECONDITION(m_Height > 0, "Height must be greater than 0");
+        SR_CORE_PRECONDITION(desc.m_ColorAttachments.size() == 1, "Default frame buffer must have exactly one color attachment");
+
         m_Viewport.Width = static_cast<float>(m_Width);
         m_Viewport.Height = static_cast<float>(m_Height);
         m_Viewport.MinDepth = desc.m_MinDepth;
@@ -117,55 +105,22 @@ namespace Syrius{
         m_Viewport.TopLeftX = static_cast<float>(m_XPos);
         m_Viewport.TopLeftY = static_cast<float>(m_YPos);
 
-        ID3D11Texture2D* backBuffer = nullptr;
-        SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
-        if (backBuffer){
-            SR_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_BackRenderTarget));
-            D3D11_TEXTURE2D_DESC backBufferDesc;
-            backBuffer->GetDesc(&backBufferDesc);
-            m_BackBufferFormat = backBufferDesc.Format;
-            backBuffer->Release();
-
-            if (desc.m_EnableDepthTest or desc.m_EnableStencilTest){
-                DepthStencilAttachmentDesc dsaDesc;
-                dsaDesc.m_Width = m_Width;
-                dsaDesc.m_Height = m_Height;
-                dsaDesc.m_Format = desc.m_BufferFormat;
-                dsaDesc.m_EnableDepthTest = desc.m_EnableDepthTest;
-                dsaDesc.m_DepthBufferReadOnly = desc.m_DepthBufferReadOnly;
-                dsaDesc.m_DepthFunc = desc.m_DepthFunc;
-                dsaDesc.m_EnableStencilTest = desc.m_EnableStencilTest;
-                dsaDesc.m_StencilBufferReadOnly = desc.m_StencilBufferReadOnly;
-                dsaDesc.m_StencilFunc = desc.m_StencilFunc;
-                dsaDesc.m_StencilMask = desc.m_StencilMask;
-                dsaDesc.m_StencilFail = desc.m_StencilFail;
-                dsaDesc.m_StencilPassDepthFail = desc.m_StencilPassDepthFail;
-                dsaDesc.m_StencilPass = desc.m_StencilPass;
-                auto attachment = new D3D11DepthStencilAttachment(dsaDesc, m_Device, m_DeviceContext);
-                m_DepthStencilAttachment = attachment;
-                m_DepthStencilView = attachment->getDepthStencilView();
-            }
-
-        }
-        else{
-            SR_CORE_EXCEPTION("Failed to get back buffer from swap chain");
-        }
-
+        m_BackRenderTarget = new D3D11BackBufferColorAttachment(desc.m_ColorAttachments[0] , m_Device, m_DeviceContext, m_SwapChain);
+        m_ColorAttachments.push_back(m_BackRenderTarget);
+        m_BackRenderTargetView = m_BackRenderTarget->getRenderTargetView();
     }
 
     D3D11DefaultFrameBuffer::~D3D11DefaultFrameBuffer() {
-        if (m_BackRenderTarget){
-            m_BackRenderTarget->Release();
-        }
+        delete m_BackRenderTarget;
     }
 
     void D3D11DefaultFrameBuffer::bind() {
         if (m_DepthStencilAttachment){
             m_DepthStencilAttachment->bind();
-            m_DeviceContext->OMSetRenderTargets(1, &m_BackRenderTarget, m_DepthStencilView);
+            m_DeviceContext->OMSetRenderTargets(1, &m_BackRenderTargetView, m_DepthStencilView);
         }
         else{
-            m_DeviceContext->OMSetRenderTargets(1, &m_BackRenderTarget, nullptr);
+            m_DeviceContext->OMSetRenderTargets(1, &m_BackRenderTargetView, nullptr);
         }
         m_DeviceContext->RSSetViewports(1, &m_Viewport);
     }
@@ -175,7 +130,7 @@ namespace Syrius{
     }
 
     void D3D11DefaultFrameBuffer::clear() {
-        m_DeviceContext->ClearRenderTargetView(m_BackRenderTarget, m_ClearColor);
+        m_BackRenderTarget->clear();
         if (m_DepthStencilAttachment){
             m_DepthStencilAttachment->clear();
         }
@@ -194,28 +149,9 @@ namespace Syrius{
         m_Viewport.Width = static_cast<float>(m_Width);
         m_Viewport.Height = static_cast<float>(m_Height);
 
-        if (m_BackRenderTarget){
-            m_BackRenderTarget->Release();
-        }
-
-        SR_D3D11_CALL(m_SwapChain->ResizeBuffers(1, m_Width, m_Height, m_BackBufferFormat, 0));
-
-        ID3D11Texture2D* backBuffer = nullptr;
-        SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
-        if (backBuffer){
-            SR_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_BackRenderTarget));
-            D3D11_TEXTURE2D_DESC backBufferDesc;
-            backBuffer->GetDesc(&backBufferDesc);
-            m_BackBufferFormat = backBufferDesc.Format;
-            backBuffer->Release();
-
-        }
-        else{
-            SR_CORE_EXCEPTION("Failed to get back buffer from swap chain");
-        }
+        m_BackRenderTarget->onResize(width, height);
+        m_BackRenderTargetView = m_BackRenderTarget->getRenderTargetView();
     }
-
-
 }
 
 #endif

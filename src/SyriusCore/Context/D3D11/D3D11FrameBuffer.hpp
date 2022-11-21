@@ -61,11 +61,10 @@ namespace Syrius{
 
         D3D11_VIEWPORT m_Viewport;
 
-        ID3D11RenderTargetView* m_BackRenderTarget;
-
         ID3D11DepthStencilView* m_DepthStencilView;
 
-        DXGI_FORMAT m_BackBufferFormat;
+        D3D11BackBufferColorAttachment* m_BackRenderTarget;
+        ID3D11RenderTargetView* m_BackRenderTargetView;
 
     };
 

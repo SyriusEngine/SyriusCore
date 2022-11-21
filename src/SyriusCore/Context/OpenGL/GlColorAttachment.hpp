@@ -11,6 +11,8 @@ namespace Syrius{
 
         ~GlColorAttachment() override;
 
+        void clear() override;
+
         void bind(uint32 slot) override;
 
         [[nodiscard]] Image* getData() override;
@@ -27,6 +29,25 @@ namespace Syrius{
         uint32 m_ChannelCount;
 
     };
+
+    class GlDefaultColorAttachment: public ColorAttachment{
+public:
+        explicit GlDefaultColorAttachment(const ColorAttachmentDesc& desc);
+
+        ~GlDefaultColorAttachment() override;
+
+        void clear() override;
+
+        void bind(uint32 slot) override;
+
+        [[nodiscard]] Image* getData() override;
+
+        void onResize(uint32 width, uint32 height) override;
+
+        [[nodiscard]] uint64 getIdentifier() const override;
+
+    };
+
 
 }
 
