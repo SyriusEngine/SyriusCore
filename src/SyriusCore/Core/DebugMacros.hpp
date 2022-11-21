@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DebugMessageHandler.hpp"
+#include <cassert>
 
 #define SR_CORE_MESSAGE(message) \
     DebugMessageHandler::pushMessage(SR_MESSAGE_SEVERITY_INFO, message, SR_FUNC, SR_FILE, SR_LINE);
@@ -20,11 +21,13 @@
 #define SR_CORE_PRECONDITION(condition, message) \
     if (!(condition)) {                          \
         DebugMessageHandler::pushMessage(SR_MESSAGE_SEVERITY_HIGH, message, SR_FUNC, SR_FILE, SR_LINE, SR_MESSAGE_PRECONDITION); \
+        assert(false);                                         \
     }   \
 
 #define SR_CORE_POSTCONDITION(condition, message) \
     if (!(condition)) {                          \
         DebugMessageHandler::pushMessage(SR_MESSAGE_SEVERITY_HIGH, message, SR_FUNC, SR_FILE, SR_LINE, SR_MESSAGE_POSTCONDITION); \
+        assert(false); \
     } \
 
 #define SR_CORE_ASSERT(condition, message) \

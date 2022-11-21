@@ -7,17 +7,13 @@ namespace Syrius{
     m_FrameBufferID(0),
     m_EnableDepthTest(desc.m_EnableDepthTest),
     m_EnableStencilTest(desc.m_EnableStencilTest){
-        SR_CORE_PRECONDITION(!desc.m_ColorAttachmentFormats.empty(), "Framebuffer must have at least one color attachment!");
-
         glCreateFramebuffers(1, &m_FrameBufferID);
 
         GLenum attachmentIndex = GL_COLOR_ATTACHMENT0;
-        for (const auto& format : desc.m_ColorAttachmentFormats){
-            ColorAttachmentDesc caDesc;
-            caDesc.m_Width = m_Width;
-            caDesc.m_Height = m_Height;
-            caDesc.m_Format = format;
-            auto colorAttachment = new GlColorAttachment(caDesc);
+        for (const auto& colorAttachDesc : desc.m_ColorAttachments){
+            SR_CORE_MESSAGE_ON_CONDITION((colorAttachDesc.m_Width != m_Width || colorAttachDesc.m_Height != m_Height), "Color attachment size does not match framebuffer size");
+
+            auto colorAttachment = new GlColorAttachment(colorAttachDesc);
             m_ColorAttachments.push_back(colorAttachment);
             glNamedFramebufferTexture(m_FrameBufferID, attachmentIndex, colorAttachment->getIdentifier(), 0);
             attachmentIndex++;

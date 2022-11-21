@@ -63,7 +63,6 @@ int main() {
         context->setVerticalSynchronisation(true);
         context->setClearColor(0.2f, 0.3f, 0.5f, 1.0f);
         window->createImGuiContext();
-        window->grabMouse();
 
         auto shader = loadShader(vertexShaderPath, fragmentShaderPath, shaderCodeType, context);
         auto screenShader = loadShader(screenVertexShaderPath, screenFragmentShaderPath, shaderCodeType, context);
@@ -137,7 +136,6 @@ int main() {
                     }
                 }
                 else if (event.type == Syrius::SR_EVENT_RAW_MOUSE_MOVED){
-                    printf("Mouse moved: %d, %d\n", event.mousePosX, event.mousePosY);
                     camera.update(event.mousePosX, event.mousePosY);
                 }
             }
@@ -154,11 +152,6 @@ int main() {
             context->draw(sphereVAO);
             context->endRenderPass();
 
-            // second pass
-//            context->beginRenderPass();
-//            screenShader.shaderProgram->bind();
-//            fbo->getColorAttachment(0)->bind(0);
-//            context->draw(screenVAO);
 
 
 

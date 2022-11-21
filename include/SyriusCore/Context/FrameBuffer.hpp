@@ -35,7 +35,7 @@ namespace Syrius{
         SR_STENCIL_FUNC m_StencilPassDepthFail = SR_STENCIL_FUNC_KEEP;
 
         // color attachment desc
-        std::vector<SR_TEXTURE_DATA_FORMAT> m_ColorAttachmentFormats = { SR_TEXTURE_DATA_FORMAT_RGBA_8 };
+        std::vector<ColorAttachmentDesc> m_ColorAttachments;
         // depth attachment desc
         SR_TEXTURE_DATA_FORMAT m_BufferFormat = SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8;
     };

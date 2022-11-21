@@ -30,7 +30,7 @@ namespace Syrius{
                 break;
             default: {
                 SR_CORE_WARNING("Invalid texture format, default format RGBA will be picked");
-                format = GL_RGBA8;
+                format = GL_RGBA;
                 internalFormat = GL_RGBA8;
                 break;
             }

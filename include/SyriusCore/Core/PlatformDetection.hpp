@@ -1,10 +1,5 @@
 #pragma once
 
-#if defined(SR_DEBUG_MODE)
-
-    #define SR_DEBUG_BREAK() __debugbreak()
-#endif
-
 // identify operating system and toolchain
 #if defined(WIN64) || defined(_WIN64) || defined(WIN32)
     #define SR_PLATFORM_WIN64
@@ -53,6 +48,11 @@
 #else
     #define SR_API
 
+#endif
+
+#if defined(SR_DEBUG_MODE)
+
+#define SR_CORE_DEBUG_BREAK() __debugbreak()
 #endif
 
 
