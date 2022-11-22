@@ -194,7 +194,8 @@ namespace Syrius{
 
     void SyriusWindowWin32Impl::releaseMouse() {
         if (m_MouseGrabbed){
-            m_MouseGrabbed = ClipCursor(nullptr);
+            SR_CORE_CHECK_CALL(ClipCursor(nullptr), "Failed to release the mouse");
+            m_MouseGrabbed = false;
         }
 
         SR_CORE_POSTCONDITION(m_MouseGrabbed == false, "Failed to release mouse")
