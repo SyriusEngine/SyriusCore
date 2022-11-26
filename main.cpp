@@ -138,6 +138,14 @@ int main() {
                     else if (event.keyCode == Syrius::SR_KEY_LEFT_SHIFT){
                         camera.moveDown();
                     }
+                    else if (event.keyCode == SR_KEY_F){
+                        if (!window->isFullscreen()){
+                            window->enableFullscreen();
+                        }
+                        else{
+                            window->disableFullscreen();
+                        }
+                    }
                 }
                 else if (event.type == Syrius::SR_EVENT_RAW_MOUSE_MOVED){
                     camera.update(event.mousePosX, event.mousePosY);
@@ -159,7 +167,6 @@ int main() {
             context->beginRenderPass();
             screenShader.shaderProgram->bind();
             frameBuffer->getColorAttachment(0)->bind(0);
-            frameBuffer->getColorAttachment(0)->getData()->writeToFile("./ScreenShot.png", true);
             context->draw(screenVAO);
             context->endRenderPass();
 

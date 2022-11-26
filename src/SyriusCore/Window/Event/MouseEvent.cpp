@@ -39,10 +39,10 @@ namespace Syrius{
 
     }
 
-    RawMouseMovedEvent::RawMouseMovedEvent(int32 posX, int32 posY)
+    RawMouseMovedEvent::RawMouseMovedEvent(int32 deltaX, int32 deltaY)
     : MouseEvent(SR_EVENT_RAW_MOUSE_MOVED){
-        mousePosX = posX;
-        mousePosY = posY;
+        mouseDeltaX = deltaX;
+        mouseDeltaY = deltaY;
 
     }
 }

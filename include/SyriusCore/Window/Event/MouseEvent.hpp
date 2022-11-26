@@ -56,7 +56,7 @@ namespace Syrius{
 
     class SR_API RawMouseMovedEvent: public MouseEvent{
     public:
-        RawMouseMovedEvent(int32 posX, int32 posY);
+        RawMouseMovedEvent(int32 deltaX, int32 deltaY);
     };
 
 }
