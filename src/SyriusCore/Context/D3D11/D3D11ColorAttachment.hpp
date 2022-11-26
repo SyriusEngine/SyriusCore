@@ -62,7 +62,6 @@ namespace Syrius{
         ID3D11DeviceContext* m_Context;
         IDXGISwapChain* m_SwapChain;
 
-        DXGI_FORMAT m_BackBufferFormat;
         ID3D11RenderTargetView* m_BackRenderTarget;
     };
 
