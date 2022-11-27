@@ -327,9 +327,6 @@ namespace Syrius{
     }
 
     LRESULT SyriusWindowWin32Impl::windowEventProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-        if (m_ImGuiInstances){
-            ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
-        }
         if (msg == WM_CREATE){
             auto window = (LONG_PTR) reinterpret_cast<CREATESTRUCT*>(lparam)->lpCreateParams;
             SetWindowLongPtrW(hwnd, GWLP_USERDATA, window);
@@ -339,6 +336,10 @@ namespace Syrius{
         SyriusWindowWin32Impl* window = hwnd ? reinterpret_cast<SyriusWindowWin32Impl*>(GetWindowLongPtrW(hwnd, GWLP_USERDATA)) : nullptr;
         if (window != nullptr){
             window->handleEvent(msg, wparam, lparam);
+            // only handle events for ImGui for this window
+            if (window->m_UseImGui){
+                ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
+            }
         }
         // Prevents win32 from closing the window manually.
         if (msg == WM_CLOSE){
