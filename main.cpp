@@ -25,7 +25,7 @@ int main() {
 
         Camera camera(0.3f, 0.1f);
 
-        const SR_SUPPORTED_API api = Syrius::SR_API_D3D11;
+        const SR_SUPPORTED_API api = Syrius::SR_API_OPENGL;
         SR_SHADER_CODE_TYPE shaderCodeType = SR_SHADER_CODE_GLSL;
         std::string vertexShaderPath = "./Resources/Shaders/GLSL/Basic.vert";
         std::string fragmentShaderPath = "./Resources/Shaders/GLSL/Basic.frag";
@@ -115,6 +115,7 @@ int main() {
                 }
                 else if (event.type == Syrius::SR_EVENT_WINDOW_RESIZED){
                     context->onResize(event.windowWidth, event.windowHeight);
+
                 }
                 else if (event.type == Syrius::SR_EVENT_KEYBOARD_KEY_PRESSED){
                     if (event.keyCode == Syrius::SR_KEY_W){
