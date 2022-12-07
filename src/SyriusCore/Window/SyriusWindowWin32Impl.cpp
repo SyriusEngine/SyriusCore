@@ -22,6 +22,13 @@ namespace Syrius{
         DWORD winStyles = decodeWindowStyle(desc.m_Style);
         DWORD exWinStyles = decodeExtendedWindowStyle(desc.m_Style);
 
+        // current window info (used when enabling fullscreen for this window)
+        RECT rect = {0, 0, static_cast<LONG>(desc.m_Width), static_cast<LONG>(desc.m_Height)};
+        m_SavedWindowInfo.m_Rect = rect;
+        m_SavedWindowInfo.m_Style = winStyles;
+        m_SavedWindowInfo.m_ExStyle = exWinStyles;
+        m_SavedWindowInfo.m_IsMaximized = false;
+
         auto wTitle = stringToWideString(desc.m_Title);
         m_Hwnd = CreateWindowExW(exWinStyles,
                                  s_SyriusWindowClass,
@@ -44,12 +51,21 @@ namespace Syrius{
             m_Callback = SetWindowLongPtrW(m_Hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&SyriusWindowWin32Impl::windowEventProc));
 
             //register raw input devices
-            RAWINPUTDEVICE rid;
-            rid.usUsagePage = 0x01; //mouse
-            rid.usUsage = 0x02;     //mouse
-            rid.dwFlags = 0;
-            rid.hwndTarget = nullptr; // register to all windows, maybe change this later to only register to this window
-            SR_CORE_CHECK_CALL(RegisterRawInputDevices(&rid, 1, sizeof(rid)), "Failed to register raw input devices");
+            RAWINPUTDEVICE mouse;
+            mouse.usUsagePage = 0x01; //mouse
+            mouse.usUsage = 0x02;     //mouse
+            mouse.dwFlags = 0;
+            mouse.hwndTarget = nullptr; // register to all windows, maybe change this later to only register to this window
+
+            RAWINPUTDEVICE keyboard;
+            keyboard.usUsagePage = 0x01; //keyboard
+            keyboard.usUsage = 0x06;     //keyboard
+            keyboard.dwFlags = 0;
+            keyboard.hwndTarget = nullptr; // register to all windows, maybe change this later to only register to this window
+
+            SR_CORE_CHECK_CALL(RegisterRawInputDevices(&mouse, 1, sizeof(mouse)), "Failed to register raw input mouse");
+            SR_CORE_CHECK_CALL(RegisterRawInputDevices(&keyboard, 1, sizeof(keyboard)), "Failed to register raw input keyboard");
+
 
         }
         else{
@@ -73,17 +89,22 @@ namespace Syrius{
     }
 
     void SyriusWindowWin32Impl::setPosition(int32 posX, int32 posY) {
-        m_PosX = posX;
-        m_PosY = posY;
+        if (!m_Fullscreen){
+            m_PosX = posX;
+            m_PosY = posY;
 
-        SR_CORE_CHECK_CALL(SetWindowPos(m_Hwnd, nullptr, posX, posY, 0, 0, SWP_NOSIZE | SWP_NOZORDER), "Failed to set window position");
+            SR_CORE_CHECK_CALL(SetWindowPos(m_Hwnd, nullptr, posX, posY, 0, 0, SWP_NOSIZE | SWP_NOZORDER), "Failed to set window position");
+        }
     }
 
     void SyriusWindowWin32Impl::resize(uint32 newWidth, uint32 newHeight) {
-        m_Width = newWidth;
-        m_Height = newHeight;
+        if (!m_Fullscreen){
+            m_Width = newWidth;
+            m_Height = newHeight;
 
-        SR_CORE_CHECK_CALL(SetWindowPos(m_Hwnd, nullptr, 0, 0, newWidth, newHeight, SWP_NOMOVE | SWP_NOZORDER), "Failed to resize window");
+            SR_CORE_CHECK_CALL(SetWindowPos(m_Hwnd, nullptr, 0, 0, newWidth, newHeight, SWP_NOMOVE | SWP_NOZORDER), "Failed to resize window");
+
+        }
     }
 
     void SyriusWindowWin32Impl::requestFocus() {
@@ -91,10 +112,41 @@ namespace Syrius{
     }
 
     void SyriusWindowWin32Impl::enableFullscreen() {
+        if (!m_Fullscreen){
+            // store current window info
+            m_SavedWindowInfo.m_IsMaximized = IsZoomed(m_Hwnd) != 0;
+            m_SavedWindowInfo.m_Style = GetWindowLongW(m_Hwnd, GWL_STYLE);
+            m_SavedWindowInfo.m_ExStyle = GetWindowLongW(m_Hwnd, GWL_EXSTYLE);
+            GetWindowRect(m_Hwnd, &m_SavedWindowInfo.m_Rect);
 
+            // get monitor info
+            MONITORINFO monitorInfo;
+            monitorInfo.cbSize = sizeof(monitorInfo);
+            HMONITOR monitor = MonitorFromWindow(m_Hwnd, MONITOR_DEFAULTTONEAREST);
+            SR_CORE_CHECK_CALL(GetMonitorInfoW(monitor, &monitorInfo), "Failed to get monitor info");
+
+            // set window to fullscreen
+            SR_CORE_CHECK_CALL(SetWindowLongW(m_Hwnd, GWL_STYLE, m_SavedWindowInfo.m_Style & ~(WS_CAPTION | WS_THICKFRAME)), "Failed to set window style");
+            SR_CORE_CHECK_CALL(SetWindowLongW(m_Hwnd, GWL_EXSTYLE, m_SavedWindowInfo.m_ExStyle & ~(WS_EX_DLGMODALFRAME | WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE)), "Failed to set window extended style");
+            SR_CORE_CHECK_CALL(SetWindowPos(m_Hwnd, HWND_TOP, monitorInfo.rcMonitor.left, monitorInfo.rcMonitor.top, monitorInfo.rcMonitor.right - monitorInfo.rcMonitor.left, monitorInfo.rcMonitor.bottom - monitorInfo.rcMonitor.top, SWP_NOOWNERZORDER | SWP_FRAMECHANGED), "Failed to set window position");
+
+
+            m_Fullscreen = true;
+        }
     }
 
     void SyriusWindowWin32Impl::disableFullscreen() {
+        if (m_Fullscreen){
+            // restore window
+            SR_CORE_CHECK_CALL(SetWindowLongW(m_Hwnd, GWL_STYLE, m_SavedWindowInfo.m_Style), "Failed to set window style");
+            SR_CORE_CHECK_CALL(SetWindowLongW(m_Hwnd, GWL_EXSTYLE, m_SavedWindowInfo.m_ExStyle), "Failed to set window extended style");
+            SR_CORE_CHECK_CALL(SetWindowPos(m_Hwnd, nullptr, m_SavedWindowInfo.m_Rect.left, m_SavedWindowInfo.m_Rect.top, m_SavedWindowInfo.m_Rect.right - m_SavedWindowInfo.m_Rect.left, m_SavedWindowInfo.m_Rect.bottom - m_SavedWindowInfo.m_Rect.top, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED), "Failed to set window position");
+            if (m_SavedWindowInfo.m_IsMaximized){
+                ShowWindow(m_Hwnd, SW_MAXIMIZE);
+            }
+
+            m_Fullscreen = false;
+        }
 
     }
 
@@ -188,8 +240,6 @@ namespace Syrius{
             MapWindowPoints(m_Hwnd, nullptr, reinterpret_cast<LPPOINT>(&windowDimmensions), 2);
             m_MouseGrabbed = ClipCursor(&windowDimmensions);
         }
-
-        SR_CORE_POSTCONDITION(m_MouseGrabbed == true, "Failed to grab the mouse")
     }
 
     void SyriusWindowWin32Impl::releaseMouse() {
@@ -198,13 +248,14 @@ namespace Syrius{
             m_MouseGrabbed = false;
         }
 
-        SR_CORE_POSTCONDITION(m_MouseGrabbed == false, "Failed to release mouse")
     }
 
     void SyriusWindowWin32Impl::centerWindow() {
-        auto posX = static_cast<int32>((CoreCommand::getPrimaryScreenWidth() - m_Width) / 2);
-        auto posY = static_cast<int32>((CoreCommand::getPrimaryScreenHeight() - m_Height) / 2);
-        setPosition(posX, posY);
+        if (!m_Fullscreen){
+            auto posX = static_cast<int32>((CoreCommand::getPrimaryScreenWidth() - m_Width) / 2);
+            auto posY = static_cast<int32>((CoreCommand::getPrimaryScreenHeight() - m_Height) / 2);
+            setPosition(posX, posY);
+        }
     }
 
     void SyriusWindowWin32Impl::centerMouse() {
@@ -276,9 +327,6 @@ namespace Syrius{
     }
 
     LRESULT SyriusWindowWin32Impl::windowEventProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-        if (m_ImGuiInstances){
-            ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
-        }
         if (msg == WM_CREATE){
             auto window = (LONG_PTR) reinterpret_cast<CREATESTRUCT*>(lparam)->lpCreateParams;
             SetWindowLongPtrW(hwnd, GWLP_USERDATA, window);
@@ -288,6 +336,10 @@ namespace Syrius{
         SyriusWindowWin32Impl* window = hwnd ? reinterpret_cast<SyriusWindowWin32Impl*>(GetWindowLongPtrW(hwnd, GWLP_USERDATA)) : nullptr;
         if (window != nullptr){
             window->handleEvent(msg, wparam, lparam);
+            // only handle events for ImGui for this window
+            if (window->m_UseImGui){
+                ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
+            }
         }
         // Prevents win32 from closing the window manually.
         if (msg == WM_CLOSE){
@@ -497,6 +549,18 @@ namespace Syrius{
                                         RawMouseMovedEvent event(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
                                         dispatchEvent(event);
                                     }
+                                }
+                                break;
+                            }
+                            case RIM_TYPEKEYBOARD: {
+                                auto key = convertVirtualKey(raw->data.keyboard.VKey, raw->data.keyboard.Flags);
+                                if (raw->data.keyboard.Flags & RI_KEY_BREAK){
+                                    RawKeyPressedEvent event(key);
+                                    dispatchEvent(event);
+                                }
+                                else{
+                                    RawKeyReleasedEvent event(key);
+                                    dispatchEvent(event);
                                 }
                                 break;
                             }

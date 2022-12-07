@@ -34,6 +34,8 @@ namespace Syrius {
         SR_EVENT_KEYBOARD_KEY_TYPED =       0x41,  // 0100 0001
         SR_EVENT_KEYBOARD_KEY_PRESSED =     0x42,  // 0100 0010
         SR_EVENT_KEYBOARD_KEY_RELEASED =    0x43,  // 0100 0011
+        SR_EVENT_RAW_KEYBOARD_KEY_PRESSED = 0x45,  // 0100 0101
+        SR_EVENT_RAW_KEYBOARD_KEY_RELEASED = 0x46,  // 0100 0110
 
     } SR_EVENT_TYPE;
 
@@ -49,11 +51,11 @@ namespace Syrius {
         SR_EVENT_TYPE type;
 
         union {
-            int32 windowPosX, windowWidth, mousePosX, mouseScrollX, mouseButton, keyCode = 0;
+            int32 windowPosX, windowWidth, mousePosX, mouseScrollX, mouseDeltaX, mouseButton, keyCode = 0;
         };
 
         union {
-            int32 windowPosY, windowHeight, mousePosY, mouseScrollY = 0;
+            int32 windowPosY, windowHeight, mousePosY, mouseScrollY, mouseDeltaY = 0;
         };
 
         char keyTyped = 0;
