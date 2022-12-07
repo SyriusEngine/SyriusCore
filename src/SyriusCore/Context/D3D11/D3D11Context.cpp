@@ -26,7 +26,7 @@ namespace Syrius{
         scDesc.OutputWindow = m_Hwnd;
         scDesc.Windowed = TRUE;
         scDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
-        scDesc.Flags = 0;
+        scDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // allows toggling between fullscreen mode and windowed mode
 
         SR_D3D11_CALL(D3D11CreateDeviceAndSwapChain(
                 nullptr,

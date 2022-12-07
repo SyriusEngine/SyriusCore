@@ -58,14 +58,8 @@ namespace Syrius{
             case GL_DEBUG_SEVERITY_NOTIFICATION:    sev = SR_MESSAGE_SEVERITY_INFO; break;
             default:                                sev = SR_MESSAGE_SEVERITY_INFO; break;
         }
-        Message msgStruct;
-        msgStruct.m_Function = "OpenGLCallback";
-        msgStruct.m_File = "";
-        msgStruct.m_Line = 0;
-        msgStruct.m_Message = msg;
-        msgStruct.m_Severity = sev;
-        msgStruct.m_Type = SR_MESSAGE_OPENGL;
-        m_MessageHandler(msgStruct);
+
+        pushMessage(sev, SR_MESSAGE_OPENGL, "OpenGLCallback", "", 0, msg);
     }
 
     void DebugMessageHandler::pushOpenGlError(GLenum error, const std::string &function, const std::string &file,
@@ -84,14 +78,7 @@ namespace Syrius{
             default:                                msg += "UNKNOWN ERROR"; break;
         }
         msg += " (" + std::to_string(error) + ")";
-        Message msgStruct;
-        msgStruct.m_Type = SR_MESSAGE_OPENGL;
-        msgStruct.m_Severity = SR_MESSAGE_SEVERITY_HIGH;
-        msgStruct.m_Message = msg;
-        msgStruct.m_Function = function;
-        msgStruct.m_File = file;
-        msgStruct.m_Line = line;
-        m_MessageHandler(msgStruct);
+        pushMessage(SR_MESSAGE_SEVERITY_HIGH, SR_MESSAGE_OPENGL, function, file, line, msg);
     }
 
 #if defined(SR_CORE_PLATFORM_WIN64)
@@ -111,18 +98,10 @@ namespace Syrius{
         if (nullptr != errorText) {
             std::string msg = "Code = " + std::to_string(hr) + ", message = " + std::string(errorText);
 
-            Message msgStruct;
-            msgStruct.m_Type = SR_MESSAGE_HRESULT;
-            msgStruct.m_Severity = SR_MESSAGE_SEVERITY_HIGH;
-            msgStruct.m_Message = msg;
-            msgStruct.m_Function = function;
-            msgStruct.m_File = file;
-            msgStruct.m_Line = line;
-            m_MessageHandler(msgStruct);
-
             LocalFree(errorText);
             errorText = nullptr;
 
+            pushMessage(SR_MESSAGE_SEVERITY_HIGH, SR_MESSAGE_HRESULT, function, file, line, msg);
         }
     }
 
@@ -145,17 +124,11 @@ namespace Syrius{
             std::string msg = "The application has thrown a DXGI_DEVICE_REMOVED exception. This indicates a driver crash"
                               "(or the graphics device is pulled away from the system). Detailed info: "
                               "Code = " + std::to_string(hr) + " msg = " + std::string(errorText);
-            Message msgStruct;
-            msgStruct.m_Type = SR_MESSAGE_HRESULT;
-            msgStruct.m_Severity = SR_MESSAGE_SEVERITY_HIGH;
-            msgStruct.m_Message = msg;
-            msgStruct.m_Function = function;
-            msgStruct.m_File = file;
-            msgStruct.m_Line = line;
-            m_MessageHandler(msgStruct);
 
             LocalFree(errorText);
             errorText = nullptr;
+
+            pushMessage(SR_MESSAGE_SEVERITY_HIGH, SR_MESSAGE_HRESULT, function, file, line, msg);
 
         }
     }
@@ -235,9 +208,9 @@ namespace Syrius{
                                                           uint32 line) {
 
         std::string msg = "Vulkan function returned exit code = " + std::to_string(result) + "(";
-
+        SR_MESSAGE_SEVERITY severity = SR_MESSAGE_SEVERITY_HIGH;
         switch (result) {
-            case VK_SUCCESS:                                    msg += "VK_SUCCESS"; break;
+            case VK_SUCCESS:                                    msg += "VK_SUCCESS"; severity = SR_MESSAGE_SEVERITY_INFO; break;
             case VK_NOT_READY:                                  msg += "VK_NOT_READY"; break;
             case VK_TIMEOUT:                                    msg += "VK_TIMEOUT"; break;
             case VK_EVENT_SET:                                  msg += "VK_EVENT_SET"; break;
@@ -279,14 +252,7 @@ namespace Syrius{
         }
         msg += ")\n extra info = " + message;
 
-        Message msgStruct;
-        msgStruct.m_Type = SR_MESSAGE_VULKAN;
-        msgStruct.m_Severity = SR_MESSAGE_SEVERITY_HIGH;
-        msgStruct.m_Message = msg;
-        msgStruct.m_Function = function;
-        msgStruct.m_File = file;
-        msgStruct.m_Line = line;
-        m_MessageHandler(msgStruct);
+        pushMessage(severity, SR_MESSAGE_VULKAN, function, file, line, msg);
 
     }
 
@@ -314,14 +280,7 @@ namespace Syrius{
         std::string msg = "[Vulkan message callback]: type = " + msgType;
         msg += " Message = " + std::string(pCallbackData->pMessage);
 
-        Message msgStruct;
-        msgStruct.m_Type = SR_MESSAGE_VULKAN;
-        msgStruct.m_File = "";
-        msgStruct.m_Function = "Vulkan callback";
-        msgStruct.m_Line = 0;
-        msgStruct.m_Message = msg;
-        msgStruct.m_Severity = severity;
-        m_MessageHandler(msgStruct);
+        pushMessage(severity, SR_MESSAGE_VULKAN, "Vulkan callback", "", 0, msg);
 
         return VK_FALSE;
     }

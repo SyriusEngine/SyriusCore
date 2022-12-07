@@ -2,7 +2,7 @@
 
 namespace Syrius{
 
-    std::string getMessageTypeString(SR_MESSAGE_TYPE type){
+    std::string getMessageTypeString(SR_MESSAGE_SOURCE type){
         switch (type) {
             case SR_MESSAGE:
                 return "MESSAGE";

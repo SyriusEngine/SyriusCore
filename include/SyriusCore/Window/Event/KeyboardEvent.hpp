@@ -151,12 +151,12 @@ namespace Syrius{
         explicit KeyReleasedEvent(SR_KEYBOARD_KEY key);
     };
 
-    class SR_API RawKeyPressedEvent: public KeyboardEvent{
+    class SR_CORE_API RawKeyPressedEvent: public KeyboardEvent{
     public:
         explicit RawKeyPressedEvent(SR_KEYBOARD_KEY key);
     };
 
-    class SR_API RawKeyReleasedEvent: public KeyboardEvent{
+    class SR_CORE_API RawKeyReleasedEvent: public KeyboardEvent{
     public:
         explicit RawKeyReleasedEvent(SR_KEYBOARD_KEY key);
     };

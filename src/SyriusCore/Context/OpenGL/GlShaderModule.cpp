@@ -42,8 +42,7 @@ namespace Syrius{
         glGetShaderiv(m_ModuleID, GL_COMPILE_STATUS, &success);
         if (!success){
             glGetShaderInfoLog(m_ModuleID, 512, nullptr, infoLog);
-            std::string errormsg = "Failed to compile shader, type = " + std::to_string(desc.m_Type) + ", error = " + infoLog;
-            SR_CORE_WARNING(errormsg);
+            SR_CORE_WARNING("Failed to compile shader, type = %S, error = %s", getShaderTypeString(desc.m_Type).c_str(), infoLog);
         }
     }
 
@@ -65,8 +64,7 @@ namespace Syrius{
         glGetShaderiv(m_ModuleID, GL_COMPILE_STATUS, &success);
         if (!success){
             glGetShaderInfoLog(m_ModuleID, 512, nullptr, infoLog);
-            std::string errormsg = "Failed to compile shader, type = " + std::to_string(desc.m_Type) + ", error = " + infoLog;
-            SR_CORE_WARNING(errormsg);
+            SR_CORE_WARNING("Failed to compile shader, type = %S, error = %s", getShaderTypeString(desc.m_Type).c_str(), infoLog);
         }
     }
 

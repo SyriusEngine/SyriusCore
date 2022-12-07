@@ -171,7 +171,7 @@ namespace Syrius{
         }
         m_BackRenderTarget = nullptr;
 
-        SR_D3D11_CALL(m_SwapChain->ResizeBuffers(1, 0, 0, DXGI_FORMAT_UNKNOWN, 0));
+        SR_D3D11_CALL(m_SwapChain->ResizeBuffers(2, 0, 0, DXGI_FORMAT_UNKNOWN, 0));
 
         ID3D11Texture2D* backBuffer = nullptr;
         SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
