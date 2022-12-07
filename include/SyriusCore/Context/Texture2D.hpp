@@ -6,12 +6,12 @@
 
 namespace Syrius{
 
-    struct SR_API Texture2DDesc{
+    struct SR_CORE_API Texture2DDesc{
         Image* m_Image          = nullptr;
 
     };
 
-    class SR_API Texture2D{
+    class SR_CORE_API Texture2D{
     public:
         explicit Texture2D(const Texture2DDesc& desc);
 

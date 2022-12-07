@@ -23,7 +23,7 @@ namespace Syrius{
 
             SR_CORE_MESSAGE("Initializing Syrius")
 
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
             m_PlatformAPI = new PlatformAPIWin32Impl();
 #endif
 

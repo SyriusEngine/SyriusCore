@@ -37,7 +37,7 @@ namespace Syrius {
 
     } SR_EVENT_TYPE;
 
-    class SR_API Event{
+    class SR_CORE_API Event{
     private:
         SR_EVENT_CLASS_TYPE m_EventClass;
 

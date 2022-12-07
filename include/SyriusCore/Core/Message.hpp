@@ -34,9 +34,9 @@ namespace Syrius{
 
     typedef void(*handleDebugMessageFunc)(const Message&);
 
-    std::string SR_API getMessageTypeString(SR_MESSAGE_TYPE type);
+    std::string SR_CORE_API getMessageTypeString(SR_MESSAGE_TYPE type);
 
-    std::string SR_API getMessageSeverityString(SR_MESSAGE_SEVERITY severity);
+    std::string SR_CORE_API getMessageSeverityString(SR_MESSAGE_SEVERITY severity);
 
 
 }

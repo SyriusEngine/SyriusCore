@@ -6,7 +6,7 @@
 
 namespace Syrius{
 
-    struct SR_API FrameBufferDesc{
+    struct SR_CORE_API FrameBufferDesc{
         // viewport desc
         uint32 m_Width                  = SR_DEFAULT_WIDTH;
         uint32 m_Height                 = SR_DEFAULT_HEIGHT;
@@ -21,7 +21,7 @@ namespace Syrius{
         DepthStencilAttachmentDesc m_DepthStencilAttachment;
     };
 
-    class SR_API FrameBuffer{
+    class SR_CORE_API FrameBuffer{
     public:
         explicit FrameBuffer(const FrameBufferDesc& desc);
 

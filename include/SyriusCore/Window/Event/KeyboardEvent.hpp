@@ -128,7 +128,7 @@ namespace Syrius{
 
     } SR_KEYBOARD_KEY;
 
-    class SR_API KeyboardEvent: public Event{
+    class SR_CORE_API KeyboardEvent: public Event{
     protected:
         explicit KeyboardEvent(SR_EVENT_TYPE type);
 
@@ -136,17 +136,17 @@ namespace Syrius{
         KeyboardEvent() = delete;
     };
 
-    class SR_API KeyTypedEvent: public KeyboardEvent{
+    class SR_CORE_API KeyTypedEvent: public KeyboardEvent{
     public:
         explicit KeyTypedEvent(char c);
     };
 
-    class SR_API KeyPressedEvent: public KeyboardEvent{
+    class SR_CORE_API KeyPressedEvent: public KeyboardEvent{
     public:
         explicit KeyPressedEvent(SR_KEYBOARD_KEY key);
     };
 
-    class SR_API KeyReleasedEvent: public KeyboardEvent{
+    class SR_CORE_API KeyReleasedEvent: public KeyboardEvent{
     public:
         explicit KeyReleasedEvent(SR_KEYBOARD_KEY key);
     };

@@ -94,19 +94,7 @@ namespace Syrius{
         m_MessageHandler(msgStruct);
     }
 
-    void DebugMessageHandler::pushMessage(SR_MESSAGE_SEVERITY severity, const std::string& message, const std::string& function, const std::string& file, uint32 line, SR_MESSAGE_TYPE type) {
-        Message msgStruct;
-        msgStruct.m_Type = type;
-        msgStruct.m_Severity = severity;
-        msgStruct.m_Message = message;
-        msgStruct.m_Function = function;
-        msgStruct.m_File = file;
-        msgStruct.m_Line = line;
-        m_MessageHandler(msgStruct);
-
-    }
-
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
     void DebugMessageHandler::formatHresultMessage(HRESULT hr, const std::string& function, const std::string& file, uint32 line){
         LPTSTR errorText = nullptr;
         FormatMessage(
@@ -213,7 +201,7 @@ namespace Syrius{
                 if (dxgiGetDebugInterface){
                     HRESULT hr = dxgiGetDebugInterface(__uuidof(IDXGIInfoQueue), reinterpret_cast<void**>(&m_DxgiInfoQueue));
                     libLoaded = true;
-                    formatHresultMessage(hr, "DXGIGetDebugInterface", SR_FILE, SR_LINE);
+                    formatHresultMessage(hr, "DXGIGetDebugInterface", SR_CORE_FILE, SR_CORE_LINE);
                 }
             }
         }

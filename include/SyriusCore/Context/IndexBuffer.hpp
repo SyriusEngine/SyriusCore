@@ -4,14 +4,14 @@
 
 namespace Syrius{
 
-    struct SR_API IndexBufferDesc{
+    struct SR_CORE_API IndexBufferDesc{
         const void* m_Data      = nullptr;
         uint32 m_Count          = 0;
         SR_BUFFER_TYPE m_Type   = SR_BUFFER_DEFAULT;
         SR_DATA_TYPE m_DataType = SR_UINT32;
     };
 
-    class SR_API IndexBuffer{
+    class SR_CORE_API IndexBuffer{
     public:
         explicit IndexBuffer(const IndexBufferDesc& desc);
 

@@ -241,8 +241,8 @@ namespace Syrius{
      * @param type The type to get the size of
      * @return the number of bytes needed to store data of that type
      */
-    uint8 SR_API getTypeSize(SR_DATA_TYPE type);
-    uint8 SR_API getTypeSize(SR_SCALAR_TYPE type);
+    uint8 SR_CORE_API getTypeSize(SR_DATA_TYPE type);
+    uint8 SR_CORE_API getTypeSize(SR_SCALAR_TYPE type);
 
     /**
      * @brief Returns the number of components in a scalar type
@@ -252,13 +252,13 @@ namespace Syrius{
      * @param type
      * @return the number of components in the scalar type
      */
-    uint8 SR_API getScalarComponentCount(SR_SCALAR_TYPE type);
+    uint8 SR_CORE_API getScalarComponentCount(SR_SCALAR_TYPE type);
 
-    SR_DATA_TYPE SR_API getScalarDataType(SR_SCALAR_TYPE type);
+    SR_DATA_TYPE SR_CORE_API getScalarDataType(SR_SCALAR_TYPE type);
 
-    SR_TEXTURE_FORMAT SR_API getTextureFormat(SR_TEXTURE_DATA_FORMAT format);
+    SR_TEXTURE_FORMAT SR_CORE_API getTextureFormat(SR_TEXTURE_DATA_FORMAT format);
 
-    uint8 SR_API getTextureChannelCount(SR_TEXTURE_FORMAT format);
+    uint8 SR_CORE_API getTextureChannelCount(SR_TEXTURE_FORMAT format);
 
 }
 
