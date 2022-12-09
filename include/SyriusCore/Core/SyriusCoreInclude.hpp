@@ -52,7 +52,7 @@ namespace Syrius{
     typedef uint64 Index;
     typedef uint64 Time;
 
-#if defined(SR_DEBUG_MODE)
+#if defined(SR_CORE_DEBUG)
     const static bool s_SyriusDebugMode = true;
 #else
     const static bool s_SyriusDebugMode = false;

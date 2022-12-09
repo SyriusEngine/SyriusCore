@@ -16,7 +16,7 @@
     while (glGetError() != GL_NO_ERROR){}
 
 
-#if defined(SR_DEBUG_MODE)
+#if defined(SR_CORE_DEBUG)
 
 #define SR_CORE_PRECONDITION(condition, message, ...) \
     if (!(condition)) {                          \

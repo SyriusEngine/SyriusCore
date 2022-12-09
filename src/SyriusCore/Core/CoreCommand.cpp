@@ -57,7 +57,7 @@ namespace Syrius{
     void CoreCommand::initGlad() {
         if (!m_GladInstances){
             int32 version = gladLoaderLoadGL();
-#if defined(SR_DEBUG_MODE)
+#if defined(SR_CORE_DEBUG)
             if (version > 0){
                 int32 major = GLAD_VERSION_MAJOR(version);
                 int32 minor = GLAD_VERSION_MINOR(version);

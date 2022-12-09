@@ -36,7 +36,7 @@ namespace Syrius{
 
         SR_VULKAN_CALL(vkCreateInstance(&createInfo, nullptr, &m_Instance), "Failed to create the vulkan instance");
 
-#if defined(SR_DEBUG_MODE)
+#if defined(SR_CORE_DEBUG)
         setupDebugMessenger();
 #endif
         delete[] layers;

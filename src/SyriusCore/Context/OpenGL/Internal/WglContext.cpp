@@ -64,7 +64,7 @@ namespace Syrius{
                             WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
                             WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
                             WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
-#if defined(SR_DEBUG_MODE)
+#if defined(SR_CORE_DEBUG)
                             WGL_CONTEXT_DEBUG_BIT_ARB,		GL_TRUE,
 #else
                             WGL_CONTEXT_DEBUG_BIT_ARB,		GL_FALSE,

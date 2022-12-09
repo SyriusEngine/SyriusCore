@@ -7,7 +7,7 @@ namespace Syrius{
 
     VulkanPlatformDesc::VulkanPlatformDesc() {
 
-#if defined(SR_DEBUG_MODE)
+#if defined(SR_CORE_DEBUG)
         addLayer("VK_LAYER_KHRONOS_validation");
         addExtension(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
 #endif
