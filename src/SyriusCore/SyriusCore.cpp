@@ -64,7 +64,7 @@ namespace Syrius {
     }
 
     template<>
-    SR_API float getRandom(float min, float max){
+    SR_CORE_API float getRandom(float min, float max){
         SR_CORE_PRECONDITION(min < max, "Min value must be smaller than max value");
         std::random_device rd;
         Time seeder = getTimeMilli();
@@ -75,7 +75,7 @@ namespace Syrius {
     }
 
     template<>
-    SR_API uint64 getRandom(uint64 min, uint64 max){
+    SR_CORE_API uint64 getRandom(uint64 min, uint64 max){
         SR_CORE_PRECONDITION(min < max, "Min value must be smaller than max value");
         std::random_device rd;
         Time seeder = getTimeMilli();
@@ -86,7 +86,7 @@ namespace Syrius {
     }
 
     template<>
-    SR_API int64 getRandom(int64 min, int64 max){
+    SR_CORE_API int64 getRandom(int64 min, int64 max){
         SR_CORE_PRECONDITION(min < max, "Min value must be smaller than max value");
         std::random_device rd;
         Time seeder = getTimeMilli();
@@ -97,7 +97,7 @@ namespace Syrius {
     }
 
     template<>
-    SR_API uint32 getRandom(uint32 min, uint32 max){
+    SR_CORE_API uint32 getRandom(uint32 min, uint32 max){
         SR_CORE_PRECONDITION(min < max, "Min value must be smaller than max value");
         std::random_device rd;
         Time seeder = getTimeMilli();
@@ -108,7 +108,7 @@ namespace Syrius {
     }
 
     template<>
-    SR_API int32 getRandom(int32 min, int32 max){
+    SR_CORE_API int32 getRandom(int32 min, int32 max){
         SR_CORE_PRECONDITION(min < max, "Min value must be smaller than max value");
         std::random_device rd;
         Time seeder = getTimeMilli();
@@ -119,7 +119,7 @@ namespace Syrius {
     }
 
     template<>
-    SR_API uint16 getRandom(uint16 min, uint16 max){
+    SR_CORE_API uint16 getRandom(uint16 min, uint16 max){
         SR_CORE_PRECONDITION(min < max, "Min value must be smaller than max value");
         std::random_device rd;
         Time seeder = getTimeMilli();

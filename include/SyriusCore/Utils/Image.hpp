@@ -12,7 +12,7 @@ namespace Syrius{
 
     typedef ubyte(*pixelFunc)(ubyte* pixel, int32 x, int32 y, int32 comp);
 
-    class SR_API Image{
+    class SR_CORE_API Image{
     private:
         int32 m_Width;
         int32 m_Height;

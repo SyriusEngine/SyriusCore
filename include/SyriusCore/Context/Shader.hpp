@@ -5,12 +5,12 @@
 
 namespace Syrius{
 
-    struct SR_API ShaderDesc{
+    struct SR_CORE_API ShaderDesc{
         ShaderModule* m_VertexShader    = nullptr;
         ShaderModule* m_FragmentShader  = nullptr;
     };
 
-    class SR_API Shader{
+    class SR_CORE_API Shader{
     public:
         explicit Shader(const ShaderDesc& desc);
 

@@ -39,7 +39,7 @@ namespace Syrius{
         SR_WINDOW_STYLE m_Style = SR_WINDOW_STYLE_DEFAULT;
     };
 
-    class SR_API SyriusWindow{
+    class SR_CORE_API SyriusWindow{
     public:
         SyriusWindow() = delete;
 

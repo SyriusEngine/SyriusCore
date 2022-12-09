@@ -16,7 +16,7 @@ namespace Syrius{
         SR_API_OPENGL   = 0x01,
         SR_API_VULKAN   = 0x10,
 
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
         SR_API_D3D11    = 0x08,
         SR_API_D3D12    = 0x09,
 #endif

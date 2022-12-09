@@ -4,14 +4,14 @@
 #include "../../../../../include/SyriusCore/Dependencies/imgui/imgui.h"
 #include "../../../Dependencies/imgui/imgui_impl_opengl3.h"
 
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
 
 #include "../../../Dependencies/imgui/imgui_impl_win32.h"
 #include "../../../Dependencies/glad/glad/wgl.h"
 
 namespace Syrius {
 
-    class SR_API WglContext : public GlContext {
+    class SR_CORE_API WglContext : public GlContext {
     public:
         WglContext(HWND &hwnd, const ContextDesc& desc);
 

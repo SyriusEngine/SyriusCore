@@ -5,7 +5,7 @@
 
 namespace Syrius {
 
-    class SR_API VulkanPlatformDesc{
+    class SR_CORE_API VulkanPlatformDesc{
     public:
 
         [[nodiscard]] uint32 getExtensionCount() const;
@@ -30,14 +30,14 @@ namespace Syrius {
 
     };
 
-    struct SR_API GlPlatformDesc{
+    struct SR_CORE_API GlPlatformDesc{
         GlPlatformDesc() = default;
 
         virtual ~GlPlatformDesc() = default;
 
     };
 
-    class SR_API PlatformAPI{
+    class SR_CORE_API PlatformAPI{
     public:
         virtual ~PlatformAPI();
 

@@ -7,14 +7,14 @@
 
 namespace Syrius{
 
-    struct SR_API VertexArrayDesc{
+    struct SR_CORE_API VertexArrayDesc{
         VertexBuffer* m_VertexBuffer    = nullptr;
         IndexBuffer* m_IndexBuffer      = nullptr;
         ShaderModule* m_VertexShader    = nullptr;
         SR_DRAW_TYPE m_DrawMode         = SR_DRAW_TRIANGLES;
     };
 
-    class SR_API VertexArray{
+    class SR_CORE_API VertexArray{
     public:
         explicit VertexArray(const VertexArrayDesc& desc);
 

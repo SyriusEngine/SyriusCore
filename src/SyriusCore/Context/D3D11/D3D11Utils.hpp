@@ -4,7 +4,7 @@
 #include "../../Core/PlatformInclude.hpp"
 #include "../../Core/DebugMacros.hpp"
 
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
 

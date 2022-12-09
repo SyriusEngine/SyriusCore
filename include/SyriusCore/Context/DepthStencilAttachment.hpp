@@ -4,7 +4,7 @@
 
 namespace Syrius{
 
-    struct SR_API DepthStencilAttachmentDesc{
+    struct SR_CORE_API DepthStencilAttachmentDesc{
         uint32 m_Width          = SR_DEFAULT_WIDTH;
         uint32 m_Height         = SR_DEFAULT_HEIGHT;
         SR_TEXTURE_DATA_FORMAT m_Format = SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8;
@@ -27,7 +27,7 @@ namespace Syrius{
         SR_STENCIL_FUNC m_StencilPassDepthFail = SR_STENCIL_FUNC_KEEP;
     };
 
-    class SR_API DepthStencilAttachment{
+    class SR_CORE_API DepthStencilAttachment{
     public:
         explicit DepthStencilAttachment(const DepthStencilAttachmentDesc& desc);
 

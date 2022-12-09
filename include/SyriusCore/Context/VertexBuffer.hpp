@@ -5,14 +5,14 @@
 
 namespace Syrius{
 
-    struct SR_API VertexBufferDesc{
+    struct SR_CORE_API VertexBufferDesc{
         const void* m_Data              = nullptr;
         uint32 m_Count                  = 0;
         SR_BUFFER_TYPE m_Type           = SR_BUFFER_DEFAULT;
         VertexDescription* m_Layout     = nullptr;
     };
 
-    class SR_API VertexBuffer{
+    class SR_CORE_API VertexBuffer{
     public:
         explicit VertexBuffer(const VertexBufferDesc& desc);
 

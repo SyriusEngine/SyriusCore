@@ -78,7 +78,7 @@ Index of this file:
 #include "../../Core/PlatformDetection.hpp"
 
 #ifndef IMGUI_API
-#define IMGUI_API SR_API
+#define IMGUI_API SR_CORE_API
 #endif
 #ifndef IMGUI_IMPL_API
 #define IMGUI_IMPL_API              IMGUI_API
