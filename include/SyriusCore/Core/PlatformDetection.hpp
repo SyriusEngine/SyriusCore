@@ -39,10 +39,10 @@
 
 // portable dll import/export macros
 #if defined(SR_PLATFORM_WIN64)
-    #if defined(SR_IMPORT_DLL)
-        #define SR_API __declspec(dllimport)
-    #else
+    #if defined(SR_EXPORT_DLL)
         #define SR_API __declspec(dllexport)
+    #else
+        #define SR_API __declspec(dllimport)
     #endif
 
 #else
