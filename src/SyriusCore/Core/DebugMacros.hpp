@@ -45,7 +45,8 @@
 #define SR_OPENGL_CALL(x) \
     SR_OPENGL_CLEAR_ERROR(); \
     x;                    \
-    while (GLenum _err = glGetError()) { \
+    GLenum _err;                      \
+    while ((_err = glGetError()) != GL_NO_ERROR) { \
         DebugMessageHandler::pushOpenGlError(_err, #x, SR_CORE_FILE, SR_CORE_LINE); \
     }
 

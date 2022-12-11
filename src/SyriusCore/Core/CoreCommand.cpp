@@ -61,7 +61,7 @@ namespace Syrius{
             if (version > 0){
                 int32 major = GLAD_VERSION_MAJOR(version);
                 int32 minor = GLAD_VERSION_MINOR(version);
-                SR_CORE_MESSAGE("OpenGL initialized with version: " + std::to_string(major) + "." + std::to_string(minor))
+                SR_CORE_MESSAGE("OpenGL initialized with version: %i.%i", major, minor)
                 glEnable(GL_DEBUG_OUTPUT);
                 glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 #if defined(SR_COMPILER_MSVC)
