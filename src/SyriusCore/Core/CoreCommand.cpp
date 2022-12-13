@@ -1,5 +1,6 @@
 #include "CoreCommand.hpp"
 #include "PlatformAPIWin32Impl.hpp"
+#include "PlatformAPIX11Impl.hpp"
 
 namespace Syrius{
 
@@ -25,6 +26,10 @@ namespace Syrius{
 
 #if defined(SR_CORE_PLATFORM_WIN64)
             m_PlatformAPI = new PlatformAPIWin32Impl();
+#elif defined(SR_CORE_PLATFORM_LINUX)
+            m_PlatformAPI = new PlatformAPIX11Impl();
+#else
+#error No PlatformAPI specified
 #endif
 
         }

@@ -42,12 +42,11 @@ elseif(UNIX)
             src/SyriusCore/Dependencies/glad/src/glx.c)
 
     set(IMGUI_PLATFORM_SRC
-#            src/SyriusCore/Dependencies/imgui/imgui_impl_win32.cpp
-#            src/SyriusCore/Dependencies/imgui/imgui_impl_dx12.cpp
-#            src/SyriusCore/Dependencies/imgui/imgui_impl_dx11.cpp
+
             )
 
     set(SYRIUSCORE_CORE_PLATFORM_SRC
+            src/SyriusCore/Core/PlatformAPIX11Impl.cpp
             )
 
     set(SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC
@@ -187,7 +186,9 @@ elseif(UNIX)
 
     set(SYRIUS_CORE_LIBS
             -lX11
-            -ldl)
+            -ldl
+            -lvulkan
+            -lGL)
 endif()
 
 target_link_libraries(syrius-core ${SYRIUS_CORE_LIBS})
