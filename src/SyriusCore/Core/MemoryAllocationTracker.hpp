@@ -2,7 +2,7 @@
 
 #include "../../../include/SyriusCore/Core/SyriusCoreInclude.hpp"
 
-#if defined(SR_DEBUG_MODE)
+#if defined(SR_CORE_DEBUG)
 
 namespace Syrius{
 

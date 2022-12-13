@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(SyriusCore)
 
-add_compile_definitions(SR_DEBUG_MODE)
+add_compile_definitions(SR_CORE_DEBUG)
+add_compile_definitions(SR_CORE_EXPORT_DLL)
 
 set(CMAKE_CXX_STANDARD 17)
 

@@ -9,32 +9,51 @@
 #define SR_DEFAULT_WIDTH 800
 #define SR_DEFAULT_HEIGHT 600
 
-namespace Syrius{
+namespace Syrius {
 
-    typedef enum SR_SUPPORTED_API{
-        SR_API_NONE     = 0x00,
-        SR_API_OPENGL   = 0x01,
-        SR_API_VULKAN   = 0x10,
+    typedef enum SR_SUPPORTED_API {
+        SR_API_NONE = 0x00,
+        SR_API_OPENGL = 0x01,
+        SR_API_VULKAN = 0x10,
 
 #if defined(SR_CORE_PLATFORM_WIN64)
-        SR_API_D3D11    = 0x08,
-        SR_API_D3D12    = 0x09,
+        SR_API_D3D11 = 0x08,
+        SR_API_D3D12 = 0x09,
 #endif
 
     } SR_SUPPORTED_API;
 
+    inline std::string getAPIName(SR_SUPPORTED_API api) {
+        switch (api) {
+            case SR_API_NONE:
+                return "None";
+            case SR_API_OPENGL:
+                return "OpenGL";
+            case SR_API_VULKAN:
+                return "Vulkan";
+#if defined(SR_CORE_PLATFORM_WIN64)
+            case SR_API_D3D11:
+                return "DirectX 11";
+            case SR_API_D3D12:
+                return "DirectX 12";
+#endif
+            default:
+                return "Unknown";
+        }
+    }
+
     typedef enum SR_PHYSICAL_DEVICE_TYPE {
-        SR_PHYSICAL_DEVICE_NONE             = 0x00,
-        SR_PHYSICAL_DEVICE_INTEGRATED_GPU   = 0x01,
-        SR_PHYSICAL_DEVICE_DISCRETE_GPU     = 0x02,
-        SR_PHYSICAL_DEVICE_VIRTUAL_GPU      = 0x03,
-        SR_PHYSICAL_DEVICE_CPU              = 0x04,
+        SR_PHYSICAL_DEVICE_NONE = 0x00,
+        SR_PHYSICAL_DEVICE_INTEGRATED_GPU = 0x01,
+        SR_PHYSICAL_DEVICE_DISCRETE_GPU = 0x02,
+        SR_PHYSICAL_DEVICE_VIRTUAL_GPU = 0x03,
+        SR_PHYSICAL_DEVICE_CPU = 0x04,
     } SR_PHYSICAL_DEVICE_TYPE;
 
     typedef enum SR_LOAD_TYPE {
-        SR_LOAD_NONE             = 0x00,
-        SR_LOAD_FROM_FILE        = 0x01,
-        SR_LOAD_FROM_MEMORY      = 0x02,
+        SR_LOAD_NONE = 0x00,
+        SR_LOAD_FROM_FILE = 0x01,
+        SR_LOAD_FROM_MEMORY = 0x02,
     } SR_LOAD_TYPE;
 
     typedef uint8_t uint8;
@@ -52,7 +71,7 @@ namespace Syrius{
     typedef uint64 Index;
     typedef uint64 Time;
 
-#if defined(SR_DEBUG_MODE)
+#if defined(SR_CORE_DEBUG)
     const static bool s_SyriusDebugMode = true;
 #else
     const static bool s_SyriusDebugMode = false;

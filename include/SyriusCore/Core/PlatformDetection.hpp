@@ -39,10 +39,10 @@
 
 // portable dll import/export macros
 #if defined(SR_CORE_PLATFORM_WIN64)
-    #if defined(SR_IMPORT_DLL)
-        #define SR_CORE_API __declspec(dllimport)
-    #else
+    #if defined(SR_CORE_EXPORT_DLL)
         #define SR_CORE_API __declspec(dllexport)
+    #else
+        #define SR_CORE_API __declspec(dllimport)
     #endif
 
 #else
@@ -50,7 +50,7 @@
 
 #endif
 
-#if defined(SR_DEBUG_MODE)
+#if defined(SR_CORE_DEBUG)
 
 #define SR_CORE_DEBUG_BREAK() __debugbreak()
 #endif

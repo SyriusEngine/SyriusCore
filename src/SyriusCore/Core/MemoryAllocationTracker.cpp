@@ -1,6 +1,6 @@
 #include "MemoryAllocationTracker.hpp"
 
-#if defined(SR_DEBUG_MODE)
+#if defined(SR_CORE_DEBUG)
 
 namespace Syrius{
 
