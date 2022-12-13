@@ -40,6 +40,7 @@ int main() {
             window->pollEvents();
             while (window->hasEvent()){
                 auto event = window->getEvent();
+                eventDisplayer(event);
                 if (event.type == Syrius::SR_EVENT_WINDOW_CLOSED){
                     window->close();
                 }

@@ -1,14 +1,16 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#define SR_IMPORT_DLL
 #include "include/SyriusCore/SyriusCore.hpp"
 
 using namespace Syrius;
+
+void eventDisplayer(const Event& event);
 
 struct Vertex{
     float m_Position[3];

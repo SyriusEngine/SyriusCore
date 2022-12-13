@@ -1,4 +1,5 @@
 #include "PlatformAPIX11Impl.hpp"
+#include "../Window/SyriusWindowX11Impl.hpp"
 
 #if defined(SR_CORE_PLATFORM_LINUX)
 
@@ -14,24 +15,23 @@ namespace Syrius{
     }
 
     PlatformAPIX11Impl::PlatformAPIX11Impl()
-    : PlatformAPI(VulkanPlatformDescX11()){
+    : PlatformAPI(VulkanPlatformDescX11()),
+    m_Display(XOpenDisplay(nullptr)){
+        SR_CORE_PRECONDITION(m_Display != nullptr, "Failed to connect to Xserver Display")
+        m_DefaultScreen = DefaultScreenOfDisplay(m_Display);
 
     }
 
     PlatformAPIX11Impl::~PlatformAPIX11Impl() {
-
+        XCloseDisplay(m_Display);
     }
 
     uint32 PlatformAPIX11Impl::getPrimaryScreenWidth() {
-        Display* d = XOpenDisplay(nullptr);
-        Screen* s = DefaultScreenOfDisplay(d);
-        return s->width;
+        return m_DefaultScreen->width;
     }
 
     uint32 PlatformAPIX11Impl::getPrimaryScreenHeight() {
-        Display* d = XOpenDisplay(nullptr);
-        Screen* s = DefaultScreenOfDisplay(d);
-        return s->height;
+        return m_DefaultScreen->height;
     }
 
     void PlatformAPIX11Impl::initPlatformGlad(GlPlatformDesc *glDesc) {
@@ -44,7 +44,11 @@ namespace Syrius{
     }
 
     SyriusWindow *PlatformAPIX11Impl::createWindow(const WindowDesc &windowDesc) {
-        return nullptr;
+        return new SyriusWindowX11Impl(windowDesc, m_Display);
+    }
+
+    Display *PlatformAPIX11Impl::getDisplay() const {
+        return m_Display;
     }
 
 }

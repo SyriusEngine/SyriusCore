@@ -96,7 +96,8 @@ set(SYRIUSCORE_WINDOW_SRC
         src/SyriusCore/Window/Event/KeyboardEvent.cpp
         src/SyriusCore/Window/SyriusWindow.cpp
         src/SyriusCore/Window/SyriusWindowWin32Impl.cpp
-        src/SyriusCore/Window/Win32Utils.cpp)
+        src/SyriusCore/Window/Win32Utils.cpp
+        src/SyriusCore/Window/SyriusWindowX11Impl.cpp src/SyriusCore/Window/X11Utils.cpp src/SyriusCore/Window/X11Utils.hpp)
 
 set(SYRIUSCORE_GRAPHICS_API_SRC
         ${SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC}
