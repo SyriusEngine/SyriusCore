@@ -4,15 +4,15 @@
 #include <cassert>
 
 #define SR_CORE_MESSAGE(message, ...) \
-    DebugMessageHandler::pushMessage(SR_MESSAGE_SEVERITY_INFO, SR_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
+    DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_INFO, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
 
 #define SR_CORE_WARNING(message, ...) \
-    DebugMessageHandler::pushMessage(SR_MESSAGE_SEVERITY_MEDIUM, SR_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
+    DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_MEDIUM, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
 
 #define SR_CORE_EXCEPTION(message, ...) \
-    DebugMessageHandler::pushMessage(SR_MESSAGE_SEVERITY_HIGH, SR_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
+    DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
 
-#define SR_OPENGL_CLEAR_ERROR() \
+#define SR_CORE_OPENGL_CLEAR_ERROR() \
     while (glGetError() != GL_NO_ERROR){}
 
 
@@ -20,30 +20,30 @@
 
 #define SR_CORE_PRECONDITION(condition, message, ...) \
     if (!(condition)) {                          \
-        DebugMessageHandler::pushMessage(SR_MESSAGE_SEVERITY_HIGH, SR_MESSAGE_PRECONDITION, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); \
+        DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE_PRECONDITION, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); \
         assert(false);                                         \
     }   \
 
 #define SR_CORE_POSTCONDITION(condition, message, ...) \
     if (!(condition)) {                          \
-        DebugMessageHandler::pushMessage(SR_MESSAGE_SEVERITY_HIGH, SR_MESSAGE_POSTCONDITION, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); \
+        DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE_POSTCONDITION, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); \
         assert(false); \
     } \
 
 #define SR_CORE_ASSERT(condition, message, ...) \
     if (!(condition)) {                          \
-        DebugMessageHandler::pushMessage(SR_MESSAGE_SEVERITY_HIGH, SR_MESSAGE_ASSERTION, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); \
+        DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE_ASSERTION, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); \
     }    \
 
 
 #define SR_CORE_CHECK_CALL(x, message, ...) \
-    if (!(x)) DebugMessageHandler::pushMessage(SR_MESSAGE_SEVERITY_MEDIUM, SR_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); \
+    if (!(x)) DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_MEDIUM, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); \
 
 #define SR_CORE_MESSAGE_ON_CONDITION(condition, message) \
     if (!condition) SR_CORE_MESSAGE(message)
 
-#define SR_OPENGL_CALL(x) \
-    SR_OPENGL_CLEAR_ERROR(); \
+#define SR_CORE_OPENGL_CALL(x) \
+    SR_CORE_OPENGL_CLEAR_ERROR(); \
     x;                    \
     GLenum _err;                      \
     while ((_err = glGetError()) != GL_NO_ERROR) { \
@@ -55,7 +55,7 @@
 #define SR_CORE_HRESULT(hr) \
     DebugMessageHandler::formatHresultMessage(hr, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE);
 
-#define SR_D3D11_CHECK_DEVICE_REMOVED(x, device) \
+#define SR_CORE_D3D11_CHECK_DEVICE_REMOVED(x, device) \
     do {                 \
         HRESULT _hr = x;\
         if (FAILED(_hr)){                       \
@@ -69,9 +69,9 @@
     } while (0);         \
 
 #if defined(SR_COMPILER_MSVC)
-#define SR_DXGI_GET_MESSAGES() DebugMessageHandler::dxgiGetMessages();
+#define SR_CORE_DXGI_GET_MESSAGES() DebugMessageHandler::dxgiGetMessages();
 
-#define SR_D3D11_CALL(x) \
+#define SR_CORE_D3D11_CALL(x) \
     do {                 \
         HRESULT _hr = x;\
         if (FAILED(_hr)){ \
@@ -82,9 +82,9 @@
     } while (0);         \
 
 #else
-#define SR_DXGI_GET_MESSAGES()
+#define SR_CORE_DXGI_GET_MESSAGES()
 
-#define SR_D3D11_CALL(x) \
+#define SR_CORE_D3D11_CALL(x) \
     do {                 \
         HRESULT _hr = x;\
         if (FAILED(_hr)){ \
@@ -114,17 +114,17 @@
 
 #define SR_CORE_CHECK_CALL(x, message) x;
 
-#define SR_OPENGL_CALL(x) x;
+#define SR_CORE_OPENGL_CALL(x) x;
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 
 #define SR_CORE_HRESULT(hr)
 
-#define SR_D3D11_CALL(x) x;
-#define SR_D3D11_CHECK_DEVICE_REMOVED(x, device) x;
+#define SR_CORE_D3D11_CALL(x) x;
+#define SR_CORE_D3D11_CHECK_DEVICE_REMOVED(x, device) x;
 
 #if defined(SR_CORE_COMPILER_MSVC)
-#define SR_DXGI_GET_MESSAGES()
+#define SR_CORE_DXGI_GET_MESSAGES()
 
 #endif
 

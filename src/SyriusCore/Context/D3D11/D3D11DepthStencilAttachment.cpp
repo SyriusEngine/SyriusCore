@@ -62,7 +62,7 @@ namespace Syrius{
         bufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
         bufferDesc.CPUAccessFlags = 0;
         bufferDesc.MiscFlags = 0;
-        SR_D3D11_CALL(m_Device->CreateTexture2D(&bufferDesc, nullptr, &m_DepthStencilBuffer));
+        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&bufferDesc, nullptr, &m_DepthStencilBuffer));
 
         D3D11_DEPTH_STENCIL_DESC stateDesc = { 0 };
         // Depth test parameters
@@ -83,14 +83,14 @@ namespace Syrius{
         stateDesc.BackFace.StencilDepthFailOp = getD3d11StencilFunc(desc.m_StencilPassDepthFail);;
         stateDesc.BackFace.StencilPassOp = getD3d11StencilFunc(desc.m_StencilPass);;
         stateDesc.BackFace.StencilFunc = getD3d11ComparisonFunc(desc.m_StencilFunc);
-        SR_D3D11_CALL(m_Device->CreateDepthStencilState(&stateDesc, &m_DepthStencilState));
+        SR_CORE_D3D11_CALL(m_Device->CreateDepthStencilState(&stateDesc, &m_DepthStencilState));
 
         D3D11_DEPTH_STENCIL_VIEW_DESC viewDesc;
         viewDesc.Format = m_ViewFormat;
         viewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
         viewDesc.Texture2D.MipSlice = 0;
         viewDesc.Flags = 0;
-        SR_D3D11_CALL(m_Device->CreateDepthStencilView(m_DepthStencilBuffer, &viewDesc, &m_DepthStencilView));
+        SR_CORE_D3D11_CALL(m_Device->CreateDepthStencilView(m_DepthStencilBuffer, &viewDesc, &m_DepthStencilView));
 
     }
 
@@ -150,14 +150,14 @@ namespace Syrius{
         bufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
         bufferDesc.CPUAccessFlags = 0;
         bufferDesc.MiscFlags = 0;
-        SR_D3D11_CALL(m_Device->CreateTexture2D(&bufferDesc, nullptr, &m_DepthStencilBuffer));
+        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&bufferDesc, nullptr, &m_DepthStencilBuffer));
 
         D3D11_DEPTH_STENCIL_VIEW_DESC viewDesc;
         viewDesc.Format = m_ViewFormat;
         viewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
         viewDesc.Texture2D.MipSlice = 0;
         viewDesc.Flags = 0;
-        SR_D3D11_CALL(m_Device->CreateDepthStencilView(m_DepthStencilBuffer, &viewDesc, &m_DepthStencilView));
+        SR_CORE_D3D11_CALL(m_Device->CreateDepthStencilView(m_DepthStencilBuffer, &viewDesc, &m_DepthStencilView));
 
     }
 

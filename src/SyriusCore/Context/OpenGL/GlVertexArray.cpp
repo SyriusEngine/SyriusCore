@@ -42,13 +42,13 @@ namespace Syrius{
 
     void GlVertexArray::drawBuffers() {
         glBindVertexArray(m_ArrayID);
-        SR_OPENGL_CALL(glDrawArrays(m_GlDrawMode, 0, m_VertexBuffer->getCount()));
+        SR_CORE_OPENGL_CALL(glDrawArrays(m_GlDrawMode, 0, m_VertexBuffer->getCount()));
         glBindVertexArray(0);
     }
 
     void GlVertexArray::drawBuffersInstanced(uint32 instanceCount) {
         glBindVertexArray(m_ArrayID);
-        SR_OPENGL_CALL(glDrawArraysInstanced(m_GlDrawMode, 0, m_VertexBuffer->getCount(), instanceCount));
+        SR_CORE_OPENGL_CALL(glDrawArraysInstanced(m_GlDrawMode, 0, m_VertexBuffer->getCount(), instanceCount));
         glBindVertexArray(0);
     }
 
@@ -71,13 +71,13 @@ namespace Syrius{
 
     void GlVertexArrayIndexed::drawBuffers() {
         glBindVertexArray(m_ArrayID);
-        SR_OPENGL_CALL(glDrawElements(m_GlDrawMode, m_IndexBuffer->getCount(), m_IndexDataType, nullptr));
+        SR_CORE_OPENGL_CALL(glDrawElements(m_GlDrawMode, m_IndexBuffer->getCount(), m_IndexDataType, nullptr));
         glBindVertexArray(0);
     }
 
     void GlVertexArrayIndexed::drawBuffersInstanced(uint32 instanceCount) {
         glBindVertexArray(m_ArrayID);
-        SR_OPENGL_CALL(glDrawElementsInstanced(m_GlDrawMode, m_IndexBuffer->getCount(), m_IndexDataType, nullptr, instanceCount));
+        SR_CORE_OPENGL_CALL(glDrawElementsInstanced(m_GlDrawMode, m_IndexBuffer->getCount(), m_IndexDataType, nullptr, instanceCount));
         glBindVertexArray(0);
     }
 

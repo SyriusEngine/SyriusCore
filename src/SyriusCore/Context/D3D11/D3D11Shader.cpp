@@ -14,13 +14,13 @@ namespace Syrius{
         auto vsBlob = reinterpret_cast<ID3DBlob*>(desc.m_VertexShader->getIdentifier());
         auto psBlob = reinterpret_cast<ID3DBlob*>(desc.m_FragmentShader->getIdentifier());
 
-        SR_D3D11_CALL(m_Device->CreateVertexShader(
+        SR_CORE_D3D11_CALL(m_Device->CreateVertexShader(
                 vsBlob->GetBufferPointer(),
                 vsBlob->GetBufferSize(),
                 nullptr,
                 &m_VertexShader
                 ));
-        SR_D3D11_CALL(m_Device->CreatePixelShader(
+        SR_CORE_D3D11_CALL(m_Device->CreatePixelShader(
                 psBlob->GetBufferPointer(),
                 psBlob->GetBufferSize(),
                 nullptr,

@@ -23,7 +23,7 @@ namespace Syrius{
         }
 
         ID3DBlob* exceptionBlob = nullptr;
-        SR_D3D11_CALL(D3DCompile(
+        SR_CORE_D3D11_CALL(D3DCompile(
             shaderCode.c_str(),
             shaderCode.length(),
             nullptr,

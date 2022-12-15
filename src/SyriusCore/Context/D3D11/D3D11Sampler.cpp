@@ -23,7 +23,7 @@ namespace Syrius{
         samplerDesc.BorderColor[3] = desc.m_BorderColor[3];
         samplerDesc.MinLOD = desc.m_MinLOD;
         samplerDesc.MaxLOD = desc.m_MaxLOD;
-        SR_D3D11_CALL(m_Device->CreateSamplerState(&samplerDesc, &m_Sampler));
+        SR_CORE_D3D11_CALL(m_Device->CreateSamplerState(&samplerDesc, &m_Sampler));
 
     }
 

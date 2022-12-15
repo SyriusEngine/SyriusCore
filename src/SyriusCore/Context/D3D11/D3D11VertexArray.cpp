@@ -30,7 +30,7 @@ namespace Syrius{
         }
 
         auto vertexShaderBlob = reinterpret_cast<ID3DBlob*>(desc.m_VertexShader->getIdentifier());
-        SR_D3D11_CALL(m_Device->CreateInputLayout(
+        SR_CORE_D3D11_CALL(m_Device->CreateInputLayout(
                 &elements[0],
                 elements.size(),
                 vertexShaderBlob->GetBufferPointer(),
@@ -62,7 +62,7 @@ namespace Syrius{
 
         m_Context->Draw(m_VertexBuffer->getCount(), 0);
 
-        SR_DXGI_GET_MESSAGES()
+        SR_CORE_DXGI_GET_MESSAGES()
     }
 
     void D3D11VertexArray::drawBuffersInstanced(uint32 instanceCount) {
@@ -111,7 +111,7 @@ namespace Syrius{
 
         m_Context->DrawIndexedInstanced(m_IndexBuffer->getCount(), instanceCount, 0, 0, 0);
 
-        SR_DXGI_GET_MESSAGES()
+        SR_CORE_DXGI_GET_MESSAGES()
     }
 }
 

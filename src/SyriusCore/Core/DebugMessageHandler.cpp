@@ -50,16 +50,16 @@ namespace Syrius{
         msg += "ID = " + std::to_string(id) + "\n";
         std::string sep = message;
         msg += "Message = " + sep + "\n";
-        SR_MESSAGE_SEVERITY sev;
+        SR_CORE_MESSAGE_SEVERITY sev;
         switch (severity) {
-            case GL_DEBUG_SEVERITY_LOW:             sev = SR_MESSAGE_SEVERITY_LOW; break;
-            case GL_DEBUG_SEVERITY_MEDIUM:          sev = SR_MESSAGE_SEVERITY_MEDIUM; break;
-            case GL_DEBUG_SEVERITY_HIGH:            sev = SR_MESSAGE_SEVERITY_HIGH; break;
-            case GL_DEBUG_SEVERITY_NOTIFICATION:    sev = SR_MESSAGE_SEVERITY_INFO; break;
-            default:                                sev = SR_MESSAGE_SEVERITY_INFO; break;
+            case GL_DEBUG_SEVERITY_LOW:             sev = SR_CORE_MESSAGE_SEVERITY_LOW; break;
+            case GL_DEBUG_SEVERITY_MEDIUM:          sev = SR_CORE_MESSAGE_SEVERITY_MEDIUM; break;
+            case GL_DEBUG_SEVERITY_HIGH:            sev = SR_CORE_MESSAGE_SEVERITY_HIGH; break;
+            case GL_DEBUG_SEVERITY_NOTIFICATION:    sev = SR_CORE_MESSAGE_SEVERITY_INFO; break;
+            default:                                sev = SR_CORE_MESSAGE_SEVERITY_INFO; break;
         }
 
-        pushMessage(sev, SR_MESSAGE_OPENGL, "OpenGLCallback", "", 0, msg);
+        pushMessage(sev, SR_CORE_MESSAGE_OPENGL, "OpenGLCallback", "", 0, msg);
     }
 
     void DebugMessageHandler::pushOpenGlError(GLenum error, const std::string &function, const std::string &file,
@@ -78,7 +78,7 @@ namespace Syrius{
             default:                                msg += "UNKNOWN ERROR"; break;
         }
         msg += " (" + std::to_string(error) + ")";
-        pushMessage(SR_MESSAGE_SEVERITY_HIGH, SR_MESSAGE_OPENGL, function, file, line, msg);
+        pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE_OPENGL, function, file, line, msg);
     }
 
 #if defined(SR_CORE_PLATFORM_WIN64)
@@ -101,7 +101,7 @@ namespace Syrius{
             LocalFree(errorText);
             errorText = nullptr;
 
-            pushMessage(SR_MESSAGE_SEVERITY_HIGH, SR_MESSAGE_HRESULT, function, file, line, msg);
+            pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE_HRESULT, function, file, line, msg);
         }
     }
 
@@ -128,20 +128,20 @@ namespace Syrius{
             LocalFree(errorText);
             errorText = nullptr;
 
-            pushMessage(SR_MESSAGE_SEVERITY_HIGH, SR_MESSAGE_HRESULT, function, file, line, msg);
+            pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE_HRESULT, function, file, line, msg);
 
         }
     }
 
 #if defined(SR_COMPILER_MSVC)
-    SR_MESSAGE_SEVERITY getSrMessageSeverity(DXGI_INFO_QUEUE_MESSAGE_SEVERITY severity){
+    SR_CORE_MESSAGE_SEVERITY getSrMessageSeverity(DXGI_INFO_QUEUE_MESSAGE_SEVERITY severity){
         switch (severity) {
             case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_INFO:         return SR_MESSAGE_SEVERITY_INFO;
-            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_MESSAGE:      return SR_MESSAGE_SEVERITY_LOW;
-            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING:      return SR_MESSAGE_SEVERITY_MEDIUM;
-            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR:        return SR_MESSAGE_SEVERITY_HIGH;
-            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION:   return SR_MESSAGE_SEVERITY_HIGH;
-            default:                                            return SR_MESSAGE_SEVERITY_HIGH;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_MESSAGE:      return SR_CORE_MESSAGE_SEVERITY_LOW;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING:      return SR_CORE_MESSAGE_SEVERITY_MEDIUM;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR:        return SR_CORE_MESSAGE_SEVERITY_HIGH;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION:   return SR_CORE_MESSAGE_SEVERITY_HIGH;
+            default:                                            return SR_CORE_MESSAGE_SEVERITY_HIGH;
         }
     }
 
@@ -188,7 +188,7 @@ namespace Syrius{
             m_DxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, message, &messageLength);
 
             Message msgStruct;
-            msgStruct.m_Type = SR_MESSAGE_DXGI;
+            msgStruct.m_Type = SR_CORE_MESSAGE_DXGI;
             msgStruct.m_Severity = getSrMessageSeverity(message->Severity);
             msgStruct.m_Message = "Code = " + std::to_string(message->ID) + ", Category = " + getDxgiCategoryAsString(message->Category) + ",\n message = " + std::string(message->pDescription);;
             msgStruct.m_Function = "DXGI_DEBUG_ALL";
@@ -208,9 +208,9 @@ namespace Syrius{
                                                           uint32 line) {
 
         std::string msg = "Vulkan function returned exit code = " + std::to_string(result) + "(";
-        SR_MESSAGE_SEVERITY severity = SR_MESSAGE_SEVERITY_HIGH;
+        SR_CORE_MESSAGE_SEVERITY severity = SR_CORE_MESSAGE_SEVERITY_HIGH;
         switch (result) {
-            case VK_SUCCESS:                                    msg += "VK_SUCCESS"; severity = SR_MESSAGE_SEVERITY_INFO; break;
+            case VK_SUCCESS:                                    msg += "VK_SUCCESS"; severity = SR_CORE_MESSAGE_SEVERITY_INFO; break;
             case VK_NOT_READY:                                  msg += "VK_NOT_READY"; break;
             case VK_TIMEOUT:                                    msg += "VK_TIMEOUT"; break;
             case VK_EVENT_SET:                                  msg += "VK_EVENT_SET"; break;
@@ -252,7 +252,7 @@ namespace Syrius{
         }
         msg += ")\n extra info = " + message;
 
-        pushMessage(severity, SR_MESSAGE_VULKAN, function, file, line, msg);
+        pushMessage(severity, SR_CORE_MESSAGE_VULKAN, function, file, line, msg);
 
     }
 
@@ -260,13 +260,13 @@ namespace Syrius{
                                                 VkDebugUtilsMessageTypeFlagsEXT messageType,
                                                 const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
                                                 void *pUserData) {
-        SR_MESSAGE_SEVERITY severity;
+        SR_CORE_MESSAGE_SEVERITY severity;
         switch (messageSeverity) {
-            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:           severity = SR_MESSAGE_SEVERITY_INFO; break;
-            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:              severity = SR_MESSAGE_SEVERITY_INFO; break;
-            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:           severity = SR_MESSAGE_SEVERITY_MEDIUM; break;
-            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:             severity = SR_MESSAGE_SEVERITY_HIGH; break;
-            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_FLAG_BITS_MAX_ENUM_EXT:    severity = SR_MESSAGE_SEVERITY_LOW; break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:           severity = SR_CORE_MESSAGE_SEVERITY_INFO; break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:              severity = SR_CORE_MESSAGE_SEVERITY_INFO; break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:           severity = SR_CORE_MESSAGE_SEVERITY_MEDIUM; break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:             severity = SR_CORE_MESSAGE_SEVERITY_HIGH; break;
+            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_FLAG_BITS_MAX_ENUM_EXT:    severity = SR_CORE_MESSAGE_SEVERITY_LOW; break;
         }
 
         std::string msgType;
@@ -280,7 +280,7 @@ namespace Syrius{
         std::string msg = "[Vulkan message callback]: type = " + msgType;
         msg += " Message = " + std::string(pCallbackData->pMessage);
 
-        pushMessage(severity, SR_MESSAGE_VULKAN, "Vulkan callback", "", 0, msg);
+        pushMessage(severity, SR_CORE_MESSAGE_VULKAN, "Vulkan callback", "", 0, msg);
 
         return VK_FALSE;
     }

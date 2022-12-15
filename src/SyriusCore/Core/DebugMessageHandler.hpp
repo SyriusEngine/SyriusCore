@@ -15,7 +15,7 @@ namespace Syrius{
         static void pushOpenGlError(GLenum error, const std::string& function, const std::string& file, uint32 line);
 
         template<typename... Args>
-        static void pushMessage(SR_MESSAGE_SEVERITY severity, SR_MESSAGE_SOURCE type, const std::string& function, const std::string& file, uint32 line, const std::string& message, Args... args){
+        static void pushMessage(SR_CORE_MESSAGE_SEVERITY severity, SR_CORE_MESSAGE_SOURCE type, const std::string& function, const std::string& file, uint32 line, const std::string& message, Args... args){
             Size formatSize = std::snprintf(nullptr, 0, message.c_str(), args...);
             std::vector<byte> formatBuffer(formatSize + 1);
             std::snprintf(reinterpret_cast<char*>(formatBuffer.data()), formatSize + 1, message.c_str(), args...);

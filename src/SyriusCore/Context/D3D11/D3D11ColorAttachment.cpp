@@ -33,14 +33,14 @@ namespace Syrius{
         textureDesc.CPUAccessFlags = 0;
         textureDesc.MiscFlags = 0;
 
-        SR_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_ColorBuffer));
+        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_ColorBuffer));
 
         D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc = {  };
         renderTargetViewDesc.Format = textureDesc.Format;
         renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
         renderTargetViewDesc.Texture2D.MipSlice = 0;
 
-        SR_D3D11_CALL(m_Device->CreateRenderTargetView(m_ColorBuffer, &renderTargetViewDesc, &m_RenderTargetView));
+        SR_CORE_D3D11_CALL(m_Device->CreateRenderTargetView(m_ColorBuffer, &renderTargetViewDesc, &m_RenderTargetView));
 
         D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc = {  };
         textureViewDesc.Format = textureDesc.Format;
@@ -48,7 +48,7 @@ namespace Syrius{
         textureViewDesc.Texture2D.MipLevels = 1;
         textureViewDesc.Texture2D.MostDetailedMip = 0;
 
-        SR_D3D11_CALL(m_Device->CreateShaderResourceView(m_ColorBuffer, &textureViewDesc, &m_BufferView));
+        SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_ColorBuffer, &textureViewDesc, &m_BufferView));
 
     }
 
@@ -99,7 +99,7 @@ namespace Syrius{
         textureDesc.CPUAccessFlags = 0;
         textureDesc.MiscFlags = 0;
 
-        SR_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_ColorBuffer));
+        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_ColorBuffer));
 
     }
 
@@ -134,9 +134,9 @@ namespace Syrius{
     m_SwapChain(swapChain),
     m_BackRenderTarget(nullptr){
         ID3D11Texture2D* backBuffer = nullptr;
-        SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
+        SR_CORE_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
         if (backBuffer){
-            SR_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_BackRenderTarget));
+            SR_CORE_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_BackRenderTarget));
             backBuffer->Release();
 
         }
@@ -171,12 +171,12 @@ namespace Syrius{
         }
         m_BackRenderTarget = nullptr;
 
-        SR_D3D11_CALL(m_SwapChain->ResizeBuffers(2, 0, 0, DXGI_FORMAT_UNKNOWN, 0));
+        SR_CORE_D3D11_CALL(m_SwapChain->ResizeBuffers(2, 0, 0, DXGI_FORMAT_UNKNOWN, 0));
 
         ID3D11Texture2D* backBuffer = nullptr;
-        SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
+        SR_CORE_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
         if (backBuffer){
-            SR_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_BackRenderTarget));
+            SR_CORE_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_BackRenderTarget));
             backBuffer->Release();
 
         }

@@ -2,40 +2,40 @@
 
 namespace Syrius{
 
-    std::string getMessageTypeString(SR_MESSAGE_SOURCE type){
+    std::string getMessageTypeString(SR_CORE_MESSAGE_SOURCE type){
         switch (type) {
-            case SR_MESSAGE:
+            case SR_CORE_MESSAGE:
                 return "MESSAGE";
-            case SR_MESSAGE_HRESULT:
+            case SR_CORE_MESSAGE_HRESULT:
                 return "HRESULT";
-            case SR_MESSAGE_OPENGL:
+            case SR_CORE_MESSAGE_OPENGL:
                 return "OPENGL";
-            case SR_MESSAGE_VULKAN:
+            case SR_CORE_MESSAGE_VULKAN:
                 return "VULKAN";
-            case SR_MESSAGE_D3D11:
+            case SR_CORE_MESSAGE_D3D11:
                 return "D3D11";
-            case SR_MESSAGE_DXGI:
+            case SR_CORE_MESSAGE_DXGI:
                 return "DXGI";
-            case SR_MESSAGE_PRECONDITION:
+            case SR_CORE_MESSAGE_PRECONDITION:
                 return "PRECONDITION";
-            case SR_MESSAGE_POSTCONDITION:
+            case SR_CORE_MESSAGE_POSTCONDITION:
                 return "POSTCONDITION";
-            case SR_MESSAGE_ASSERTION:
+            case SR_CORE_MESSAGE_ASSERTION:
                 return "ASSERTION";
             default:
                 return "UNKNOWN";
         }
     }
 
-    std::string getMessageSeverityString(SR_MESSAGE_SEVERITY severity){
+    std::string getMessageSeverityString(SR_CORE_MESSAGE_SEVERITY severity){
         switch (severity) {
-            case SR_MESSAGE_SEVERITY_HIGH:
+            case SR_CORE_MESSAGE_SEVERITY_HIGH:
                 return "HIGH";
-            case SR_MESSAGE_SEVERITY_MEDIUM:
+            case SR_CORE_MESSAGE_SEVERITY_MEDIUM:
                 return "MEDIUM";
-            case SR_MESSAGE_SEVERITY_LOW:
+            case SR_CORE_MESSAGE_SEVERITY_LOW:
                 return "LOW";
-            case SR_MESSAGE_SEVERITY_INFO:
+            case SR_CORE_MESSAGE_SEVERITY_INFO:
                 return "INFO";
             default:
                 return "UNKNOWN";

@@ -28,7 +28,7 @@ namespace Syrius{
         scDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
         scDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // allows toggling between fullscreen mode and windowed mode
 
-        SR_D3D11_CALL(D3D11CreateDeviceAndSwapChain(
+        SR_CORE_D3D11_CALL(D3D11CreateDeviceAndSwapChain(
                 nullptr,
                 D3D_DRIVER_TYPE_HARDWARE,
                 nullptr,
@@ -58,7 +58,7 @@ namespace Syrius{
         rasterizerDesc.MultisampleEnable = false;
         rasterizerDesc.AntialiasedLineEnable = false;
 
-        SR_D3D11_CALL(m_Device->CreateRasterizerState(&rasterizerDesc, &m_RasterizerState));
+        SR_CORE_D3D11_CALL(m_Device->CreateRasterizerState(&rasterizerDesc, &m_RasterizerState));
         m_DeviceContext->RSSetState(m_RasterizerState);
     }
 
@@ -78,9 +78,9 @@ namespace Syrius{
     void D3D11Context::swapBuffers() {
         SR_CORE_PRECONDITION(m_SwapChain != nullptr, "SwapChain is nullptr");
 
-        SR_DXGI_GET_MESSAGES();
+        SR_CORE_DXGI_GET_MESSAGES();
 
-        SR_D3D11_CHECK_DEVICE_REMOVED(m_SwapChain->Present(m_VerticalSync, 0), m_Device);
+        SR_CORE_D3D11_CHECK_DEVICE_REMOVED(m_SwapChain->Present(m_VerticalSync, 0), m_Device);
     }
 
     void D3D11Context::setVerticalSynchronisation(bool enable) {

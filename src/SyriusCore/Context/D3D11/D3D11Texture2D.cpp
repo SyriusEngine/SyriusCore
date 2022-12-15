@@ -31,7 +31,7 @@ namespace Syrius{
         subresourceData.SysMemPitch = desc.m_Image->getWidth() * (sizeof(ubyte) * desc.m_Image->getChannelCount());
         subresourceData.pSysMem = &desc.m_Image->getData()[0];
 
-        SR_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, &subresourceData, &m_Texture));
+        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, &subresourceData, &m_Texture));
 
         D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc = {  };
         textureViewDesc.Format = textureDesc.Format;
@@ -39,7 +39,7 @@ namespace Syrius{
         textureViewDesc.Texture2D.MipLevels = 1;
         textureViewDesc.Texture2D.MostDetailedMip = 0;
 
-        SR_D3D11_CALL(m_Device->CreateShaderResourceView(m_Texture, &textureViewDesc, &m_TextureView));
+        SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_Texture, &textureViewDesc, &m_TextureView));
     }
 
     D3D11Texture2D::~D3D11Texture2D() {
