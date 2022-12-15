@@ -21,4 +21,15 @@ namespace Syrius{
     : KeyboardEvent(SR_EVENT_KEYBOARD_KEY_RELEASED){
         keyCode = key;
     }
+
+    RawKeyPressedEvent::RawKeyPressedEvent(SR_KEYBOARD_KEY key)
+    : KeyboardEvent(SR_EVENT_RAW_KEYBOARD_KEY_PRESSED){
+        keyCode = key;
+
+    }
+
+    RawKeyReleasedEvent::RawKeyReleasedEvent(SR_KEYBOARD_KEY key)
+    : KeyboardEvent(SR_EVENT_RAW_KEYBOARD_KEY_RELEASED){
+        keyCode = key;
+    }
 }

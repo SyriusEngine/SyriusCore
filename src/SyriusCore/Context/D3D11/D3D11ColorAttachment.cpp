@@ -1,6 +1,6 @@
 #include "D3D11ColorAttachment.hpp"
 
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -137,9 +137,6 @@ namespace Syrius{
         SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
         if (backBuffer){
             SR_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_BackRenderTarget));
-            D3D11_TEXTURE2D_DESC backBufferDesc;
-            backBuffer->GetDesc(&backBufferDesc);
-            m_BackBufferFormat = backBufferDesc.Format;
             backBuffer->Release();
 
         }
@@ -168,19 +165,18 @@ namespace Syrius{
     }
 
     void D3D11BackBufferColorAttachment::onResize(uint32 width, uint32 height) {
+        m_Context->OMSetRenderTargets(0, nullptr, nullptr);
         if (m_BackRenderTarget){
             m_BackRenderTarget->Release();
         }
+        m_BackRenderTarget = nullptr;
 
-        SR_D3D11_CALL(m_SwapChain->ResizeBuffers(1, m_Width, m_Height, m_BackBufferFormat, 0));
+        SR_D3D11_CALL(m_SwapChain->ResizeBuffers(2, 0, 0, DXGI_FORMAT_UNKNOWN, 0));
 
         ID3D11Texture2D* backBuffer = nullptr;
         SR_D3D11_CALL(m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
         if (backBuffer){
             SR_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_BackRenderTarget));
-            D3D11_TEXTURE2D_DESC backBufferDesc;
-            backBuffer->GetDesc(&backBufferDesc);
-            m_BackBufferFormat = backBufferDesc.Format;
             backBuffer->Release();
 
         }

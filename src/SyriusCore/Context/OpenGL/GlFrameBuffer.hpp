@@ -7,7 +7,7 @@
 
 namespace Syrius{
     
-    class SR_API GlFrameBuffer : public FrameBuffer{
+    class SR_CORE_API GlFrameBuffer : public FrameBuffer{
     public:
         explicit GlFrameBuffer(const FrameBufferDesc& desc);
         

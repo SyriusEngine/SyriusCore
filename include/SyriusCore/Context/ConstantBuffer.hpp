@@ -5,7 +5,7 @@
 
 namespace Syrius{
 
-    struct SR_API ConstantBufferDesc{
+    struct SR_CORE_API ConstantBufferDesc{
         std::string m_BlockName;
         uint32 m_Size               = 0;
         uint32 m_BindingIndex       = 0;
@@ -14,7 +14,7 @@ namespace Syrius{
         SR_SHADER_TYPE m_ShaderStage = SR_SHADER_VERTEX;
     };
 
-    class SR_API ConstantBuffer{
+    class SR_CORE_API ConstantBuffer{
     public:
         explicit ConstantBuffer(const ConstantBufferDesc& desc);
 

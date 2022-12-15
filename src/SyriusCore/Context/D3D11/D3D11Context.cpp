@@ -1,6 +1,6 @@
 #include "D3D11Context.hpp"
 
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -22,11 +22,11 @@ namespace Syrius{
         scDesc.SampleDesc.Count = 1;
         scDesc.SampleDesc.Quality = 0;
         scDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-        scDesc.BufferCount = 1; // backbuffer count
+        scDesc.BufferCount = 2; // backbuffer count, is equal to 2 because of DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL
         scDesc.OutputWindow = m_Hwnd;
         scDesc.Windowed = TRUE;
-        scDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-        scDesc.Flags = 0;
+        scDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+        scDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // allows toggling between fullscreen mode and windowed mode
 
         SR_D3D11_CALL(D3D11CreateDeviceAndSwapChain(
                 nullptr,

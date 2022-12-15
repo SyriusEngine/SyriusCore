@@ -4,14 +4,14 @@
 
 namespace Syrius{
 
-    struct SR_API ColorAttachmentDesc{
+    struct SR_CORE_API ColorAttachmentDesc{
         uint32 m_Width                      = SR_DEFAULT_WIDTH;
         uint32 m_Height                     = SR_DEFAULT_HEIGHT;
         float m_ClearColor[4]               = {0.8f, 0.2f, 0.3f, 1.0f};
         SR_TEXTURE_DATA_FORMAT  m_Format    = SR_TEXTURE_DATA_FORMAT_RGBA_8;
     };
 
-    class SR_API ColorAttachment{
+    class SR_CORE_API ColorAttachment{
     public:
         explicit ColorAttachment(const ColorAttachmentDesc& desc);
 

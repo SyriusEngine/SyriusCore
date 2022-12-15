@@ -15,7 +15,7 @@ namespace Syrius{
 
     } SR_MOUSE_BUTTON;
 
-    class SR_API MouseEvent: public Event{
+    class SR_CORE_API MouseEvent: public Event{
     protected:
         explicit MouseEvent(SR_EVENT_TYPE type);
 
@@ -24,39 +24,39 @@ namespace Syrius{
 
     };
 
-    class SR_API MouseMovedEvent: public MouseEvent{
+    class SR_CORE_API MouseMovedEvent: public MouseEvent{
     public:
         MouseMovedEvent(int32 posX, int32 posY);
     };
 
-    class SR_API MouseScrolledEvent: public MouseEvent{
+    class SR_CORE_API MouseScrolledEvent: public MouseEvent{
     public:
         MouseScrolledEvent(int32 scrollX, int32 scrollY);
     };
 
-    class SR_API MouseButtonPressedEvent: public MouseEvent{
+    class SR_CORE_API MouseButtonPressedEvent: public MouseEvent{
     public:
         explicit MouseButtonPressedEvent(SR_MOUSE_BUTTON button);
     };
 
-    class SR_API MouseButtonReleasedEvent: public MouseEvent{
+    class SR_CORE_API MouseButtonReleasedEvent: public MouseEvent{
     public:
         explicit MouseButtonReleasedEvent(SR_MOUSE_BUTTON button);
     };
 
-    class SR_API MouseEnteredEvent: public MouseEvent{
+    class SR_CORE_API MouseEnteredEvent: public MouseEvent{
     public:
         MouseEnteredEvent();
     };
 
-    class SR_API MouseLeftEvent: public MouseEvent{
+    class SR_CORE_API MouseLeftEvent: public MouseEvent{
     public:
         MouseLeftEvent();
     };
 
-    class SR_API RawMouseMovedEvent: public MouseEvent{
+    class SR_CORE_API RawMouseMovedEvent: public MouseEvent{
     public:
-        RawMouseMovedEvent(int32 posX, int32 posY);
+        RawMouseMovedEvent(int32 deltaX, int32 deltaY);
     };
 
 }

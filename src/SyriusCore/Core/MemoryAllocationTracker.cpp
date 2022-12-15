@@ -1,5 +1,7 @@
 #include "MemoryAllocationTracker.hpp"
 
+#if defined(SR_CORE_DEBUG)
+
 namespace Syrius{
 
     Size MemoryAllocationTracker::m_AllocatedMemory = 0;
@@ -29,7 +31,6 @@ namespace Syrius{
     }
 }
 
-#if defined(SR_DEBUG_MODE)
 
 void* operator new(size_t size){
     Syrius::MemoryAllocationTracker::allocate(size);

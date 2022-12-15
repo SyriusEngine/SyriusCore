@@ -4,7 +4,7 @@
 
 namespace Syrius{
 
-    struct SR_API VertexAttribute{
+    struct SR_CORE_API VertexAttribute{
         std::string m_Name;
         SR_SCALAR_TYPE m_Type;
         uint8 m_Size;
@@ -13,7 +13,7 @@ namespace Syrius{
         VertexAttribute(const std::string& name, SR_SCALAR_TYPE type, uint8 size, uint8 elementCount);
     };
 
-    class SR_API VertexDescription{
+    class SR_CORE_API VertexDescription{
     public:
         VertexDescription();
 

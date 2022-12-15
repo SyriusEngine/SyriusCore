@@ -18,7 +18,7 @@ namespace Syrius{
 
     class SyriusWindow;
 
-    struct SR_API ContextDesc{
+    struct SR_CORE_API ContextDesc{
         FrameBufferDesc m_DefaultFrameBufferDesc    = FrameBufferDesc();
         uint32 m_BackBufferCount    = 1;
         uint8 m_DepthBits          = 24;
@@ -30,12 +30,12 @@ namespace Syrius{
         SR_SUPPORTED_API m_API      = SR_API_OPENGL;
     };
 
-    struct SR_API FramebufferSize{
+    struct SR_CORE_API FramebufferSize{
         uint32 m_Width  = 0;
         uint32 m_Height = 0;
     };
 
-    class SR_API Context{
+    class SR_CORE_API Context{
     public:
 
         Context() = delete;

@@ -1,6 +1,6 @@
 #include "D3D11ShaderModule.hpp"
 
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -12,7 +12,7 @@ namespace Syrius{
     m_Flags(D3DCOMPILE_ENABLE_STRICTNESS){
         SR_CORE_PRECONDITION(desc.m_CodeType == SR_SHADER_CODE_HLSL, "D3D11 shader module only supports HLSL code");
 
-#if defined(SR_DEBUG_MODE)
+#if defined(SR_CORE_DEBUG)
         m_Flags |= D3DCOMPILE_DEBUG | D3DCOMPILE_WARNINGS_ARE_ERRORS;
 #else
         m_Flags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
@@ -37,7 +37,13 @@ namespace Syrius{
             &exceptionBlob));
         if (exceptionBlob){
             auto msg = static_cast<char*>(exceptionBlob->GetBufferPointer());
-            SR_CORE_WARNING("D3D11ShaderModule failed to compile shader, details: " + std::string(msg));
+            if (desc.m_LoadType == SR_LOAD_FROM_FILE){
+                SR_CORE_WARNING("D3D11ShaderModule failed to compile shader, found in file: %s\n, details: %s", desc.m_Code.c_str(), msg);
+            }
+            else{
+                SR_CORE_WARNING("D3D11ShaderModule failed to compile shader, details: %s", msg);
+            }
+
             exceptionBlob->Release();
         }
 

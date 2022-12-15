@@ -5,9 +5,16 @@
 
 #include "Win32Utils.hpp"
 
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
+
+    struct SavedWindowInfo{
+        bool m_IsMaximized = false;
+        LONG m_Style;
+        LONG m_ExStyle;
+        RECT m_Rect;
+    };
 
     class SyriusWindowWin32Impl: public SyriusWindow{
     public:
@@ -85,6 +92,8 @@ namespace Syrius{
         HWND m_Hwnd;
         LONG_PTR m_Callback;
         HICON m_Icon;
+
+        SavedWindowInfo m_SavedWindowInfo;
 
     };
 }

@@ -1,6 +1,6 @@
 #include "D3D11DepthStencilAttachment.hpp"
 
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
 

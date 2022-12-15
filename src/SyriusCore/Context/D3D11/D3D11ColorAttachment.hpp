@@ -3,7 +3,7 @@
 #include "../../../../include/SyriusCore/Context/ColorAttachment.hpp"
 #include "D3D11Utils.hpp"
 
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -62,7 +62,6 @@ namespace Syrius{
         ID3D11DeviceContext* m_Context;
         IDXGISwapChain* m_SwapChain;
 
-        DXGI_FORMAT m_BackBufferFormat;
         ID3D11RenderTargetView* m_BackRenderTarget;
     };
 

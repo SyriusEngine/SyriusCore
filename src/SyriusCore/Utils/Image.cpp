@@ -22,7 +22,7 @@ namespace Syrius{
             stbi_image_free(pixelData);
         }
         else{
-            SR_CORE_WARNING("Image: " + fileName + " failed to load")
+            SR_CORE_WARNING("Image: %s failed to load", fileName.c_str());
         }
     }
 

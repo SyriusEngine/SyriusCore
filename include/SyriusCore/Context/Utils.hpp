@@ -97,12 +97,13 @@ namespace Syrius{
 
     // shader types
     typedef enum SR_SHADER_TYPE {
-        SR_SHADER_VERTEX         = 0x01,
-        SR_SHADER_FRAGMENT       = 0x02,
-        SR_SHADER_PIXEL          = 0x02,
-        SR_SHADER_GEOMETRY       = 0x03,
-        SR_SHADER_TESSELATION    = 0x04,
-        SR_SHADER_COMPUTE        = 0x05
+        SR_SHADER_VERTEX                 = 0x01,
+        SR_SHADER_FRAGMENT               = 0x02,
+        SR_SHADER_PIXEL                  = 0x02,
+        SR_SHADER_GEOMETRY               = 0x03,
+        SR_SHADER_TESSELATION_EVALUATION = 0x04,
+        SR_SHADER_TESSELATION_CONTROL    = 0x05,
+        SR_SHADER_COMPUTE                = 0x06
     } SR_SHADER_TYPE;
 
     typedef enum SR_SHADER_CODE_TYPE {
@@ -241,8 +242,8 @@ namespace Syrius{
      * @param type The type to get the size of
      * @return the number of bytes needed to store data of that type
      */
-    uint8 SR_API getTypeSize(SR_DATA_TYPE type);
-    uint8 SR_API getTypeSize(SR_SCALAR_TYPE type);
+    uint8 SR_CORE_API getTypeSize(SR_DATA_TYPE type);
+    uint8 SR_CORE_API getTypeSize(SR_SCALAR_TYPE type);
 
     /**
      * @brief Returns the number of components in a scalar type
@@ -252,13 +253,15 @@ namespace Syrius{
      * @param type
      * @return the number of components in the scalar type
      */
-    uint8 SR_API getScalarComponentCount(SR_SCALAR_TYPE type);
+    uint8 SR_CORE_API getScalarComponentCount(SR_SCALAR_TYPE type);
 
-    SR_DATA_TYPE SR_API getScalarDataType(SR_SCALAR_TYPE type);
+    SR_DATA_TYPE SR_CORE_API getScalarDataType(SR_SCALAR_TYPE type);
 
-    SR_TEXTURE_FORMAT SR_API getTextureFormat(SR_TEXTURE_DATA_FORMAT format);
+    SR_TEXTURE_FORMAT SR_CORE_API getTextureFormat(SR_TEXTURE_DATA_FORMAT format);
 
-    uint8 SR_API getTextureChannelCount(SR_TEXTURE_FORMAT format);
+    uint8 SR_CORE_API getTextureChannelCount(SR_TEXTURE_FORMAT format);
+
+    std::string SR_CORE_API getShaderTypeString(SR_SHADER_TYPE type);
 
 }
 

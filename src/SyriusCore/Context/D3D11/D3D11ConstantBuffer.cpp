@@ -1,6 +1,6 @@
 #include "D3D11ConstantBuffer.hpp"
 
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -9,10 +9,10 @@ namespace Syrius{
     m_Device(device),
     m_Context(context),
     m_Buffer(nullptr){
-        SR_CORE_PRECONDITION(desc.m_Size >= 16, "Constant buffer size must be greater than 16");
+        SR_CORE_PRECONDITION(desc.m_Size > 0, "Constant buffer size must be greater than 0");
+        SR_CORE_PRECONDITION(desc.m_Size % 16 == 0, "Constant buffer size must be a multiple of 16");
         SR_CORE_PRECONDITION(desc.m_Data != nullptr, "Constant buffer data must not be null");
-        SR_CORE_PRECONDITION(desc.m_BindingIndex >= 0, "Constant buffer binding index must be greater than 0");
-        SR_CORE_PRECONDITION(desc.m_BindingIndex <= D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT, "Constant buffer binding index must be less than " + std::to_string(D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT));
+        SR_CORE_PRECONDITION(desc.m_BindingIndex <= D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT, "Constant buffer binding index must be less than %i", D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT);
         SR_CORE_PRECONDITION(!desc.m_BlockName.empty(), "Constant buffer block name must not be empty");
 
         D3D11_BUFFER_DESC bufferDesc;

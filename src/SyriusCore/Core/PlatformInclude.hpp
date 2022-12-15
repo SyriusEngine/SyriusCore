@@ -19,7 +19,7 @@
 
 #include "../Dependencies/glad/glad/gl.h"
 
-#if defined(SR_PLATFORM_WIN64)
+#if defined(SR_CORE_PLATFORM_WIN64)
 #include <windows.h>
 #include <dshow.h>
 #include <commdlg.h>
@@ -33,7 +33,7 @@
 
 #include "../Dependencies/glad/glad/wgl.h"
 
-#elif defined(SR_PLATFORM_UNIX)
+#elif defined(SR_CORE_PLATFORM_LINUX)
 
 #endif
 

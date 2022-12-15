@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(SyriusCore)
 
-add_compile_definitions(SR_DEBUG_MODE)
+add_compile_definitions(SR_CORE_DEBUG)
+add_compile_definitions(SR_CORE_EXPORT_DLL)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -33,7 +34,24 @@ if (WIN32)
             src/SyriusCore/Context/D3D11/D3D11Texture2D.cpp
             src/SyriusCore/Context/D3D11/D3D11FrameBuffer.cpp
             src/SyriusCore/Context/D3D11/D3D11ColorAttachment.cpp
-            src/SyriusCore/Context/D3D11/D3D11Sampler.cpp src/SyriusCore/Context/D3D11/D3D11DepthStencilAttachment.cpp src/SyriusCore/Context/D3D11/D3D11DepthStencilAttachment.hpp)
+            src/SyriusCore/Context/D3D11/D3D11Sampler.cpp
+            src/SyriusCore/Context/D3D11/D3D11DepthStencilAttachment.cpp )
+
+elseif(UNIX)
+    set(GLAD_PLATFORM_SRC
+            src/SyriusCore/Dependencies/glad/src/glx.c)
+
+    set(IMGUI_PLATFORM_SRC
+#            src/SyriusCore/Dependencies/imgui/imgui_impl_win32.cpp
+#            src/SyriusCore/Dependencies/imgui/imgui_impl_dx12.cpp
+#            src/SyriusCore/Dependencies/imgui/imgui_impl_dx11.cpp
+            )
+
+    set(SYRIUSCORE_CORE_PLATFORM_SRC
+            )
+
+    set(SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC
+            )
 
 endif()
 
@@ -141,7 +159,6 @@ if (WIN32)
     file(COPY ${VULKAN_DLL} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
     if (MINGW)
-        message("Platform: Win32, toolchain: MinGW")
         set(SYRIUS_CORE_LIBS
                 -limm32
                 -ldwmapi
@@ -153,7 +170,6 @@ if (WIN32)
                 -ld3dcompiler_47)
 
     elseif(MSVC)
-        message("Platform: Win32, toolchain: MSVC")
 
         set(SYRIUS_CORE_LIBS
                 imm32
@@ -168,7 +184,10 @@ if (WIN32)
     endif()
 
 elseif(UNIX)
-    message("Platform: Unix, toolchain: unknown")
+
+    set(SYRIUS_CORE_LIBS
+            -lX11
+            -ldl)
 endif()
 
 target_link_libraries(syrius-core ${SYRIUS_CORE_LIBS})

@@ -4,7 +4,7 @@
 
 namespace Syrius{
 
-    struct SR_API ShaderModuleDesc{
+    struct SR_CORE_API ShaderModuleDesc{
         std::string m_Code;     // can be actual code in a string or a file path
         uint32 m_CodeLength             = 0;
         SR_SHADER_TYPE m_Type           = SR_SHADER_VERTEX;
@@ -13,7 +13,7 @@ namespace Syrius{
         SR_SHADER_CODE_TYPE m_CodeType  = SR_SHADER_CODE_NONE;
     };
 
-    class SR_API ShaderModule{
+    class SR_CORE_API ShaderModule{
     public:
         explicit ShaderModule(const ShaderModuleDesc& desc);
 

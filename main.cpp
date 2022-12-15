@@ -29,7 +29,7 @@ int main() {
         SR_SHADER_CODE_TYPE shaderCodeType = SR_SHADER_CODE_GLSL;
         std::string vertexShaderPath = "./Resources/Shaders/GLSL/Basic.vert";
         std::string fragmentShaderPath = "./Resources/Shaders/GLSL/Basic.frag";
-        std::string screenVertexShaderPath = "./Resources/Shaders/GLSL/Screen.vert";
+        std::string screenVertexShaderPath = "./Resources/Shaders/GLSL/Scr45een.vert";
         std::string screenFragmentShaderPath = "./Resources/Shaders/GLSL/Screen.frag";
         if (api == SR_API_D3D11){
             shaderCodeType = SR_SHADER_CODE_HLSL;
@@ -68,10 +68,8 @@ int main() {
         window->createImGuiContext();
 
         auto shader = loadShader(vertexShaderPath, fragmentShaderPath, shaderCodeType, context);
-        auto screenShader = loadShader(screenVertexShaderPath, screenFragmentShaderPath, shaderCodeType, context);
 
         auto sphereVAO = loadMesh(sphere, shader, context);
-        auto screenVAO = loadMesh(rectangle, screenShader, context);
 
         glm::mat4 transform = glm::mat4(1.0f);
         glm::mat4 projection = glm::perspective(45.0f, 1280.0f / 720.0f, 0.1f, 100.0f);
@@ -99,12 +97,6 @@ int main() {
         texDesc.m_Image = img;
         auto texture2 = context->createTexture2D(texDesc);
 
-        FrameBufferDesc fbDesc;
-        fbDesc.m_ColorAttachments = {caDesc};
-        fbDesc.m_Width = 1280;
-        fbDesc.m_Height = 720;
-        auto frameBuffer = context->createFrameBuffer(fbDesc);
-
         while (window->isOpen()){
 
             window->pollEvents();
@@ -115,6 +107,7 @@ int main() {
                 }
                 else if (event.type == Syrius::SR_EVENT_WINDOW_RESIZED){
                     context->onResize(event.windowWidth, event.windowHeight);
+
                 }
                 else if (event.type == Syrius::SR_EVENT_KEYBOARD_KEY_PRESSED){
                     if (event.keyCode == Syrius::SR_KEY_W){
@@ -138,6 +131,14 @@ int main() {
                     else if (event.keyCode == Syrius::SR_KEY_LEFT_SHIFT){
                         camera.moveDown();
                     }
+                    else if (event.keyCode == SR_KEY_F){
+                        if (!window->isFullscreen()){
+                            window->enableFullscreen();
+                        }
+                        else{
+                            window->disableFullscreen();
+                        }
+                    }
                 }
                 else if (event.type == Syrius::SR_EVENT_RAW_MOUSE_MOVED){
                     camera.update(event.mousePosX, event.mousePosY);
@@ -147,20 +148,13 @@ int main() {
             // first pass
 
             // for some reason D3D11 only shows the first frame, all subsequent frames are the clear color (=red)
-            context->beginRenderPass(frameBuffer);
+            context->beginRenderPass();
             sampler->bind(0);
             cb->bind();
             texture1->bind(0);
             texture2->bind(1);
             shader.shaderProgram->bind();
             context->draw(sphereVAO);
-            context->endRenderPass(frameBuffer);
-
-            context->beginRenderPass();
-            screenShader.shaderProgram->bind();
-            frameBuffer->getColorAttachment(0)->bind(0);
-            frameBuffer->getColorAttachment(0)->getData()->writeToFile("./ScreenShot.png", true);
-            context->draw(screenVAO);
             context->endRenderPass();
 
 

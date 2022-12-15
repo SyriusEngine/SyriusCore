@@ -15,6 +15,7 @@ namespace Syrius{
     : m_VerticalSync(false),
     m_Type(desc.m_API),
     m_DefaultFrameBuffer(nullptr){
+        SR_CORE_MESSAGE("Created context with backend: " + getAPIName(m_Type));
 
     }
 

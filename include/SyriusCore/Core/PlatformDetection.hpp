@@ -2,10 +2,10 @@
 
 // identify operating system and toolchain
 #if defined(WIN64) || defined(_WIN64) || defined(WIN32)
-    #define SR_PLATFORM_WIN64
+    #define SR_CORE_PLATFORM_WIN64
 
 #elif defined(__linux__)
-    #define SR_PLATFORM_LINUX
+    #define SR_CORE_PLATFORM_LINUX
 
 #else
     #error "Platform not supported"
@@ -20,37 +20,37 @@
     #define or ||
 
 #elif defined(__MINGW64__)
-    #define SR_COMPILER_MINGW_W64
+    #define SR_CORE_COMPILER_MINGW_W64
 
 #elif defined(__MINGW32__)
-    #define SR_COMPILER_MINGW_W64
+    #define SR_CORE_COMPILER_MINGW_W64
 
 #elif defined(__GNUC__)
-    #define SR_COMPILER_GCC
+    #define SR_CORE_COMPILER_GCC
 
 #else
     #error "Compiler is not supported"
 #endif
 
 // this is just for consistency
-#define SR_FILE __FILE__
-#define SR_LINE __LINE__
-#define SR_FUNC __FUNCTION__
+#define SR_CORE_FILE __FILE__
+#define SR_CORE_LINE __LINE__
+#define SR_CORE_FUNC __FUNCTION__
 
 // portable dll import/export macros
-#if defined(SR_PLATFORM_WIN64)
-    #if defined(SR_IMPORT_DLL)
-        #define SR_API __declspec(dllimport)
+#if defined(SR_CORE_PLATFORM_WIN64)
+    #if defined(SR_CORE_EXPORT_DLL)
+        #define SR_CORE_API __declspec(dllexport)
     #else
-        #define SR_API __declspec(dllexport)
+        #define SR_CORE_API __declspec(dllimport)
     #endif
 
 #else
-    #define SR_API
+    #define SR_CORE_API
 
 #endif
 
-#if defined(SR_DEBUG_MODE)
+#if defined(SR_CORE_DEBUG)
 
 #define SR_CORE_DEBUG_BREAK() __debugbreak()
 #endif

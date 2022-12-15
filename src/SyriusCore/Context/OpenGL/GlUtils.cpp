@@ -4,11 +4,12 @@ namespace Syrius{
 
     GLenum getGlShaderType(SR_SHADER_TYPE type){
         switch (type){
-            case SR_SHADER_VERTEX:      return GL_VERTEX_SHADER;
-            case SR_SHADER_FRAGMENT:    return GL_FRAGMENT_SHADER;
-            case SR_SHADER_GEOMETRY:    return GL_GEOMETRY_SHADER;
-            case SR_SHADER_TESSELATION: return GL_TESS_EVALUATION_SHADER;
-            case SR_SHADER_COMPUTE:     return GL_COMPUTE_SHADER;
+            case SR_SHADER_VERTEX:                  return GL_VERTEX_SHADER;
+            case SR_SHADER_FRAGMENT:                return GL_FRAGMENT_SHADER;
+            case SR_SHADER_GEOMETRY:                return GL_GEOMETRY_SHADER;
+            case SR_SHADER_TESSELATION_CONTROL:     return GL_TESS_CONTROL_SHADER;
+            case SR_SHADER_TESSELATION_EVALUATION:  return GL_TESS_EVALUATION_SHADER;
+            case SR_SHADER_COMPUTE:                 return GL_COMPUTE_SHADER;
             default: {
                 SR_CORE_WARNING("Invalid type given to converter, return default: GL_VERTEX_SHADER");
                 return GL_VERTEX_SHADER;

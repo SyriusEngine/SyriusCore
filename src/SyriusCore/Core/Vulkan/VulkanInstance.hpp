@@ -6,7 +6,7 @@
 
 namespace Syrius{
 
-    class SR_API VulkanInstance{
+    class SR_CORE_API VulkanInstance{
     public:
         VulkanInstance() = delete;
 

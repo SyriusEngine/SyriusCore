@@ -25,7 +25,7 @@ ImGui. The ImGui backends are all implemented in the SyriusCore library.
 Just use cmake to build the library. In the cmake file, a macro is defined that can be toggled to switch between
 debug and release builds. If you want the release build, remove this line from the cmake script
 ```cmake
-add_compile_definitions(SR_DEBUG_MODE)
+add_compile_definitions(SR_CORE_DEBUG)
 ```
 IMPORTANT: all DLLs in the cmake output are necessary! This includes:
 * syrius_core.dll
