@@ -113,8 +113,11 @@ namespace Syrius{
 
     void SyriusWindow::destroyContext() {
         SR_CORE_PRECONDITION(m_Context, "A valid context must be created in order to destroy the context")
-        SR_CORE_PRECONDITION(!m_UseImGui, "ImGui is still using this context, cannot destroy the context")
 
+        SR_CORE_MESSAGE_ON_CONDITION(m_UseImGui, "There exists an ImGui context, destroying it");
+        if (m_UseImGui){
+            this->destroyImGuiContext();
+        }
         delete m_Context;
         m_Context = nullptr;
     }
