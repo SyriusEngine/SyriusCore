@@ -26,6 +26,9 @@ namespace Syrius{
     }
 
     SyriusWindow::~SyriusWindow() {
+        if (m_UseImGui){
+            this->destroyImGuiContext();
+        }
         delete m_Context;
 
     }
