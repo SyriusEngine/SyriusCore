@@ -16,17 +16,17 @@ namespace Syrius{
 
     static const wchar_t* s_SyriusWindowClass = L"SYRIUS_CORE_API";
 
-    void SR_CORE_API setProcessDpiAware();
+    void  setProcessDpiAware();
 
-    SR_KEYBOARD_KEY SR_CORE_API convertVirtualKey(WPARAM key, LPARAM flags);
+    SR_KEYBOARD_KEY convertVirtualKey(WPARAM key, LPARAM flags);
 
-    DWORD SR_CORE_API decodeWindowStyle(uint32_t srWinStyle);
+    DWORD decodeWindowStyle(uint32_t srWinStyle);
 
-    DWORD SR_CORE_API decodeExtendedWindowStyle(uint32_t srWinStyle);
+    DWORD decodeExtendedWindowStyle(uint32_t srWinStyle);
 
-    std::string SR_CORE_API wideToNormalString(const wchar_t* source);
+    std::string wideToNormalString(const wchar_t* source);
 
-    std::wstring SR_CORE_API stringToWideString(const std::string& source);
+    std::wstring stringToWideString(const std::string& source);
 
 }
 

@@ -22,7 +22,13 @@ if (WIN32)
     set(SYRIUSCORE_CORE_PLATFORM_SRC
             src/SyriusCore/Core/PlatformAPIWin32Impl.cpp)
 
+    set(SYRIUSCORE_PLATFORM_WINDOW_SRC
+            src/SyriusCore/Window/SyriusWindowWin32Impl.cpp
+            src/SyriusCore/Window/Win32Utils.cpp)
+
     set(SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC
+            src/SyriusCore/Context/OpenGL/Internal/WglContext.cpp
+
             src/SyriusCore/Context/D3D11/D3D11Context.cpp
             src/SyriusCore/Context/D3D11/D3D11Utils.cpp
             src/SyriusCore/Context/D3D11/D3D11ShaderModule.cpp
@@ -35,22 +41,28 @@ if (WIN32)
             src/SyriusCore/Context/D3D11/D3D11FrameBuffer.cpp
             src/SyriusCore/Context/D3D11/D3D11ColorAttachment.cpp
             src/SyriusCore/Context/D3D11/D3D11Sampler.cpp
-            src/SyriusCore/Context/D3D11/D3D11DepthStencilAttachment.cpp )
+            src/SyriusCore/Context/D3D11/D3D11DepthStencilAttachment.cpp
+
+            src/SyriusCore/Context/Vulkan/VulkanContextWin32.cpp)
 
 elseif(UNIX)
     set(GLAD_PLATFORM_SRC
             src/SyriusCore/Dependencies/glad/src/glx.c)
 
     set(IMGUI_PLATFORM_SRC
-#            src/SyriusCore/Dependencies/imgui/imgui_impl_win32.cpp
-#            src/SyriusCore/Dependencies/imgui/imgui_impl_dx12.cpp
-#            src/SyriusCore/Dependencies/imgui/imgui_impl_dx11.cpp
+
             )
 
     set(SYRIUSCORE_CORE_PLATFORM_SRC
+            src/SyriusCore/Core/PlatformAPIX11Impl.cpp
             )
 
+    set(SYRIUSCORE_PLATFORM_WINDOW_SRC
+            src/SyriusCore/Window/SyriusWindowX11Impl.cpp
+            src/SyriusCore/Window/X11Utils.cpp)
+
     set(SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC
+            src/SyriusCore/Context/OpenGL/Internal/GlxContext.cpp
             )
 
 endif()
@@ -91,13 +103,12 @@ set(SYRIUSCORE_UTILS_SRC
         src/SyriusCore/Utils/Image.cpp)
 
 set(SYRIUSCORE_WINDOW_SRC
+        ${SYRIUSCORE_PLATFORM_WINDOW_SRC}
         src/SyriusCore/Window/Event/Event.cpp
         src/SyriusCore/Window/Event/MouseEvent.cpp
         src/SyriusCore/Window/Event/WindowEvent.cpp
         src/SyriusCore/Window/Event/KeyboardEvent.cpp
-        src/SyriusCore/Window/SyriusWindow.cpp
-        src/SyriusCore/Window/SyriusWindowWin32Impl.cpp
-        src/SyriusCore/Window/Win32Utils.cpp)
+        src/SyriusCore/Window/SyriusWindow.cpp)
 
 set(SYRIUSCORE_GRAPHICS_API_SRC
         ${SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC}
@@ -118,7 +129,6 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/DepthStencilAttachment.cpp
 
         src/SyriusCore/Context/OpenGL/GlContext.cpp
-        src/SyriusCore/Context/OpenGL/Internal/WglContext.cpp
         src/SyriusCore/Context/OpenGL/GlUtils.cpp
         src/SyriusCore/Context/OpenGL/GlShaderModule.cpp
         src/SyriusCore/Context/OpenGL/GlShader.cpp
@@ -134,7 +144,6 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
 
 
         src/SyriusCore/Context/Vulkan/VulkanContext.cpp
-        src/SyriusCore/Context/Vulkan/VulkanContextWin32.cpp
         src/SyriusCore/Context/Vulkan/VulkanUtils.cpp
         src/SyriusCore/Context/Vulkan/VulkanPhysicalDevice.cpp
         src/SyriusCore/Context/Vulkan/VulkanLogicalDevice.cpp
@@ -142,8 +151,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/Vulkan/VulkanShaderModule.cpp
         src/SyriusCore/Context/Vulkan/VulkanShader.cpp
         src/SyriusCore/Context/Vulkan/VulkanPipeline.cpp
-        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp
-        )
+        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp)
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}
@@ -187,7 +195,9 @@ elseif(UNIX)
 
     set(SYRIUS_CORE_LIBS
             -lX11
-            -ldl)
+            -ldl
+            -lvulkan
+            -lGL)
 endif()
 
 target_link_libraries(syrius-core ${SYRIUS_CORE_LIBS})

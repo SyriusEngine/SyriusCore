@@ -19,6 +19,10 @@ namespace Syrius {
 #if defined(SR_CORE_PLATFORM_WIN64)
         SR_API_D3D11 = 0x08,
         SR_API_D3D12 = 0x09,
+#elif defined(SR_CORE_PLATFORM_LINUX)
+        SR_API_D3D11 = ~0x08,
+        SR_API_D3D12 = ~0x09,
+
 #endif
 
     } SR_SUPPORTED_API;

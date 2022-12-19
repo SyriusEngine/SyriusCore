@@ -42,6 +42,8 @@ namespace Syrius{
 #if defined(SR_COMPILER_MSVC)
         static void dxgiGetMessages();
 #endif
+#elif defined(SR_CORE_PLATFORM_LINUX)
+        static int32 x11ErrorHandler(Display* display, XErrorEvent* event);
 
 #endif
         static void vulkanFormatVkResultMessage(VkResult result, const std::string& message, const std::string& function, const std::string& file, uint32 line);
