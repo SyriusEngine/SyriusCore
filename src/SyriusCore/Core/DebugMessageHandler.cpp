@@ -206,8 +206,8 @@ namespace Syrius{
         char buffer[1024];
         XGetErrorText(display, event->error_code, buffer, sizeof(buffer));
         Message msgStruct;
-        msgStruct.m_Type = SR_MESSAGE_X11;
-        msgStruct.m_Severity = SR_MESSAGE_SEVERITY_MEDIUM;
+        msgStruct.m_Type = SR_CORE_MESSAGE_X11;
+        msgStruct.m_Severity = SR_CORE_MESSAGE_SEVERITY_MEDIUM;
         msgStruct.m_Message = buffer;
         msgStruct.m_Function = "X11";
         msgStruct.m_File = "";
