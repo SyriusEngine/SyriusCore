@@ -6,7 +6,8 @@ namespace Syrius{
 
     SyriusWindowX11Impl::SyriusWindowX11Impl(const WindowDesc &desc, Display* display)
     : SyriusWindow(desc),
-    m_Display(display){
+    m_Display(display),
+      m_SkipNextWindowCloseEvent(false){
         m_Window = XCreateSimpleWindow(m_Display, DefaultRootWindow(m_Display),
                                        m_PosX, m_PosY,
                                        m_Width, m_Height,
@@ -103,7 +104,22 @@ namespace Syrius{
         while (XPending(m_Display)) {
             XNextEvent(m_Display, &event);
             switch (event.type) {
-                case DestroyNotify: dispatchEvent(WindowClosedEvent()); break;
+                case DestroyNotify: {
+                    if (event.xdestroywindow.window == m_Window) {
+                        /**
+                         * Due to the nature of X11, we recreate the window each time a new context is created.
+                         * During this process, a windowClosedEvent is sent but we do not want to send this event
+                         * to the user as it is not a real window close event for the application concern.
+                         */
+                        if (!m_SkipNextWindowCloseEvent){
+                            dispatchEvent(WindowClosedEvent());
+                        }
+                        else{
+                            m_SkipNextWindowCloseEvent = false;
+                        }
+                    }
+                    break;
+                }
                 case FocusIn: {
                     if (!m_Resizing){
                         WindowGainedFocusEvent srEvent;
@@ -262,7 +278,18 @@ namespace Syrius{
     }
 
     Context *SyriusWindowX11Impl::createContext(const ContextDesc &desc) {
-        return nullptr;
+        switch (desc.m_API) {
+            case SR_API_OPENGL:
+                m_SkipNextWindowCloseEvent = true;
+                m_Context = new GlxContext(m_Display, m_Window, desc);
+                XMapWindow(m_Display, m_Window);
+                XStoreName(m_Display, m_Window, m_Title.c_str());
+                XFlush(m_Display);
+                return m_Context;
+            default:
+                SR_CORE_WARNING("cannot create context: %i", desc.m_API);
+                return nullptr;
+        }
     }
 }
 

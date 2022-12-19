@@ -16,9 +16,14 @@ namespace Syrius{
 
     PlatformAPIX11Impl::PlatformAPIX11Impl()
     : PlatformAPI(VulkanPlatformDescX11()),
-    m_Display(XOpenDisplay(nullptr)){
+    m_Display(XOpenDisplay(nullptr)),
+    m_GladInstanceCount(0) {
+        // first thing, set the error handler
+        XSetErrorHandler(&DebugMessageHandler::x11ErrorHandler);
+
         SR_CORE_PRECONDITION(m_Display != nullptr, "Failed to connect to Xserver Display")
         m_DefaultScreen = DefaultScreenOfDisplay(m_Display);
+
 
     }
 
@@ -36,10 +41,24 @@ namespace Syrius{
 
     void PlatformAPIX11Impl::initPlatformGlad(GlPlatformDesc *glDesc) {
         auto glxDesc = dynamic_cast<GlPlatformDescX11*>(glDesc);
-
+        if (m_GladInstanceCount == 0){
+            if (glxDesc != nullptr){
+                int32 glxVersion = gladLoaderLoadGLX(m_Display, DefaultScreen(m_Display));
+                SR_CORE_ASSERT(glxVersion > 0, "Failed to initialize GLX");
+                SR_CORE_MESSAGE("GLX initialized with version : %i.%i", GLAD_VERSION_MAJOR(glxVersion), GLAD_VERSION_MINOR(glxVersion));
+            }
+            else{
+                SR_CORE_EXCEPTION("Failed to cast GlPlatformDesc to GlPlatformDescX11");
+            }
+        }
+        m_GladInstanceCount++;
     }
 
     void PlatformAPIX11Impl::terminatePlatformGlad() {
+        m_GladInstanceCount--;
+        if (m_GladInstanceCount == 0){
+            gladLoaderUnloadGLX();
+        }
 
     }
 

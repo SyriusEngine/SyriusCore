@@ -5,6 +5,7 @@
 #include "../Core/DebugMacros.hpp"
 #include "../Core/PlatformAPIX11Impl.hpp"
 #include "X11Utils.hpp"
+#include "../Context/OpenGL/Internal/GlxContext.hpp"
 
 #if defined(SR_CORE_PLATFORM_LINUX)
 
@@ -68,11 +69,11 @@ namespace Syrius{
         Context* createContext(const ContextDesc& desc) override;
 
     private:
-
-    private:
         Display* m_Display;
 
         Window m_Window;
+
+        bool m_SkipNextWindowCloseEvent;
 
     };
 

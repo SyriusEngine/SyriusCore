@@ -45,6 +45,8 @@ namespace Syrius{
         Display* m_Display;
         Screen* m_DefaultScreen;
 
+        uint32 m_GladInstanceCount;
+
     };
 
 }

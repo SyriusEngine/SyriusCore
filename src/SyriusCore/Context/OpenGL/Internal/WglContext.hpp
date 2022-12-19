@@ -11,7 +11,7 @@
 
 namespace Syrius {
 
-    class SR_CORE_API WglContext : public GlContext {
+    class WglContext : public GlContext {
     public:
         WglContext(HWND &hwnd, const ContextDesc& desc);
 

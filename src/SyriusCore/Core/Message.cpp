@@ -16,6 +16,10 @@ namespace Syrius{
                 return "D3D11";
             case SR_MESSAGE_DXGI:
                 return "DXGI";
+            case SR_MESSAGE_WIN32:
+                return "WIN32";
+            case SR_MESSAGE_X11:
+                return "X11";
             case SR_MESSAGE_PRECONDITION:
                 return "PRECONDITION";
             case SR_MESSAGE_POSTCONDITION:

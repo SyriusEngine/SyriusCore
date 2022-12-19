@@ -34,13 +34,23 @@ int main() {
         wDesc.m_Title = " The pubes, farts and other spices";
 
         auto window = createWindow(wDesc);
+        ContextDesc cDesc;
+        cDesc.m_API = SR_API_OPENGL;
+        ColorAttachmentDesc caDesc;
+        caDesc.m_Width = 1280;
+        caDesc.m_Height = 720;
+        cDesc.m_DefaultFrameBufferDesc.m_ColorAttachments.push_back(caDesc);
+        cDesc.m_DefaultFrameBufferDesc.m_Width = 1280;
+        cDesc.m_DefaultFrameBufferDesc.m_Height = 720;
+
+        auto context = window->createContext(cDesc);
+        context->setClearColor(0.1, 0.2, 0.3, 1.0);
 
         while (window->isOpen()){
 
             window->pollEvents();
             while (window->hasEvent()){
                 auto event = window->getEvent();
-                eventDisplayer(event);
                 if (event.type == Syrius::SR_EVENT_WINDOW_CLOSED){
                     window->close();
                 }
@@ -59,7 +69,9 @@ int main() {
                 }
             }
 
+            context->clear();
 
+            context->swapBuffers();
         }
 
         destroyWindow(window);
