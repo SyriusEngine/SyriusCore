@@ -1,5 +1,6 @@
 #include "PlatformAPIX11Impl.hpp"
 #include "../Window/SyriusWindowX11Impl.hpp"
+#include "../Dependencies/glad/glad/glx.h"
 
 #if defined(SR_CORE_PLATFORM_LINUX)
 

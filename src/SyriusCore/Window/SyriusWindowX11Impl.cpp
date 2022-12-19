@@ -6,25 +6,42 @@ namespace Syrius{
 
     SyriusWindowX11Impl::SyriusWindowX11Impl(const WindowDesc &desc, Display* display)
     : SyriusWindow(desc),
-    m_Display(display),
-      m_SkipNextWindowCloseEvent(false){
-        m_Window = XCreateSimpleWindow(m_Display, DefaultRootWindow(m_Display),
-                                       m_PosX, m_PosY,
-                                       m_Width, m_Height,
-                                       1, 0, 0);
-        XSelectInput(m_Display, m_Window, FocusChangeMask      | ButtonPressMask     |
-                                                            ButtonReleaseMask    | ButtonMotionMask    |
-                                                            PointerMotionMask    | KeyPressMask        |
-                                                            KeyReleaseMask       | StructureNotifyMask |
-                                                            EnterWindowMask      | LeaveWindowMask     |
-                                                            VisibilityChangeMask | PropertyChangeMask);
-        XMapWindow(m_Display, m_Window);
-        XStoreName(m_Display, m_Window, m_Title.c_str());
-        XFlush(m_Display);
-        m_Open = true;
+    m_Display(display){
+        // by default, init GLX
+        auto glxDesc = new GlPlatformDescX11();
+        CoreCommand::initPlatformGlad(glxDesc);
+        delete glxDesc;
+
+        XVisualInfo *visualInfo = selectBestVisual();
+        XSetWindowAttributes attributes;
+        attributes.colormap = XCreateColormap(m_Display, DefaultRootWindow(m_Display), visualInfo->visual, AllocNone);
+        attributes.event_mask = FocusChangeMask      | ButtonPressMask     |
+                                ButtonReleaseMask    | ButtonMotionMask    |
+                                PointerMotionMask    | KeyPressMask        |
+                                KeyReleaseMask       | StructureNotifyMask |
+                                EnterWindowMask      | LeaveWindowMask     |
+                                VisibilityChangeMask | PropertyChangeMask;
+        m_Window = XCreateWindow(m_Display, DefaultRootWindow(m_Display),
+                                 desc.m_PosX, desc.m_PosY,
+                                 desc.m_Width, desc.m_Height,
+                                 0, visualInfo->depth, InputOutput, visualInfo->visual, CWColormap | CWEventMask, &attributes);
+        if (m_Window){
+            m_Open = true;
+            setWindowProtocols();
+            setWindowStyles(desc.m_Style);
+            XMapWindow(m_Display, m_Window);
+            XStoreName(m_Display, m_Window, desc.m_Title.c_str());
+
+            // set window styles
+        }
+        else{
+            SR_CORE_WARNING("Failed to create window with X11 backend");
+        }
+        XFree(visualInfo);
     }
 
     SyriusWindowX11Impl::~SyriusWindowX11Impl() {
+        CoreCommand::terminatePlatformGlad();
         XDestroyWindow(m_Display, m_Window);
     }
 
@@ -105,19 +122,7 @@ namespace Syrius{
             XNextEvent(m_Display, &event);
             switch (event.type) {
                 case DestroyNotify: {
-                    if (event.xdestroywindow.window == m_Window) {
-                        /**
-                         * Due to the nature of X11, we recreate the window each time a new context is created.
-                         * During this process, a windowClosedEvent is sent but we do not want to send this event
-                         * to the user as it is not a real window close event for the application concern.
-                         */
-                        if (!m_SkipNextWindowCloseEvent){
-                            dispatchEvent(WindowClosedEvent());
-                        }
-                        else{
-                            m_SkipNextWindowCloseEvent = false;
-                        }
-                    }
+                    dispatchEvent(WindowClosedEvent());
                     break;
                 }
                 case FocusIn: {
@@ -280,16 +285,122 @@ namespace Syrius{
     Context *SyriusWindowX11Impl::createContext(const ContextDesc &desc) {
         switch (desc.m_API) {
             case SR_API_OPENGL:
-                m_SkipNextWindowCloseEvent = true;
-                m_Context = new GlxContext(m_Display, m_Window, desc);
-                XMapWindow(m_Display, m_Window);
-                XStoreName(m_Display, m_Window, m_Title.c_str());
-                XFlush(m_Display);
+                m_Context = new GlxContext(m_Display, m_BestFBConfig, m_Window, desc);
                 return m_Context;
             default:
                 SR_CORE_WARNING("cannot create context: %i", desc.m_API);
                 return nullptr;
         }
+    }
+
+    XVisualInfo *SyriusWindowX11Impl::selectBestVisual() {
+        int32 glxMajorVersion = 0;
+        int32 glxMinorVersion = 0;
+        if (!glXQueryVersion(m_Display, &glxMajorVersion, &glxMinorVersion)) {
+            SR_CORE_EXCEPTION("Failed to query GLX version");
+            return nullptr;
+        }
+        else{
+            SR_CORE_MESSAGE("GLX version: %i.%i", glxMajorVersion, glxMinorVersion);
+        }
+
+        int32 visualAttribs[] = {
+                GLX_X_RENDERABLE    , True,
+                GLX_DRAWABLE_TYPE   , GLX_WINDOW_BIT,
+                GLX_RENDER_TYPE     , GLX_RGBA_BIT,
+                GLX_X_VISUAL_TYPE   , GLX_TRUE_COLOR,
+                GLX_DOUBLEBUFFER    , True,
+                None
+        };
+
+        // pick the best FrameBufferConfig
+        int32 fbCount = 0;
+        GLXFBConfig *fbc = glXChooseFBConfig(m_Display, DefaultScreen(m_Display), visualAttribs, &fbCount);
+        int32 bestFbc = -1, worstFbc = -1, bestNumSamp = -1, worstNumSamp = 999;
+        for (int32 i = 0; i < fbCount; i++) {
+            XVisualInfo *vi = glXGetVisualFromFBConfig(m_Display, fbc[i]);
+            if (vi) {
+                int32 sampBuf, samples;
+                glXGetFBConfigAttrib(m_Display, fbc[i], GLX_SAMPLE_BUFFERS, &sampBuf);
+                glXGetFBConfigAttrib(m_Display, fbc[i], GLX_SAMPLES, &samples);
+                if (bestFbc < 0 || sampBuf && samples > bestNumSamp)
+                    bestFbc = i, bestNumSamp = samples;
+                if (worstFbc < 0 || !sampBuf || samples < worstNumSamp)
+                    worstFbc = i, worstNumSamp = samples;
+            }
+            XFree(vi);
+        }
+        SR_CORE_ASSERT(bestFbc >= 0, "Failed to find a suitable FBConfig");
+        // get the best visual
+        m_BestFBConfig = fbc[bestFbc];
+        XFree(fbc);
+        return glXGetVisualFromFBConfig(m_Display, m_BestFBConfig);
+    }
+
+    void SyriusWindowX11Impl::setWindowProtocols() {
+        Atom wmProtocols = XInternAtom(m_Display, "WM_PROTOCOLS", False);
+        if (wmProtocols == None) {
+            SR_CORE_WARNING("Failed to get WM_PROTOCOLS atom");
+            return;
+        }
+        Atom wmDelete = XInternAtom(m_Display, "WM_DELETE_WINDOW", False);
+        XSetWMProtocols(m_Display, m_Window, &wmDelete, 1);
+
+    }
+
+    void SyriusWindowX11Impl::setWindowStyles(SR_WINDOW_STYLE style) {
+        Atom wmHints = XInternAtom(m_Display, "_MOTIF_WM_HINTS", False);
+        if (wmHints == None) {
+            SR_CORE_WARNING("Failed to get _MOTIF_WM_HINTS atom");
+            return;
+        }
+        static const unsigned long MWM_HINTS_FUNCTIONS   = 1 << 0;
+        static const unsigned long MWM_HINTS_DECORATIONS = 1 << 1;
+
+        //static const unsigned long MWM_DECOR_ALL         = 1 << 0;
+        static const unsigned long MWM_DECOR_BORDER      = 1 << 1;
+        static const unsigned long MWM_DECOR_RESIZEH     = 1 << 2;
+        static const unsigned long MWM_DECOR_TITLE       = 1 << 3;
+        static const unsigned long MWM_DECOR_MENU        = 1 << 4;
+        static const unsigned long MWM_DECOR_MINIMIZE    = 1 << 5;
+        static const unsigned long MWM_DECOR_MAXIMIZE    = 1 << 6;
+
+        //static const unsigned long MWM_FUNC_ALL          = 1 << 0;
+        static const unsigned long MWM_FUNC_RESIZE       = 1 << 1;
+        static const unsigned long MWM_FUNC_MOVE         = 1 << 2;
+        static const unsigned long MWM_FUNC_MINIMIZE     = 1 << 3;
+        static const unsigned long MWM_FUNC_MAXIMIZE     = 1 << 4;
+        static const unsigned long MWM_FUNC_CLOSE        = 1 << 5;
+
+        struct MwmHints {
+            unsigned long flags;
+            unsigned long functions;
+            unsigned long decorations;
+            long inputMode;
+            unsigned long status;
+        };
+        MwmHints hints = {0};
+        hints.flags =  MWM_HINTS_FUNCTIONS | MWM_HINTS_DECORATIONS;
+        hints.decorations = 0;
+        hints.functions = 0;
+
+        if (style & SR_WINDOW_STYLE_TITLEBAR) {
+            hints.decorations |= MWM_DECOR_TITLE | MWM_DECOR_MENU;
+            hints.functions |= MWM_FUNC_MOVE;
+        }
+        if (style & SR_WINDOW_STYLE_RESIZE) {
+            hints.decorations |= MWM_DECOR_RESIZEH | MWM_DECOR_MAXIMIZE | MWM_DECOR_MINIMIZE;
+            hints.functions |= MWM_FUNC_RESIZE;
+        }
+        if (style & SR_WINDOW_STYLE_CLOSE) {
+            hints.functions |= MWM_FUNC_CLOSE;
+        }
+
+
+
+
+        XChangeProperty(m_Display, m_Window, wmHints, wmHints, 32, PropModeReplace, (unsigned char *) &hints, 5);
+
     }
 }
 

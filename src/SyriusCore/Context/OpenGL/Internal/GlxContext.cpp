@@ -7,62 +7,44 @@
 
 namespace Syrius{
 
-    GlxContext::GlxContext(Display *display, Window &window, const ContextDesc &desc)
+    GlxContext::GlxContext(Display *display, GLXFBConfig fbConfig, Window& window, const ContextDesc &desc)
     : GlContext(desc),
     m_Display(display),
     m_Window(window){
-        // create a new window
-        XDestroyWindow(m_Display, m_Window);
-
         auto glxDesc = new GlPlatformDescX11();
         CoreCommand::initPlatformGlad(glxDesc);
         delete glxDesc;
 
-        // describe the desired framebuffer
         int32 contextAttribs[] = {
-                GLX_RGBA, GLX_DOUBLEBUFFER,
-//                GLX_RED_SIZE, desc.m_RedBits,
-//                GLX_GREEN_SIZE, desc.m_GreenBits,
-//                GLX_BLUE_SIZE, desc.m_BlueBits,
-//                GLX_ALPHA_SIZE, desc.m_AlphaBits,
-//                GLX_DEPTH_SIZE, desc.m_DepthBits,
-//                GLX_STENCIL_SIZE, desc.m_StencilBits,
-                None
+            GLX_CONTEXT_MAJOR_VERSION_ARB, 4,
+            GLX_CONTEXT_MINOR_VERSION_ARB, 6,
+            None
         };
-        Window root = DefaultRootWindow(m_Display);
-        XVisualInfo* visualInfo = glXChooseVisual(m_Display, 0, contextAttribs);
-        SR_CORE_ASSERT(visualInfo, "Failed to choose visual");
 
-        XSetWindowAttributes windowAttribs = {};
-        windowAttribs.colormap = XCreateColormap(m_Display, root, visualInfo->visual, AllocNone);
-        windowAttribs.event_mask = FocusChangeMask      | ButtonPressMask     |
-                                   ButtonReleaseMask    | ButtonMotionMask    |
-                                   PointerMotionMask    | KeyPressMask        |
-                                   KeyReleaseMask       | StructureNotifyMask |
-                                   EnterWindowMask      | LeaveWindowMask     |
-                                   VisibilityChangeMask | PropertyChangeMask;
-        m_Window = XCreateWindow(m_Display, root,
-                                 desc.m_DefaultFrameBufferDesc.m_XPos, desc.m_DefaultFrameBufferDesc.m_YPos,
-                                 desc.m_DefaultFrameBufferDesc.m_Width, desc.m_DefaultFrameBufferDesc.m_Height,
-                                 0, visualInfo->depth, InputOutput, visualInfo->visual, CWColormap | CWEventMask, &windowAttribs);
+        m_Context = glXCreateContextAttribsARB(m_Display, fbConfig, 0, True, contextAttribs);
+        if(!m_Context){
+            // fall back to old-style 2.x context
+            SR_CORE_WARNING("Failed to create OpenGL 4.6 context. Falling back to OpenGL 2.1 context.");
+            m_Context = glXCreateNewContext(m_Display, fbConfig, GLX_RGBA_TYPE, 0, True);
+            if (!m_Context){
+                SR_CORE_WARNING("Failed to create OpenGL 2.1 context.");
+            }
+        }
 
-        // create the context
-        m_Context = glXCreateContext(m_Display, visualInfo, nullptr, GL_TRUE);
-        SR_CORE_ASSERT(m_Context, "Failed to create context");
-        glXMakeCurrent(m_Display, m_Window, m_Context);
-
-        XFree(visualInfo);
+        glXMakeContextCurrent(m_Display, m_Window, m_Window, m_Context);
 
         initGl(desc.m_DefaultFrameBufferDesc);
     }
 
     GlxContext::~GlxContext() {
-        glXMakeCurrent(m_Display, None, nullptr);
+        glXMakeContextCurrent(m_Display, None, None, nullptr);
         glXDestroyContext(m_Display, m_Context);
+
+        CoreCommand::terminatePlatformGlad();
     }
 
     void GlxContext::makeCurrent() {
-        glXMakeCurrent(m_Display, m_Window, m_Context);
+        glXMakeContextCurrent(m_Display, m_Window, m_Window, m_Context);
     }
 
     void GlxContext::swapBuffers() {
@@ -70,9 +52,9 @@ namespace Syrius{
     }
 
     void GlxContext::setVerticalSynchronisation(bool enable) {
-        if (enable){
+        if(enable){
             glXSwapIntervalEXT(m_Display, m_Window, 1);
-        } else {
+        }else{
             glXSwapIntervalEXT(m_Display, m_Window, 0);
         }
     }

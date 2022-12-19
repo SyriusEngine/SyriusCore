@@ -69,11 +69,19 @@ namespace Syrius{
         Context* createContext(const ContextDesc& desc) override;
 
     private:
+
+        XVisualInfo* selectBestVisual();
+
+        void setWindowProtocols();
+
+        void setWindowStyles(SR_WINDOW_STYLE style);
+
+    private:
         Display* m_Display;
 
         Window m_Window;
 
-        bool m_SkipNextWindowCloseEvent;
+        GLXFBConfig m_BestFBConfig;
 
     };
 
