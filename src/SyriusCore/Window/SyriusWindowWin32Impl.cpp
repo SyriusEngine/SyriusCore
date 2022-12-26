@@ -602,8 +602,17 @@ namespace Syrius{
                 break;
             }
             case WM_DROPFILES: {
-                /// maybe you need to call DragAcceptFiles with the fAccept param = true but how to get the filename?
-                SR_CORE_MESSAGE("A file has been dropped in the window -> no idea how to get the file name xD")
+                auto hDrop = reinterpret_cast<HDROP>(wparam);
+                uint32 count = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
+                for (uint32 i = 0; i < count; ++i){
+                    uint32 length = DragQueryFile(hDrop, i, nullptr, 0);
+                    std::string file(length, '\0');
+                    DragQueryFile(hDrop, i, file.data(), length + 1);
+                    WindowFileDroppedEvent event(file);
+                    dispatchEvent(event);
+                }
+                DragFinish(hDrop);
+                break;
             }
             default: break;
         }

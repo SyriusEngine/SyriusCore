@@ -19,7 +19,7 @@ void eventDisplayer(const Event& event){
             std::cout << "Window focus lost event" << std::endl;
             break;
         case SR_EVENT_WINDOW_FILE_DROPPED:
-            std::cout << "Window file dropped event" << std::endl;
+            std::cout << "Window file dropped event: " << event.droppedFilePath << std::endl;
             break;
         case SR_EVENT_MOUSE_ENTERED:
             std::cout << "Window mouse entered event" << std::endl;
