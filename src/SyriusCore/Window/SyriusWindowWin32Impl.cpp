@@ -13,7 +13,8 @@ namespace Syrius{
     : SyriusWindow(desc),
       m_Hwnd(nullptr),
       m_Callback(0),
-      m_Icon(nullptr){
+      m_Icon(nullptr),
+      m_CaptureMouseAndKeyboardEvents(true){
         if (!m_WindowCount){
             setProcessDpiAware();
             registerClass();
@@ -335,11 +336,17 @@ namespace Syrius{
         // only handle events that belong to that specific window
         SyriusWindowWin32Impl* window = hwnd ? reinterpret_cast<SyriusWindowWin32Impl*>(GetWindowLongPtrW(hwnd, GWLP_USERDATA)) : nullptr;
         if (window != nullptr){
-            window->handleEvent(msg, wparam, lparam);
             // only handle events for ImGui for this window
             if (window->m_UseImGui){
                 ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
+                if (ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard){
+                    window->m_CaptureMouseAndKeyboardEvents = false;
+                }
+                else{
+                    window->m_CaptureMouseAndKeyboardEvents = true;
+                }
             }
+            window->handleEvent(msg, wparam, lparam);
         }
         // Prevents win32 from closing the window manually.
         if (msg == WM_CLOSE){
@@ -412,73 +419,95 @@ namespace Syrius{
             }
             case WM_KEYUP:
             case WM_SYSKEYUP: {
-                auto key = convertVirtualKey(wparam, lparam);
-                KeyReleasedEvent event(key);
-                dispatchEvent(event);
+                if (m_CaptureMouseAndKeyboardEvents){
+                    auto key = convertVirtualKey(wparam, lparam);
+                    KeyReleasedEvent event(key);
+                    dispatchEvent(event);
+                }
                 break;
             }
             case WM_KEYDOWN:
             case WM_SYSKEYDOWN: {
-                if (m_KeyRepeat || (HIWORD(lparam) & KF_REPEAT) == 0){
-                    auto key = convertVirtualKey(wparam, lparam);
-                    KeyPressedEvent event(key);
-                    dispatchEvent(event);
+                if (m_CaptureMouseAndKeyboardEvents){
+                    if (m_KeyRepeat || (HIWORD(lparam) & KF_REPEAT) == 0){
+                        auto key = convertVirtualKey(wparam, lparam);
+                        KeyPressedEvent event(key);
+                        dispatchEvent(event);
+                    }
                 }
                 break;
             }
             case WM_SYSCHAR:
             case WM_CHAR: {
-                if (m_KeyRepeat || (lparam & (1 << 30)) == 0){
-                    auto ch = static_cast<unsigned int>(wparam);
-                    KeyTypedEvent event(ch);
-                    dispatchEvent(event);
+                if (m_CaptureMouseAndKeyboardEvents){
+                    if (m_KeyRepeat || (lparam & (1 << 30)) == 0){
+                        auto ch = static_cast<unsigned int>(wparam);
+                        KeyTypedEvent event(ch);
+                        dispatchEvent(event);
+                    }
                 }
                 break;
             }
             case WM_LBUTTONDOWN: {
-                MouseButtonPressedEvent event(SR_MOUSE_BUTTON_LEFT);
-                dispatchEvent(event);
+                if (m_CaptureMouseAndKeyboardEvents){
+                    MouseButtonPressedEvent event(SR_MOUSE_BUTTON_LEFT);
+                    dispatchEvent(event);
+                }
                 break;
             }
             case WM_MBUTTONDOWN: {
-                MouseButtonPressedEvent event(SR_MOUSE_BUTTON_MIDDLE);
-                dispatchEvent(event);
+                if (m_CaptureMouseAndKeyboardEvents){
+                    MouseButtonPressedEvent event(SR_MOUSE_BUTTON_MIDDLE);
+                    dispatchEvent(event);
+                }
                 break;
             }
             case WM_RBUTTONDOWN: {
-                MouseButtonPressedEvent event(SR_MOUSE_BUTTON_RIGHT);
-                dispatchEvent(event);
+                if (m_CaptureMouseAndKeyboardEvents){
+                    MouseButtonPressedEvent event(SR_MOUSE_BUTTON_RIGHT);
+                    dispatchEvent(event);
+                }
                 break;
             }
             case WM_LBUTTONUP: {
-                MouseButtonReleasedEvent event(SR_MOUSE_BUTTON_LEFT);
-                dispatchEvent(event);
+                if (m_CaptureMouseAndKeyboardEvents){
+                    MouseButtonReleasedEvent event(SR_MOUSE_BUTTON_LEFT);
+                    dispatchEvent(event);
+                }
                 break;
             }
             case WM_MBUTTONUP: {
-                MouseButtonReleasedEvent event(SR_MOUSE_BUTTON_MIDDLE);
-                dispatchEvent(event);
+                if (m_CaptureMouseAndKeyboardEvents){
+                    MouseButtonReleasedEvent event(SR_MOUSE_BUTTON_MIDDLE);
+                    dispatchEvent(event);
+                }
                 break;
             }
             case WM_RBUTTONUP: {
-                MouseButtonReleasedEvent event(SR_MOUSE_BUTTON_RIGHT);
-                dispatchEvent(event);
+                if (m_CaptureMouseAndKeyboardEvents){
+                    MouseButtonReleasedEvent event(SR_MOUSE_BUTTON_RIGHT);
+                    dispatchEvent(event);
+                }
                 break;
             }
             case WM_XBUTTONDOWN: {
-                SR_MOUSE_BUTTON button = HIWORD(lparam) == XBUTTON1 ? SR_MOUSE_BUTTON_X1 : SR_MOUSE_BUTTON_X2;
-                MouseButtonPressedEvent event(button);
-                dispatchEvent(event);
+                if (m_CaptureMouseAndKeyboardEvents){
+                    SR_MOUSE_BUTTON button = HIWORD(lparam) == XBUTTON1 ? SR_MOUSE_BUTTON_X1 : SR_MOUSE_BUTTON_X2;
+                    MouseButtonPressedEvent event(button);
+                    dispatchEvent(event);
+                }
                 break;
             }
             case WM_XBUTTONUP: {
-                SR_MOUSE_BUTTON button = HIWORD(lparam) == XBUTTON1 ? SR_MOUSE_BUTTON_X1 : SR_MOUSE_BUTTON_X2;
-                MouseButtonReleasedEvent event(button);
-                dispatchEvent(event);
+                if (m_CaptureMouseAndKeyboardEvents){
+                    SR_MOUSE_BUTTON button = HIWORD(lparam) == XBUTTON1 ? SR_MOUSE_BUTTON_X1 : SR_MOUSE_BUTTON_X2;
+                    MouseButtonReleasedEvent event(button);
+                    dispatchEvent(event);
+                }
                 break;
             }
             case WM_MOUSELEAVE: {
-                if (m_MouseInside){
+                if (m_MouseInside && m_CaptureMouseAndKeyboardEvents){
                     m_MouseInside = false;
                     MouseLeftEvent event;
                     dispatchEvent(event);
@@ -486,42 +515,44 @@ namespace Syrius{
                 break;
             }
             case WM_MOUSEMOVE: {
-                auto mouseX = static_cast<int32_t>(GET_X_LPARAM(lparam));
-                auto mouseY = static_cast<int32_t>(GET_Y_LPARAM(lparam));
-                RECT window;
-                GetClientRect(m_Hwnd, &window);
-                if ((wparam & (MK_LBUTTON | MK_MBUTTON | MK_RBUTTON | MK_XBUTTON1 | MK_XBUTTON2)) == 0){
-                    if (GetCapture() == m_Hwnd){
-                        ReleaseCapture();
+                if (m_CaptureMouseAndKeyboardEvents){
+                    auto mouseX = static_cast<int32_t>(GET_X_LPARAM(lparam));
+                    auto mouseY = static_cast<int32_t>(GET_Y_LPARAM(lparam));
+                    RECT window;
+                    GetClientRect(m_Hwnd, &window);
+                    if ((wparam & (MK_LBUTTON | MK_MBUTTON | MK_RBUTTON | MK_XBUTTON1 | MK_XBUTTON2)) == 0){
+                        if (GetCapture() == m_Hwnd){
+                            ReleaseCapture();
+                        }
                     }
-                }
-                else if (GetCapture() != m_Hwnd){
-                    SetCapture(m_Hwnd);
-                }
-                if ((mouseX < window.left) || (mouseX > window.right) || (mouseY < window.top) || (mouseY > window.bottom)){
+                    else if (GetCapture() != m_Hwnd){
+                        SetCapture(m_Hwnd);
+                    }
+                    if ((mouseX < window.left) || (mouseX > window.right) || (mouseY < window.top) || (mouseY > window.bottom)){
+                        if (m_MouseInside){
+                            m_MouseInside = false;
+                            mouseTracker(false);
+                            MouseLeftEvent event;
+                            dispatchEvent(event);
+                        }
+                    }
+                    else{
+                        if (!m_MouseInside){
+                            m_MouseInside = true;
+                            mouseTracker(true);
+                            MouseEnteredEvent event;
+                            dispatchEvent(event);
+                        }
+                    }
                     if (m_MouseInside){
-                        m_MouseInside = false;
-                        mouseTracker(false);
-                        MouseLeftEvent event;
+                        MouseMovedEvent event(mouseX, mouseY);
                         dispatchEvent(event);
                     }
-                }
-                else{
-                    if (!m_MouseInside){
-                        m_MouseInside = true;
-                        mouseTracker(true);
-                        MouseEnteredEvent event;
-                        dispatchEvent(event);
-                    }
-                }
-                if (m_MouseInside){
-                    MouseMovedEvent event(mouseX, mouseY);
-                    dispatchEvent(event);
                 }
                 break;
             }
             case WM_MOUSEWHEEL: {
-                if (m_MouseInside){
+                if (m_MouseInside && m_CaptureMouseAndKeyboardEvents){
                     int32_t xOffset = LOWORD(lparam);
                     int32_t yOffset = HIWORD(lparam);
                     MouseScrolledEvent event(xOffset, yOffset);
@@ -544,8 +575,8 @@ namespace Syrius{
                         auto raw = reinterpret_cast<RAWINPUT*>(buffer.data());
                         switch (raw->header.dwType) {
                             case RIM_TYPEMOUSE: {
-                                if (m_MouseInside){
-                                    if (raw->data.mouse.lLastX != 0 and raw->data.mouse.lLastY != 0){
+                                if (m_MouseInside and m_CaptureMouseAndKeyboardEvents){
+                                    if (raw->data.mouse.lLastX != 0 and raw->data.mouse.lLastY != 0 ){
                                         RawMouseMovedEvent event(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
                                         dispatchEvent(event);
                                     }

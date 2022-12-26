@@ -5,7 +5,7 @@
 
 namespace Syrius{
 
-    class SR_CORE_API DebugMessageHandler{
+    class DebugMessageHandler{
     public:
 
         static void setDebugMessageHandler(handleDebugMessageFunc newHandler);

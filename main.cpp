@@ -44,6 +44,7 @@ int main() {
         cDesc.m_DefaultFrameBufferDesc.m_Height = 720;
 
         auto context = window->createContext(cDesc);
+        window->createImGuiContext();
         context->setClearColor(0.1, 0.2, 0.3, 1.0);
 
         while (window->isOpen()){
@@ -51,6 +52,7 @@ int main() {
             window->pollEvents();
             while (window->hasEvent()){
                 auto event = window->getEvent();
+                eventDisplayer(event);
                 if (event.type == Syrius::SR_EVENT_WINDOW_CLOSED){
                     window->close();
                 }
@@ -70,6 +72,16 @@ int main() {
             }
 
             context->clear();
+
+            window->onImGuiBegin();
+
+            ImGui::Begin("Hello, world!");
+            static char str0[128] = "Hello, world!";
+            ImGui::InputText("string", str0, IM_ARRAYSIZE(str0));
+
+            ImGui::End();
+
+            window->onImGuiEnd();
 
             context->swapBuffers();
         }
