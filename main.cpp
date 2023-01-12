@@ -22,22 +22,6 @@ void messageCallback(const Syrius::Message& msg){
 
 int main() {
     try{
-//        using namespace Syrius;
-//
-//        struct Position{
-//            float x, y, z;
-//
-//            Position(float x, float y, float z): x(x), y(y), z(z){}
-//        };
-//
-//        Resource<Position> posPtr(new Position(3.0f, 2.0f, 1.0f));
-//        {
-//            auto view = posPtr.createView();
-//            int x = 0;
-//            auto copy = view;
-//            auto move = std::move(view);
-//        }
-
 
         syriusCoreInit();
         setDebugMessageCallback(messageCallback);

@@ -12,29 +12,46 @@ namespace Syrius{
     template<typename T>
     class ResourceView{
     public:
-        ResourceView() = delete;
+        ResourceView()
+        : m_Resource(nullptr),
+        m_ID(0){
+
+        };
 
         ResourceView(Resource<T>* resource, uint64 id):
         m_Resource(resource),
         m_ID(id){
             m_Resource->updateViewReference(m_ID, this);
-            printf("ResourceView::ResourceView() - %i created\n", m_ID);
         }
 
         ResourceView(const ResourceView& other){
+            m_Resource = other.m_Resource;
             m_ID = other.m_Resource->createViewCopy(this);
-            printf("ResourceView::ResourceView() - %i created\n", m_ID);
         }
 
-        ResourceView(ResourceView&& other) noexcept = default;
+        ResourceView(ResourceView&& other) noexcept {
+            m_Resource = other.m_Resource;
+            m_ID = other.m_ID;
+            m_ID = 0;
+        }
 
-        ResourceView& operator=(const ResourceView& other) = default;
+        ResourceView& operator=(const ResourceView& other) {
+            m_Resource = other.m_Resource;
+            m_ID = other.m_Resource->createViewCopy(this);
+            return *this;
+        }
 
-        ResourceView& operator=(ResourceView&& other) noexcept = default;
+        ResourceView& operator=(ResourceView&& other) noexcept {
+            m_Resource = other.m_Resource;
+            m_ID = other.m_ID;
+            m_ID = 0;
+            return *this;
+        }
 
         ~ResourceView(){
-            m_Resource->removeViewReference(m_ID);
-            printf("ResourceView::~ResourceView() - %i destroyed\n", m_ID);
+            if (m_Resource){
+                m_Resource->removeViewReference(m_ID);
+            }
         }
 
         [[nodiscard]] T* get() const{
@@ -53,8 +70,18 @@ namespace Syrius{
             return m_Resource;
         }
 
+        void reset(){
+            if (m_Resource){
+                m_Resource->removeViewReference(m_ID);
+                m_Resource = nullptr;
+                m_ID = 0;
+            }
+        }
+
 
     private:
+        friend class Resource<T>;
+
         uint64 m_ID;
         Resource<T>* m_Resource;
     };
@@ -65,7 +92,7 @@ namespace Syrius{
     public:
         Resource():
         m_Resource(nullptr),
-        m_NextViewID(0){
+        m_NextViewID(1){
 
         }
 
@@ -116,6 +143,22 @@ namespace Syrius{
             return ResourceView<T>(this, m_NextViewID++);
         }
 
+        [[nodiscard]] Size getViewCount() const{
+            return m_Views.size();
+        }
+
+        void destroy(){
+            if (!m_Views.empty()){
+                printf("Some views are still using this object, object will be destroyed anyway!\n");
+            }
+            for (auto& view : m_Views){
+                view.second->m_Resource = nullptr;
+                view.second->m_ID = 0;
+            }
+            m_Views.clear();
+            delete m_Resource;
+        }
+
     protected:
         friend class ResourceView<T>;
 
@@ -124,7 +167,9 @@ namespace Syrius{
         }
 
         void removeViewReference(uint64 id){
-            m_Views.erase(id);
+            if (id != 0){
+                m_Views.erase(id);
+            }
         }
 
         uint64 createViewCopy(ResourceView<T>* resource){
