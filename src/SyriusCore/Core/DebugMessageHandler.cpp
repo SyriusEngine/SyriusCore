@@ -136,7 +136,7 @@ namespace Syrius{
 #if defined(SR_COMPILER_MSVC)
     SR_CORE_MESSAGE_SEVERITY getSrMessageSeverity(DXGI_INFO_QUEUE_MESSAGE_SEVERITY severity){
         switch (severity) {
-            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_INFO:         return SR_MESSAGE_SEVERITY_INFO;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_INFO:         return SR_CORE_MESSAGE_SEVERITY_INFO;
             case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_MESSAGE:      return SR_CORE_MESSAGE_SEVERITY_LOW;
             case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING:      return SR_CORE_MESSAGE_SEVERITY_MEDIUM;
             case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR:        return SR_CORE_MESSAGE_SEVERITY_HIGH;
@@ -182,10 +182,10 @@ namespace Syrius{
         const auto end = m_DxgiInfoQueue->GetNumStoredMessages(DXGI_DEBUG_ALL);
         for (uint64 i = m_DxgiMessageIndex; i < end; i++){
             Size messageLength = 0;
-            m_DxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, nullptr, &messageLength);
+            m_DxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, nullptr, reinterpret_cast<SIZE_T *>(&messageLength));
             std::vector<byte> buffer(messageLength);
             auto message = reinterpret_cast<DXGI_INFO_QUEUE_MESSAGE*>(&buffer[0]);
-            m_DxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, message, &messageLength);
+            m_DxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, message, reinterpret_cast<SIZE_T *>(&messageLength));
 
             Message msgStruct;
             msgStruct.m_Type = SR_CORE_MESSAGE_DXGI;

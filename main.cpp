@@ -22,6 +22,22 @@ void messageCallback(const Syrius::Message& msg){
 
 int main() {
     try{
+//        using namespace Syrius;
+//
+//        struct Position{
+//            float x, y, z;
+//
+//            Position(float x, float y, float z): x(x), y(y), z(z){}
+//        };
+//
+//        Resource<Position> posPtr(new Position(3.0f, 2.0f, 1.0f));
+//        {
+//            auto view = posPtr.createView();
+//            int x = 0;
+//            auto copy = view;
+//            auto move = std::move(view);
+//        }
+
 
         syriusCoreInit();
         setDebugMessageCallback(messageCallback);
@@ -35,7 +51,7 @@ int main() {
 
         auto window = createWindow(wDesc);
         ContextDesc cDesc;
-        cDesc.m_API = SR_API_OPENGL;
+        cDesc.m_API = Syrius::SR_API_D3D11;
         ColorAttachmentDesc caDesc;
         caDesc.m_Width = 1280;
         caDesc.m_Height = 720;
@@ -47,12 +63,55 @@ int main() {
         window->createImGuiContext();
         context->setClearColor(0.1, 0.2, 0.3, 1.0);
 
+        auto rect = createRectangle();
+        auto shader = loadShader("./Resources/Shaders/HLSL/Basic-vs.hlsl", "./Resources/Shaders/HLSL/Basic-fs.hlsl", Syrius::SR_SHADER_CODE_HLSL, context);
+
+        for (auto& v: rect.vertices){
+            v.m_Position[0] += 0.5;
+            if (v.m_TexCoords[0] == 1.0f){
+                v.m_TexCoords[0] = 0.5f;
+            }
+        }
+        auto vao1 = loadMesh(rect, shader, context);
+
+        for (auto& v: rect.vertices){
+            v.m_Position[0] -= 1.0;
+            if (v.m_TexCoords[0] == 0.5f){
+                v.m_TexCoords[0] = 1.0f;
+            }
+            if (v.m_TexCoords[0] == 0.0f){
+                v.m_TexCoords[0] = 0.5f;
+            }
+        }
+        auto vao2 = loadMesh(rect, shader, context);
+
+
+        auto face = createImage("./Resources/Textures/awesomeface.png");
+        auto logo = createImage("./Resources/Textures/insta.png");
+
+        SamplerDesc splrDesc;
+        auto sampler = context->createSampler(splrDesc);
+
+        std::vector<ubyte> temp(512 * 1024 * 4);
+
+        Texture2DDesc texDesc;
+        texDesc.m_Width = 1024;
+        texDesc.m_Height = 512;
+        texDesc.m_Format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8;
+        texDesc.m_Sampler = sampler;
+        texDesc.m_Data = temp.data();
+
+        auto texture = context->createTexture2D(texDesc);
+        texture->setData(face, 0, 0, 512, 512);
+        texture->setData(logo, 512, 0, 512, 512);
+
+
+
         while (window->isOpen()){
 
             window->pollEvents();
             while (window->hasEvent()){
                 auto event = window->getEvent();
-                eventDisplayer(event);
                 if (event.type == Syrius::SR_EVENT_WINDOW_CLOSED){
                     window->close();
                 }
@@ -72,6 +131,16 @@ int main() {
             }
 
             context->clear();
+
+            context->beginRenderPass();
+            shader.shaderProgram->bind();
+            sampler->bind(0);
+            texture->bind(0);
+            context->draw(vao1);
+            context->draw(vao2);
+
+            context->endRenderPass();
+
 
             window->onImGuiBegin();
 

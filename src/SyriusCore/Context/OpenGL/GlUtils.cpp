@@ -80,7 +80,6 @@ namespace Syrius{
 
     GLint getGlTextureInternalFormat(SR_TEXTURE_DATA_FORMAT format){
         switch (format) {
-            case SR_TEXTURE_DATA_FORMAT_R8:         return GL_R8;
             case SR_TEXTURE_DATA_FORMAT_R_I8:       return GL_R8I;
             case SR_TEXTURE_DATA_FORMAT_R_I16:      return GL_R16I;
             case SR_TEXTURE_DATA_FORMAT_R_I32:      return GL_R32I;
@@ -89,7 +88,6 @@ namespace Syrius{
             case SR_TEXTURE_DATA_FORMAT_R_UI32:     return GL_R32UI;
             case SR_TEXTURE_DATA_FORMAT_R_F16:      return GL_R16F;
             case SR_TEXTURE_DATA_FORMAT_R_F32:      return GL_R32F;
-            case SR_TEXTURE_DATA_FORMAT_RG_8:       return GL_RG8;
             case SR_TEXTURE_DATA_FORMAT_RG_I8:      return GL_RG8I;
             case SR_TEXTURE_DATA_FORMAT_RG_I16:     return GL_RG16I;
             case SR_TEXTURE_DATA_FORMAT_RG_I32:     return GL_RG32I;
@@ -98,7 +96,6 @@ namespace Syrius{
             case SR_TEXTURE_DATA_FORMAT_RG_UI32:    return GL_RG32UI;
             case SR_TEXTURE_DATA_FORMAT_RG_F16:     return GL_RG16F;
             case SR_TEXTURE_DATA_FORMAT_RG_F32:     return GL_RG32F;
-            case SR_TEXTURE_DATA_FORMAT_RGB_8:      return GL_RGB8;
             case SR_TEXTURE_DATA_FORMAT_RGB_I8:     return GL_RGB8I;
             case SR_TEXTURE_DATA_FORMAT_RGB_I16:    return GL_RGB16I;
             case SR_TEXTURE_DATA_FORMAT_RGB_I32:    return GL_RGB32I;
@@ -107,7 +104,6 @@ namespace Syrius{
             case SR_TEXTURE_DATA_FORMAT_RGB_UI32:   return GL_RGB32UI;
             case SR_TEXTURE_DATA_FORMAT_RGB_F16:    return GL_RGB16F;
             case SR_TEXTURE_DATA_FORMAT_RGB_F32:    return GL_RGB32F;
-            case SR_TEXTURE_DATA_FORMAT_RGBA_8:     return GL_RGBA8;
             case SR_TEXTURE_DATA_FORMAT_RGBA_I8:    return GL_RGBA8I;
             case SR_TEXTURE_DATA_FORMAT_RGBA_I16:   return GL_RGBA16I;
             case SR_TEXTURE_DATA_FORMAT_RGBA_I32:   return GL_RGBA32I;
@@ -123,7 +119,7 @@ namespace Syrius{
             case SR_TEXTURE_DATA_FORMAT_DEPTH_32_STENCIL_8: return GL_DEPTH32F_STENCIL8;
             default: {
                 SR_CORE_WARNING("Invalid type given to converter, return default: GL_RGBA8");
-                return GL_RGBA8;
+                return GL_RGBA8UI;
             }
         }
     }
@@ -185,5 +181,25 @@ namespace Syrius{
             }
                 
         }
+    }
+
+    GLenum getGlTextureDataType(SR_TEXTURE_DATA_FORMAT format){
+        auto data = format & 0x0F;
+        data <<= 4;
+        switch (data) {
+            case SR_UINT8:      return GL_UNSIGNED_BYTE;
+            case SR_INT8:       return GL_BYTE;
+            case SR_UINT16:     return GL_UNSIGNED_SHORT;
+            case SR_INT16:      return GL_SHORT;
+            case SR_UINT32:     return GL_UNSIGNED_INT;
+            case SR_INT32:      return GL_INT;
+            case SR_FLOAT16:    return GL_HALF_FLOAT;
+            case SR_FLOAT32:    return GL_FLOAT;
+            default: {
+                SR_CORE_WARNING("Invalid texture data format given to converter, defaulting to GL_UNSIGNED_BYTE");
+                return GL_UNSIGNED_BYTE;
+            }
+        }
+
     }
 }

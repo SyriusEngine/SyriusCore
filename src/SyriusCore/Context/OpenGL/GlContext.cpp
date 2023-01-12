@@ -196,16 +196,17 @@ namespace Syrius{
     }
 
     Texture2D *GlContext::createTexture2D(const Texture2DDesc& desc) {
-        SR_CORE_PRECONDITION(desc.m_Image != nullptr, "Texture image is null");
-        SR_CORE_PRECONDITION(desc.m_Image->getChannelCount() == 1 ||
-                             desc.m_Image->getChannelCount() == 2 ||
-                             desc.m_Image->getChannelCount() == 3 ||
-                             desc.m_Image->getChannelCount() == 4, "Texture image must have 1, 2, 3 or 4 channels");
-        SR_CORE_PRECONDITION(desc.m_Image->getWidth() <= getMaxTexture2DSize(), "Texture width is too large");
-        SR_CORE_PRECONDITION(desc.m_Image->getHeight() <= getMaxTexture2DSize(), "Texture height is too large");
-        SR_CORE_PRECONDITION(desc.m_Image->getWidth() > 0, "Texture width must be greater than 0");
-        SR_CORE_PRECONDITION(desc.m_Image->getHeight() > 0, "Texture height must be greater than 0");
+        ensureCurrentContext();
 
+        auto ptr = new GlTexture2D(desc);
+        m_Textures2D.push_back(ptr);
+
+        SR_CORE_POSTCONDITION(ptr != nullptr, "Failed to create texture");
+
+        return ptr;
+    }
+
+    Texture2D *GlContext::createTexture2D(const Texture2DImageDesc &desc) {
         ensureCurrentContext();
 
         auto ptr = new GlTexture2D(desc);
@@ -224,5 +225,6 @@ namespace Syrius{
 
         return ptr;
     }
+
 }
 

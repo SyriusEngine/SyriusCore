@@ -164,51 +164,47 @@ namespace Syrius{
         SR_TEXTURE_FORMAT_BGRA  = 0x41
     } SR_TEXTURE_FORMAT;
 
-    // Texture formats with data types, upper 4 bits represent the number of channels
+    // Texture formats with data types, upper 4 bits represent the number of channels, lower 4 bits represent the data type
     typedef enum SR_TEXTURE_DATA_FORMAT: uint8 {
         // single channel
-        SR_TEXTURE_DATA_FORMAT_R8           = 0x11,
-        SR_TEXTURE_DATA_FORMAT_R_I8         = 0x12,
-        SR_TEXTURE_DATA_FORMAT_R_I16        = 0x13,
-        SR_TEXTURE_DATA_FORMAT_R_I32        = 0x14,
-        SR_TEXTURE_DATA_FORMAT_R_UI8        = 0x15,
-        SR_TEXTURE_DATA_FORMAT_R_UI16       = 0x16,
-        SR_TEXTURE_DATA_FORMAT_R_UI32       = 0x17,
-        SR_TEXTURE_DATA_FORMAT_R_F16        = 0x18,
-        SR_TEXTURE_DATA_FORMAT_R_F32        = 0x19,
+        SR_TEXTURE_DATA_FORMAT_R_UI8        = 0x12,
+        SR_TEXTURE_DATA_FORMAT_R_I8         = 0x13,
+        SR_TEXTURE_DATA_FORMAT_R_UI16       = 0x14,
+        SR_TEXTURE_DATA_FORMAT_R_I16        = 0x15,
+        SR_TEXTURE_DATA_FORMAT_R_UI32       = 0x16,
+        SR_TEXTURE_DATA_FORMAT_R_I32        = 0x17,
+        SR_TEXTURE_DATA_FORMAT_R_F16        = 0x1A,
+        SR_TEXTURE_DATA_FORMAT_R_F32        = 0x1B,
 
         // two channels
-        SR_TEXTURE_DATA_FORMAT_RG_8         = 0x21,
-        SR_TEXTURE_DATA_FORMAT_RG_I8        = 0x22,
-        SR_TEXTURE_DATA_FORMAT_RG_I16       = 0x23,
-        SR_TEXTURE_DATA_FORMAT_RG_I32       = 0x24,
-        SR_TEXTURE_DATA_FORMAT_RG_UI8       = 0x25,
-        SR_TEXTURE_DATA_FORMAT_RG_UI16      = 0x26,
-        SR_TEXTURE_DATA_FORMAT_RG_UI32      = 0x27,
-        SR_TEXTURE_DATA_FORMAT_RG_F16       = 0x28,
-        SR_TEXTURE_DATA_FORMAT_RG_F32       = 0x29,
+        SR_TEXTURE_DATA_FORMAT_RG_UI8       = 0x22,
+        SR_TEXTURE_DATA_FORMAT_RG_I8        = 0x23,
+        SR_TEXTURE_DATA_FORMAT_RG_UI16      = 0x24,
+        SR_TEXTURE_DATA_FORMAT_RG_I16       = 0x25,
+        SR_TEXTURE_DATA_FORMAT_RG_UI32      = 0x26,
+        SR_TEXTURE_DATA_FORMAT_RG_I32       = 0x27,
+        SR_TEXTURE_DATA_FORMAT_RG_F16       = 0x2A,
+        SR_TEXTURE_DATA_FORMAT_RG_F32       = 0x2B,
 
         // three channels
-        SR_TEXTURE_DATA_FORMAT_RGB_8        = 0x31,
-        SR_TEXTURE_DATA_FORMAT_RGB_I8       = 0x32,
-        SR_TEXTURE_DATA_FORMAT_RGB_I16      = 0x33,
-        SR_TEXTURE_DATA_FORMAT_RGB_I32      = 0x34,
-        SR_TEXTURE_DATA_FORMAT_RGB_UI8      = 0x35,
-        SR_TEXTURE_DATA_FORMAT_RGB_UI16     = 0x36,
-        SR_TEXTURE_DATA_FORMAT_RGB_UI32     = 0x37,
-        SR_TEXTURE_DATA_FORMAT_RGB_F16      = 0x38,
-        SR_TEXTURE_DATA_FORMAT_RGB_F32      = 0x39,
+        SR_TEXTURE_DATA_FORMAT_RGB_UI8      = 0x32,
+        SR_TEXTURE_DATA_FORMAT_RGB_I8       = 0x33,
+        SR_TEXTURE_DATA_FORMAT_RGB_UI16     = 0x34,
+        SR_TEXTURE_DATA_FORMAT_RGB_I16      = 0x35,
+        SR_TEXTURE_DATA_FORMAT_RGB_UI32     = 0x36,
+        SR_TEXTURE_DATA_FORMAT_RGB_I32      = 0x37,
+        SR_TEXTURE_DATA_FORMAT_RGB_F16      = 0x3A,
+        SR_TEXTURE_DATA_FORMAT_RGB_F32      = 0x3B,
 
         // four channels
-        SR_TEXTURE_DATA_FORMAT_RGBA_8       = 0x41,
-        SR_TEXTURE_DATA_FORMAT_RGBA_I8      = 0x42,
-        SR_TEXTURE_DATA_FORMAT_RGBA_I16     = 0x43,
-        SR_TEXTURE_DATA_FORMAT_RGBA_I32     = 0x44,
-        SR_TEXTURE_DATA_FORMAT_RGBA_UI8     = 0x45,
-        SR_TEXTURE_DATA_FORMAT_RGBA_UI16    = 0x46,
-        SR_TEXTURE_DATA_FORMAT_RGBA_UI32    = 0x47,
-        SR_TEXTURE_DATA_FORMAT_RGBA_F16     = 0x48,
-        SR_TEXTURE_DATA_FORMAT_RGBA_F32     = 0x49,
+        SR_TEXTURE_DATA_FORMAT_RGBA_UI8     = 0x42,
+        SR_TEXTURE_DATA_FORMAT_RGBA_I8      = 0x43,
+        SR_TEXTURE_DATA_FORMAT_RGBA_UI16    = 0x44,
+        SR_TEXTURE_DATA_FORMAT_RGBA_I16     = 0x45,
+        SR_TEXTURE_DATA_FORMAT_RGBA_UI32    = 0x46,
+        SR_TEXTURE_DATA_FORMAT_RGBA_I32     = 0x47,
+        SR_TEXTURE_DATA_FORMAT_RGBA_F16     = 0x4A,
+        SR_TEXTURE_DATA_FORMAT_RGBA_F32     = 0x4B,
 
         // special formats
         SR_TEXTURE_DATA_FORMAT_DEPTH_16     = 0x51,
@@ -260,6 +256,8 @@ namespace Syrius{
     SR_TEXTURE_FORMAT SR_CORE_API getTextureFormat(SR_TEXTURE_DATA_FORMAT format);
 
     uint8 SR_CORE_API getTextureChannelCount(SR_TEXTURE_FORMAT format);
+
+    uint8 SR_CORE_API getTextureDataChannelCount(SR_TEXTURE_DATA_FORMAT format);
 
     std::string SR_CORE_API getShaderTypeString(SR_SHADER_TYPE type);
 

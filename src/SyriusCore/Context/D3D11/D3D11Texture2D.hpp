@@ -11,11 +11,15 @@ namespace Syrius{
     public:
         D3D11Texture2D(const Texture2DDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
 
+        D3D11Texture2D(const Texture2DImageDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+
         ~D3D11Texture2D() override;
 
         void bind(uint32_t slot) override;
 
         void unbind() override;
+
+        void setData(const void* data, uint32 x, uint32 y, uint32 width, uint32 height) override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
 

@@ -31,5 +31,7 @@ namespace Syrius{
 
     GLint getGlStencilFunc(SR_STENCIL_FUNC);
 
+    GLenum getGlTextureDataType(SR_TEXTURE_DATA_FORMAT format);
+
 }
 

@@ -250,11 +250,18 @@ namespace Syrius{
         return ptr;
     }
 
+    Texture2D *D3D11Context::createTexture2D(const Texture2DImageDesc &desc) {
+        auto ptr = new D3D11Texture2D(desc, m_Device, m_DeviceContext);
+        m_Textures2D.push_back(ptr);
+        return ptr;
+    }
+
     Sampler *D3D11Context::createSampler(const SamplerDesc &desc) {
         auto ptr = new D3D11Sampler(desc, m_Device, m_DeviceContext);
         m_Samplers.push_back(ptr);
         return ptr;
     }
+
 
 }
 

@@ -154,6 +154,8 @@ namespace Syrius{
 
         virtual Texture2D* createTexture2D(const Texture2DDesc& desc) = 0;
 
+        virtual Texture2D* createTexture2D(const Texture2DImageDesc& desc) = 0;
+
         virtual Sampler* createSampler(const SamplerDesc& desc) = 0;
 
     protected:

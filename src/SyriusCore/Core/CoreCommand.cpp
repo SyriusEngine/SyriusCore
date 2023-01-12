@@ -10,7 +10,6 @@ namespace Syrius{
     uint32 CoreCommand::m_VulkanInterfaces = 0;
 
     PlatformAPI* CoreCommand::m_PlatformAPI = nullptr;
-    VulkanInterface* CoreCommand::m_VulkanInterface = nullptr;
 
     std::vector<SyriusWindow*> CoreCommand::m_WindowInstances;
     std::vector<Image*> CoreCommand::m_Images;
@@ -48,13 +47,6 @@ namespace Syrius{
             gladLoaderUnloadGL();
         }
 
-        if (m_VulkanInterfaces > 0){
-            SR_CORE_WARNING("Syrius is terminated but some objects still depend on vulkan, vulkan will be terminated too!");
-
-            m_VulkanInterfaces = 0;
-            delete m_VulkanInterface;
-            m_VulkanInterface = nullptr;
-        }
 
         SR_CORE_MESSAGE("Terminating Syrius")
     }
@@ -109,26 +101,6 @@ namespace Syrius{
         m_PlatformAPI->terminatePlatformGlad();
     }
 
-    void CoreCommand::initVulkan() {
-        SR_CORE_PRECONDITION(m_PlatformAPI, "Cannot initialize vulkan, no platform API was created");
-
-        if (!m_VulkanInterfaces){
-            m_VulkanInterface = new VulkanInterface(m_PlatformAPI);
-
-        }
-        m_VulkanInterfaces++;
-
-        SR_CORE_POSTCONDITION(m_VulkanInterface, "Failed to initialize Vulkan");
-    }
-
-    void CoreCommand::terminateVulkan() {
-        m_VulkanInterfaces--;
-
-        if (!m_VulkanInterfaces){
-            delete m_VulkanInterface;
-        }
-    }
-
     Time CoreCommand::getStartupTime() {
         return m_StartupTime;
     }
@@ -157,18 +129,6 @@ namespace Syrius{
     void CoreCommand::destroyWindow(SyriusWindow *window) {
         m_WindowInstances.erase(std::remove(m_WindowInstances.begin(), m_WindowInstances.end(), window), m_WindowInstances.end());
         delete window;
-    }
-
-    std::vector<std::string> CoreCommand::getVulkanExtensionNames() {
-        return m_VulkanInterface->getSupportedExtensions();
-    }
-
-    std::vector<std::string> CoreCommand::getVulkanLayerNames() {
-        return m_VulkanInterface->getSupportedLayers();
-    }
-
-    VulkanInstance *CoreCommand::getVulkanInstance() {
-        return m_VulkanInterface->getInstance();
     }
 
     Image* CoreCommand::createImage(const std::string& fileName, bool flipOnLoad){

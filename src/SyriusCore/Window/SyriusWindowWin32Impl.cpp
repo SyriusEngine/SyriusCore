@@ -309,9 +309,9 @@ namespace Syrius{
             case SR_API_OPENGL:
                 m_Context = new WglContext(m_Hwnd, desc);
                 return m_Context;
-            case SR_API_VULKAN:
-                m_Context = new VulkanContextWin32(m_Hwnd, desc);
-                return m_Context;
+//            case SR_API_VULKAN:
+//                m_Context = new VulkanContextWin32(m_Hwnd, desc);
+//                return m_Context;
             case SR_API_D3D11:
                 m_Context = new D3D11Context(m_Hwnd, desc);
                 return m_Context;

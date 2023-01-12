@@ -6,6 +6,7 @@
 #include "Core/PlatformDetection.hpp"
 
 #include "Utils/Image.hpp"
+#include "Utils/Resource.hpp"
 
 #include "Window/SyriusWindow.hpp"
 

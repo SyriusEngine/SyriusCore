@@ -23,10 +23,6 @@ namespace Syrius{
 
         static void terminatePlatformGlad();
 
-        static void initVulkan();
-
-        static void terminateVulkan();
-
         static Time getStartupTime();
 
         static Time getElapsedTimeSinceStart();
@@ -38,12 +34,6 @@ namespace Syrius{
         static SyriusWindow* createWindow(const WindowDesc& windowDesc);
 
         static void destroyWindow(SyriusWindow* window);
-
-        static std::vector<std::string> getVulkanExtensionNames();
-
-        static std::vector<std::string> getVulkanLayerNames();
-
-        static VulkanInstance* getVulkanInstance();
 
         static Image* createImage(const std::string& fileName, bool flipOnLoad = true);
 
@@ -58,7 +48,6 @@ namespace Syrius{
         static uint32 m_VulkanInterfaces;
 
         static PlatformAPI* m_PlatformAPI;
-        static VulkanInterface* m_VulkanInterface;
 
         static std::vector<SyriusWindow*> m_WindowInstances;
 

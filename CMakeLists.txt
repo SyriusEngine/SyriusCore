@@ -43,7 +43,8 @@ if (WIN32)
             src/SyriusCore/Context/D3D11/D3D11Sampler.cpp
             src/SyriusCore/Context/D3D11/D3D11DepthStencilAttachment.cpp
 
-            src/SyriusCore/Context/Vulkan/VulkanContextWin32.cpp)
+#            src/SyriusCore/Context/Vulkan/VulkanContextWin32.cpp
+            )
 
 elseif(UNIX)
     set(GLAD_PLATFORM_SRC
@@ -94,10 +95,10 @@ set(SYRIUSCORE_CORE_SRC
         src/SyriusCore/Core/PlatformAPI.cpp
         src/SyriusCore/Core/CoreCommand.cpp
         src/SyriusCore/Core/Message.cpp
-        src/SyriusCore/Core/Vulkan/VulkanInstance.cpp
-        src/SyriusCore/Core/Vulkan/VulkanInterface.cpp
+#        src/SyriusCore/Core/Vulkan/VulkanInstance.cpp
+#        src/SyriusCore/Core/Vulkan/VulkanInterface.cpp
         src/SyriusCore/Core/MemoryAllocationTracker.cpp
-        src/SyriusCore/Core/MemoryAllocationTracker.hpp)
+        )
 
 set(SYRIUSCORE_UTILS_SRC
         src/SyriusCore/Utils/Image.cpp)
@@ -143,22 +144,23 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp
 
 
-        src/SyriusCore/Context/Vulkan/VulkanContext.cpp
-        src/SyriusCore/Context/Vulkan/VulkanUtils.cpp
-        src/SyriusCore/Context/Vulkan/VulkanPhysicalDevice.cpp
-        src/SyriusCore/Context/Vulkan/VulkanLogicalDevice.cpp
-        src/SyriusCore/Context/Vulkan/VulkanSwapChain.cpp
-        src/SyriusCore/Context/Vulkan/VulkanShaderModule.cpp
-        src/SyriusCore/Context/Vulkan/VulkanShader.cpp
-        src/SyriusCore/Context/Vulkan/VulkanPipeline.cpp
-        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp)
+#        src/SyriusCore/Context/Vulkan/VulkanContext.cpp
+#        src/SyriusCore/Context/Vulkan/VulkanUtils.cpp
+#        src/SyriusCore/Context/Vulkan/VulkanPhysicalDevice.cpp
+#        src/SyriusCore/Context/Vulkan/VulkanLogicalDevice.cpp
+#        src/SyriusCore/Context/Vulkan/VulkanSwapChain.cpp
+#        src/SyriusCore/Context/Vulkan/VulkanShaderModule.cpp
+#        src/SyriusCore/Context/Vulkan/VulkanShader.cpp
+#        src/SyriusCore/Context/Vulkan/VulkanPipeline.cpp
+#        src/SyriusCore/Context/Vulkan/VulkanPipeline.hpp
+        )
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}
         ${SYRIUSCORE_UTILS_SRC}
         ${SYRIUSCORE_WINDOW_SRC}
         ${SYRIUSCORE_GRAPHICS_API_SRC}
-        src/SyriusCore/SyriusCore.cpp )
+        src/SyriusCore/SyriusCore.cpp include/SyriusCore/Utils/Resource.hpp)
 
 add_library(syrius-core SHARED ${SYRIUSCORE_SRC})
 
