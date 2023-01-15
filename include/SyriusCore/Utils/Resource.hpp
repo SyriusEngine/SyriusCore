@@ -36,8 +36,10 @@ namespace Syrius{
         }
 
         ResourceView& operator=(const ResourceView& other) {
-            m_Resource = other.m_Resource;
-            m_ID = other.m_Resource->createViewCopy(this);
+            if (this != &other){
+                m_Resource = other.m_Resource;
+                m_ID = other.m_Resource->createViewCopy(this);
+            }
             return *this;
         }
 
@@ -70,7 +72,7 @@ namespace Syrius{
             return m_Resource;
         }
 
-        void reset(){
+        void release(){
             if (m_Resource){
                 m_Resource->removeViewReference(m_ID);
                 m_Resource = nullptr;
@@ -102,11 +104,24 @@ namespace Syrius{
 
         }
 
+        template<typename... Args>
+        explicit Resource(Args&&... args):
+        m_Resource(new T(std::forward<Args>(args)...)),
+        m_NextViewID(0){
+
+        }
+
         Resource(const Resource& other) = delete;
 
         Resource(Resource&& other) noexcept:
-        m_Resource(other.m_Resource){
+        m_Resource(other.m_Resource),
+        m_NextViewID(other.m_NextViewID){
             other.m_Resource = nullptr;
+            other.m_NextViewID = 0;
+            for (auto& view : other.m_Views){
+                view.second->m_Resource = this;
+            }
+            m_Views = std::move(other.m_Views);
         }
 
         Resource& operator=(const Resource& other) = delete;
@@ -116,10 +131,15 @@ namespace Syrius{
                 m_Resource = other.m_Resource;
                 other.m_Resource = nullptr;
             }
+
             return *this;
         }
 
         ~Resource(){
+            for (auto& [id, view] : m_Views){
+                view->m_Resource = nullptr;
+                view->m_ID = 0;
+            }
             delete m_Resource;
         }
 

@@ -19,16 +19,12 @@ namespace Syrius {
         return CoreCommand::getElapsedTimeSinceStart();
     }
 
-    Image* createImage(const std::string& fileName, bool flipOnLoad){
+    ResourceView<Image> createImage(const std::string& fileName, bool flipOnLoad){
         return CoreCommand::createImage(fileName, flipOnLoad);
     }
 
-    Image* createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount){
+    ResourceView<Image> createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount){
         return CoreCommand::createImage(pixelData, width, height, channelCount);
-    }
-
-    void destroyImage(Image* image){
-        CoreCommand::destroyImage(image);
     }
 
     SyriusWindow* createWindow(const WindowDesc& windowDesc){

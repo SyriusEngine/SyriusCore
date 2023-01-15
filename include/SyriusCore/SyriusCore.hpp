@@ -33,11 +33,9 @@ namespace Syrius {
 
     SR_CORE_API Time getElapsedTimeSinceStart();
 
-    SR_CORE_API Image* createImage(const std::string& fileName, bool flipOnLoad = true);
+    SR_CORE_API ResourceView<Image> createImage(const std::string& fileName, bool flipOnLoad = true);
 
-    SR_CORE_API Image* createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount);
-
-    SR_CORE_API void destroyImage(Image* image);
+    SR_CORE_API ResourceView<Image> createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount);
 
     SR_CORE_API SyriusWindow* createWindow(const WindowDesc& windowDesc);
 

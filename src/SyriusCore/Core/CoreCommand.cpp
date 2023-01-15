@@ -12,7 +12,7 @@ namespace Syrius{
     PlatformAPI* CoreCommand::m_PlatformAPI = nullptr;
 
     std::vector<SyriusWindow*> CoreCommand::m_WindowInstances;
-    std::vector<Image*> CoreCommand::m_Images;
+    std::vector<Resource<Image>> CoreCommand::m_Images;
 
 
     void CoreCommand::init() {
@@ -38,9 +38,7 @@ namespace Syrius{
     }
 
     void CoreCommand::terminate() {
-        for (auto img: m_Images) {
-            delete img;
-        }
+        m_Images.clear();
         if (m_GladInstances > 0){
             SR_CORE_WARNING("Syrius is terminated but some objects still depend on glad, glad will be terminated too!");
             m_GladInstances = 0;
@@ -131,20 +129,15 @@ namespace Syrius{
         delete window;
     }
 
-    Image* CoreCommand::createImage(const std::string& fileName, bool flipOnLoad){
-        auto ptr = new Image(fileName, flipOnLoad);
-        m_Images.push_back(ptr);
-        return ptr;
+    ResourceView<Image> CoreCommand::createImage(const std::string& fileName, bool flipOnLoad){
+        m_Images.emplace_back(new Image(fileName, flipOnLoad));
+        auto& b = m_Images.back();
+        return m_Images.back().createView();
     }
 
-    Image* CoreCommand::createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount){
-        auto ptr = new Image(pixelData, width, height, channelCount);
-        m_Images.push_back(ptr);
-        return ptr;
+    ResourceView<Image> CoreCommand::createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount){
+        m_Images.emplace_back(new Image(pixelData, width, height, channelCount));
+        return m_Images.back().createView();
     }
 
-    void CoreCommand::destroyImage(Image* image){
-        m_Images.erase(std::remove(m_Images.begin(), m_Images.end(), image), m_Images.end());
-        delete image;
-    }
 }

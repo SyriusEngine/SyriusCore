@@ -2,6 +2,7 @@
 
 #include "../../../../include/SyriusCore/Core/PlatformAPI.hpp"
 #include "Vulkan/VulkanInterface.hpp"
+#include "../../../include/SyriusCore/Utils/Resource.hpp"
 
 namespace Syrius{
 
@@ -35,11 +36,9 @@ namespace Syrius{
 
         static void destroyWindow(SyriusWindow* window);
 
-        static Image* createImage(const std::string& fileName, bool flipOnLoad = true);
+        static ResourceView<Image> createImage(const std::string& fileName, bool flipOnLoad = true);
 
-        static Image* createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount);
-
-        static void destroyImage(Image* image);
+        static ResourceView<Image> createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount);
 
     private:
         static Time m_StartupTime;
@@ -51,7 +50,7 @@ namespace Syrius{
 
         static std::vector<SyriusWindow*> m_WindowInstances;
 
-        static std::vector<Image*> m_Images;
+        static std::vector<Resource<Image>> m_Images;
     };
 
 }
