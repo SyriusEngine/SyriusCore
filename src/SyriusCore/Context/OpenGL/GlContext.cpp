@@ -103,127 +103,71 @@ namespace Syrius{
         return depthBufferBits;
     }
 
-    ShaderModule *GlContext::createShaderModule(const ShaderModuleDesc &desc) {
-        ensureCurrentContext();
+    ResourceView<ShaderModule> GlContext::createShaderModule(const ShaderModuleDesc &desc) {
         auto ptr = new GlShaderModule(desc);
-        m_ShaderModules.push_back(ptr);
-        return ptr;
+        m_ShaderModules.emplace_back(ptr);
+        return m_ShaderModules.back().createView();
     }
 
-    Shader *GlContext::createShader(const ShaderDesc& desc) {
-        SR_CORE_PRECONDITION(desc.m_VertexShader != nullptr, "Vertex shader is null");
-        SR_CORE_PRECONDITION(desc.m_FragmentShader != nullptr, "Fragment shader is null");
-
-        ensureCurrentContext();
+    ResourceView<Shader> GlContext::createShader(const ShaderDesc &desc) {
         auto ptr = new GlShader(desc);
-        m_Shaders.push_back(ptr);
-
-        SR_CORE_POSTCONDITION(ptr != nullptr, "Shader creation failed");
-        return ptr;
+        m_Shaders.emplace_back(ptr);
+        return m_Shaders.back().createView();
     }
 
-    VertexBuffer *GlContext::createVertexBuffer(const VertexBufferDesc &desc) {
-        SR_CORE_PRECONDITION(desc.m_Count > 0, "Vertex count is 0");
-        SR_CORE_PRECONDITION(desc.m_Layout != nullptr, "Vertex layout is null");
-        SR_CORE_PRECONDITION(desc.m_Layout->getAttributeCount() > 0, "Vertex layout has no attributes");
-
-        ensureCurrentContext();
+    ResourceView<VertexBuffer> GlContext::createVertexBuffer(const VertexBufferDesc &desc) {
         auto ptr = new GlVertexBuffer(desc);
-        m_VertexBuffers.push_back(ptr);
-
-        SR_CORE_POSTCONDITION(ptr != nullptr, "Vertex buffer is null");
-
-        return ptr;
+        m_VertexBuffers.emplace_back(ptr);
+        return m_VertexBuffers.back().createView();
     }
 
-    IndexBuffer *GlContext::createIndexBuffer(const IndexBufferDesc &desc) {
-        SR_CORE_PRECONDITION(desc.m_Count > 0, "Index count is 0");
-
-        ensureCurrentContext();
+    ResourceView<IndexBuffer> GlContext::createIndexBuffer(const IndexBufferDesc &desc) {
         auto ptr = new GlIndexBuffer(desc);
-        m_IndexBuffers.push_back(ptr);
-
-        SR_CORE_POSTCONDITION(ptr != nullptr, "Index buffer is null");
-
-        return ptr;
+        m_IndexBuffers.emplace_back(ptr);
+        return m_IndexBuffers.back().createView();
     }
 
-    VertexArray *GlContext::createVertexArray(const VertexArrayDesc &desc) {
-        SR_CORE_PRECONDITION(desc.m_VertexBuffer != nullptr, "Vertex buffer is null");
-
-        ensureCurrentContext();
+    ResourceView<VertexArray> GlContext::createVertexArray(const VertexArrayDesc &desc) {
         VertexArray* ptr;
-        if (desc.m_IndexBuffer != nullptr) {
-            ptr = new GlVertexArrayIndexed(desc);
+        if (desc.m_IndexBuffer.isValid()) {
+            ptr =  new GlVertexArrayIndexed(desc);
         }
         else {
-            ptr = new GlVertexArray(desc);
+            ptr =  new GlVertexArray(desc);
         }
-        m_VertexArrays.push_back(ptr);
-
-        SR_CORE_POSTCONDITION(ptr != nullptr, "Vertex array is null");
-
-        return ptr;
+        m_VertexArrays.emplace_back(ptr);
+        return m_VertexArrays.back().createView();
     }
 
-    ConstantBuffer *GlContext::createConstantBuffer(const ConstantBufferDesc &desc) {
-        SR_CORE_PRECONDITION(desc.m_Size <= getMaxConstantBufferSize(), "Constant buffer size is too large");
-        SR_CORE_PRECONDITION(desc.m_Size > 0, "Constant buffer size is 0");
-
-        ensureCurrentContext();
+    ResourceView<ConstantBuffer> GlContext::createConstantBuffer(const ConstantBufferDesc &desc) {
         auto ptr = new GlConstantBuffer(desc);
-        m_ConstantBuffers.push_back(ptr);
-
-        SR_CORE_POSTCONDITION(ptr != nullptr, "Constant buffer is null");
-
-        return ptr;
+        m_ConstantBuffers.emplace_back(ptr);
+        return m_ConstantBuffers.back().createView();
     }
 
-    FrameBuffer *GlContext::createFrameBuffer(const FrameBufferDesc &desc) {
-        SR_CORE_PRECONDITION(!desc.m_ColorAttachments.empty(), "Framebuffer must have at least one color attachment");
-        SR_CORE_PRECONDITION(desc.m_Width > 0, "Framebuffer width must be greater than 0");
-        SR_CORE_PRECONDITION(desc.m_Height > 0, "Framebuffer height must be greater than 0");
-        SR_CORE_PRECONDITION(desc.m_Width <= getMaxFramebufferWidth(), "Framebuffer width is too large");
-        SR_CORE_PRECONDITION(desc.m_Height <= getMaxFramebufferHeight(), "Framebuffer height is too large");
-
-        ensureCurrentContext();
+    ResourceView<FrameBuffer> GlContext::createFrameBuffer(const FrameBufferDesc &desc) {
         auto ptr = new GlFrameBuffer(desc);
-        m_FrameBuffers.push_back(ptr);
-
-        SR_CORE_POSTCONDITION(ptr != nullptr, "Failed to create framebuffer");
-
-        return ptr;
+        m_FrameBuffers.emplace_back(ptr);
+        return m_FrameBuffers.back().createView();
     }
 
-    Texture2D *GlContext::createTexture2D(const Texture2DDesc& desc) {
-        ensureCurrentContext();
-
+    ResourceView<Texture2D> GlContext::createTexture2D(const Texture2DDesc& desc) {
         auto ptr = new GlTexture2D(desc);
-        m_Textures2D.push_back(ptr);
+        m_Textures2D.emplace_back(ptr);
 
-        SR_CORE_POSTCONDITION(ptr != nullptr, "Failed to create texture");
-
-        return ptr;
+        return m_Textures2D.back().createView();
     }
 
-    Texture2D *GlContext::createTexture2D(const Texture2DImageDesc &desc) {
-        ensureCurrentContext();
-
+    ResourceView<Texture2D> GlContext::createTexture2D(const Texture2DImageDesc &desc) {
         auto ptr = new GlTexture2D(desc);
-        m_Textures2D.push_back(ptr);
-
-        SR_CORE_POSTCONDITION(ptr != nullptr, "Failed to create texture");
-
-        return ptr;
+        m_Textures2D.emplace_back(ptr);
+        return m_Textures2D.back().createView();
     }
 
-    Sampler *GlContext::createSampler(const SamplerDesc &desc) {
+    ResourceView<Sampler> GlContext::createSampler(const SamplerDesc &desc) {
         auto ptr = new GlSampler(desc);
-        m_Samplers.push_back(ptr);
-
-        SR_CORE_POSTCONDITION(ptr != nullptr, "Sampler is null");
-
-        return ptr;
+        m_Samplers.emplace_back(ptr);
+        return m_Samplers.back().createView();
     }
 
 }

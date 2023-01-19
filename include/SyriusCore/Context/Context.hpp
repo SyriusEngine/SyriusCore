@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Core/SyriusCoreInclude.hpp"
+#include "../Utils/Resource.hpp"
 #include "ShaderModule.hpp"
 #include "Shader.hpp"
 #include "VertexDescription.hpp"
@@ -92,9 +93,9 @@ namespace Syrius{
 
         void clear(FrameBuffer* frameBuffer);
 
-        void draw(VertexArray* vao);
+        void draw(ResourceView<VertexArray> vao);
 
-        void drawInstanced(VertexArray* vao, uint32 instanceCount);
+        void drawInstanced(ResourceView<VertexArray> vao, uint32 instanceCount);
 
         inline void onResize(uint32 width, uint32 height){
             onResize(width, height, m_DefaultFrameBuffer);
@@ -116,47 +117,27 @@ namespace Syrius{
 
         void endRenderPass(FrameBuffer* frameBuffer);
 
-        void destroyShaderModule(ShaderModule* shaderModule);
+        virtual ResourceView<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) = 0;
 
-        void destroyShader(Shader* shader);
+        virtual ResourceView<Shader> createShader(const ShaderDesc& desc) = 0;
 
-        void destroyVertexDescription(VertexDescription* vertexDescription);
+        ResourceView<VertexDescription> createVertexDescription();
 
-        void destroyVertexBuffer(VertexBuffer* vertexBuffer);
+        virtual ResourceView<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) = 0;
 
-        void destroyIndexBuffer(IndexBuffer* indexBuffer);
+        virtual ResourceView<IndexBuffer> createIndexBuffer(const IndexBufferDesc& desc) = 0;
 
-        void destroyVertexArray(VertexArray* vertexArray);
+        virtual ResourceView<VertexArray> createVertexArray(const VertexArrayDesc& desc) = 0;
 
-        void destroyConstantBuffer(ConstantBuffer* constantBuffer);
+        virtual ResourceView<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc& desc) = 0;
 
-        void destroyFrameBuffer(FrameBuffer* frameBuffer);
+        virtual ResourceView<FrameBuffer> createFrameBuffer(const FrameBufferDesc& desc) = 0;
 
-        void destroyTexture2D(Texture2D* texture2D);
+        virtual ResourceView<Texture2D> createTexture2D(const Texture2DDesc& desc) = 0;
 
-        void destroySampler(Sampler* sampler);
+        virtual ResourceView<Texture2D> createTexture2D(const Texture2DImageDesc& desc) = 0;
 
-        virtual ShaderModule* createShaderModule(const ShaderModuleDesc& desc) = 0;
-
-        virtual Shader* createShader(const ShaderDesc& desc) = 0;
-
-        VertexDescription* createVertexDescription();
-
-        virtual VertexBuffer* createVertexBuffer(const VertexBufferDesc& desc) = 0;
-
-        virtual IndexBuffer* createIndexBuffer(const IndexBufferDesc& desc) = 0;
-
-        virtual VertexArray* createVertexArray(const VertexArrayDesc& desc) = 0;
-
-        virtual ConstantBuffer* createConstantBuffer(const ConstantBufferDesc& desc) = 0;
-
-        virtual FrameBuffer* createFrameBuffer(const FrameBufferDesc& desc) = 0;
-
-        virtual Texture2D* createTexture2D(const Texture2DDesc& desc) = 0;
-
-        virtual Texture2D* createTexture2D(const Texture2DImageDesc& desc) = 0;
-
-        virtual Sampler* createSampler(const SamplerDesc& desc) = 0;
+        virtual ResourceView<Sampler> createSampler(const SamplerDesc& desc) = 0;
 
     protected:
 
@@ -179,16 +160,16 @@ namespace Syrius{
         bool m_VerticalSync;
         FrameBuffer* m_DefaultFrameBuffer;
 
-        std::vector<ShaderModule*> m_ShaderModules;
-        std::vector<Shader*> m_Shaders;
-        std::vector<VertexDescription*> m_VertexDescriptions;
-        std::vector<VertexBuffer*> m_VertexBuffers;
-        std::vector<IndexBuffer*> m_IndexBuffers;
-        std::vector<VertexArray*> m_VertexArrays;
-        std::vector<ConstantBuffer*> m_ConstantBuffers;
-        std::vector<FrameBuffer*> m_FrameBuffers;
-        std::vector<Texture2D*> m_Textures2D;
-        std::vector<Sampler*> m_Samplers;
+        std::vector<Resource<ShaderModule>> m_ShaderModules;
+        std::vector<Resource<Shader>> m_Shaders;
+        std::vector<Resource<VertexDescription>> m_VertexDescriptions;
+        std::vector<Resource<VertexBuffer>> m_VertexBuffers;
+        std::vector<Resource<IndexBuffer>> m_IndexBuffers;
+        std::vector<Resource<VertexArray>> m_VertexArrays;
+        std::vector<Resource<ConstantBuffer>> m_ConstantBuffers;
+        std::vector<Resource<FrameBuffer>> m_FrameBuffers;
+        std::vector<Resource<Texture2D>> m_Textures2D;
+        std::vector<Resource<Sampler>> m_Samplers;
 
 
     private:

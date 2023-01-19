@@ -186,43 +186,43 @@ namespace Syrius{
         return 32;
     }
 
-    ShaderModule *D3D11Context::createShaderModule(const ShaderModuleDesc &desc) {
+    ResourceView<ShaderModule> D3D11Context::createShaderModule(const ShaderModuleDesc &desc) {
         auto ptr = new D3D11ShaderModule(desc, m_Device, m_DeviceContext);
-        m_ShaderModules.push_back(ptr);
-        return ptr;
+        m_ShaderModules.emplace_back(ptr);
+        return m_ShaderModules.back().createView();
     }
 
-    Shader *D3D11Context::createShader(const ShaderDesc &desc) {
+    ResourceView<Shader> D3D11Context::createShader(const ShaderDesc &desc) {
         auto ptr = new D3D11Shader(desc, m_Device, m_DeviceContext);
-        m_Shaders.push_back(ptr);
-        return ptr;
+        m_Shaders.emplace_back(ptr);
+        return m_Shaders.back().createView();
     }
 
-    VertexBuffer *D3D11Context::createVertexBuffer(const VertexBufferDesc &desc) {
+    ResourceView<VertexBuffer> D3D11Context::createVertexBuffer(const VertexBufferDesc &desc) {
         auto ptr = new D3D11VertexBuffer(desc, m_Device, m_DeviceContext);
-        m_VertexBuffers.push_back(ptr);
-        return ptr;
+        m_VertexBuffers.emplace_back(ptr);
+        return m_VertexBuffers.back().createView();
     }
 
-    IndexBuffer *D3D11Context::createIndexBuffer(const IndexBufferDesc &desc) {
+    ResourceView<IndexBuffer> D3D11Context::createIndexBuffer(const IndexBufferDesc &desc) {
         auto ptr = new D3D11IndexBuffer(desc, m_Device, m_DeviceContext);
-        m_IndexBuffers.push_back(ptr);
-        return ptr;
+        m_IndexBuffers.emplace_back(ptr);
+        return m_IndexBuffers.back().createView();
     }
 
-    VertexArray *D3D11Context::createVertexArray(const VertexArrayDesc &desc) {
+    ResourceView<VertexArray> D3D11Context::createVertexArray(const VertexArrayDesc &desc) {
         VertexArray* ptr;
-        if (desc.m_IndexBuffer != nullptr) {
+        if (!desc.m_IndexBuffer.isValid()) {
             ptr =  new D3D11VertexArrayIndexed(desc, m_Device, m_DeviceContext);
         }
         else {
             ptr =  new D3D11VertexArray(desc, m_Device, m_DeviceContext);
         }
-        m_VertexArrays.push_back(ptr);
-        return ptr;
+        m_VertexArrays.emplace_back(ptr);
+        return m_VertexArrays.back().createView();
     }
 
-    ConstantBuffer *D3D11Context::createConstantBuffer(const ConstantBufferDesc &desc) {
+    ResourceView<ConstantBuffer> D3D11Context::createConstantBuffer(const ConstantBufferDesc &desc) {
         ConstantBuffer* ptr;
         auto shaderStage = desc.m_ShaderStage;
         switch (shaderStage) {
@@ -231,35 +231,36 @@ namespace Syrius{
             case SR_SHADER_GEOMETRY:    ptr = new D3D11ConstantBufferGeometry(desc, m_Device, m_DeviceContext); break;
             default: {
                 SR_CORE_EXCEPTION("Unsupported shader stage for constant buffer");
-                return nullptr;
+
             }
         }
-        m_ConstantBuffers.push_back(ptr);
-        return ptr;
+        m_ConstantBuffers.emplace_back(ptr);
+        return m_ConstantBuffers.back().createView();
     }
 
-    FrameBuffer *D3D11Context::createFrameBuffer(const FrameBufferDesc &desc) {
+    ResourceView<FrameBuffer> D3D11Context::createFrameBuffer(const FrameBufferDesc &desc) {
         auto ptr = new D3D11FrameBuffer(desc, m_Device, m_DeviceContext);
-        m_FrameBuffers.push_back(ptr);
-        return ptr;
+        m_FrameBuffers.emplace_back(ptr);
+        return m_FrameBuffers.back().createView();
     }
 
-    Texture2D *D3D11Context::createTexture2D(const Texture2DDesc& desc) {
+    ResourceView<Texture2D> D3D11Context::createTexture2D(const Texture2DDesc& desc) {
         auto ptr = new D3D11Texture2D(desc, m_Device, m_DeviceContext);
-        m_Textures2D.push_back(ptr);
-        return ptr;
+        m_Textures2D.emplace_back(ptr);
+
+        return m_Textures2D.back().createView();
     }
 
-    Texture2D *D3D11Context::createTexture2D(const Texture2DImageDesc &desc) {
+    ResourceView<Texture2D> D3D11Context::createTexture2D(const Texture2DImageDesc &desc) {
         auto ptr = new D3D11Texture2D(desc, m_Device, m_DeviceContext);
-        m_Textures2D.push_back(ptr);
-        return ptr;
+        m_Textures2D.emplace_back(ptr);
+        return m_Textures2D.back().createView();
     }
 
-    Sampler *D3D11Context::createSampler(const SamplerDesc &desc) {
+    ResourceView<Sampler> D3D11Context::createSampler(const SamplerDesc &desc) {
         auto ptr = new D3D11Sampler(desc, m_Device, m_DeviceContext);
-        m_Samplers.push_back(ptr);
-        return ptr;
+        m_Samplers.emplace_back(ptr);
+        return m_Samplers.back().createView();
     }
 
 

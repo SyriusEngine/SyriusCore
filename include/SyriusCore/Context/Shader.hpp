@@ -2,12 +2,13 @@
 
 #include "Utils.hpp"
 #include "ShaderModule.hpp"
+#include "../Utils/Resource.hpp"
 
 namespace Syrius{
 
     struct SR_CORE_API ShaderDesc{
-        ShaderModule* m_VertexShader    = nullptr;
-        ShaderModule* m_FragmentShader  = nullptr;
+        ResourceView<ShaderModule> m_VertexShader;
+        ResourceView<ShaderModule> m_FragmentShader;
     };
 
     class SR_CORE_API Shader{

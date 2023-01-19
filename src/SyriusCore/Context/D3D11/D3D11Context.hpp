@@ -54,26 +54,25 @@ namespace Syrius{
 
         int32 getMaxDepthBufferBits() override;
 
-        ShaderModule* createShaderModule(const ShaderModuleDesc& desc) override;
+        ResourceView<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) override;
 
-        Shader* createShader(const ShaderDesc& desc) override;
+        ResourceView<Shader> createShader(const ShaderDesc& desc) override;
 
-        VertexBuffer* createVertexBuffer(const VertexBufferDesc& desc) override;
+        ResourceView<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) override;
 
-        IndexBuffer* createIndexBuffer(const IndexBufferDesc& desc) override;
+        ResourceView<IndexBuffer> createIndexBuffer(const IndexBufferDesc& desc) override;
 
-        VertexArray* createVertexArray(const VertexArrayDesc& desc) override;
+        ResourceView<VertexArray> createVertexArray(const VertexArrayDesc& desc) override;
 
-        ConstantBuffer* createConstantBuffer(const ConstantBufferDesc& desc) override;
+        ResourceView<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc& desc) override;
 
-        FrameBuffer* createFrameBuffer(const FrameBufferDesc& desc) override;
+        ResourceView<FrameBuffer> createFrameBuffer(const FrameBufferDesc& desc) override;
 
-        Texture2D* createTexture2D(const Texture2DDesc& desc) override;
+        ResourceView<Texture2D> createTexture2D(const Texture2DDesc& desc) override;
 
-        Texture2D* createTexture2D(const Texture2DImageDesc& desc) override;
+        ResourceView<Texture2D> createTexture2D(const Texture2DImageDesc& desc) override;
 
-        Sampler* createSampler(const SamplerDesc& desc) override;
-
+        ResourceView<Sampler> createSampler(const SamplerDesc& desc) override;
     protected:
 
         void createImGuiContext() override;

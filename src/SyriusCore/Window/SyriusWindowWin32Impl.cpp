@@ -1,7 +1,6 @@
 #include "SyriusWindowWin32Impl.hpp"
 #include "../Core/CoreCommand.hpp"
 #include "../Context/OpenGL/Internal/WglContext.hpp"
-#include "../Context/Vulkan/VulkanContextWin32.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 

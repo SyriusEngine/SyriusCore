@@ -35,7 +35,7 @@ int main() {
 
         auto window = createWindow(wDesc);
         ContextDesc cDesc;
-        cDesc.m_API = Syrius::SR_API_D3D11;
+        cDesc.m_API = Syrius::SR_API_OPENGL;
         ColorAttachmentDesc caDesc;
         caDesc.m_Width = 1280;
         caDesc.m_Height = 720;
@@ -48,7 +48,7 @@ int main() {
         context->setClearColor(0.1, 0.2, 0.3, 1.0);
 
         auto rect = createRectangle();
-        auto shader = loadShader("./Resources/Shaders/HLSL/Basic-vs.hlsl", "./Resources/Shaders/HLSL/Basic-fs.hlsl", Syrius::SR_SHADER_CODE_HLSL, context);
+        auto shader = loadShader("./Resources/Shaders/GLSL/Basic.vert", "./Resources/Shaders/GLSL/Basic.frag", Syrius::SR_SHADER_CODE_GLSL, context);
 
         for (auto& v: rect.vertices){
             v.m_Position[0] += 0.5;

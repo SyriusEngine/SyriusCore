@@ -8,7 +8,7 @@ namespace Syrius{
     m_Type(desc.m_Type),
     m_Size(0),
     m_Layout(desc.m_Layout){
-        SR_CORE_PRECONDITION(desc.m_Layout != nullptr, "Vertex layout cannot be null");
+        SR_CORE_PRECONDITION(desc.m_Layout.isValid(), "Vertex layout cannot be null");
 
         m_Size = desc.m_Layout->getStride() * desc.m_Count;
 
@@ -30,7 +30,7 @@ namespace Syrius{
         return m_Type;
     }
 
-    VertexDescription *VertexBuffer::getVertexDescription() const {
+    const ResourceView<VertexDescription>& VertexBuffer::getVertexDescription() const {
         return m_Layout;
     }
 }

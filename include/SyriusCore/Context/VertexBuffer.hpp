@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Utils.hpp"
+#include "../Utils/Resource.hpp"
 #include "VertexDescription.hpp"
 
 namespace Syrius{
@@ -9,7 +10,7 @@ namespace Syrius{
         const void* m_Data              = nullptr;
         uint32 m_Count                  = 0;
         SR_BUFFER_TYPE m_Type           = SR_BUFFER_DEFAULT;
-        VertexDescription* m_Layout     = nullptr;
+        ResourceView<VertexDescription> m_Layout;
     };
 
     class SR_CORE_API VertexBuffer{
@@ -30,12 +31,12 @@ namespace Syrius{
 
         [[nodiscard]] SR_BUFFER_TYPE getType() const;
 
-        [[nodiscard]] VertexDescription* getVertexDescription() const;
+        [[nodiscard]] const ResourceView<VertexDescription>& getVertexDescription() const;
 
     protected:
         uint32 m_Size;
         uint32 m_Count;
-        VertexDescription* m_Layout;
+        ResourceView<VertexDescription> m_Layout;
         SR_BUFFER_TYPE m_Type;
 
     };

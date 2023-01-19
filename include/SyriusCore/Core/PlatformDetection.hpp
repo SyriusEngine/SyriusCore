@@ -37,7 +37,7 @@
 #define SR_CORE_LINE __LINE__
 #define SR_CORE_FUNC __FUNCTION__
 
-// portable dll import/export macros
+// dll import/export macros
 #if defined(SR_CORE_PLATFORM_WIN64)
     #if defined(SR_CORE_EXPORT_DLL)
         #define SR_CORE_API __declspec(dllexport)

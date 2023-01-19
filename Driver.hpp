@@ -27,14 +27,14 @@ Mesh createRectangle();
 Mesh createSphere(uint32 rings, uint32 sectors);
 
 struct ShaderProgram{
-    Shader* shaderProgram;
-    ShaderModule* vertexShader;
-    ShaderModule* fragmentShader;
+    ResourceView<Shader> shaderProgram;
+    ResourceView<ShaderModule> vertexShader;
+    ResourceView<ShaderModule> fragmentShader;
 };
 
 ShaderProgram loadShader(const std::string& vertexPath, const std::string& fragmentPath, SR_SHADER_CODE_TYPE type, Context* context);
 
-VertexArray* loadMesh(Mesh& mesh, ShaderProgram& prg, Context* context);
+ResourceView<VertexArray> loadMesh(Mesh& mesh, ShaderProgram& prg, Context* context);
 
 void printInfo(Context* context);
 

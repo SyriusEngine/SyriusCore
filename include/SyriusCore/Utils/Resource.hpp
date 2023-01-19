@@ -31,8 +31,7 @@ namespace Syrius{
 
         ResourceView(ResourceView&& other) noexcept {
             m_Resource = other.m_Resource;
-            m_ID = other.m_ID;
-            m_ID = 0;
+            m_ID = other.m_Resource->createViewCopy(this);
         }
 
         ResourceView& operator=(const ResourceView& other) {
@@ -44,9 +43,10 @@ namespace Syrius{
         }
 
         ResourceView& operator=(ResourceView&& other) noexcept {
-            m_Resource = other.m_Resource;
-            m_ID = other.m_ID;
-            m_ID = 0;
+            if (this != &other){
+                m_Resource = other.m_Resource;
+                m_ID = other.m_Resource->createViewCopy(this);
+            }
             return *this;
         }
 
@@ -64,12 +64,13 @@ namespace Syrius{
             return m_Resource->get();
         }
 
-        [[nodiscard]] T& operator*() const{
-            return *m_Resource->get();
-        }
 
         [[nodiscard]] Resource<T>* getResource() const{
             return m_Resource;
+        }
+
+        [[nodiscard]] bool isValid() const{
+            return m_Resource != nullptr;
         }
 
         void release(){
@@ -92,22 +93,21 @@ namespace Syrius{
     template<typename T>
     class Resource{
     public:
+        struct PointerType{
+            using type = T*;
+        };
+
+        using Pointer = typename PointerType::type;
+    public:
         Resource():
         m_Resource(nullptr),
         m_NextViewID(1){
 
         }
 
-        explicit Resource(T* resource):
+        explicit Resource(Pointer resource):
         m_Resource(resource),
-        m_NextViewID(0){
-
-        }
-
-        template<typename... Args>
-        explicit Resource(Args&&... args):
-        m_Resource(new T(std::forward<Args>(args)...)),
-        m_NextViewID(0){
+        m_NextViewID(1){
 
         }
 
@@ -118,10 +118,10 @@ namespace Syrius{
         m_NextViewID(other.m_NextViewID){
             other.m_Resource = nullptr;
             other.m_NextViewID = 0;
-            for (auto& view : other.m_Views){
+            m_Views = std::move(other.m_Views);
+            for (auto& view : m_Views){
                 view.second->m_Resource = this;
             }
-            m_Views = std::move(other.m_Views);
         }
 
         Resource& operator=(const Resource& other) = delete;
@@ -129,7 +129,13 @@ namespace Syrius{
         Resource& operator=(Resource&& other) noexcept{
             if(this != &other){
                 m_Resource = other.m_Resource;
+                m_NextViewID = other.m_NextViewID;
                 other.m_Resource = nullptr;
+                other.m_NextViewID = 0;
+                m_Views = std::move(other.m_Views);
+                for (auto& view : m_Views){
+                    view.second->m_Resource = this;
+                }
             }
 
             return *this;
@@ -149,14 +155,6 @@ namespace Syrius{
 
         [[nodiscard]] inline T* operator->() const{
             return m_Resource;
-        }
-
-        [[nodiscard]] inline T& operator*() const{
-            return *m_Resource;
-        }
-
-        [[nodiscard]] bool isValid() const{
-            return m_Resource != nullptr;
         }
 
         [[nodiscard]] ResourceView<T> createView(){
@@ -199,10 +197,17 @@ namespace Syrius{
         }
 
     private:
+
+
         uint64 m_NextViewID;
         std::unordered_map<uint64, ResourceView<T>*> m_Views;
-        T* m_Resource;
+        Pointer m_Resource;
 
     };
+
+    template<typename T, typename... Args>
+    Resource<T> createResource(Args&&... args){
+        return Resource<T>(new T(std::forward<Args>(args)...));
+    }
 
 }

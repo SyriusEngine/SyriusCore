@@ -61,7 +61,7 @@ namespace Syrius{
     GlVertexArrayIndexed::GlVertexArrayIndexed(const VertexArrayDesc &desc)
     : GlVertexArray(desc),
     m_IndexDataType(getGlDataType(desc.m_IndexBuffer->getDataType())){
-        SR_CORE_PRECONDITION(desc.m_IndexBuffer != nullptr, "IndexBuffer is nullptr");
+        SR_CORE_PRECONDITION(desc.m_IndexBuffer.isValid(), "IndexBuffer is nullptr");
 
         auto iboID = desc.m_IndexBuffer->getIdentifier();
         glVertexArrayElementBuffer(m_ArrayID, iboID);

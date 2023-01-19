@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Utils.hpp"
+#include "../Utils/Resource.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "ShaderModule.hpp"
@@ -8,9 +9,9 @@
 namespace Syrius{
 
     struct SR_CORE_API VertexArrayDesc{
-        VertexBuffer* m_VertexBuffer    = nullptr;
-        IndexBuffer* m_IndexBuffer      = nullptr;
-        ShaderModule* m_VertexShader    = nullptr;
+        ResourceView<VertexBuffer> m_VertexBuffer;
+        ResourceView<IndexBuffer> m_IndexBuffer;
+        ResourceView<ShaderModule> m_VertexShader;
         SR_DRAW_TYPE m_DrawMode         = SR_DRAW_TRIANGLES;
     };
 
@@ -34,8 +35,8 @@ namespace Syrius{
 
     protected:
         SR_DRAW_TYPE m_DrawMode;
-        VertexBuffer* m_VertexBuffer;
-        IndexBuffer* m_IndexBuffer;
+        ResourceView<VertexBuffer> m_VertexBuffer;
+        ResourceView<IndexBuffer> m_IndexBuffer;
     };
 
 }

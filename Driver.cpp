@@ -122,14 +122,14 @@ ShaderProgram loadShader(const std::string& vertexPath, const std::string& fragm
     prg.fragmentShader = context->createShaderModule(fsDesc);
 
     ShaderDesc sDesc;
-    sDesc.m_VertexShader = prg.vertexShader;
-    sDesc.m_FragmentShader = prg.fragmentShader;
+    sDesc.m_VertexShader = std::move(prg.vertexShader);
+    sDesc.m_FragmentShader = std::move(prg.fragmentShader);
     prg.shaderProgram = context->createShader(sDesc);
 
     return prg;
 }
 
-VertexArray* loadMesh(Mesh& mesh, ShaderProgram& prg, Context* context){
+ResourceView<VertexArray> loadMesh(Mesh& mesh, ShaderProgram& prg, Context* context){
     auto layout = context->createVertexDescription();
     layout->addAttribute("Position", SR_FLOAT32_3);
     layout->addAttribute("TexCoord", SR_FLOAT32_2);

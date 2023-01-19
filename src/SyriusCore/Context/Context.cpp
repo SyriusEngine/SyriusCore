@@ -3,14 +3,6 @@
 
 namespace Syrius{
 
-    template<typename T>
-    inline void destroyObjects(std::vector<T*>& objects){
-        for (auto object : objects){
-            delete object;
-        }
-        objects.clear();
-    }
-
     Context::Context(const ContextDesc& desc)
     : m_VerticalSync(false),
     m_Type(desc.m_API),
@@ -20,16 +12,7 @@ namespace Syrius{
     }
 
     Context::~Context() {
-        destroyObjects(m_ShaderModules);
-        destroyObjects(m_Shaders);
-        destroyObjects(m_VertexDescriptions);
-        destroyObjects(m_VertexBuffers);
-        destroyObjects(m_IndexBuffers);
-        destroyObjects(m_VertexArrays);
-        destroyObjects(m_ConstantBuffers);
-        destroyObjects(m_FrameBuffers);
-        destroyObjects(m_Textures2D);
-        destroyObjects(m_Samplers);
+
     }
 
     SR_SUPPORTED_API Context::getType() const {
@@ -40,8 +23,9 @@ namespace Syrius{
         return m_VerticalSync;
     }
 
-    VertexDescription *Context::createVertexDescription() {
-        return new VertexDescription();
+    ResourceView<VertexDescription> Context::createVertexDescription() {
+        m_VertexDescriptions.emplace_back(new VertexDescription());
+        return m_VertexDescriptions.back().createView();
     }
 
     FrameBuffer *Context::getDefaultFrameBuffer() {
@@ -53,13 +37,11 @@ namespace Syrius{
         frameBuffer->clear();
     }
 
-    void Context::draw(VertexArray *vao) {
+    void Context::draw(ResourceView<VertexArray> vao) {
         vao->drawBuffers();
     }
 
-    void Context::drawInstanced(VertexArray *vao, uint32 instanceCount) {
-        SR_CORE_PRECONDITION(instanceCount > 0, "Instance count must be greater than 0");
-
+    void Context::drawInstanced(ResourceView<VertexArray> vao, uint32 instanceCount) {
         vao->drawBuffersInstanced(instanceCount);
     }
 
@@ -83,56 +65,6 @@ namespace Syrius{
 
     void Context::endRenderPass(FrameBuffer *frameBuffer) {
         frameBuffer->unbind();
-    }
-
-    void Context::destroyShaderModule(ShaderModule *shaderModule) {
-        m_ShaderModules.erase(std::remove(m_ShaderModules.begin(), m_ShaderModules.end(), shaderModule), m_ShaderModules.end());
-        delete shaderModule;
-    }
-
-    void Context::destroyShader(Shader *shader) {
-        m_Shaders.erase(std::remove(m_Shaders.begin(), m_Shaders.end(), shader), m_Shaders.end());
-        delete shader;
-    }
-
-    void Context::destroyVertexDescription(VertexDescription *vertexDescription) {
-        m_VertexDescriptions.erase(std::remove(m_VertexDescriptions.begin(), m_VertexDescriptions.end(), vertexDescription), m_VertexDescriptions.end());
-        delete vertexDescription;
-    }
-
-    void Context::destroyVertexBuffer(VertexBuffer *vertexBuffer) {
-        m_VertexBuffers.erase(std::remove(m_VertexBuffers.begin(), m_VertexBuffers.end(), vertexBuffer), m_VertexBuffers.end());
-        delete vertexBuffer;
-    }
-
-    void Context::destroyIndexBuffer(IndexBuffer *indexBuffer) {
-        m_IndexBuffers.erase(std::remove(m_IndexBuffers.begin(), m_IndexBuffers.end(), indexBuffer), m_IndexBuffers.end());
-        delete indexBuffer;
-    }
-
-    void Context::destroyVertexArray(VertexArray* vertexArray){
-        m_VertexArrays.erase(std::remove(m_VertexArrays.begin(), m_VertexArrays.end(), vertexArray), m_VertexArrays.end());
-        delete vertexArray;
-    }
-
-    void Context::destroyConstantBuffer(ConstantBuffer* constantBuffer){
-        m_ConstantBuffers.erase(std::remove(m_ConstantBuffers.begin(), m_ConstantBuffers.end(), constantBuffer), m_ConstantBuffers.end());
-        delete constantBuffer;
-    }
-
-    void Context::destroyFrameBuffer(FrameBuffer* frameBuffer){
-        m_FrameBuffers.erase(std::remove(m_FrameBuffers.begin(), m_FrameBuffers.end(), frameBuffer), m_FrameBuffers.end());
-        delete frameBuffer;
-    }
-
-    void Context::destroyTexture2D(Texture2D* texture2D){
-        m_Textures2D.erase(std::remove(m_Textures2D.begin(), m_Textures2D.end(), texture2D), m_Textures2D.end());
-        delete texture2D;
-    }
-
-    void Context::destroySampler(Sampler *sampler) {
-        m_Samplers.erase(std::remove(m_Samplers.begin(), m_Samplers.end(), sampler), m_Samplers.end());
-        delete sampler;
     }
 
 

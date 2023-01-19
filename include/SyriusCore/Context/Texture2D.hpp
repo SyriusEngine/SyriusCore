@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Utils/Image.hpp"
+#include "../Utils/Resource.hpp"
 #include "Utils.hpp"
 #include "Sampler.hpp"
 
@@ -9,15 +10,15 @@ namespace Syrius{
     struct SR_CORE_API Texture2DDesc{
         uint32 m_Width          = 0;
         uint32 m_Height         = 0;
-        Sampler* m_Sampler      = nullptr;
+        ResourceView<Sampler> m_Sampler;
         SR_TEXTURE_DATA_FORMAT m_Format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8;
         const void* m_Data            = nullptr;
 
     };
 
     struct SR_CORE_API Texture2DImageDesc{
-        Image* m_Image         = nullptr;
-        Sampler* m_Sampler     = nullptr;
+        ResourceView<Image> m_Image;
+        ResourceView<Sampler> m_Sampler;
     };
 
     class SR_CORE_API Texture2D{
