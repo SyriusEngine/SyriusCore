@@ -86,8 +86,8 @@ int main() {
         texDesc.m_Data = temp.data();
 
         auto texture = context->createTexture2D(texDesc);
-        texture->setData(face->getData().data(), 0, 0, 512, 512);
-        texture->setData(logo->getData().data(), 512, 0, 512, 512);
+        texture->setData(face, 0, 0, 512, 512);
+        texture->setData(logo, 512, 0, 512, 512);
 
 
 

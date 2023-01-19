@@ -35,7 +35,7 @@ namespace Syrius{
 
         virtual void setData(const void* data, uint32 x, uint32 y, uint32 width, uint32 height) = 0;
 
-        inline void setData(Image* img, uint32 x, uint32 y, uint32 width, uint32 height){
+        inline void setData(ResourceView<Image>& img, uint32 x, uint32 y, uint32 width, uint32 height){
             auto* data = reinterpret_cast<const void*>(img->getData().data());
             setData(data, x, y, width, height);
         }
