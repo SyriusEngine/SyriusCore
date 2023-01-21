@@ -157,7 +157,7 @@ namespace Syrius{
             return m_Resource;
         }
 
-        [[nodiscard]] ResourceView<T> createView(){
+        [[nodiscard]] ResourceView<T> createView() {
             return ResourceView<T>(this, m_NextViewID++);
         }
 
@@ -165,16 +165,18 @@ namespace Syrius{
             return m_Views.size();
         }
 
+        [[nodiscard]] bool isValid() const{
+            return m_Resource != nullptr;
+        }
+
         void destroy(){
-            if (!m_Views.empty()){
-                printf("Some views are still using this object, object will be destroyed anyway!\n");
-            }
             for (auto& view : m_Views){
                 view.second->m_Resource = nullptr;
                 view.second->m_ID = 0;
             }
             m_Views.clear();
             delete m_Resource;
+            m_Resource = nullptr;
         }
 
     protected:

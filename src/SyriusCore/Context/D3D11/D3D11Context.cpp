@@ -44,7 +44,17 @@ namespace Syrius{
                 ));
 
 
-        m_DefaultFrameBuffer = new D3D11DefaultFrameBuffer(desc.m_DefaultFrameBufferDesc, m_Device, m_DeviceContext, m_SwapChain);
+        auto defaultFbDesc = createFrameBufferDescription();
+        ViewportDesc viewportDesc;
+        viewportDesc.m_Width = desc.backBufferWidth;
+        viewportDesc.m_Height = desc.backBufferHeight;
+        defaultFbDesc->addViewportDesc(viewportDesc);
+        ColorAttachmentDesc colorAttachmentDesc;
+        colorAttachmentDesc.width = desc.backBufferWidth;
+        colorAttachmentDesc.height = desc.backBufferHeight;
+        defaultFbDesc->addColorAttachmentDesc(colorAttachmentDesc);
+        auto ptr = new D3D11DefaultFrameBuffer(defaultFbDesc, m_Device, m_DeviceContext, m_SwapChain);
+        m_FrameBuffers.emplace_back(ptr);
 
         D3D11_RASTERIZER_DESC rasterizerDesc = {};
         rasterizerDesc.FillMode = D3D11_FILL_SOLID;
@@ -62,8 +72,27 @@ namespace Syrius{
         m_DeviceContext->RSSetState(m_RasterizerState);
     }
 
+    template<typename T>
+    inline void clearVec(std::vector<T>& vec){
+        for (auto& item : vec){
+            item.destroy();
+        }
+    }
+
     D3D11Context::~D3D11Context() {
-        delete m_DefaultFrameBuffer;
+        // every GL object should be released before the context is terminated
+        clearVec(m_ShaderModules);
+        clearVec(m_Shaders);
+        clearVec(m_VertexBuffers);
+        clearVec(m_IndexBuffers);
+        clearVec(m_VertexDescriptions);
+        clearVec(m_Textures2D);
+        clearVec(m_Samplers);
+        clearVec(m_ConstantBuffers);
+        clearVec(m_VertexArrays);
+        clearVec(m_FrameBuffers);
+        clearVec(m_FrameBufferDescriptions);
+
         if (m_SwapChain) {
             m_SwapChain->Release();
         }
@@ -238,12 +267,6 @@ namespace Syrius{
         return m_ConstantBuffers.back().createView();
     }
 
-    ResourceView<FrameBuffer> D3D11Context::createFrameBuffer(const FrameBufferDesc &desc) {
-        auto ptr = new D3D11FrameBuffer(desc, m_Device, m_DeviceContext);
-        m_FrameBuffers.emplace_back(ptr);
-        return m_FrameBuffers.back().createView();
-    }
-
     ResourceView<Texture2D> D3D11Context::createTexture2D(const Texture2DDesc& desc) {
         auto ptr = new D3D11Texture2D(desc, m_Device, m_DeviceContext);
         m_Textures2D.emplace_back(ptr);
@@ -263,6 +286,11 @@ namespace Syrius{
         return m_Samplers.back().createView();
     }
 
+    ResourceView<FrameBuffer> D3D11Context::createFrameBuffer(const ResourceView<FrameBufferDescription> &desc) {
+        auto ptr = new D3D11FrameBuffer(desc, m_Device, m_DeviceContext);
+        m_FrameBuffers.emplace_back(ptr);
+        return m_FrameBuffers.back().createView();
+    }
 
 }
 

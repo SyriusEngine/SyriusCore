@@ -7,62 +7,66 @@
 
 namespace Syrius{
 
-    class D3D11ColorAttachment: public ColorAttachment{
+    class D3D11ColorAttachment : public ColorAttachment {
     public:
-        D3D11ColorAttachment(const ColorAttachmentDesc& desc, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+        D3D11ColorAttachment(const ColorAttachmentDesc &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext);
 
         ~D3D11ColorAttachment() override;
 
+        void bind() override;
+
+        void bindShaderResource(uint32 slot) override;
+
         void clear() override;
 
-        void bind(uint32 slot) override;
+        void setSize(uint32 width, uint32 height) override;
 
-        [[nodiscard]] Image* getData() override;
-
-        void onResize(uint32 width, uint32 height) override;
+        [[nodiscard]] Resource<Image> getData() override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
 
-        [[nodiscard]] ID3D11RenderTargetView* getRenderTargetView() const;
+        [[nodiscard]] ID3D11RenderTargetView *getRenderTargetView() const;
 
     private:
 
         DXGI_FORMAT getFormat(uint32 channelCount);
 
     private:
-        ID3D11Device* m_Device;
-        ID3D11DeviceContext* m_Context;
+        ID3D11Device *m_Device;
+        ID3D11DeviceContext *m_Context;
 
-        ID3D11Texture2D* m_ColorBuffer;
-        ID3D11RenderTargetView* m_RenderTargetView;
-        ID3D11ShaderResourceView* m_BufferView;
-
+        ID3D11Texture2D *m_ColorBuffer;
+        ID3D11RenderTargetView *m_RenderTargetView;
+        ID3D11ShaderResourceView *m_BufferView;
     };
 
-    class D3D11BackBufferColorAttachment: public ColorAttachment{
+    class D3D11DefaultColorAttachment : public ColorAttachment {
     public:
-        D3D11BackBufferColorAttachment(const ColorAttachmentDesc& desc, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* swapChain);
+        D3D11DefaultColorAttachment(const ColorAttachmentDesc& desc, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* swapChain);
 
-        ~D3D11BackBufferColorAttachment() override;
+        ~D3D11DefaultColorAttachment() override;
+
+        void bind() override;
+
+        void bindShaderResource(uint32 slot) override;
 
         void clear() override;
 
-        void bind(uint32 slot) override;
+        void setSize(uint32 width, uint32 height) override;
 
-        [[nodiscard]] Image* getData() override;
-
-        void onResize(uint32 width, uint32 height) override;
+        [[nodiscard]] Resource<Image> getData() override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
 
-        [[nodiscard]] ID3D11RenderTargetView* getRenderTargetView() const;
+        [[nodiscard]] ID3D11RenderTargetView *getRenderTargetView() const;
 
     private:
         ID3D11Device* m_Device;
         ID3D11DeviceContext* m_Context;
         IDXGISwapChain* m_SwapChain;
 
-        ID3D11RenderTargetView* m_BackRenderTarget;
+        ID3D11RenderTargetView* m_RenderTargetView;
+
     };
 
 }

@@ -10,16 +10,45 @@ namespace Syrius{
         m_ActiveContextID = m_ID;
     }
 
+    template<typename T>
+    inline void clearVec(std::vector<T>& vec){
+        for (auto& item : vec){
+            item.destroy();
+        }
+    }
+
     GlContext::~GlContext() {
-        delete m_DefaultFrameBuffer;
+        // every GL object should be destroyed/released before the context is terminated
+        clearVec(m_ShaderModules);
+        clearVec(m_Shaders);
+        clearVec(m_VertexBuffers);
+        clearVec(m_IndexBuffers);
+        clearVec(m_VertexDescriptions);
+        clearVec(m_Textures2D);
+        clearVec(m_Samplers);
+        clearVec(m_ConstantBuffers);
+        clearVec(m_VertexArrays);
+        clearVec(m_FrameBuffers);
+        clearVec(m_FrameBufferDescriptions);
 
         CoreCommand::terminateGlad();
     }
 
-    void GlContext::initGl(const FrameBufferDesc& desc) {
+    void GlContext::initGl(const ContextDesc& desc) {
         CoreCommand::initGlad();
 
-        m_DefaultFrameBuffer = new GlDefaultFramebuffer(desc);
+        auto defaultFbDesc = createFrameBufferDescription();
+        ViewportDesc viewportDesc;
+        viewportDesc.m_Width = desc.backBufferWidth;
+        viewportDesc.m_Height = desc.backBufferHeight;
+        defaultFbDesc->addViewportDesc(viewportDesc);
+        ColorAttachmentDesc colorAttachmentDesc;
+        colorAttachmentDesc.width = desc.backBufferWidth;
+        colorAttachmentDesc.height = desc.backBufferHeight;
+        defaultFbDesc->addColorAttachmentDesc(colorAttachmentDesc);
+
+        auto ptr = new GlDefaultFrameBuffer(defaultFbDesc);
+        m_FrameBuffers.emplace_back(ptr);
     }
 
     std::string GlContext::getAPIVersion() {
@@ -145,12 +174,6 @@ namespace Syrius{
         return m_ConstantBuffers.back().createView();
     }
 
-    ResourceView<FrameBuffer> GlContext::createFrameBuffer(const FrameBufferDesc &desc) {
-        auto ptr = new GlFrameBuffer(desc);
-        m_FrameBuffers.emplace_back(ptr);
-        return m_FrameBuffers.back().createView();
-    }
-
     ResourceView<Texture2D> GlContext::createTexture2D(const Texture2DDesc& desc) {
         auto ptr = new GlTexture2D(desc);
         m_Textures2D.emplace_back(ptr);
@@ -168,6 +191,12 @@ namespace Syrius{
         auto ptr = new GlSampler(desc);
         m_Samplers.emplace_back(ptr);
         return m_Samplers.back().createView();
+    }
+
+    ResourceView<FrameBuffer> GlContext::createFrameBuffer(const ResourceView<FrameBufferDescription> &desc) {
+        auto ptr = new GlFrameBuffer(desc);
+        m_FrameBuffers.emplace_back(ptr);
+        return m_FrameBuffers.back().createView();
     }
 
 }

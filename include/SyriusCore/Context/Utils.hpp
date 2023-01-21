@@ -2,6 +2,7 @@
 
 #include "../Core/SyriusCoreInclude.hpp"
 #include "../Utils/Image.hpp"
+#include "../Utils/Resource.hpp"
 
 namespace Syrius{
 

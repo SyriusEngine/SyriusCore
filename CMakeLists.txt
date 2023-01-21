@@ -4,6 +4,8 @@ project(SyriusCore)
 add_compile_definitions(SR_CORE_DEBUG)
 add_compile_definitions(SR_CORE_EXPORT_DLL)
 
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+
 set(CMAKE_CXX_STANDARD 17)
 
 include_directories(Dependencies/Vulkan/1.3.211.0/Include/)
@@ -29,6 +31,7 @@ if (WIN32)
             src/SyriusCore/Context/OpenGL/Internal/WglContext.cpp
 
             src/SyriusCore/Context/D3D11/D3D11Context.cpp
+            src/SyriusCore/Context/D3D11/D3D11Viewport.cpp
             src/SyriusCore/Context/D3D11/D3D11Utils.cpp
             src/SyriusCore/Context/D3D11/D3D11ShaderModule.cpp
             src/SyriusCore/Context/D3D11/D3D11Shader.cpp
@@ -37,11 +40,10 @@ if (WIN32)
             src/SyriusCore/Context/D3D11/D3D11VertexArray.cpp
             src/SyriusCore/Context/D3D11/D3D11ConstantBuffer.cpp
             src/SyriusCore/Context/D3D11/D3D11Texture2D.cpp
+            src/SyriusCore/Context/D3D11/D3D11Sampler.cpp
             src/SyriusCore/Context/D3D11/D3D11FrameBuffer.cpp
             src/SyriusCore/Context/D3D11/D3D11ColorAttachment.cpp
-            src/SyriusCore/Context/D3D11/D3D11Sampler.cpp
             src/SyriusCore/Context/D3D11/D3D11DepthStencilAttachment.cpp
-
             )
 
 elseif(UNIX)
@@ -111,6 +113,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         ${SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC}
 
         src/SyriusCore/Context/Context.cpp
+        src/SyriusCore/Context/Viewport.cpp
         src/SyriusCore/Context/Utils.cpp
         src/SyriusCore/Context/ShaderModule.cpp
         src/SyriusCore/Context/Shader.cpp
@@ -120,12 +123,14 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/VertexArray.cpp
         src/SyriusCore/Context/Texture2D.cpp
         src/SyriusCore/Context/ConstantBuffer.cpp
+        src/SyriusCore/Context/Sampler.cpp
+        src/SyriusCore/Context/FramebufferDescription.cpp
         src/SyriusCore/Context/FrameBuffer.cpp
         src/SyriusCore/Context/ColorAttachment.cpp
-        src/SyriusCore/Context/Sampler.cpp
         src/SyriusCore/Context/DepthStencilAttachment.cpp
 
         src/SyriusCore/Context/OpenGL/GlContext.cpp
+        src/SyriusCore/Context/OpenGL/GlViewport.cpp
         src/SyriusCore/Context/OpenGL/GlUtils.cpp
         src/SyriusCore/Context/OpenGL/GlShaderModule.cpp
         src/SyriusCore/Context/OpenGL/GlShader.cpp
@@ -134,12 +139,10 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/OpenGL/GlVertexArray.cpp
         src/SyriusCore/Context/OpenGL/GlTexture2D.cpp
         src/SyriusCore/Context/OpenGL/GlConstantBuffer.cpp
+        src/SyriusCore/Context/OpenGL/GlSampler.cpp
         src/SyriusCore/Context/OpenGL/GlFrameBuffer.cpp
         src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp
-        src/SyriusCore/Context/OpenGL/GlSampler.cpp
-        src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp
-
-        )
+        src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp)
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}
@@ -194,7 +197,7 @@ include_directories(/include/)
 include_directories(/glm/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(SyriusCoreDev main.cpp Driver.cpp Driver.hpp)
+add_executable(SyriusCoreDev main.cpp Driver.cpp Driver.hpp Tests/FramebufferTest.cpp Tests/FramebufferTest.hpp)
 if (MSVC)
     target_link_libraries(SyriusCoreDev syrius-core)
 else()

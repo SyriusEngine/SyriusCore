@@ -2,6 +2,7 @@
 
 #include "../../../../include/SyriusCore/Context/FrameBuffer.hpp"
 #include "D3D11Utils.hpp"
+#include "D3D11Viewport.hpp"
 #include "D3D11ColorAttachment.hpp"
 #include "D3D11DepthStencilAttachment.hpp"
 
@@ -9,9 +10,9 @@
 
 namespace Syrius{
 
-    class D3D11FrameBuffer: public FrameBuffer{
+    class D3D11FrameBuffer : public FrameBuffer{
     public:
-        D3D11FrameBuffer(const FrameBufferDesc& desc, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+        explicit D3D11FrameBuffer(const ResourceView<FrameBufferDescription>& desc, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
         ~D3D11FrameBuffer() override;
 
@@ -19,28 +20,19 @@ namespace Syrius{
 
         void unbind() override;
 
-        void clear() override;
-
-        void setPosition(int32 xPos, int32 yPos) override;
-
-        void setSize(uint32 width, uint32 height) override;
-
     private:
         ID3D11Device* m_Device;
         ID3D11DeviceContext* m_DeviceContext;
 
-        D3D11_VIEWPORT m_Viewport;
-
         std::vector<ID3D11RenderTargetView*> m_RenderTargetViews;
         std::vector<ID3D11RenderTargetView*> m_NullableRenderTargetViews;
-        std::vector<ID3D11ShaderResourceView*> m_Nullable;
+        std::vector<ID3D11ShaderResourceView*> m_NullableShaderResourceViews;
         ID3D11DepthStencilView* m_DepthStencilView;
-
     };
 
-    class D3D11DefaultFrameBuffer: public FrameBuffer{
+    class D3D11DefaultFrameBuffer : public FrameBuffer{
     public:
-        D3D11DefaultFrameBuffer(const FrameBufferDesc& desc, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* swapChain);
+        explicit D3D11DefaultFrameBuffer(const ResourceView<FrameBufferDescription>& desc, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* swapChain);
 
         ~D3D11DefaultFrameBuffer() override;
 
@@ -48,24 +40,15 @@ namespace Syrius{
 
         void unbind() override;
 
-        void clear() override;
-
-        void setPosition(int32 xPos, int32 yPos) override;
-
-        void setSize(uint32 width, uint32 height) override;
-
     private:
         ID3D11Device* m_Device;
         ID3D11DeviceContext* m_DeviceContext;
         IDXGISwapChain* m_SwapChain;
 
-        D3D11_VIEWPORT m_Viewport;
-
         ID3D11DepthStencilView* m_DepthStencilView;
 
-        D3D11BackBufferColorAttachment* m_BackRenderTarget;
-        ID3D11RenderTargetView* m_BackRenderTargetView;
-
+        D3D11DefaultColorAttachment* m_ColorAttachment;
+        ID3D11RenderTargetView* m_RenderTargetView;
     };
 
 }

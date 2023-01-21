@@ -16,21 +16,22 @@ namespace Syrius{
         }
     }
 
-    GlDepthStencilAttachment::GlDepthStencilAttachment(const DepthStencilAttachmentDesc &desc)
-    : DepthStencilAttachment(desc),
-      m_GlDepthFunc(getGlComparisonFunc(desc.m_DepthFunc)),
-      m_GlStencilFunc(getGlComparisonFunc(desc.m_StencilFunc)),
-      m_GlStencilFail(getGlStencilFunc(desc.m_StencilFail)),
-      m_GlStencilPass(getGlStencilFunc(desc.m_StencilPass)),
-      m_GlStencilPassDepthFail(getGlStencilFunc(desc.m_StencilPassDepthFail)),
-      m_GlFormat(getGlDepthStencilFormat(desc.m_Format)){
-
+    GlDepthStencilAttachment::GlDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, uint32 framebufferID):
+    DepthStencilAttachment(desc),
+    m_GlDepthFunc(getGlComparisonFunc(desc.depthFunc)),
+    m_GlStencilFunc(getGlComparisonFunc(desc.stencilFunc)),
+    m_GlStencilFail(getGlStencilFunc(desc.stencilFail)),
+    m_GlStencilPass(getGlStencilFunc(desc.stencilPass)),
+    m_GlStencilPassDepthFail(getGlStencilFunc(desc.stencilPassDepthFail)),
+    m_GlFormat(getGlDepthStencilFormat(desc.format)),
+    m_FrameBufferID(framebufferID){
         glCreateRenderbuffers(1, &m_BufferID);
         glNamedRenderbufferStorage(m_BufferID, m_GlFormat, m_Width, m_Height);
     }
 
     GlDepthStencilAttachment::~GlDepthStencilAttachment() {
         glDeleteRenderbuffers(1, &m_BufferID);
+
     }
 
     void GlDepthStencilAttachment::bind() {
@@ -39,143 +40,117 @@ namespace Syrius{
         if (m_EnableDepthTest){
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(m_GlDepthFunc);
-            glDepthMask(!m_DepthBufferReadOnly);
+        }
+        else{
+            glDisable(GL_DEPTH_TEST);
         }
 
         if (m_EnableStencilTest){
             glEnable(GL_STENCIL_TEST);
             glStencilFunc(m_GlStencilFunc, m_ClearStencil, m_StencilMask);
-            glStencilMask(!m_StencilBufferReadOnly);
             glStencilOp(m_GlStencilFail, m_GlStencilPassDepthFail, m_GlStencilPass);
         }
-    }
-
-    void GlDepthStencilAttachment::bindAsTexture(uint32 slot) {
-
+        else{
+            glDisable(GL_STENCIL_TEST);
+        }
     }
 
     void GlDepthStencilAttachment::unbind() {
         glBindRenderbuffer(GL_RENDERBUFFER, 0);
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_STENCIL_TEST);
+    }
 
-        if (m_EnableDepthTest){
-            glDisable(GL_DEPTH_TEST);
-        }
-        if (m_EnableStencilTest){
-            glDisable(GL_STENCIL_TEST);
-        }
+    void GlDepthStencilAttachment::bindShaderResource(uint32 slot) {
+        SR_CORE_WARNING("Read operation requested on depth stencil attachment with creation flag: enableShaderRead = false");
 
     }
 
     void GlDepthStencilAttachment::clear() {
-        glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        if (m_EnableDepthTest){
+            glClearNamedFramebufferfv(m_FrameBufferID, GL_DEPTH, 0, &m_ClearDepth);
+        }
+        if (m_EnableStencilTest){
+            glClearNamedFramebufferuiv(m_FrameBufferID, GL_STENCIL, 0, &m_ClearStencil);
+        }
     }
 
-    void GlDepthStencilAttachment::onResize(uint32 width, uint32 height) {
+    void GlDepthStencilAttachment::setSize(uint32 width, uint32 height) {
         m_Width = width;
         m_Height = height;
         glNamedRenderbufferStorage(m_BufferID, m_GlFormat, m_Width, m_Height);
+
     }
 
-    void GlDepthStencilAttachment::setDepthFunc(SR_COMPARISON_FUNC func) {
-        m_DepthFunc = func;
-        m_GlDepthFunc = getGlComparisonFunc(func);
+    Resource<Image> GlDepthStencilAttachment::getData() {
+        return Resource<Image>();
     }
 
-    void GlDepthStencilAttachment::setDepthBufferReadOnly(bool readOnly) {
-        m_DepthBufferReadOnly = readOnly;
-    }
-
-    void GlDepthStencilAttachment::setStencilFunc(SR_COMPARISON_FUNC func) {
-        m_StencilFunc = func;
-        m_GlStencilFunc = getGlComparisonFunc(func);
-    }
-
-    void GlDepthStencilAttachment::setStencilBufferReadOnly(bool readOnly) {
-        m_StencilBufferReadOnly = readOnly;
-    }
-
-    void GlDepthStencilAttachment::setStencilMask(uint32 mask) {
-        m_StencilMask = mask;
-    }
-
-    uint64 GlDepthStencilAttachment::getIdentifier() {
+    uint64 GlDepthStencilAttachment::getIdentifier() const {
         return m_BufferID;
     }
 
-
-    GlDefaultDepthStencilAttachment::GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc)
-    : DepthStencilAttachment(desc),
-    m_GlDepthFunc(getGlComparisonFunc(desc.m_DepthFunc)),
-    m_GlStencilFunc(getGlComparisonFunc(desc.m_StencilFunc)),
-    m_GlStencilFail(getGlStencilFunc(desc.m_StencilFail)),
-    m_GlStencilPass(getGlStencilFunc(desc.m_StencilPass)),
-    m_GlStencilPassDepthFail(getGlStencilFunc(desc.m_StencilPassDepthFail)){
+    GlDefaultDepthStencilAttachment::GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, uint32 framebufferID):
+    DepthStencilAttachment(desc),
+    m_GlDepthFunc(getGlComparisonFunc(desc.depthFunc)),
+    m_GlStencilFunc(getGlComparisonFunc(desc.stencilFunc)),
+    m_GlStencilFail(getGlStencilFunc(desc.stencilFail)),
+    m_GlStencilPass(getGlStencilFunc(desc.stencilPass)),
+    m_GlStencilPassDepthFail(getGlStencilFunc(desc.stencilPassDepthFail)),
+    m_FrameBufferID(framebufferID){
 
     }
 
-    GlDefaultDepthStencilAttachment::~GlDefaultDepthStencilAttachment() = default;
+    GlDefaultDepthStencilAttachment::~GlDefaultDepthStencilAttachment() {
+
+    }
 
     void GlDefaultDepthStencilAttachment::bind() {
         if (m_EnableDepthTest){
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(m_GlDepthFunc);
-            glDepthMask(!m_DepthBufferReadOnly);
+        }
+        else{
+            glDisable(GL_DEPTH_TEST);
         }
 
         if (m_EnableStencilTest){
             glEnable(GL_STENCIL_TEST);
             glStencilFunc(m_GlStencilFunc, m_ClearStencil, m_StencilMask);
-            glStencilMask(!m_StencilBufferReadOnly);
             glStencilOp(m_GlStencilFail, m_GlStencilPassDepthFail, m_GlStencilPass);
         }
-
-    }
-
-    void GlDefaultDepthStencilAttachment::bindAsTexture(uint32 slot) {
-        SR_CORE_WARNING("OpenGL does not allow reading from the default depth stencil attachment")
-    }
-
-    void GlDefaultDepthStencilAttachment::unbind() {
-        if (m_EnableDepthTest){
-            glDisable(GL_DEPTH_TEST);
-        }
-        if (m_EnableStencilTest){
+        else{
             glDisable(GL_STENCIL_TEST);
         }
     }
 
+    void GlDefaultDepthStencilAttachment::unbind() {
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_STENCIL_TEST);
+    }
+
+    void GlDefaultDepthStencilAttachment::bindShaderResource(uint32 slot) {
+
+    }
+
     void GlDefaultDepthStencilAttachment::clear() {
-        glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        if (m_EnableDepthTest){
+            glClearNamedFramebufferfv(m_FrameBufferID, GL_DEPTH, 0, &m_ClearDepth);
+        }
+        if (m_EnableStencilTest){
+            glClearNamedFramebufferuiv(m_FrameBufferID, GL_STENCIL, 0, &m_ClearStencil);
+        }
     }
 
-    void GlDefaultDepthStencilAttachment::onResize(uint32 width, uint32 height) {
-        m_Width = width;
-        m_Height = height;
+    void GlDefaultDepthStencilAttachment::setSize(uint32 width, uint32 height) {
+
     }
 
-    void GlDefaultDepthStencilAttachment::setDepthFunc(SR_COMPARISON_FUNC func) {
-        m_DepthFunc = func;
-        m_GlDepthFunc = getGlComparisonFunc(func);
+    Resource<Image> GlDefaultDepthStencilAttachment::getData() {
+        return Resource<Image>();
     }
 
-    void GlDefaultDepthStencilAttachment::setDepthBufferReadOnly(bool readOnly) {
-        m_DepthBufferReadOnly = readOnly;
-    }
-
-    void GlDefaultDepthStencilAttachment::setStencilFunc(SR_COMPARISON_FUNC func) {
-        m_StencilFunc = func;
-        m_GlStencilFunc = getGlComparisonFunc(func);
-    }
-
-    void GlDefaultDepthStencilAttachment::setStencilBufferReadOnly(bool readOnly) {
-        m_StencilBufferReadOnly = readOnly;
-    }
-
-    void GlDefaultDepthStencilAttachment::setStencilMask(uint32 mask) {
-        m_StencilMask = mask;
-    }
-
-    uint64 GlDefaultDepthStencilAttachment::getIdentifier() {
+    uint64 GlDefaultDepthStencilAttachment::getIdentifier() const {
         return 0;
     }
 

@@ -5,91 +5,90 @@
 namespace Syrius{
 
     struct SR_CORE_API DepthStencilAttachmentDesc{
-        uint32 m_Width          = SR_DEFAULT_WIDTH;
-        uint32 m_Height         = SR_DEFAULT_HEIGHT;
-        SR_TEXTURE_DATA_FORMAT m_Format = SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8;
+        uint32 width                    = SR_DEFAULT_WIDTH;
+        uint32 height                   = SR_DEFAULT_HEIGHT;
+        SR_TEXTURE_DATA_FORMAT format   = SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8;
 
-        float m_ClearDepth      = 1.0f;
-        uint32 m_ClearStencil   = 0;
+        bool enableShaderRead = true; // enables sampling from this attachment in shaders
 
-        // depth parameters
-        bool m_EnableDepthTest          = false;
-        bool m_DepthBufferReadOnly      = false;
-        SR_COMPARISON_FUNC m_DepthFunc  = SR_COMPARISON_FUNC_LESS;
+        bool enableDepthTest            = true;
+        SR_COMPARISON_FUNC depthFunc    = SR_COMPARISON_FUNC_LESS;
+        float clearDepth                = 1.0f;
 
-        // stencil parameters
-        bool m_EnableStencilTest        = false;
-        bool m_StencilBufferReadOnly    = false;
-        SR_COMPARISON_FUNC m_StencilFunc = SR_COMPARISON_FUNC_ALWAYS;
-        uint32 m_StencilMask            = 0xFFFFFFFF;
-        SR_STENCIL_FUNC m_StencilFail   = SR_STENCIL_FUNC_KEEP;
-        SR_STENCIL_FUNC m_StencilPass   = SR_STENCIL_FUNC_KEEP;
-        SR_STENCIL_FUNC m_StencilPassDepthFail = SR_STENCIL_FUNC_KEEP;
+        bool enableStencilTest                  = true;
+        SR_COMPARISON_FUNC stencilFunc          = SR_COMPARISON_FUNC_ALWAYS;
+        uint32 clearStencil                     = 0;
+        uint32 stencilMask                      = 0xFFFFFFFF;
+        SR_STENCIL_FUNC stencilFail             = SR_STENCIL_FUNC_KEEP;
+        SR_STENCIL_FUNC stencilPass             = SR_STENCIL_FUNC_KEEP;
+        SR_STENCIL_FUNC stencilPassDepthFail    = SR_STENCIL_FUNC_KEEP;
     };
 
     class SR_CORE_API DepthStencilAttachment{
     public:
         explicit DepthStencilAttachment(const DepthStencilAttachmentDesc& desc);
 
-        virtual ~DepthStencilAttachment() = default;
+        virtual ~DepthStencilAttachment();
 
         virtual void bind() = 0;
 
-        virtual void bindAsTexture(uint32 slot) = 0;
-
         virtual void unbind() = 0;
+
+        virtual void bindShaderResource(uint32 slot) = 0;
 
         virtual void clear() = 0;
 
-        virtual void onResize(uint32 width, uint32 height) = 0;
+        virtual void setSize(uint32 width, uint32 height) = 0;
 
-        virtual void setDepthFunc(SR_COMPARISON_FUNC func) = 0;
+        [[nodiscard]] virtual Resource<Image> getData() = 0;
 
-        virtual void setDepthBufferReadOnly(bool readOnly) = 0;
-
-        virtual void setStencilFunc(SR_COMPARISON_FUNC func) = 0;
-
-        virtual void setStencilBufferReadOnly(bool readOnly) = 0;
-
-        virtual void setStencilMask(uint32 mask) = 0;
-
-        [[nodiscard]] virtual uint64 getIdentifier() = 0;
+        [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 
         [[nodiscard]] uint32 getWidth() const;
 
         [[nodiscard]] uint32 getHeight() const;
 
-        [[nodiscard]] float getClearDepth() const;
+        [[nodiscard]] SR_TEXTURE_DATA_FORMAT getFormat() const;
 
-        [[nodiscard]] uint32 getClearStencil() const;
+        [[nodiscard]] bool shaderReadEnabled() const;
 
-        [[nodiscard]] bool isDepthTestEnabled() const;
-
-        [[nodiscard]] bool isDepthBufferReadOnly() const;
+        [[nodiscard]] bool depthTestEnabled() const;
 
         [[nodiscard]] SR_COMPARISON_FUNC getDepthFunc() const;
 
-        [[nodiscard]] bool isStencilTestEnabled() const;
+        [[nodiscard]] float getClearDepth() const;
 
-        [[nodiscard]] bool isStencilBufferReadOnly() const;
+        [[nodiscard]] bool stencilTestEnabled() const;
 
         [[nodiscard]] SR_COMPARISON_FUNC getStencilFunc() const;
 
+        [[nodiscard]] uint32 getClearStencil() const;
+
         [[nodiscard]] uint32 getStencilMask() const;
+
+        [[nodiscard]] SR_STENCIL_FUNC getStencilFail() const;
+
+        [[nodiscard]] SR_STENCIL_FUNC getStencilPass() const;
+
+        [[nodiscard]] SR_STENCIL_FUNC getStencilPassDepthFail() const;
 
     protected:
         uint32 m_Width;
         uint32 m_Height;
-        float m_ClearDepth;
-        uint32 m_ClearStencil;
+        SR_TEXTURE_DATA_FORMAT m_Format;
+        bool m_EnableShaderRead;
 
         bool m_EnableDepthTest;
-        bool m_DepthBufferReadOnly;
         SR_COMPARISON_FUNC m_DepthFunc;
+        float m_ClearDepth;
 
         bool m_EnableStencilTest;
-        bool m_StencilBufferReadOnly;
         SR_COMPARISON_FUNC m_StencilFunc;
+        uint32 m_ClearStencil;
         uint32 m_StencilMask;
+        SR_STENCIL_FUNC m_StencilFail;
+        SR_STENCIL_FUNC m_StencilPass;
+        SR_STENCIL_FUNC m_StencilPassDepthFail;
     };
+
 }

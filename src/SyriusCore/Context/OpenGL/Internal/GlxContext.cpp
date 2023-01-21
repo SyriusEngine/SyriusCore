@@ -33,7 +33,7 @@ namespace Syrius{
 
         glXMakeContextCurrent(m_Display, m_Window, m_Window, m_Context);
 
-        initGl(desc.m_DefaultFrameBufferDesc);
+        initGl(desc);
     }
 
     GlxContext::~GlxContext() {

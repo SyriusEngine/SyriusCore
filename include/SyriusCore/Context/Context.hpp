@@ -4,15 +4,17 @@
 #include "../Utils/Resource.hpp"
 #include "ShaderModule.hpp"
 #include "Shader.hpp"
+#include "Viewport.hpp"
 #include "VertexDescription.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "VertexArray.hpp"
 #include "Texture2D.hpp"
 #include "ConstantBuffer.hpp"
-#include "FrameBuffer.hpp"
-#include "ColorAttachment.hpp"
 #include "Sampler.hpp"
+#include "FramebufferDescription.hpp"
+#include "Framebuffer.hpp"
+#include "ColorAttachment.hpp"
 #include "DepthStencilAttachment.hpp"
 
 namespace Syrius{
@@ -20,14 +22,14 @@ namespace Syrius{
     class SyriusWindow;
 
     struct SR_CORE_API ContextDesc{
-        FrameBufferDesc m_DefaultFrameBufferDesc    = FrameBufferDesc();
-        uint32 m_BackBufferCount    = 1;
         uint8 m_DepthBits          = 24;
         uint8 m_StencilBits        = 8;
         uint8 m_RedBits            = 8;
         uint8 m_BlueBits           = 8;
         uint8 m_GreenBits          = 8;
         uint8 m_AlphaBits          = 8;
+        uint32 backBufferWidth     = 0; // if 0, will be set to window width
+        uint32 backBufferHeight    = 0; // if 0, will be set to window height
         SR_SUPPORTED_API m_API      = SR_API_OPENGL;
     };
 
@@ -53,6 +55,8 @@ namespace Syrius{
 
         [[nodiscard]] bool isVerticalSyncEnabled() const;
 
+        ResourceView<FrameBuffer> getDefaultFrameBuffer();
+
         virtual std::string getAPIVersion() = 0;
 
         virtual std::string getDeviceName() = 0;
@@ -77,46 +81,6 @@ namespace Syrius{
 
         virtual FramebufferSize getFramebufferSize() = 0;
 
-        FrameBuffer* getDefaultFrameBuffer();
-
-        inline void setClearColor(float r, float g, float b, float a){
-            setClearColor(r, g, b, a, m_DefaultFrameBuffer);
-        }
-
-        inline void setClearColor(float r, float g, float b, float a, FrameBuffer *frameBuffer){
-            frameBuffer->getColorAttachment(0)->setClearColor(r, g, b, a);
-        }
-
-        inline void clear(){
-            clear(m_DefaultFrameBuffer);
-        }
-
-        void clear(FrameBuffer* frameBuffer);
-
-        void draw(ResourceView<VertexArray> vao);
-
-        void drawInstanced(ResourceView<VertexArray> vao, uint32 instanceCount);
-
-        inline void onResize(uint32 width, uint32 height){
-            onResize(width, height, m_DefaultFrameBuffer);
-        }
-
-        void onResize(uint32 width, uint32 height, FrameBuffer* frameBuffer);
-
-        void bindDefaultFrameBuffer();
-
-        inline void beginRenderPass(){
-            beginRenderPass(m_DefaultFrameBuffer);
-        }
-
-        void beginRenderPass(FrameBuffer* frameBuffer);
-
-        inline void endRenderPass(){
-            endRenderPass(m_DefaultFrameBuffer);
-        }
-
-        void endRenderPass(FrameBuffer* frameBuffer);
-
         virtual ResourceView<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) = 0;
 
         virtual ResourceView<Shader> createShader(const ShaderDesc& desc) = 0;
@@ -131,13 +95,15 @@ namespace Syrius{
 
         virtual ResourceView<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc& desc) = 0;
 
-        virtual ResourceView<FrameBuffer> createFrameBuffer(const FrameBufferDesc& desc) = 0;
-
         virtual ResourceView<Texture2D> createTexture2D(const Texture2DDesc& desc) = 0;
 
         virtual ResourceView<Texture2D> createTexture2D(const Texture2DImageDesc& desc) = 0;
 
         virtual ResourceView<Sampler> createSampler(const SamplerDesc& desc) = 0;
+
+        ResourceView<FrameBufferDescription> createFrameBufferDescription();
+
+        virtual ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferDescription>& desc) = 0;
 
     protected:
 
@@ -156,9 +122,10 @@ namespace Syrius{
         friend SyriusWindow;
 
     protected:
+        uint32 m_Width;
+        uint32 m_Height;
 
         bool m_VerticalSync;
-        FrameBuffer* m_DefaultFrameBuffer;
 
         std::vector<Resource<ShaderModule>> m_ShaderModules;
         std::vector<Resource<Shader>> m_Shaders;
@@ -167,9 +134,10 @@ namespace Syrius{
         std::vector<Resource<IndexBuffer>> m_IndexBuffers;
         std::vector<Resource<VertexArray>> m_VertexArrays;
         std::vector<Resource<ConstantBuffer>> m_ConstantBuffers;
-        std::vector<Resource<FrameBuffer>> m_FrameBuffers;
         std::vector<Resource<Texture2D>> m_Textures2D;
         std::vector<Resource<Sampler>> m_Samplers;
+        std::vector<Resource<FrameBufferDescription>> m_FrameBufferDescriptions;
+        std::vector<Resource<FrameBuffer>> m_FrameBuffers; // framebuffer at location 0 is the default framebuffer
 
 
     private:

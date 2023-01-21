@@ -6,8 +6,8 @@
 #include <string>
 #include <deque>
 
-#define SR_DEFAULT_WIDTH 800
-#define SR_DEFAULT_HEIGHT 600
+#define SR_DEFAULT_WIDTH 1280
+#define SR_DEFAULT_HEIGHT 720
 
 namespace Syrius {
 

@@ -3,53 +3,46 @@
 
 namespace Syrius{
 
-    FrameBuffer::FrameBuffer(const FrameBufferDesc &desc)
-    : m_Width(desc.m_Width),
-      m_Height(desc.m_Height),
-      m_XPos(desc.m_XPos),
-      m_YPos(desc.m_YPos),
-      m_MinDepth(desc.m_MinDepth),
-      m_MaxDepth(desc.m_MaxDepth),
-      m_DepthStencilAttachment(nullptr){
+    FrameBuffer::FrameBuffer(const ResourceView<FrameBufferDescription> &desc) {
 
     }
 
     FrameBuffer::~FrameBuffer() {
-        for (auto attachment : m_ColorAttachments){
-            delete attachment;
+        for (auto& viewport : m_Viewports){
+            viewport.destroy();
         }
-        delete m_DepthStencilAttachment;
+        for (auto& colorAttachment : m_ColorAttachments){
+            colorAttachment.destroy();
+        }
+        m_DepthStencilAttachment.destroy();
+
     }
 
-    uint32 FrameBuffer::getWidth() const {
-        return m_Width;
+    void FrameBuffer::clear() {
+        for (const auto &attachment: m_ColorAttachments){
+            attachment->clear();
+        }
+        if (m_DepthStencilAttachment.isValid()){
+            m_DepthStencilAttachment->clear();
+        }
     }
 
-    uint32 FrameBuffer::getHeight() const {
-        return m_Height;
+    ResourceView<Viewport> FrameBuffer::getViewport(uint32 index) {
+        SR_CORE_PRECONDITION(m_Viewports.size() > 0, "No viewport was added to the framebuffer");
+        SR_CORE_PRECONDITION(index < m_Viewports.size(), "Index out of bounds for viewport");
+
+        return m_Viewports[index].createView();
     }
 
-    int32 FrameBuffer::getXPos() const {
-        return m_XPos;
+    ResourceView<ColorAttachment> FrameBuffer::getColorAttachment(uint32 index) {
+        SR_CORE_PRECONDITION(m_ColorAttachments.size() > 0, "No color attachment was added to the framebuffer");
+        SR_CORE_PRECONDITION(index < m_ColorAttachments.size(), "Index out of bounds for color attachment");
+
+        return m_ColorAttachments[index].createView();
     }
 
-    int32 FrameBuffer::getYPos() const {
-        return m_YPos;
+    ResourceView<DepthStencilAttachment> FrameBuffer::getDepthStencilAttachment() {
+        return m_DepthStencilAttachment.createView();
     }
-
-    float FrameBuffer::getMinDepth() const {
-        return m_MinDepth;
-    }
-
-    float FrameBuffer::getMaxDepth() const {
-        return m_MaxDepth;
-    }
-
-    ColorAttachment *FrameBuffer::getColorAttachment(uint32 index) const {
-        SR_CORE_PRECONDITION(index < m_ColorAttachments.size(), "Index out of bounds");
-
-        return m_ColorAttachments[index];
-    }
-
 
 }

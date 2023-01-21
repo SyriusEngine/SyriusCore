@@ -70,7 +70,7 @@ namespace Syrius{
 
         std::string saveFileDialog(const std::string& fileName, const std::string& filter) override;
 
-        Context* createContext(const ContextDesc& desc) override;
+        Context* createContext(ContextDesc& desc) override;
 
         [[nodiscard]] const HWND& getHwnd() const;
 

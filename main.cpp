@@ -1,10 +1,10 @@
 #include <iostream>
-#include <thread>
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "Driver.hpp"
+#include "Tests/FramebufferTest.hpp"
 
 using namespace Syrius;
 
@@ -19,8 +19,28 @@ void messageCallback(const Syrius::Message& msg){
     }
 }
 
+int test(){
+    try{
+        syriusCoreInit();
+        setDebugMessageCallback(messageCallback);
+        testFramebufferOpenGL();
+        testFramebufferD3D11();
+        syriusCoreTerminate();
+    } catch (std::exception& e){
+        std::cerr << e.what() << std::endl;
+    } catch (...) {
+        std::cerr << "Unknown Error" << std::endl;
+    }
+    printf("Allocated Memory: %zu\n", getAllocatedMemory());
+    printf("Freed Memory: %zu\n", getFreedMemory());
+    printf("Memory Usage: %zu\n", getMemoryUsage());
+    return 0;
+
+}
+
 
 int main() {
+    return test();
     try{
 
         syriusCoreInit();
@@ -35,20 +55,16 @@ int main() {
 
         auto window = createWindow(wDesc);
         ContextDesc cDesc;
-        cDesc.m_API = Syrius::SR_API_OPENGL;
-        ColorAttachmentDesc caDesc;
-        caDesc.m_Width = 1280;
-        caDesc.m_Height = 720;
-        cDesc.m_DefaultFrameBufferDesc.m_ColorAttachments.push_back(caDesc);
-        cDesc.m_DefaultFrameBufferDesc.m_Width = 1280;
-        cDesc.m_DefaultFrameBufferDesc.m_Height = 720;
+        cDesc.m_API = Syrius::SR_API_D3D11;
 
         auto context = window->createContext(cDesc);
+        context->setVerticalSynchronisation(true);
         window->createImGuiContext();
-        context->setClearColor(0.1, 0.2, 0.3, 1.0);
 
         auto rect = createRectangle();
-        auto shader = loadShader("./Resources/Shaders/GLSL/Basic.vert", "./Resources/Shaders/GLSL/Basic.frag", Syrius::SR_SHADER_CODE_GLSL, context);
+        auto screen = createRectangle();
+        auto shader = loadShader("./Resources/Shaders/HLSL/Basic-vs.hlsl", "./Resources/Shaders/HLSL/Basic-fs.hlsl", Syrius::SR_SHADER_CODE_HLSL, context);
+        auto screenShader = loadShader("./Resources/Shaders/HLSL/Screen-vs.hlsl", "./Resources/Shaders/HLSL/Screen-fs.hlsl", Syrius::SR_SHADER_CODE_HLSL, context);
 
         for (auto& v: rect.vertices){
             v.m_Position[0] += 0.5;
@@ -69,11 +85,13 @@ int main() {
         }
         auto vao2 = loadMesh(rect, shader, context);
 
+        auto screenVAO = loadMesh(screen, screenShader, context);
 
         auto face = createImage("./Resources/Textures/awesomeface.png");
         auto logo = createImage("./Resources/Textures/insta.png");
 
         SamplerDesc splrDesc;
+        splrDesc.m_WrapU = Syrius::SR_TEXTURE_WRAP_MIRROR_REPEAT;
         auto sampler = context->createSampler(splrDesc);
 
         std::vector<ubyte> temp(512 * 1024 * 4);
@@ -88,6 +106,13 @@ int main() {
         auto texture = context->createTexture2D(texDesc);
         texture->setData(face, 0, 0, 512, 512);
         texture->setData(logo, 512, 0, 512, 512);
+
+        auto fbDesc = context->createFrameBufferDescription();
+        ViewportDesc vpDesc;
+        fbDesc->addViewportDesc(vpDesc);
+        ColorAttachmentDesc caDesc;
+        fbDesc->addColorAttachmentDesc(caDesc);
+        auto fb = context->createFrameBuffer(fbDesc);
 
 
 
@@ -114,23 +139,31 @@ int main() {
                 }
             }
 
-            context->clear();
-
-            context->beginRenderPass();
+            fb->bind();
+            fb->clear();
             shader.shaderProgram->bind();
             sampler->bind(0);
             texture->bind(0);
-            context->draw(vao1);
-            context->draw(vao2);
+            vao1->drawBuffers();
+            vao2->drawBuffers();
+            fb->unbind();
 
-            context->endRenderPass();
-
+            context->getDefaultFrameBuffer()->bind();
+            context->getDefaultFrameBuffer()->clear();
+            screenShader.shaderProgram->bind();
+            fb->getColorAttachment(0)->bindShaderResource(0);
+            screenVAO->drawBuffers();
 
             window->onImGuiBegin();
+
+
 
             ImGui::Begin("Hello, world!");
             static char str0[128] = "Hello, world!";
             ImGui::InputText("string", str0, IM_ARRAYSIZE(str0));
+
+            static float move[3] = {0.0f, 0.0f, 0.0f};
+            ImGui::DragFloat3("Move", move, 0.01f);
 
             ImGui::End();
 
@@ -143,10 +176,6 @@ int main() {
 
         syriusCoreTerminate();
 
-        printf("Allocated Memory: %zu\n", getAllocatedMemory());
-        printf("Freed Memory: %zu\n", getFreedMemory());
-        printf("Memory Usage: %zu\n", getMemoryUsage());
-
 
 
     } catch (std::exception& e){
@@ -154,5 +183,10 @@ int main() {
     } catch (...) {
         std::cerr << "Unknown Error" << std::endl;
     }
+
+    printf("Allocated Memory: %zu\n", getAllocatedMemory());
+    printf("Freed Memory: %zu\n", getFreedMemory());
+    printf("Memory Usage: %zu\n", getMemoryUsage());
+
     return 0;
 }

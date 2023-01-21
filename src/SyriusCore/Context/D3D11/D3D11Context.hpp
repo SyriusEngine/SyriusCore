@@ -7,14 +7,16 @@
 
 #include "D3D11ShaderModule.hpp"
 #include "D3D11Shader.hpp"
+#include "D3D11Viewport.hpp"
 #include "D3D11VertexBuffer.hpp"
 #include "D3D11IndexBuffer.hpp"
 #include "D3D11VertexArray.hpp"
 #include "D3D11ConstantBuffer.hpp"
 #include "D3D11Texture2D.hpp"
+#include "D3D11Sampler.hpp"
 #include "D3D11FrameBuffer.hpp"
 #include "D3D11ColorAttachment.hpp"
-#include "D3D11Sampler.hpp"
+#include "D3D11DepthStencilAttachment.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 
@@ -66,13 +68,14 @@ namespace Syrius{
 
         ResourceView<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc& desc) override;
 
-        ResourceView<FrameBuffer> createFrameBuffer(const FrameBufferDesc& desc) override;
-
         ResourceView<Texture2D> createTexture2D(const Texture2DDesc& desc) override;
 
         ResourceView<Texture2D> createTexture2D(const Texture2DImageDesc& desc) override;
 
         ResourceView<Sampler> createSampler(const SamplerDesc& desc) override;
+
+        ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferDescription>& desc) override;
+
     protected:
 
         void createImGuiContext() override;

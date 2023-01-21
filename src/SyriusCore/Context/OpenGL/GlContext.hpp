@@ -4,13 +4,15 @@
 #include "../../Core/CoreCommand.hpp"
 #include "GlShaderModule.hpp"
 #include "GlShader.hpp"
+#include "GlViewport.hpp"
 #include "GlVertexBuffer.hpp"
 #include "GlIndexBuffer.hpp"
 #include "GlVertexArray.hpp"
 #include "GlTexture2D.hpp"
 #include "GlConstantBuffer.hpp"
-#include "GlFrameBuffer.hpp"
 #include "GlSampler.hpp"
+#include "GlFrameBuffer.hpp"
+
 
 namespace Syrius{
 
@@ -62,18 +64,18 @@ namespace Syrius{
 
         ResourceView<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc& desc) override;
 
-        ResourceView<FrameBuffer> createFrameBuffer(const FrameBufferDesc& desc) override;
-
         ResourceView<Texture2D> createTexture2D(const Texture2DDesc& desc) override;
 
         ResourceView<Texture2D> createTexture2D(const Texture2DImageDesc& desc) override;
 
         ResourceView<Sampler> createSampler(const SamplerDesc& desc) override;
 
+        ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferDescription>& desc) override;
+
     protected:
         explicit GlContext(const ContextDesc& desc);
         
-        void initGl(const FrameBufferDesc& desc);
+        void initGl(const ContextDesc& desc);
 
     private:
 

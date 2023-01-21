@@ -303,7 +303,11 @@ namespace Syrius{
         }
     }
 
-    Context* SyriusWindowWin32Impl::createContext(const ContextDesc& desc) {
+    Context* SyriusWindowWin32Impl::createContext(ContextDesc& desc) {
+        if (desc.backBufferWidth == 0 || desc.backBufferHeight == 0){
+            desc.backBufferWidth = m_Width;
+            desc.backBufferHeight = m_Height;
+        }
         switch (desc.m_API) {
             case SR_API_OPENGL:
                 m_Context = new WglContext(m_Hwnd, desc);

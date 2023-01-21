@@ -104,9 +104,8 @@ namespace Syrius{
         }
 
 
-
-        initGl(desc.m_DefaultFrameBufferDesc);
         loadExtensions();
+        initGl(desc);
 
         SR_CORE_POSTCONDITION(m_HardwareDeviceContext, "Failed to create hardware device context")
         SR_CORE_POSTCONDITION(m_Context, "Failed to create context")

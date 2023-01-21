@@ -2,16 +2,24 @@
 
 namespace Syrius{
 
-    ColorAttachment::ColorAttachment(const ColorAttachmentDesc &desc)
-    : m_Width(desc.m_Width),
-    m_Height(desc.m_Height),
-    m_Format(desc.m_Format),
-    m_ClearColor{desc.m_ClearColor[0], desc.m_ClearColor[1], desc.m_ClearColor[2], desc.m_ClearColor[3]}{
+    ColorAttachment::ColorAttachment(const ColorAttachmentDesc &desc):
+    m_Width(desc.width),
+    m_Height(desc.height),
+    m_Format(desc.format),
+    m_ClearColor{desc.clearColor[0], desc.clearColor[1], desc.clearColor[2], desc.clearColor[3]},
+    m_EnableShaderRead(desc.enableShaderRead) {
 
     }
 
     ColorAttachment::~ColorAttachment() {
 
+    }
+
+    void ColorAttachment::setClearColor(float r, float g, float b, float a) {
+        m_ClearColor[0] = r;
+        m_ClearColor[1] = g;
+        m_ClearColor[2] = b;
+        m_ClearColor[3] = a;
     }
 
     uint32 ColorAttachment::getWidth() const {
@@ -26,14 +34,11 @@ namespace Syrius{
         return m_Format;
     }
 
-    const float *ColorAttachment::getClearColor() const {
+    const float* ColorAttachment::getClearColor() const {
         return m_ClearColor;
     }
 
-    void ColorAttachment::setClearColor(float r, float g, float b, float a) {
-        m_ClearColor[0] = r;
-        m_ClearColor[1] = g;
-        m_ClearColor[2] = b;
-        m_ClearColor[3] = a;
+    bool ColorAttachment::shaderReadEnabled() const {
+        return m_EnableShaderRead;
     }
 }
