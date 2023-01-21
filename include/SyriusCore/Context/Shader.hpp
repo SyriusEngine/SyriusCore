@@ -7,8 +7,8 @@
 namespace Syrius{
 
     struct SR_CORE_API ShaderDesc{
-        ResourceView<ShaderModule> m_VertexShader;
-        ResourceView<ShaderModule> m_FragmentShader;
+        ResourceView<ShaderModule> vertexShader;
+        ResourceView<ShaderModule> fragmentShader;
     };
 
     class SR_CORE_API Shader{

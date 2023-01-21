@@ -9,8 +9,8 @@ namespace Syrius{
     m_Device(device),
     m_Context(context),
     m_Buffer(nullptr),
-    m_DxgiDataType(getD3d11DataType(desc.m_DataType)){
-        SR_CORE_PRECONDITION(desc.m_DataType == SR_UINT32 or desc.m_DataType == SR_UINT16, "D3D11 Index buffers only supports 16 and 32 bit integer data types");
+    m_DxgiDataType(getD3d11DataType(desc.dataType)){
+        SR_CORE_PRECONDITION(desc.dataType == SR_UINT32 or desc.dataType == SR_UINT16, "D3D11 Index buffers only supports 16 and 32 bit integer data types");
 
         D3D11_BUFFER_DESC bufferDesc;
         bufferDesc.ByteWidth = m_Size;
@@ -26,7 +26,7 @@ namespace Syrius{
         bufferDesc.StructureByteStride = getTypeSize(m_DataType);
 
         D3D11_SUBRESOURCE_DATA subResourceData;
-        subResourceData.pSysMem = desc.m_Data;
+        subResourceData.pSysMem = desc.data;
         subResourceData.SysMemPitch = 0;
         subResourceData.SysMemSlicePitch = 0;
 

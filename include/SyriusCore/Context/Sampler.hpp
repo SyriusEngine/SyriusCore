@@ -5,16 +5,16 @@
 namespace Syrius{
 
     struct SamplerDesc{
-        SR_TEXTURE_FILTER m_MinFilter   = SR_TEXTURE_FILTER_LINEAR;
-        SR_TEXTURE_FILTER m_MagFilter   = SR_TEXTURE_FILTER_LINEAR;
-        SR_TEXTURE_WRAP m_WrapU  = SR_TEXTURE_WRAP_REPEAT;
-        SR_TEXTURE_WRAP m_WrapV  = SR_TEXTURE_WRAP_REPEAT;
-        SR_TEXTURE_WRAP m_WrapW  = SR_TEXTURE_WRAP_REPEAT;
-        SR_COMPARISON_FUNC m_ComparisonFunc = SR_COMPARISON_FUNC_NEVER;
-        float m_BorderColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-        float m_MinLOD = 0.0f;
-        float m_MaxLOD = 0.0f;
-        float m_LODBias = 0.0f;
+        SR_TEXTURE_FILTER minFilter   = SR_TEXTURE_FILTER_LINEAR;
+        SR_TEXTURE_FILTER magFilter   = SR_TEXTURE_FILTER_LINEAR;
+        SR_TEXTURE_WRAP wrapU  = SR_TEXTURE_WRAP_REPEAT;
+        SR_TEXTURE_WRAP wrapV  = SR_TEXTURE_WRAP_REPEAT;
+        SR_TEXTURE_WRAP wrapW  = SR_TEXTURE_WRAP_REPEAT;
+        SR_COMPARISON_FUNC comparisonFunc = SR_COMPARISON_FUNC_NEVER;
+        float borderColor[4] = {0.0f, 0.0f, 0.0f, 0.0f };
+        float minLOD = 0.0f;
+        float maxLOD = 0.0f;
+        float LODBias = 0.0f;
     };
 
     class Sampler{

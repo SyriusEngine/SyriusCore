@@ -9,11 +9,11 @@ namespace Syrius{
     m_Device(device),
     m_Context(context),
     m_Buffer(nullptr){
-        SR_CORE_PRECONDITION(desc.m_Size > 0, "Constant buffer size must be greater than 0");
-        SR_CORE_PRECONDITION(desc.m_Size % 16 == 0, "Constant buffer size must be a multiple of 16");
-        SR_CORE_PRECONDITION(desc.m_Data != nullptr, "Constant buffer data must not be null");
-        SR_CORE_PRECONDITION(desc.m_BindingIndex <= D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT, "Constant buffer binding index must be less than %i", D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT);
-        SR_CORE_PRECONDITION(!desc.m_BlockName.empty(), "Constant buffer block name must not be empty");
+        SR_CORE_PRECONDITION(desc.size > 0, "Constant buffer size must be greater than 0");
+        SR_CORE_PRECONDITION(desc.size % 16 == 0, "Constant buffer size must be a multiple of 16");
+        SR_CORE_PRECONDITION(desc.data != nullptr, "Constant buffer data must not be null");
+        SR_CORE_PRECONDITION(desc.slot <= D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT, "Constant buffer binding index must be less than %i", D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT);
+        SR_CORE_PRECONDITION(!desc.name.empty(), "Constant buffer block name must not be empty");
 
         D3D11_BUFFER_DESC bufferDesc;
         bufferDesc.ByteWidth = m_Size;
@@ -29,7 +29,7 @@ namespace Syrius{
         bufferDesc.StructureByteStride = 0;
 
         D3D11_SUBRESOURCE_DATA subResourceData;
-        subResourceData.pSysMem = desc.m_Data;
+        subResourceData.pSysMem = desc.data;
         subResourceData.SysMemPitch = 0;
         subResourceData.SysMemSlicePitch = 0;
 

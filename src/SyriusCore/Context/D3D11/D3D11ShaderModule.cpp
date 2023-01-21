@@ -10,16 +10,16 @@ namespace Syrius{
     m_Context(context),
     m_ShaderBlob(nullptr),
     m_Flags(D3DCOMPILE_ENABLE_STRICTNESS){
-        SR_CORE_PRECONDITION(desc.m_CodeType == SR_SHADER_CODE_HLSL, "D3D11 shader module only supports HLSL code");
+        SR_CORE_PRECONDITION(desc.codeType == SR_SHADER_CODE_HLSL, "D3D11 shader module only supports HLSL code");
 
 #if defined(SR_CORE_DEBUG)
         m_Flags |= D3DCOMPILE_DEBUG | D3DCOMPILE_WARNINGS_ARE_ERRORS;
 #else
         m_Flags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
 #endif
-        std::string shaderCode = desc.m_Code;
-        if (desc.m_LoadType == SR_LOAD_FROM_FILE){
-            shaderCode = readFile(desc.m_Code);
+        std::string shaderCode = desc.code;
+        if (desc.loadType == SR_LOAD_FROM_FILE){
+            shaderCode = readFile(desc.code);
         }
 
         ID3DBlob* exceptionBlob = nullptr;
@@ -29,16 +29,16 @@ namespace Syrius{
             nullptr,
             nullptr,
             nullptr,
-            desc.m_EntryPoint.c_str(),
-            getShaderVersion(desc.m_Type).c_str(),
+            desc.entryPoint.c_str(),
+            getShaderVersion(desc.shaderType).c_str(),
             m_Flags,
             0,
             &m_ShaderBlob,
             &exceptionBlob));
         if (exceptionBlob){
             auto msg = static_cast<char*>(exceptionBlob->GetBufferPointer());
-            if (desc.m_LoadType == SR_LOAD_FROM_FILE){
-                SR_CORE_WARNING("D3D11ShaderModule failed to compile shader, found in file: %s\n, details: %s", desc.m_Code.c_str(), msg);
+            if (desc.loadType == SR_LOAD_FROM_FILE){
+                SR_CORE_WARNING("D3D11ShaderModule failed to compile shader, found in file: %s\n, details: %s", desc.code.c_str(), msg);
             }
             else{
                 SR_CORE_WARNING("D3D11ShaderModule failed to compile shader, details: %s", msg);

@@ -20,12 +20,12 @@ namespace Syrius{
             std::vector<byte> formatBuffer(formatSize + 1);
             std::snprintf(reinterpret_cast<char*>(formatBuffer.data()), formatSize + 1, message.c_str(), args...);
             Message msg;
-            msg.m_Severity = severity;
-            msg.m_Type = type;
-            msg.m_Function = function;
-            msg.m_File = file;
-            msg.m_Line = line;
-            msg.m_Message = std::string(reinterpret_cast<char*>(formatBuffer.data()));
+            msg.severity = severity;
+            msg.messageType = type;
+            msg.function = function;
+            msg.file = file;
+            msg.line = line;
+            msg.message = std::string(reinterpret_cast<char*>(formatBuffer.data()));
             if (m_MessageHandler){
                 m_MessageHandler(msg);
             }

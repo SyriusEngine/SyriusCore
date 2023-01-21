@@ -22,15 +22,15 @@ namespace Syrius{
     class SyriusWindow;
 
     struct SR_CORE_API ContextDesc{
-        uint8 m_DepthBits          = 24;
-        uint8 m_StencilBits        = 8;
-        uint8 m_RedBits            = 8;
-        uint8 m_BlueBits           = 8;
-        uint8 m_GreenBits          = 8;
-        uint8 m_AlphaBits          = 8;
-        uint32 backBufferWidth     = 0; // if 0, will be set to window width
-        uint32 backBufferHeight    = 0; // if 0, will be set to window height
-        SR_SUPPORTED_API m_API      = SR_API_OPENGL;
+        uint8 depthBits        = 24;
+        uint8 stencilBits      = 8;
+        uint8 redBits          = 8;
+        uint8 blueBits         = 8;
+        uint8 greenBits        = 8;
+        uint8 alphaBits        = 8;
+        uint32 backBufferWidth = 0; // if 0, will be set to window width
+        uint32 backBufferHeight= 0; // if 0, will be set to window height
+        SR_SUPPORTED_API api   = SR_API_OPENGL;
     };
 
     struct SR_CORE_API FramebufferSize{
@@ -104,6 +104,8 @@ namespace Syrius{
         ResourceView<FrameBufferDescription> createFrameBufferDescription();
 
         virtual ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferDescription>& desc) = 0;
+
+        void onResize(uint32 width, uint32 height);
 
     protected:
 

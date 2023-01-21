@@ -46,8 +46,8 @@ namespace Syrius{
 
         auto defaultFbDesc = createFrameBufferDescription();
         ViewportDesc viewportDesc;
-        viewportDesc.m_Width = desc.backBufferWidth;
-        viewportDesc.m_Height = desc.backBufferHeight;
+        viewportDesc.width = desc.backBufferWidth;
+        viewportDesc.height = desc.backBufferHeight;
         defaultFbDesc->addViewportDesc(viewportDesc);
         ColorAttachmentDesc colorAttachmentDesc;
         colorAttachmentDesc.width = desc.backBufferWidth;
@@ -241,7 +241,7 @@ namespace Syrius{
 
     ResourceView<VertexArray> D3D11Context::createVertexArray(const VertexArrayDesc &desc) {
         VertexArray* ptr;
-        if (!desc.m_IndexBuffer.isValid()) {
+        if (!desc.indexBuffer.isValid()) {
             ptr =  new D3D11VertexArrayIndexed(desc, m_Device, m_DeviceContext);
         }
         else {
@@ -253,7 +253,7 @@ namespace Syrius{
 
     ResourceView<ConstantBuffer> D3D11Context::createConstantBuffer(const ConstantBufferDesc &desc) {
         ConstantBuffer* ptr;
-        auto shaderStage = desc.m_ShaderStage;
+        auto shaderStage = desc.shaderStage;
         switch (shaderStage) {
             case SR_SHADER_VERTEX:      ptr = new D3D11ConstantBufferVertex(desc, m_Device, m_DeviceContext); break;
             case SR_SHADER_FRAGMENT:    ptr = new D3D11ConstantBufferPixel(desc, m_Device, m_DeviceContext); break;

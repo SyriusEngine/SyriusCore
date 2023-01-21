@@ -7,8 +7,8 @@ namespace Syrius{
     m_ShaderID(0){
         m_ShaderID = glCreateProgram();
 
-        glAttachShader(m_ShaderID, desc.m_VertexShader->getIdentifier());
-        glAttachShader(m_ShaderID, desc.m_FragmentShader->getIdentifier());
+        glAttachShader(m_ShaderID, desc.vertexShader->getIdentifier());
+        glAttachShader(m_ShaderID, desc.fragmentShader->getIdentifier());
 
         int32 success;
         char infoLog[512];

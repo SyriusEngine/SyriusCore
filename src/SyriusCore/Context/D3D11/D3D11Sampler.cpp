@@ -10,19 +10,19 @@ namespace Syrius{
       m_Device(device){
 
         D3D11_SAMPLER_DESC samplerDesc = {};
-        samplerDesc.Filter = getD3d11TextureFilter(desc.m_MinFilter, desc.m_MagFilter);
-        samplerDesc.AddressU = getD3d11TextureAddressMode(desc.m_WrapU);
-        samplerDesc.AddressV = getD3d11TextureAddressMode(desc.m_WrapV);
-        samplerDesc.AddressW = getD3d11TextureAddressMode(desc.m_WrapU); // D3D11 expects this field to be filled in, even if it is not used
-        samplerDesc.MipLODBias = desc.m_LODBias;
+        samplerDesc.Filter = getD3d11TextureFilter(desc.minFilter, desc.magFilter);
+        samplerDesc.AddressU = getD3d11TextureAddressMode(desc.wrapU);
+        samplerDesc.AddressV = getD3d11TextureAddressMode(desc.wrapV);
+        samplerDesc.AddressW = getD3d11TextureAddressMode(desc.wrapU); // D3D11 expects this field to be filled in, even if it is not used
+        samplerDesc.MipLODBias = desc.LODBias;
         samplerDesc.MaxAnisotropy = 1;
-        samplerDesc.ComparisonFunc = getD3d11ComparisonFunc(desc.m_ComparisonFunc);
-        samplerDesc.BorderColor[0] = desc.m_BorderColor[0];
-        samplerDesc.BorderColor[1] = desc.m_BorderColor[1];
-        samplerDesc.BorderColor[2] = desc.m_BorderColor[2];
-        samplerDesc.BorderColor[3] = desc.m_BorderColor[3];
-        samplerDesc.MinLOD = desc.m_MinLOD;
-        samplerDesc.MaxLOD = desc.m_MaxLOD;
+        samplerDesc.ComparisonFunc = getD3d11ComparisonFunc(desc.comparisonFunc);
+        samplerDesc.BorderColor[0] = desc.borderColor[0];
+        samplerDesc.BorderColor[1] = desc.borderColor[1];
+        samplerDesc.BorderColor[2] = desc.borderColor[2];
+        samplerDesc.BorderColor[3] = desc.borderColor[3];
+        samplerDesc.MinLOD = desc.minLOD;
+        samplerDesc.MaxLOD = desc.maxLOD;
         SR_CORE_D3D11_CALL(m_Device->CreateSamplerState(&samplerDesc, &m_Sampler));
 
     }

@@ -19,23 +19,23 @@ namespace Syrius{
             registerClass();
         }
 
-        DWORD winStyles = decodeWindowStyle(desc.m_Style);
-        DWORD exWinStyles = decodeExtendedWindowStyle(desc.m_Style);
+        DWORD winStyles = decodeWindowStyle(desc.style);
+        DWORD exWinStyles = decodeExtendedWindowStyle(desc.style);
 
         // current window info (used when enabling fullscreen for this window)
-        RECT rect = {0, 0, static_cast<LONG>(desc.m_Width), static_cast<LONG>(desc.m_Height)};
+        RECT rect = {0, 0, static_cast<LONG>(desc.width), static_cast<LONG>(desc.height)};
         m_SavedWindowInfo.m_Rect = rect;
         m_SavedWindowInfo.m_Style = winStyles;
         m_SavedWindowInfo.m_ExStyle = exWinStyles;
         m_SavedWindowInfo.m_IsMaximized = false;
 
-        auto wTitle = stringToWideString(desc.m_Title);
+        auto wTitle = stringToWideString(desc.title);
         m_Hwnd = CreateWindowExW(exWinStyles,
                                  s_SyriusWindowClass,
                                  wTitle.c_str(),
                                  winStyles,
-                                 desc.m_PosX, desc.m_PosY,
-                                 desc.m_Width, desc.m_Height,
+                                 desc.xPos, desc.yPos,
+                                 desc.width, desc.height,
                                  nullptr, nullptr,
                                  GetModuleHandleW(nullptr),
                                  this);
@@ -308,7 +308,7 @@ namespace Syrius{
             desc.backBufferWidth = m_Width;
             desc.backBufferHeight = m_Height;
         }
-        switch (desc.m_API) {
+        switch (desc.api) {
             case SR_API_OPENGL:
                 m_Context = new WglContext(m_Hwnd, desc);
                 return m_Context;
@@ -383,6 +383,9 @@ namespace Syrius{
                     m_Height = newHeight;
                     WindowResizedEvent event(newWidth, newHeight);
                     dispatchEvent(event);
+                    if (m_Context != nullptr){
+                        m_Context->onResize(newWidth, newHeight);
+                    }
                 }
                 break;
             }

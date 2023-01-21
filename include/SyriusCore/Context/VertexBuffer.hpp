@@ -7,10 +7,10 @@
 namespace Syrius{
 
     struct SR_CORE_API VertexBufferDesc{
-        const void* m_Data              = nullptr;
-        uint32 m_Count                  = 0;
-        SR_BUFFER_TYPE m_Type           = SR_BUFFER_DEFAULT;
-        ResourceView<VertexDescription> m_Layout;
+        const void* data              = nullptr;
+        uint32 count                  = 0;
+        SR_BUFFER_TYPE type           = SR_BUFFER_DEFAULT;
+        ResourceView<VertexDescription> layout;
     };
 
     class SR_CORE_API VertexBuffer{

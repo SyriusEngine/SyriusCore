@@ -14,7 +14,7 @@ namespace Syrius{
     m_ImGuiContext(nullptr){
         m_HardwareDeviceContext = GetDC(m_Hwnd);
 
-        uint8_t pixelType = desc.m_RedBits + desc.m_GreenBits + desc.m_BlueBits + desc.m_AlphaBits;
+        uint8_t pixelType = desc.redBits + desc.greenBits + desc.blueBits + desc.alphaBits;
 
         DWORD pixelFormatFlags = PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_DOUBLEBUFFER;
         PIXELFORMATDESCRIPTOR pixelDesc = {
@@ -23,21 +23,21 @@ namespace Syrius{
                 pixelFormatFlags,
                 pixelType,
                 0,
-                desc.m_RedBits,
+                desc.redBits,
                 0,
-                desc.m_GreenBits,
+                desc.greenBits,
                 0,
-                desc.m_BlueBits,
+                desc.blueBits,
                 0,
-                desc.m_AlphaBits,
-                0,
-                0,
+                desc.alphaBits,
                 0,
                 0,
                 0,
                 0,
-                desc.m_DepthBits,
-                desc.m_StencilBits,
+                0,
+                0,
+                desc.depthBits,
+                desc.stencilBits,
                 PFD_MAIN_PLANE,
                 0,
                 0,
@@ -71,8 +71,8 @@ namespace Syrius{
 #endif
                             WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
                             WGL_COLOR_BITS_ARB, pixelType,
-                            WGL_DEPTH_BITS_ARB, desc.m_DepthBits,
-                            WGL_STENCIL_BITS_ARB, desc.m_StencilBits,
+                            WGL_DEPTH_BITS_ARB, desc.depthBits,
+                            WGL_STENCIL_BITS_ARB, desc.stencilBits,
                             0, // End
                     };
 

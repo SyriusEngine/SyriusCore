@@ -6,11 +6,11 @@ namespace Syrius{
     uint32 SyriusWindow::m_ImGuiInstances = 0;
 
     SyriusWindow::SyriusWindow(const WindowDesc &desc)
-    : m_PosX(desc.m_PosX),
-      m_PosY(desc.m_PosY),
-      m_Width(desc.m_Width),
-      m_Height(desc.m_Height),
-      m_Title(desc.m_Title),
+    : m_PosX(desc.xPos),
+      m_PosY(desc.yPos),
+      m_Width(desc.width),
+      m_Height(desc.height),
+      m_Title(desc.title),
       m_Open(false),
       m_Focused(false),
       m_Moving(false),

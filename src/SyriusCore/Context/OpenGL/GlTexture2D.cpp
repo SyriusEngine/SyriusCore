@@ -12,8 +12,8 @@ namespace Syrius{
 
         glTextureStorage2D(m_TextureID, 1, m_GlInternalFormat, m_Width, m_Height);
         // it is possible to create an empty texture. If so, skip following call
-        if (desc.m_Data != nullptr){
-            glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlFormat, m_GlDataType, desc.m_Data);
+        if (desc.data != nullptr){
+            glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlFormat, m_GlDataType, desc.data);
         }
         glGenerateTextureMipmap(m_TextureID);
 

@@ -5,10 +5,10 @@
 namespace Syrius{
 
     struct SR_CORE_API IndexBufferDesc{
-        const void* m_Data      = nullptr;
-        uint32 m_Count          = 0;
-        SR_BUFFER_TYPE m_Type   = SR_BUFFER_DEFAULT;
-        SR_DATA_TYPE m_DataType = SR_UINT32;
+        const void* data      = nullptr;
+        uint32 count          = 0;
+        SR_BUFFER_TYPE type   = SR_BUFFER_DEFAULT;
+        SR_DATA_TYPE dataType = SR_UINT32;
     };
 
     class SR_CORE_API IndexBuffer{

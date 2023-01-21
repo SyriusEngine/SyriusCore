@@ -7,19 +7,19 @@ namespace Syrius{
       m_SamplerID(0){
         glCreateSamplers(1, &m_SamplerID);
 
-        glSamplerParameteri(m_SamplerID, GL_TEXTURE_WRAP_S, getGlTextureWrap(desc.m_WrapU));
-        glSamplerParameteri(m_SamplerID, GL_TEXTURE_WRAP_T, getGlTextureWrap(desc.m_WrapV));
-        glSamplerParameteri(m_SamplerID, GL_TEXTURE_WRAP_R, getGlTextureWrap(desc.m_WrapW));
+        glSamplerParameteri(m_SamplerID, GL_TEXTURE_WRAP_S, getGlTextureWrap(desc.wrapU));
+        glSamplerParameteri(m_SamplerID, GL_TEXTURE_WRAP_T, getGlTextureWrap(desc.wrapV));
+        glSamplerParameteri(m_SamplerID, GL_TEXTURE_WRAP_R, getGlTextureWrap(desc.wrapW));
 
-        glSamplerParameteri(m_SamplerID, GL_TEXTURE_MIN_FILTER, getGlTextureFilter(desc.m_MinFilter));
-        glSamplerParameteri(m_SamplerID, GL_TEXTURE_MAG_FILTER, getGlTextureFilter(desc.m_MagFilter));
+        glSamplerParameteri(m_SamplerID, GL_TEXTURE_MIN_FILTER, getGlTextureFilter(desc.minFilter));
+        glSamplerParameteri(m_SamplerID, GL_TEXTURE_MAG_FILTER, getGlTextureFilter(desc.magFilter));
 
-        glSamplerParameterf(m_SamplerID, GL_TEXTURE_MIN_LOD, desc.m_MinLOD);
-        glSamplerParameterf(m_SamplerID, GL_TEXTURE_MAX_LOD, desc.m_MaxLOD);
-        glSamplerParameterf(m_SamplerID, GL_TEXTURE_LOD_BIAS, desc.m_LODBias);
+        glSamplerParameterf(m_SamplerID, GL_TEXTURE_MIN_LOD, desc.minLOD);
+        glSamplerParameterf(m_SamplerID, GL_TEXTURE_MAX_LOD, desc.maxLOD);
+        glSamplerParameterf(m_SamplerID, GL_TEXTURE_LOD_BIAS, desc.LODBias);
 
-        glSamplerParameterfv(m_SamplerID, GL_TEXTURE_BORDER_COLOR, desc.m_BorderColor);
-        glSamplerParameteri(m_SamplerID, GL_TEXTURE_COMPARE_FUNC, getGlComparisonFunc(desc.m_ComparisonFunc));
+        glSamplerParameterfv(m_SamplerID, GL_TEXTURE_BORDER_COLOR, desc.borderColor);
+        glSamplerParameteri(m_SamplerID, GL_TEXTURE_COMPARE_FUNC, getGlComparisonFunc(desc.comparisonFunc));
     }
 
     GlSampler::~GlSampler() {

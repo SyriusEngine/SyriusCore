@@ -39,8 +39,8 @@ namespace Syrius{
 
         auto defaultFbDesc = createFrameBufferDescription();
         ViewportDesc viewportDesc;
-        viewportDesc.m_Width = desc.backBufferWidth;
-        viewportDesc.m_Height = desc.backBufferHeight;
+        viewportDesc.width = desc.backBufferWidth;
+        viewportDesc.height = desc.backBufferHeight;
         defaultFbDesc->addViewportDesc(viewportDesc);
         ColorAttachmentDesc colorAttachmentDesc;
         colorAttachmentDesc.width = desc.backBufferWidth;
@@ -158,7 +158,7 @@ namespace Syrius{
 
     ResourceView<VertexArray> GlContext::createVertexArray(const VertexArrayDesc &desc) {
         VertexArray* ptr;
-        if (desc.m_IndexBuffer.isValid()) {
+        if (desc.indexBuffer.isValid()) {
             ptr =  new GlVertexArrayIndexed(desc);
         }
         else {

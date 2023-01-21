@@ -3,10 +3,10 @@
 namespace Syrius{
 
     void defaultMessageHandler(const Message& msg){
-        std::string message = "[Syrius: " + msg.m_Function + "]: severity = " + getMessageSeverityString(msg.m_Severity) + ", type = " +
-                              getMessageTypeString(msg.m_Type) + "\n";
-        message += "File = " + msg.m_File + ", line = " + std::to_string(msg.m_Line) + "\n";
-        message += "Message = " + msg.m_Message + "\n";
+        std::string message = "[Syrius: " + msg.function + "]: severity = " + getMessageSeverityString(msg.severity) + ", type = " +
+                              getMessageTypeString(msg.messageType) + "\n";
+        message += "File = " + msg.file + ", line = " + std::to_string(msg.line) + "\n";
+        message += "Message = " + msg.message + "\n";
         std::cerr << message;
         std::cerr << "\n\n--------------------------------------------------------------------------------\n";
     }
@@ -188,12 +188,12 @@ namespace Syrius{
             m_DxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, message, reinterpret_cast<SIZE_T *>(&messageLength));
 
             Message msgStruct;
-            msgStruct.m_Type = SR_CORE_MESSAGE_DXGI;
-            msgStruct.m_Severity = getSrMessageSeverity(message->Severity);
-            msgStruct.m_Message = "Code = " + std::to_string(message->ID) + ", Category = " + getDxgiCategoryAsString(message->Category) + ",\n message = " + std::string(message->pDescription);;
-            msgStruct.m_Function = "DXGI_DEBUG_ALL";
-            msgStruct.m_File = "";
-            msgStruct.m_Line = 0;
+            msgStruct.type = SR_CORE_MESSAGE_DXGI;
+            msgStruct.severity = getSrMessageSeverity(message->Severity);
+            msgStruct.message = "Code = " + std::to_string(message->ID) + ", Category = " + getDxgiCategoryAsString(message->Category) + ",\n message = " + std::string(message->pDescription);;
+            msgStruct.function = "DXGI_DEBUG_ALL";
+            msgStruct.file = "";
+            msgStruct.line = 0;
             m_MessageHandler(msgStruct);
 
         }
@@ -206,12 +206,12 @@ namespace Syrius{
         char buffer[1024];
         XGetErrorText(display, event->error_code, buffer, sizeof(buffer));
         Message msgStruct;
-        msgStruct.m_Type = SR_CORE_MESSAGE_X11;
-        msgStruct.m_Severity = SR_CORE_MESSAGE_SEVERITY_MEDIUM;
-        msgStruct.m_Message = buffer;
-        msgStruct.m_Function = "X11";
-        msgStruct.m_File = "";
-        msgStruct.m_Line = 0;
+        msgStruct.type = SR_CORE_MESSAGE_X11;
+        msgStruct.severity = SR_CORE_MESSAGE_SEVERITY_MEDIUM;
+        msgStruct.message = buffer;
+        msgStruct.function = "X11";
+        msgStruct.file = "";
+        msgStruct.line = 0;
         m_MessageHandler(msgStruct);
     }
 

@@ -10,9 +10,9 @@ namespace Syrius{
     m_Context(context),
     m_Texture(nullptr),
     m_TextureView(nullptr){
-        SR_CORE_PRECONDITION(desc.m_Data != nullptr, "Texture data must not be null");
+        SR_CORE_PRECONDITION(desc.data != nullptr, "Texture data must not be null");
 
-        auto channelCount = getTextureDataChannelCount(desc.m_Format);
+        auto channelCount = getTextureDataChannelCount(desc.format);
         if (channelCount == 3){
             SR_CORE_EXCEPTION("D3D11 does not support 3 channel textures, please supply data in format with 1, 2 or 4 channels");
         }
@@ -32,7 +32,7 @@ namespace Syrius{
 
         D3D11_SUBRESOURCE_DATA subresourceData = { 0 };
         subresourceData.SysMemPitch = m_Width * (sizeof(ubyte) * channelCount);
-        subresourceData.pSysMem = desc.m_Data;
+        subresourceData.pSysMem = desc.data;
 
         SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, &subresourceData, &m_Texture));
 

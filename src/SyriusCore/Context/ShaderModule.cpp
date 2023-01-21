@@ -4,8 +4,8 @@
 namespace Syrius{
 
     ShaderModule::ShaderModule(const ShaderModuleDesc& desc)
-    : m_ShaderType(desc.m_Type),
-    m_EntryPoint(desc.m_EntryPoint){
+    : m_ShaderType(desc.shaderType),
+    m_EntryPoint(desc.entryPoint){
 
     }
 

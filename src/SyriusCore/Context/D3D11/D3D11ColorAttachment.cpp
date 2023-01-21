@@ -4,14 +4,13 @@
 
 namespace Syrius {
 
-    D3D11ColorAttachment::D3D11ColorAttachment(const ColorAttachmentDesc &desc, ID3D11Device *device,
-                                               ID3D11DeviceContext *deviceContext) :
-            ColorAttachment(desc),
-            m_Device(device),
-            m_Context(deviceContext),
-            m_ColorBuffer(nullptr),
-            m_RenderTargetView(nullptr),
-            m_BufferView(nullptr) {
+    D3D11ColorAttachment::D3D11ColorAttachment(const ColorAttachmentDesc &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext) :
+    ColorAttachment(desc),
+    m_Device(device),
+    m_Context(deviceContext),
+    m_ColorBuffer(nullptr),
+    m_RenderTargetView(nullptr),
+    m_BufferView(nullptr) {
         SR_CORE_PRECONDITION(desc.format != SR_TEXTURE_DATA_FORMAT_DEPTH_16 and
                              desc.format != SR_TEXTURE_DATA_FORMAT_DEPTH_24 and
                              desc.format != SR_TEXTURE_DATA_FORMAT_DEPTH_32 and
@@ -119,11 +118,13 @@ namespace Syrius {
     DXGI_FORMAT D3D11ColorAttachment::getFormat(uint32 channelCount) {
         switch (channelCount) {
             case 1:
-                return DXGI_FORMAT_R8_UNORM;
+                return DXGI_FORMAT_R32_FLOAT;
             case 2:
-                return DXGI_FORMAT_R8G8_UNORM;
+                return DXGI_FORMAT_R32G32_FLOAT;
+            case 3:
+                return DXGI_FORMAT_R32G32B32_FLOAT;
             case 4:
-                return DXGI_FORMAT_R8G8B8A8_UNORM;
+                return DXGI_FORMAT_R32G32B32A32_FLOAT;
             default: {
                 SR_CORE_WARNING("Unknown channel count: " + std::to_string(channelCount));
                 return DXGI_FORMAT_R8G8B8A8_UNORM;

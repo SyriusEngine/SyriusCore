@@ -8,11 +8,11 @@
 namespace Syrius{
 
     struct SR_CORE_API Texture2DDesc{
-        uint32 m_Width          = 0;
-        uint32 m_Height         = 0;
-        ResourceView<Sampler> m_Sampler;
-        SR_TEXTURE_DATA_FORMAT m_Format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8;
-        const void* m_Data            = nullptr;
+        uint32 width          = 0;
+        uint32 height         = 0;
+        ResourceView<Sampler> sampler;
+        SR_TEXTURE_DATA_FORMAT format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8;
+        const void* data            = nullptr;
 
     };
 

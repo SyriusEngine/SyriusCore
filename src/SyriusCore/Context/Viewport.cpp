@@ -3,12 +3,13 @@
 namespace Syrius{
 
     Viewport::Viewport(const ViewportDesc &desc):
-    m_Width(desc.m_Width),
-    m_Height(desc.m_Height),
-    m_XPos(desc.m_XPos),
-    m_YPos(desc.m_YPos),
-    m_MinDepth(desc.m_MinDepth),
-    m_MaxDepth(desc.m_MaxDepth) {
+    m_Width(desc.width),
+    m_Height(desc.height),
+    m_XPos(desc.xPos),
+    m_YPos(desc.yPos),
+    m_MinDepth(desc.minDepth),
+    m_MaxDepth(desc.maxDepth),
+    m_EnableAutoResize(desc.enableAutoResize){
 
     }
 
@@ -56,6 +57,12 @@ namespace Syrius{
 
     float Viewport::getMaxDepth() const {
         return m_MaxDepth;
+    }
+
+    void Viewport::onResize(uint32 width, uint32 height) {
+        if(m_EnableAutoResize){
+            setSize(width, height);
+        }
     }
 
 }

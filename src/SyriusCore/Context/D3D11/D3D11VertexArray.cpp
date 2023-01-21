@@ -9,27 +9,27 @@ namespace Syrius{
     m_Device(device),
     m_Context(context),
     m_InputLayout(nullptr),
-    m_D3d11DrawMode(getD3d11DrawMode(desc.m_DrawMode)){
+    m_D3d11DrawMode(getD3d11DrawMode(desc.drawMode)){
         std::vector<D3D11_INPUT_ELEMENT_DESC> elements;
 
         uint32 index = 0;
         uint32 offset = 0;
         for (const auto& attr: m_VertexBuffer->getVertexDescription()->getAttributes()){
             D3D11_INPUT_ELEMENT_DESC element;
-            element.SemanticName = attr.m_Name.c_str();
+            element.SemanticName = attr.name.c_str();
             element.SemanticIndex = 0;
-            element.Format = getD3d11ScalarType(attr.m_Type);
+            element.Format = getD3d11ScalarType(attr.type);
             element.InputSlot = 0;
             element.AlignedByteOffset = offset;
             element.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
             element.InstanceDataStepRate = 0;
 
             elements.push_back(element);
-            offset += attr.m_Size;
+            offset += attr.size;
             index++;
         }
 
-        auto vertexShaderBlob = reinterpret_cast<ID3DBlob*>(desc.m_VertexShader->getIdentifier());
+        auto vertexShaderBlob = reinterpret_cast<ID3DBlob*>(desc.vertexShader->getIdentifier());
         SR_CORE_D3D11_CALL(m_Device->CreateInputLayout(
                 &elements[0],
                 elements.size(),

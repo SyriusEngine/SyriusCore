@@ -4,10 +4,10 @@
 namespace Syrius{
 
     ConstantBuffer::ConstantBuffer(const ConstantBufferDesc &desc)
-    : m_BlockName(desc.m_BlockName),
-    m_Size(desc.m_Size),
-    m_BindingIndex(desc.m_BindingIndex),
-    m_Type(desc.m_Type){
+    : m_BlockName(desc.name),
+    m_Size(desc.size),
+    m_BindingIndex(desc.slot),
+    m_Type(desc.type){
 
     }
 

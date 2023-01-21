@@ -4,10 +4,10 @@
 namespace Syrius{
 
     IndexBuffer::IndexBuffer(const IndexBufferDesc &desc)
-    : m_Count(desc.m_Count),
-    m_Type(desc.m_Type),
-    m_DataType(desc.m_DataType) {
-        SR_CORE_PRECONDITION(desc.m_DataType <= SR_INT64, "Index buffer only supports integer data")
+    : m_Count(desc.count),
+    m_Type(desc.type),
+    m_DataType(desc.dataType) {
+        SR_CORE_PRECONDITION(desc.dataType <= SR_INT64, "Index buffer only supports integer data")
 
         m_Size = m_Count * getTypeSize(m_DataType);
     }

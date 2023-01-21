@@ -9,10 +9,10 @@
 namespace Syrius{
 
     struct SR_CORE_API VertexArrayDesc{
-        ResourceView<VertexBuffer> m_VertexBuffer;
-        ResourceView<IndexBuffer> m_IndexBuffer;
-        ResourceView<ShaderModule> m_VertexShader;
-        SR_DRAW_TYPE m_DrawMode         = SR_DRAW_TRIANGLES;
+        ResourceView<VertexBuffer> vertexBuffer;
+        ResourceView<IndexBuffer> indexBuffer;
+        ResourceView<ShaderModule> vertexShader;
+        SR_DRAW_TYPE drawMode         = SR_DRAW_TRIANGLES;
     };
 
     class SR_CORE_API VertexArray{

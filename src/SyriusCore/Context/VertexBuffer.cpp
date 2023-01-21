@@ -4,13 +4,13 @@
 namespace Syrius{
 
     VertexBuffer::VertexBuffer(const VertexBufferDesc &desc)
-    : m_Count(desc.m_Count),
-    m_Type(desc.m_Type),
+    : m_Count(desc.count),
+    m_Type(desc.type),
     m_Size(0),
-    m_Layout(desc.m_Layout){
-        SR_CORE_PRECONDITION(desc.m_Layout.isValid(), "Vertex layout cannot be null");
+    m_Layout(desc.layout){
+        SR_CORE_PRECONDITION(desc.layout.isValid(), "Vertex layout cannot be null");
 
-        m_Size = desc.m_Layout->getStride() * desc.m_Count;
+        m_Size = desc.layout->getStride() * desc.count;
 
     }
 

@@ -18,7 +18,8 @@ namespace Syrius{
     m_StencilMask(desc.stencilMask),
     m_StencilFail(desc.stencilFail),
     m_StencilPass(desc.stencilPass),
-    m_StencilPassDepthFail(desc.stencilPassDepthFail) {
+    m_StencilPassDepthFail(desc.stencilPassDepthFail),
+    m_EnableAutoResize(desc.enableAutoResize){
 
     }
 
@@ -80,5 +81,11 @@ namespace Syrius{
 
     SR_STENCIL_FUNC DepthStencilAttachment::getStencilPassDepthFail() const {
         return m_StencilPassDepthFail;
+    }
+
+    void DepthStencilAttachment::onResize(uint32 width, uint32 height) {
+        if(m_EnableAutoResize){
+            setSize(width, height);
+        }
     }
 }

@@ -32,12 +32,12 @@ namespace Syrius{
     } SR_CORE_MESSAGE_SEVERITY;
 
     struct Message{
-        SR_CORE_MESSAGE_SOURCE m_Type;
-        SR_CORE_MESSAGE_SEVERITY m_Severity;
-        std::string m_Message;
-        std::string m_Function;
-        std::string m_File;
-        uint32 m_Line;
+        SR_CORE_MESSAGE_SOURCE messageType;
+        SR_CORE_MESSAGE_SEVERITY severity;
+        std::string message;
+        std::string function;
+        std::string file;
+        uint32 line;
     };
 
     typedef void(*handleDebugMessageFunc)(const Message&);

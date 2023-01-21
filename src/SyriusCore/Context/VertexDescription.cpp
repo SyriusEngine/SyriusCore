@@ -4,10 +4,10 @@
 namespace Syrius{
 
     VertexAttribute::VertexAttribute(const std::string &name, SR_SCALAR_TYPE type, uint8 size, uint8 elementCount)
-    : m_Name(name),
-      m_Type(type),
-      m_Size(size),
-      m_ElementCount(elementCount) {
+    : name(name),
+      type(type),
+      size(size),
+      elementCount(elementCount) {
 
     }
 

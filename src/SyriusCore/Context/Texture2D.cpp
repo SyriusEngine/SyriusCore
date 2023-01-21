@@ -4,12 +4,12 @@
 namespace Syrius{
 
     Texture2D::Texture2D(const Texture2DDesc& desc)
-    : m_Width(desc.m_Width),
-    m_Height(desc.m_Height),
-    m_Format(desc.m_Format){
+    : m_Width(desc.width),
+    m_Height(desc.height),
+    m_Format(desc.format){
         SR_CORE_PRECONDITION(m_Width > 0, "Texture width must be greater than 0");
         SR_CORE_PRECONDITION(m_Height > 0, "Texture height must be greater than 0");
-        SR_CORE_PRECONDITION(desc.m_Sampler.isValid(), "Sampler must not be null");
+        SR_CORE_PRECONDITION(desc.sampler.isValid(), "Sampler must not be null");
     }
 
     Texture2D::Texture2D(const Texture2DImageDesc &desc)

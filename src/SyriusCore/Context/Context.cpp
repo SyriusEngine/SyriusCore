@@ -5,7 +5,7 @@ namespace Syrius{
 
     Context::Context(const ContextDesc& desc)
     : m_VerticalSync(false),
-    m_Type(desc.m_API){
+    m_Type(desc.api){
         SR_CORE_MESSAGE("Created context with backend: " + getAPIName(m_Type));
 
     }
@@ -35,6 +35,12 @@ namespace Syrius{
         auto ptr = new FrameBufferDescription();
         m_FrameBufferDescriptions.emplace_back(ptr);
         return m_FrameBufferDescriptions.back().createView();
+    }
+
+    void Context::onResize(uint32 width, uint32 height) {
+        for (auto& frameBuffer : m_FrameBuffers){
+            frameBuffer->onResize(width, height);
+        }
     }
 
 

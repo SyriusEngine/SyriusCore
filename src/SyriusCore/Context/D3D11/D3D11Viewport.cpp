@@ -8,8 +8,8 @@ namespace Syrius{
     m_DeviceContext(deviceContext) {
         m_Viewport.Width = static_cast<float>(m_Width);
         m_Viewport.Height = static_cast<float>(m_Height);
-        m_Viewport.MinDepth = desc.m_MinDepth;
-        m_Viewport.MaxDepth = desc.m_MaxDepth;
+        m_Viewport.MinDepth = desc.minDepth;
+        m_Viewport.MaxDepth = desc.maxDepth;
         m_Viewport.TopLeftX = static_cast<float>(m_XPos);
         m_Viewport.TopLeftY = static_cast<float>(m_YPos);
     }

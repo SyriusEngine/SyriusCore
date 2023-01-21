@@ -20,6 +20,8 @@ namespace Syrius{
 
         void clear();
 
+        void onResize(uint32 width, uint32 height);
+
         ResourceView<Viewport> getViewport(uint32 index = 0);
 
         [[nodiscard]] ResourceView<ColorAttachment> getColorAttachment(uint32 index);

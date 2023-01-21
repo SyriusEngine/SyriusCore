@@ -10,6 +10,7 @@ namespace Syrius{
         float clearColor[4]             = {0.1f, 0.2f, 0.3f, 1.0f};
         SR_TEXTURE_DATA_FORMAT format   = SR_TEXTURE_DATA_FORMAT_RGBA_F32;
         bool enableShaderRead           = true; // enables sampling from this attachment in shaders
+        bool enableAutoResize           = true; // whenever the window is resized, this attachment will be resized as well
     };
 
     class SR_CORE_API ColorAttachment{
@@ -48,6 +49,15 @@ namespace Syrius{
         float m_ClearColor[4];
         SR_TEXTURE_DATA_FORMAT m_Format;
         bool m_EnableShaderRead;
+
+    private:
+
+        friend class FrameBuffer;
+
+        void onResize(uint32 width, uint32 height); // called by the framebuffer when its owning window is resized
+
+    private:
+        bool m_EnableAutoResize;
     };
 
 }

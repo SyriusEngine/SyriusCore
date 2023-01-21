@@ -9,11 +9,11 @@
 using namespace Syrius;
 
 void messageCallback(const Syrius::Message& msg){
-    if (msg.m_Message.find("Device Extension") == std::string::npos){
-        std::string message = "[Syrius: " + msg.m_Function + "]: severity = " + getMessageSeverityString(msg.m_Severity) + ", type = " +
-                              getMessageTypeString(msg.m_Type) + "\n";
-        message += "File = " + msg.m_File + ", line = " + std::to_string(msg.m_Line) + "\n";
-        message += "Message = " + msg.m_Message + "\n";
+    if (msg.message.find("Device Extension") == std::string::npos){
+        std::string message = "[Syrius: " + msg.function + "]: severity = " + getMessageSeverityString(msg.severity) + ", type = " +
+                              getMessageTypeString(msg.messageType) + "\n";
+        message += "File = " + msg.file + ", line = " + std::to_string(msg.line) + "\n";
+        message += "Message = " + msg.message + "\n";
         std::cerr << message;
         std::cerr << "\n\n--------------------------------------------------------------------------------\n";
     }
@@ -47,15 +47,15 @@ int main() {
         setDebugMessageCallback(messageCallback);
 
         WindowDesc wDesc;
-        wDesc.m_PosX = 200;
-        wDesc.m_PosY = 200;
-        wDesc.m_Width = 1280;
-        wDesc.m_Height = 720;
-        wDesc.m_Title = " The pubes, farts and other spices";
+        wDesc.xPos = 200;
+        wDesc.yPos = 200;
+        wDesc.width = 1280;
+        wDesc.height = 720;
+        wDesc.title = " The pubes, farts and other spices";
 
         auto window = createWindow(wDesc);
         ContextDesc cDesc;
-        cDesc.m_API = Syrius::SR_API_D3D11;
+        cDesc.api = Syrius::SR_API_D3D11;
 
         auto context = window->createContext(cDesc);
         context->setVerticalSynchronisation(true);
@@ -91,17 +91,17 @@ int main() {
         auto logo = createImage("./Resources/Textures/insta.png");
 
         SamplerDesc splrDesc;
-        splrDesc.m_WrapU = Syrius::SR_TEXTURE_WRAP_MIRROR_REPEAT;
+        splrDesc.wrapU = Syrius::SR_TEXTURE_WRAP_MIRROR_REPEAT;
         auto sampler = context->createSampler(splrDesc);
 
         std::vector<ubyte> temp(512 * 1024 * 4);
 
         Texture2DDesc texDesc;
-        texDesc.m_Width = 1024;
-        texDesc.m_Height = 512;
-        texDesc.m_Format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8;
-        texDesc.m_Sampler = sampler;
-        texDesc.m_Data = temp.data();
+        texDesc.width = 1024;
+        texDesc.height = 512;
+        texDesc.format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8;
+        texDesc.sampler = sampler;
+        texDesc.data = temp.data();
 
         auto texture = context->createTexture2D(texDesc);
         texture->setData(face, 0, 0, 512, 512);

@@ -6,12 +6,13 @@
 namespace Syrius{
 
     struct SR_CORE_API ViewportDesc{
-        uint32 m_Width          = SR_DEFAULT_WIDTH;
-        uint32 m_Height         = SR_DEFAULT_HEIGHT;
-        uint32 m_XPos           = 0;
-        uint32 m_YPos           = 0;
-        float m_MinDepth        = 0.0f;
-        float m_MaxDepth        = 1.0f;
+        uint32 width          = SR_DEFAULT_WIDTH;
+        uint32 height         = SR_DEFAULT_HEIGHT;
+        uint32 xPos           = 0;
+        uint32 yPos           = 0;
+        float minDepth        = 0.0f;
+        float maxDepth        = 1.0f;
+        bool enableAutoResize = true; // whenever the window is resized, this attachment will be resized as well
     };
 
     class SR_CORE_API Viewport{
@@ -40,6 +41,12 @@ namespace Syrius{
 
         [[nodiscard]] float getMaxDepth() const;
 
+    private:
+
+        friend class FrameBuffer;
+
+        void onResize(uint32 width, uint32 height); // called by the framebuffer when its owning window is resized
+
     protected:
         uint32 m_Width;
         uint32 m_Height;
@@ -47,6 +54,8 @@ namespace Syrius{
         uint32 m_YPos;
         float m_MinDepth;
         float m_MaxDepth;
+
+        bool m_EnableAutoResize;
     };
 
 }

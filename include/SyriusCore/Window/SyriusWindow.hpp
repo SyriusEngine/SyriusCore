@@ -31,12 +31,12 @@ namespace Syrius{
     } SR_WINDOW_ICON;
 
     struct WindowDesc{
-        int32 m_PosX            = 200;
-        int32 m_PosY            = 200;
-        uint32 m_Width          = SR_DEFAULT_WIDTH;
-        uint32 m_Height         = SR_DEFAULT_HEIGHT;
-        std::string m_Title;
-        SR_WINDOW_STYLE m_Style = SR_WINDOW_STYLE_DEFAULT;
+        int32 xPos            = 200;
+        int32 yPos            = 200;
+        uint32 width          = SR_DEFAULT_WIDTH;
+        uint32 height         = SR_DEFAULT_HEIGHT;
+        std::string title;
+        SR_WINDOW_STYLE style = SR_WINDOW_STYLE_DEFAULT;
     };
 
     class SR_CORE_API SyriusWindow{

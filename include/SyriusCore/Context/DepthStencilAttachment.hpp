@@ -10,6 +10,7 @@ namespace Syrius{
         SR_TEXTURE_DATA_FORMAT format   = SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8;
 
         bool enableShaderRead = true; // enables sampling from this attachment in shaders
+        bool enableAutoResize           = true; // whenever the window is resized, this attachment will be resized as well
 
         bool enableDepthTest            = true;
         SR_COMPARISON_FUNC depthFunc    = SR_COMPARISON_FUNC_LESS;
@@ -89,6 +90,15 @@ namespace Syrius{
         SR_STENCIL_FUNC m_StencilFail;
         SR_STENCIL_FUNC m_StencilPass;
         SR_STENCIL_FUNC m_StencilPassDepthFail;
+
+    private:
+
+        friend class FrameBuffer;
+
+        void onResize(uint32 width, uint32 height); // called by the framebuffer when its owning window is resized
+
+    private:
+        bool m_EnableAutoResize;
     };
 
 }

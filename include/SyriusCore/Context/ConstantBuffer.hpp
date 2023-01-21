@@ -6,12 +6,12 @@
 namespace Syrius{
 
     struct SR_CORE_API ConstantBufferDesc{
-        std::string m_BlockName;
-        uint32 m_Size               = 0;
-        uint32 m_BindingIndex       = 0;
-        const void* m_Data          = nullptr;
-        SR_BUFFER_TYPE m_Type       = SR_BUFFER_DEFAULT;
-        SR_SHADER_TYPE m_ShaderStage = SR_SHADER_VERTEX;
+        std::string name;
+        uint32 size                 = 0;
+        uint32 slot                 = 0;
+        const void* data            = nullptr;
+        SR_BUFFER_TYPE type         = SR_BUFFER_DEFAULT;
+        SR_SHADER_TYPE shaderStage  = SR_SHADER_VERTEX;
     };
 
     class SR_CORE_API ConstantBuffer{

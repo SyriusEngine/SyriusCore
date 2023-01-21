@@ -48,11 +48,11 @@ graphics processor. A window is created using the following code:
 ```cpp
 // Create a window description
 WindowDesc wDesc;
-wDesc.m_PosX = 200;
-wDesc.m_PosY = 200;
-wDesc.m_Width = 1280;
-wDesc.m_Height = 720;
-wDesc.m_Title = "My Title";
+wDesc.xPos = 200;
+wDesc.yPos = 200;
+wDesc.width = 1280;
+wDesc.height = 720;
+wDesc.title = "My Title";
 
 // Create the window object
 auto window = createWindow(wDesc);

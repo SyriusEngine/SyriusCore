@@ -23,7 +23,7 @@ namespace Syrius{
         bufferDesc.StructureByteStride = m_Layout->getStride();
 
         D3D11_SUBRESOURCE_DATA subResourceData;
-        subResourceData.pSysMem = desc.m_Data;
+        subResourceData.pSysMem = desc.data;
         subResourceData.SysMemPitch = 0;
         subResourceData.SysMemSlicePitch = 0;
 

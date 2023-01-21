@@ -27,6 +27,18 @@ namespace Syrius{
         }
     }
 
+    void FrameBuffer::onResize(uint32 width, uint32 height) {
+        for (auto& viewport : m_Viewports){
+            viewport->onResize(width, height);
+        }
+        for (auto& colorAttachment : m_ColorAttachments){
+            colorAttachment->onResize(width, height);
+        }
+        if (m_DepthStencilAttachment.isValid()){
+            m_DepthStencilAttachment->setSize(width, height);
+        }
+    }
+
     ResourceView<Viewport> FrameBuffer::getViewport(uint32 index) {
         SR_CORE_PRECONDITION(m_Viewports.size() > 0, "No viewport was added to the framebuffer");
         SR_CORE_PRECONDITION(index < m_Viewports.size(), "Index out of bounds for viewport");

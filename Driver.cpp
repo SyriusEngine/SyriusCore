@@ -104,26 +104,26 @@ ShaderProgram loadShader(const std::string& vertexPath, const std::string& fragm
     ShaderProgram prg;
 
     ShaderModuleDesc vsDesc;
-    vsDesc.m_Type = SR_SHADER_VERTEX;
-    vsDesc.m_CodeType = type;
-    vsDesc.m_Code = vertexPath;
-    vsDesc.m_LoadType = SR_LOAD_FROM_FILE;
-    vsDesc.m_EntryPoint = "main";
-    vsDesc.m_CodeLength = 0;
+    vsDesc.shaderType = SR_SHADER_VERTEX;
+    vsDesc.codeType = type;
+    vsDesc.code = vertexPath;
+    vsDesc.loadType = SR_LOAD_FROM_FILE;
+    vsDesc.entryPoint = "main";
+    vsDesc.codeLength = 0;
     prg.vertexShader = context->createShaderModule(vsDesc);
 
     ShaderModuleDesc fsDesc;
-    fsDesc.m_Type = SR_SHADER_FRAGMENT;
-    fsDesc.m_CodeType = type;
-    fsDesc.m_Code = fragmentPath;
-    fsDesc.m_LoadType = SR_LOAD_FROM_FILE;
-    fsDesc.m_EntryPoint = "main";
-    fsDesc.m_CodeLength = 0;
+    fsDesc.shaderType = SR_SHADER_FRAGMENT;
+    fsDesc.codeType = type;
+    fsDesc.code = fragmentPath;
+    fsDesc.loadType = SR_LOAD_FROM_FILE;
+    fsDesc.entryPoint = "main";
+    fsDesc.codeLength = 0;
     prg.fragmentShader = context->createShaderModule(fsDesc);
 
     ShaderDesc sDesc;
-    sDesc.m_VertexShader = std::move(prg.vertexShader);
-    sDesc.m_FragmentShader = std::move(prg.fragmentShader);
+    sDesc.vertexShader = std::move(prg.vertexShader);
+    sDesc.fragmentShader = std::move(prg.fragmentShader);
     prg.shaderProgram = context->createShader(sDesc);
 
     return prg;
@@ -135,24 +135,24 @@ ResourceView<VertexArray> loadMesh(Mesh& mesh, ShaderProgram& prg, Context* cont
     layout->addAttribute("TexCoord", SR_FLOAT32_2);
 
     VertexBufferDesc vboDesc;
-    vboDesc.m_Type = SR_BUFFER_DEFAULT;
-    vboDesc.m_Data = &mesh.vertices[0];
-    vboDesc.m_Layout = layout;
-    vboDesc.m_Count = mesh.vertices.size();
+    vboDesc.type = SR_BUFFER_DEFAULT;
+    vboDesc.data = &mesh.vertices[0];
+    vboDesc.layout = layout;
+    vboDesc.count = mesh.vertices.size();
     auto vbo = context->createVertexBuffer(vboDesc);
 
     IndexBufferDesc iboDesc;
-    iboDesc.m_Data = &mesh.indices[0];
-    iboDesc.m_Count = mesh.indices.size();
-    iboDesc.m_Type = SR_BUFFER_DEFAULT;
-    iboDesc.m_DataType = SR_UINT32;
+    iboDesc.data = &mesh.indices[0];
+    iboDesc.count = mesh.indices.size();
+    iboDesc.type = SR_BUFFER_DEFAULT;
+    iboDesc.dataType = SR_UINT32;
     auto ibo = context->createIndexBuffer(iboDesc);
 
     VertexArrayDesc vaoDesc;
-    vaoDesc.m_DrawMode = SR_DRAW_TRIANGLES;
-    vaoDesc.m_VertexShader = prg.vertexShader;
-    vaoDesc.m_VertexBuffer = vbo;
-    vaoDesc.m_IndexBuffer = ibo;
+    vaoDesc.drawMode = SR_DRAW_TRIANGLES;
+    vaoDesc.vertexShader = prg.vertexShader;
+    vaoDesc.vertexBuffer = vbo;
+    vaoDesc.indexBuffer = ibo;
     auto vao = context->createVertexArray(vaoDesc);
 
     return vao;
