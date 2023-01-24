@@ -121,7 +121,7 @@ namespace Syrius{
 
         virtual std::string saveFileDialog(const std::string& fileName, const std::string& filter) = 0;
 
-        virtual Context* createContext(ContextDesc& desc) = 0;
+        virtual ResourceView<Context> createContext(ContextDesc& desc) = 0;
 
     protected:
 
@@ -148,7 +148,7 @@ namespace Syrius{
 
         static uint32 m_ImGuiInstances;
 
-        Context* m_Context;
+        Resource<Context> m_Context;
 
     private:
         std::deque<Event> m_EventQueue;

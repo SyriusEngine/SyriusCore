@@ -303,26 +303,26 @@ namespace Syrius{
         }
     }
 
-    Context* SyriusWindowWin32Impl::createContext(ContextDesc& desc) {
+    ResourceView<Context> SyriusWindowWin32Impl::createContext(ContextDesc& desc) {
         if (desc.backBufferWidth == 0 || desc.backBufferHeight == 0){
             desc.backBufferWidth = m_Width;
             desc.backBufferHeight = m_Height;
         }
         switch (desc.api) {
             case SR_API_OPENGL:
-                m_Context = new WglContext(m_Hwnd, desc);
-                return m_Context;
+                m_Context = Resource<Context>(new WglContext(m_Hwnd, desc));
+                break;
 //            case SR_API_VULKAN:
 //                m_Context = new VulkanContextWin32(m_Hwnd, desc);
 //                return m_Context;
             case SR_API_D3D11:
-                m_Context = new D3D11Context(m_Hwnd, desc);
-                return m_Context;
+                m_Context = Resource<Context>(new D3D11Context(m_Hwnd, desc));
+                break;
 
             default:
                 SR_CORE_WARNING("cannot create context: unsupported API")
-                return nullptr;
         }
+        return m_Context.createView();
 
     }
 
@@ -383,7 +383,7 @@ namespace Syrius{
                     m_Height = newHeight;
                     WindowResizedEvent event(newWidth, newHeight);
                     dispatchEvent(event);
-                    if (m_Context != nullptr){
+                    if (m_Context.isValid()){
                         m_Context->onResize(newWidth, newHeight);
                     }
                 }

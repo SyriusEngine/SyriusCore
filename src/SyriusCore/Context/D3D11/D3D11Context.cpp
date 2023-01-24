@@ -80,7 +80,7 @@ namespace Syrius{
     }
 
     D3D11Context::~D3D11Context() {
-        // every GL object should be released before the context is terminated
+        // every D3D11 object should be released before the device, device context and swap chain are released
         clearVec(m_ShaderModules);
         clearVec(m_Shaders);
         clearVec(m_VertexBuffers);

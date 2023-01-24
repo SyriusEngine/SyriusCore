@@ -63,8 +63,8 @@ Mesh createRectangle(){
             {{-0.5f, 0.5f, 0.0f},  {0.0f, 1.0f}}
     };
     mesh.indices = {
-            0, 3, 2,
-            0, 2, 1
+            0, 3, 1,
+            3, 2, 1
     };
     return mesh;
 }
@@ -100,7 +100,7 @@ Mesh createSphere(uint32 rings, uint32 sectors){
     return mesh;
 }
 
-ShaderProgram loadShader(const std::string& vertexPath, const std::string& fragmentPath, SR_SHADER_CODE_TYPE type, Context* context){
+ShaderProgram loadShader(const std::string& vertexPath, const std::string& fragmentPath, SR_SHADER_CODE_TYPE type, ResourceView<Context>& context){
     ShaderProgram prg;
 
     ShaderModuleDesc vsDesc;
@@ -129,7 +129,7 @@ ShaderProgram loadShader(const std::string& vertexPath, const std::string& fragm
     return prg;
 }
 
-ResourceView<VertexArray> loadMesh(Mesh& mesh, ShaderProgram& prg, Context* context){
+ResourceView<VertexArray> loadMesh(Mesh& mesh, ShaderProgram& prg, ResourceView<Context>& context){
     auto layout = context->createVertexDescription();
     layout->addAttribute("Position", SR_FLOAT32_3);
     layout->addAttribute("TexCoord", SR_FLOAT32_2);

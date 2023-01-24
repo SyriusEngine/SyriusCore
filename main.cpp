@@ -23,8 +23,8 @@ int test(){
     try{
         syriusCoreInit();
         setDebugMessageCallback(messageCallback);
-        testFramebufferOpenGL();
-        testFramebufferD3D11();
+        testFramebuffer(Syrius::SR_API_OPENGL);
+        testFramebuffer(Syrius::SR_API_D3D11);
         syriusCoreTerminate();
     } catch (std::exception& e){
         std::cerr << e.what() << std::endl;

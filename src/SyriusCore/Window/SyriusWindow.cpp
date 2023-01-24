@@ -29,8 +29,6 @@ namespace Syrius{
         if (m_UseImGui){
             this->destroyImGuiContext();
         }
-        delete m_Context;
-
     }
 
     int32 SyriusWindow::getPosX() const {
@@ -76,7 +74,7 @@ namespace Syrius{
     }
 
     void SyriusWindow::createImGuiContext() {
-        SR_CORE_PRECONDITION(m_Context, "A valid context must be created in order to create an ImGui context")
+        SR_CORE_PRECONDITION(m_Context.isValid(), "A valid context must be created in order to create an ImGui context")
         SR_CORE_PRECONDITION(!m_UseImGui, "There exists already an ImGui context")
 
         m_Context->createImGuiContext();
@@ -85,7 +83,7 @@ namespace Syrius{
     }
 
     void SyriusWindow::destroyImGuiContext() {
-        SR_CORE_PRECONDITION(m_Context, "A valid context must be created in order to destroy an ImGui context")
+        SR_CORE_PRECONDITION(m_Context.isValid(), "A valid context must be created in order to destroy an ImGui context")
         SR_CORE_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
 
         m_Context->destroyImGuiContext();
@@ -94,14 +92,14 @@ namespace Syrius{
     }
 
     void SyriusWindow::onImGuiBegin() {
-        SR_CORE_PRECONDITION(m_Context, "A valid context must be created in order to destroy an ImGui context")
+        SR_CORE_PRECONDITION(m_Context.isValid(), "A valid context must be created in order to destroy an ImGui context")
         SR_CORE_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
 
         m_Context->onImGuiBegin();
     }
 
     void SyriusWindow::onImGuiEnd() {
-        SR_CORE_PRECONDITION(m_Context, "A valid context must be created in order to destroy an ImGui context")
+        SR_CORE_PRECONDITION(m_Context.isValid(), "A valid context must be created in order to destroy an ImGui context")
         SR_CORE_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
 
         m_Context->onImGuiEnd();
@@ -112,14 +110,12 @@ namespace Syrius{
     }
 
     void SyriusWindow::destroyContext() {
-        SR_CORE_PRECONDITION(m_Context, "A valid context must be created in order to destroy the context")
 
         SR_CORE_MESSAGE_ON_CONDITION(m_UseImGui, "There exists an ImGui context, destroying it");
         if (m_UseImGui){
             this->destroyImGuiContext();
         }
-        delete m_Context;
-        m_Context = nullptr;
+        m_Context.destroy();
     }
 
 }

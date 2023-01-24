@@ -4,6 +4,4 @@
 
 #include "../Driver.hpp"
 
-void testFramebufferOpenGL();
-
-void testFramebufferD3D11();
+void testFramebuffer(SR_SUPPORTED_API api);

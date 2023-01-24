@@ -32,9 +32,9 @@ struct ShaderProgram{
     ResourceView<ShaderModule> fragmentShader;
 };
 
-ShaderProgram loadShader(const std::string& vertexPath, const std::string& fragmentPath, SR_SHADER_CODE_TYPE type, Context* context);
+ShaderProgram loadShader(const std::string& vertexPath, const std::string& fragmentPath, SR_SHADER_CODE_TYPE type, ResourceView<Context>& context);
 
-ResourceView<VertexArray> loadMesh(Mesh& mesh, ShaderProgram& prg, Context* context);
+ResourceView<VertexArray> loadMesh(Mesh& mesh, ShaderProgram& prg, ResourceView<Context>& context);
 
 void printInfo(Context* context);
 
