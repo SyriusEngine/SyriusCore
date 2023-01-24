@@ -5,6 +5,8 @@
 
 namespace Syrius {
 
+    class CoreCommand;
+
     class SR_CORE_API VulkanPlatformDesc{
     public:
 
@@ -49,7 +51,7 @@ namespace Syrius {
 
         virtual void terminatePlatformGlad() = 0;
 
-        virtual SyriusWindow* createWindow(const WindowDesc& windowDesc) = 0;
+        virtual Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc, CoreCommand* coreCommand) = 0;
 
         [[nodiscard]] int32 getGlVersion() const;
 

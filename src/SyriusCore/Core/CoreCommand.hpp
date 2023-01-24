@@ -8,49 +8,35 @@ namespace Syrius{
 
     class CoreCommand{
     public:
-        CoreCommand() = delete;
+        CoreCommand();
 
-        ~CoreCommand() = delete;
+        ~CoreCommand();
 
-        static void init();
+        void initGlad();
 
-        static void terminate();
+        void terminateGlad();
 
-        static void initGlad();
+        void initPlatformGlad(GlPlatformDesc* glDesc);
 
-        static void terminateGlad();
+        void terminatePlatformGlad();
 
-        static void initPlatformGlad(GlPlatformDesc* glDesc);
+        Time getStartupTime();
 
-        static void terminatePlatformGlad();
+        Time getElapsedTimeSinceStart();
 
-        static Time getStartupTime();
+        uint32 getPrimaryScreenWidth();
 
-        static Time getElapsedTimeSinceStart();
+        uint32 getPrimaryScreenHeight();
 
-        static uint32 getPrimaryScreenWidth();
-
-        static uint32 getPrimaryScreenHeight();
-
-        static SyriusWindow* createWindow(const WindowDesc& windowDesc);
-
-        static void destroyWindow(SyriusWindow* window);
-
-        static ResourceView<Image> createImage(const std::string& fileName, bool flipOnLoad = true);
-
-        static ResourceView<Image> createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount);
+        Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc);
 
     private:
-        static Time m_StartupTime;
-        static uint32 m_CoreCommandInstances;
-        static uint32 m_GladInstances;
-        static uint32 m_VulkanInterfaces;
+        static CoreCommand* m_Instance;
 
-        static PlatformAPI* m_PlatformAPI;
+        Time m_StartupTime;
+        uint32 m_GladInstances;
 
-        static std::vector<SyriusWindow*> m_WindowInstances;
-
-        static std::vector<Resource<Image>> m_Images;
+        Resource<PlatformAPI> m_PlatformAPI;
     };
 
 }

@@ -11,6 +11,8 @@
 
 namespace Syrius{
 
+    class CoreCommand;
+
     typedef enum SR_WINDOW_STYLE {
         SR_WINDOW_STYLE_POPUP       = 0x01,   // 0000 0001
         SR_WINDOW_STYLE_TITLEBAR    = 0x02,    // 0000 0010
@@ -125,7 +127,7 @@ namespace Syrius{
 
     protected:
 
-        explicit SyriusWindow(const WindowDesc& desc);
+        explicit SyriusWindow(const WindowDesc& desc, CoreCommand* coreCommand);
 
         void dispatchEvent(const Event& event);
 
@@ -149,6 +151,8 @@ namespace Syrius{
         static uint32 m_ImGuiInstances;
 
         Resource<Context> m_Context;
+
+        CoreCommand* m_CoreState;
 
     private:
         std::deque<Event> m_EventQueue;

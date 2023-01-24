@@ -3,36 +3,40 @@
 
 namespace Syrius {
 
+    static CoreCommand* s_Instance = nullptr;
+
     void syriusCoreInit(){
-        CoreCommand::init();
+        s_Instance = new CoreCommand();
     }
 
     void syriusCoreTerminate(){
-        CoreCommand::terminate();
+        delete s_Instance;
     }
 
     Time getStartupTime(){
-        return CoreCommand::getStartupTime();
+        SR_CORE_PRECONDITION(s_Instance != nullptr, "Syrius Core is not initialized");
+
+        return s_Instance->getStartupTime();
     }
 
     Time getElapsedTimeSinceStart(){
-        return CoreCommand::getElapsedTimeSinceStart();
+        SR_CORE_PRECONDITION(s_Instance != nullptr, "Syrius Core is not initialized");
+
+        return s_Instance->getElapsedTimeSinceStart();
     }
 
-    ResourceView<Image> createImage(const std::string& fileName, bool flipOnLoad){
-        return CoreCommand::createImage(fileName, flipOnLoad);
+    Resource<Image> createImage(const std::string& fileName, bool flipOnLoad){
+        return createResource<Image>(fileName, flipOnLoad);
     }
 
-    ResourceView<Image> createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount){
-        return CoreCommand::createImage(pixelData, width, height, channelCount);
+    Resource<Image> createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount){
+        return createResource<Image>(pixelData, width, height, channelCount);
     }
 
-    SyriusWindow* createWindow(const WindowDesc& windowDesc){
-        return CoreCommand::createWindow(windowDesc);
-    }
+    Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc){
+        SR_CORE_PRECONDITION(s_Instance != nullptr, "Syrius Core is not initialized");
 
-    void destroyWindow(SyriusWindow* window){
-        CoreCommand::destroyWindow(window);
+        return s_Instance->createWindow(windowDesc);
     }
 
     void setDebugMessageCallback(handleDebugMessageFunc callback){

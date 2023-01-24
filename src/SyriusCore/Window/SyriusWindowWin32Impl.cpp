@@ -8,8 +8,8 @@ namespace Syrius{
 
     uint32 SyriusWindowWin32Impl::m_WindowCount = 0;
 
-    SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc)
-    : SyriusWindow(desc),
+    SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc, CoreCommand* coreCommand)
+    : SyriusWindow(desc, coreCommand),
       m_Hwnd(nullptr),
       m_Callback(0),
       m_Icon(nullptr),
@@ -252,8 +252,8 @@ namespace Syrius{
 
     void SyriusWindowWin32Impl::centerWindow() {
         if (!m_Fullscreen){
-            auto posX = static_cast<int32>((CoreCommand::getPrimaryScreenWidth() - m_Width) / 2);
-            auto posY = static_cast<int32>((CoreCommand::getPrimaryScreenHeight() - m_Height) / 2);
+            auto posX = static_cast<int32>((m_CoreState->getPrimaryScreenWidth() - m_Width) / 2);
+            auto posY = static_cast<int32>((m_CoreState->getPrimaryScreenHeight() - m_Height) / 2);
             setPosition(posX, posY);
         }
     }
@@ -310,7 +310,7 @@ namespace Syrius{
         }
         switch (desc.api) {
             case SR_API_OPENGL:
-                m_Context = Resource<Context>(new WglContext(m_Hwnd, desc));
+                m_Context = Resource<Context>(new WglContext(m_Hwnd, desc, m_CoreState));
                 break;
 //            case SR_API_VULKAN:
 //                m_Context = new VulkanContextWin32(m_Hwnd, desc);

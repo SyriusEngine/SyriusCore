@@ -88,8 +88,6 @@ void testFramebuffer(SR_SUPPORTED_API api){
     fbDesc->addColorAttachmentDesc(caDesc);
     auto fb = context->createFrameBuffer(fbDesc);
 
-
-
     while (window->isOpen()){
 
         window->pollEvents();
@@ -143,6 +141,4 @@ void testFramebuffer(SR_SUPPORTED_API api){
 
         context->swapBuffers();
     }
-
-    destroyWindow(window);
 }

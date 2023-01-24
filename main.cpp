@@ -172,8 +172,6 @@ int main() {
             context->swapBuffers();
         }
 
-        destroyWindow(window);
-
         syriusCoreTerminate();
 
 

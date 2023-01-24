@@ -5,7 +5,7 @@ namespace Syrius{
 
     uint32 SyriusWindow::m_ImGuiInstances = 0;
 
-    SyriusWindow::SyriusWindow(const WindowDesc &desc)
+    SyriusWindow::SyriusWindow(const WindowDesc &desc, CoreCommand* coreCommand)
     : m_PosX(desc.xPos),
       m_PosY(desc.yPos),
       m_Width(desc.width),
@@ -21,7 +21,8 @@ namespace Syrius{
       m_MouseInside(false),
       m_KeyRepeat(true),
       m_UseImGui(false),
-      m_Context(nullptr){
+      m_Context(nullptr),
+      m_CoreState(coreCommand){
 
     }
 

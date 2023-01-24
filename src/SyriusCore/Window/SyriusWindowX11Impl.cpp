@@ -4,8 +4,8 @@
 
 namespace Syrius{
 
-    SyriusWindowX11Impl::SyriusWindowX11Impl(const WindowDesc &desc, Display* display)
-    : SyriusWindow(desc),
+    SyriusWindowX11Impl::SyriusWindowX11Impl(const WindowDesc &desc, Display* display, CoreCommand* coreCommand)
+    : SyriusWindow(desc, coreCommand),
     m_Display(display){
         // by default, init GLX
         auto glxDesc = new GlPlatformDescX11();

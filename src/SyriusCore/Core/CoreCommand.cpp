@@ -4,19 +4,17 @@
 
 namespace Syrius{
 
-    Time CoreCommand::m_StartupTime = 0;
-    uint32 CoreCommand::m_GladInstances = 0;
-    uint32 CoreCommand::m_CoreCommandInstances = 0;
-    uint32 CoreCommand::m_VulkanInterfaces = 0;
+    CoreCommand* CoreCommand::m_Instance = nullptr;
 
-    PlatformAPI* CoreCommand::m_PlatformAPI = nullptr;
-
-    std::vector<SyriusWindow*> CoreCommand::m_WindowInstances;
-    std::vector<Resource<Image>> CoreCommand::m_Images;
-
-
-    void CoreCommand::init() {
-        if (!m_CoreCommandInstances){
+    CoreCommand::CoreCommand():
+    m_StartupTime(0),
+    m_GladInstances(0) {
+        if (m_Instance){
+            SR_CORE_WARNING("SyriusCore is already initialized");
+            return;
+        }
+        else{
+            m_Instance = this;
             m_StartupTime = std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now().time_since_epoch())
                     .count();
@@ -24,29 +22,29 @@ namespace Syrius{
             SR_CORE_MESSAGE("Initializing Syrius")
 
 #if defined(SR_CORE_PLATFORM_WIN64)
-            m_PlatformAPI = new PlatformAPIWin32Impl();
+            m_PlatformAPI = Resource<PlatformAPI>(new PlatformAPIWin32Impl());
 #elif defined(SR_CORE_PLATFORM_LINUX)
-            m_PlatformAPI = new PlatformAPIX11Impl();
+            m_PlatformAPI = Resource<PlatformAPI>(new PlatformAPIX11Impl());
 #else
-#error No PlatformAPI specified
+#error No valid platform specified
 #endif
+            SR_CORE_POSTCONDITION(m_PlatformAPI.isValid(), "Failed to create platform API")
 
         }
-        m_CoreCommandInstances++;
 
-        SR_CORE_POSTCONDITION(m_PlatformAPI != nullptr, "Failed to create platform API")
     }
 
-    void CoreCommand::terminate() {
-        m_Images.clear();
-        if (m_GladInstances > 0){
-            SR_CORE_WARNING("Syrius is terminated but some objects still depend on glad, glad will be terminated too!");
-            m_GladInstances = 0;
-            gladLoaderUnloadGL();
+    CoreCommand::~CoreCommand() {
+        if (m_Instance == this){
+            if (m_GladInstances > 0){
+                SR_CORE_WARNING("Syrius is terminated but some objects still depend on glad, glad will be terminated too!");
+                m_GladInstances = 0;
+                gladLoaderUnloadGL();
+            }
+
+            m_Instance = nullptr;
+            SR_CORE_MESSAGE("Terminating Syrius")
         }
-
-
-        SR_CORE_MESSAGE("Terminating Syrius")
     }
 
     void CoreCommand::initGlad() {
@@ -88,13 +86,13 @@ namespace Syrius{
     }
 
     void CoreCommand::initPlatformGlad(GlPlatformDesc* glDesc){
-        SR_CORE_PRECONDITION(m_PlatformAPI, "Cannot initialize platform glad, no platform API was created");
+        SR_CORE_PRECONDITION(m_PlatformAPI.isValid(), "Cannot initialize platform glad, no platform API was created");
 
         m_PlatformAPI->initPlatformGlad(glDesc);
     }
 
     void CoreCommand::terminatePlatformGlad() {
-        SR_CORE_PRECONDITION(m_PlatformAPI, "Cannot initialize platform glad, no platform API was created");
+        SR_CORE_PRECONDITION(m_PlatformAPI.isValid(), "Cannot initialize platform glad, no platform API was created");
 
         m_PlatformAPI->terminatePlatformGlad();
     }
@@ -118,26 +116,10 @@ namespace Syrius{
         return m_PlatformAPI->getPrimaryScreenHeight();
     }
 
-    SyriusWindow *CoreCommand::createWindow(const WindowDesc &windowDesc) {
-        auto ptr = m_PlatformAPI->createWindow(windowDesc);
-        m_WindowInstances.push_back(ptr);
-        return ptr;
-    }
+    Resource<SyriusWindow> CoreCommand::createWindow(const WindowDesc &windowDesc) {
+        SR_CORE_PRECONDITION(m_PlatformAPI.isValid(), "Cannot create window, no platform API was created");
 
-    void CoreCommand::destroyWindow(SyriusWindow *window) {
-        m_WindowInstances.erase(std::remove(m_WindowInstances.begin(), m_WindowInstances.end(), window), m_WindowInstances.end());
-        delete window;
-    }
-
-    ResourceView<Image> CoreCommand::createImage(const std::string& fileName, bool flipOnLoad){
-        m_Images.emplace_back(new Image(fileName, flipOnLoad));
-        auto& b = m_Images.back();
-        return m_Images.back().createView();
-    }
-
-    ResourceView<Image> CoreCommand::createImage(const ubyte* pixelData, int32 width, int32 height, int32 channelCount){
-        m_Images.emplace_back(new Image(pixelData, width, height, channelCount));
-        return m_Images.back().createView();
+        return m_PlatformAPI->createWindow(windowDesc, this);
     }
 
 }

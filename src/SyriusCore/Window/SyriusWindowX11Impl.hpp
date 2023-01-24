@@ -14,7 +14,7 @@ namespace Syrius{
     class SyriusWindowX11Impl: public SyriusWindow{
     public:
 
-        SyriusWindowX11Impl(const WindowDesc& desc, Display* display);
+        SyriusWindowX11Impl(const WindowDesc& desc, Display* display, CoreCommand* coreCommand);
 
         SyriusWindowX11Impl(const SyriusWindowX11Impl&) = delete;
 

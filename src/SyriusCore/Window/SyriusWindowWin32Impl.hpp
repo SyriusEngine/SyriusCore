@@ -18,7 +18,7 @@ namespace Syrius{
 
     class SyriusWindowWin32Impl: public SyriusWindow{
     public:
-        explicit SyriusWindowWin32Impl(const WindowDesc& desc);
+        explicit SyriusWindowWin32Impl(const WindowDesc& desc, CoreCommand* coreCommand);
 
         SyriusWindowWin32Impl(const SyriusWindowWin32Impl&) = delete;
 

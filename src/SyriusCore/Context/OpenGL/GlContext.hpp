@@ -73,9 +73,13 @@ namespace Syrius{
         ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferDescription>& desc) override;
 
     protected:
-        explicit GlContext(const ContextDesc& desc);
+        explicit GlContext(const ContextDesc& desc, CoreCommand* coreCommand);
         
         void initGl(const ContextDesc& desc);
+
+    protected:
+
+        CoreCommand* m_CoreCommand;
 
     private:
 
