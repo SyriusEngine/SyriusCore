@@ -9,7 +9,7 @@ namespace Syrius{
     m_Display(display){
         // by default, init GLX
         auto glxDesc = new GlPlatformDescX11();
-        CoreCommand::initPlatformGlad(glxDesc);
+        m_CoreState->initPlatformGlad(glxDesc);
         delete glxDesc;
 
         XVisualInfo *visualInfo = selectBestVisual();
@@ -22,15 +22,15 @@ namespace Syrius{
                                 EnterWindowMask      | LeaveWindowMask     |
                                 VisibilityChangeMask | PropertyChangeMask;
         m_Window = XCreateWindow(m_Display, DefaultRootWindow(m_Display),
-                                 desc.m_PosX, desc.m_PosY,
-                                 desc.m_Width, desc.m_Height,
+                                 desc.xPos, desc.yPos,
+                                 desc.width, desc.height,
                                  0, visualInfo->depth, InputOutput, visualInfo->visual, CWColormap | CWEventMask, &attributes);
         if (m_Window){
             m_Open = true;
             setWindowProtocols();
-            setWindowStyles(desc.m_Style);
+            setWindowStyles(desc.style);
             XMapWindow(m_Display, m_Window);
-            XStoreName(m_Display, m_Window, desc.m_Title.c_str());
+            XStoreName(m_Display, m_Window, desc.title.c_str());
 
             // set window styles
         }
@@ -41,7 +41,7 @@ namespace Syrius{
     }
 
     SyriusWindowX11Impl::~SyriusWindowX11Impl() {
-        CoreCommand::terminatePlatformGlad();
+        m_CoreState->terminatePlatformGlad();
         XDestroyWindow(m_Display, m_Window);
     }
 
@@ -282,15 +282,19 @@ namespace Syrius{
         return std::string();
     }
 
-    Context *SyriusWindowX11Impl::createContext(const ContextDesc &desc) {
-        switch (desc.m_API) {
-            case SR_API_OPENGL:
-                m_Context = new GlxContext(m_Display, m_BestFBConfig, m_Window, desc);
-                return m_Context;
-            default:
-                SR_CORE_WARNING("cannot create context: %i", desc.m_API);
-                return nullptr;
+    ResourceView<Context> SyriusWindowX11Impl::createContext(ContextDesc &desc) {
+        if (desc.backBufferWidth == 0 || desc.backBufferHeight == 0) {
+            desc.backBufferWidth = m_Width;
+            desc.backBufferHeight = m_Height;
         }
+        switch (desc.api) {
+            case SR_API_OPENGL:
+                m_Context = Resource<Context>(new GlxContext(m_Display, m_BestFBConfig, m_Window, desc, m_CoreState));
+                break;
+            default:
+                SR_CORE_WARNING("cannot create context: %i", desc.api);
+        }
+        return m_Context.createView();
     }
 
     XVisualInfo *SyriusWindowX11Impl::selectBestVisual() {

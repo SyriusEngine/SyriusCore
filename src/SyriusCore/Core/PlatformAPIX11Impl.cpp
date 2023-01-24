@@ -64,7 +64,7 @@ namespace Syrius{
     }
 
     Resource<SyriusWindow> PlatformAPIX11Impl::createWindow(const WindowDesc &windowDesc, CoreCommand* coreCommand) {
-        return Resource<SyriusWindow>new SyriusWindowX11Impl(windowDesc, m_Display, coreCommand));
+        return Resource<SyriusWindow>(new SyriusWindowX11Impl(windowDesc, m_Display, coreCommand));
     }
 
     Display *PlatformAPIX11Impl::getDisplay() const {

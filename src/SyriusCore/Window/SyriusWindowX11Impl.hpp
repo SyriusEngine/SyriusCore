@@ -66,7 +66,7 @@ namespace Syrius{
 
         std::string saveFileDialog(const std::string& fileName, const std::string& filter) override;
 
-        Context* createContext(const ContextDesc& desc) override;
+        ResourceView<Context> createContext(ContextDesc& desc) override;
 
     private:
 
