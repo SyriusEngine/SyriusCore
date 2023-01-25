@@ -43,5 +43,22 @@ namespace Syrius{
         }
     }
 
+    void Context::beginRenderPass(const ResourceView<FrameBuffer> &frameBuffer) {
+        frameBuffer->bind();
+        frameBuffer->clear();
+    }
+
+    void Context::beginRenderPass() {
+        m_FrameBuffers[0]->bind();
+        m_FrameBuffers[0]->clear();
+    }
+
+    void Context::endRenderPass(const ResourceView<FrameBuffer> &frameBuffer) {
+        frameBuffer->unbind();
+    }
+
+    void Context::endRenderPass() {
+        m_FrameBuffers[0]->unbind();
+    }
 
 }

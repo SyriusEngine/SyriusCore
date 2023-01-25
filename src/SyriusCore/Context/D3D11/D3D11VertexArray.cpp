@@ -49,6 +49,7 @@ namespace Syrius{
     void D3D11VertexArray::bind() {
         m_VertexBuffer->bind();
         m_Context->IASetInputLayout(m_InputLayout);
+        m_Context->IASetPrimitiveTopology(m_D3d11DrawMode);
     }
 
     void D3D11VertexArray::unbind() {

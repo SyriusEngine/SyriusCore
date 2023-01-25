@@ -40,7 +40,6 @@ int test(){
 
 
 int main() {
-    return test();
     try{
 
         syriusCoreInit();
@@ -65,56 +64,22 @@ int main() {
         auto screen = createRectangle();
         auto shader = loadShader("./Resources/Shaders/HLSL/Basic-vs.hlsl", "./Resources/Shaders/HLSL/Basic-fs.hlsl", Syrius::SR_SHADER_CODE_HLSL, context);
         auto screenShader = loadShader("./Resources/Shaders/HLSL/Screen-vs.hlsl", "./Resources/Shaders/HLSL/Screen-fs.hlsl", Syrius::SR_SHADER_CODE_HLSL, context);
-
-        for (auto& v: rect.vertices){
-            v.m_Position[0] += 0.5;
-            if (v.m_TexCoords[0] == 1.0f){
-                v.m_TexCoords[0] = 0.5f;
-            }
-        }
         auto vao1 = loadMesh(rect, shader, context);
-
-        for (auto& v: rect.vertices){
-            v.m_Position[0] -= 1.0;
-            if (v.m_TexCoords[0] == 0.5f){
-                v.m_TexCoords[0] = 1.0f;
-            }
-            if (v.m_TexCoords[0] == 0.0f){
-                v.m_TexCoords[0] = 0.5f;
-            }
-        }
-        auto vao2 = loadMesh(rect, shader, context);
-
-        auto screenVAO = loadMesh(screen, screenShader, context);
+//        vao1->setDrawMode(Syrius::SR_DRAW_LINES_STRIP);
 
         auto face = createImage("./Resources/Textures/awesomeface.png");
         auto logo = createImage("./Resources/Textures/insta.png");
 
         SamplerDesc splrDesc;
         splrDesc.wrapU = Syrius::SR_TEXTURE_WRAP_MIRROR_REPEAT;
+        splrDesc.wrapV = Syrius::SR_TEXTURE_WRAP_MIRROR_REPEAT;
         auto sampler = context->createSampler(splrDesc);
 
-        std::vector<ubyte> temp(512 * 1024 * 4);
-
-        Texture2DDesc texDesc;
-        texDesc.width = 1024;
-        texDesc.height = 512;
-        texDesc.format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8;
+        Texture2DImageDesc texDesc;
+        texDesc.image = face.createView();
         texDesc.sampler = sampler;
-        texDesc.data = temp.data();
 
         auto texture = context->createTexture2D(texDesc);
-        texture->setData(face, 0, 0, 512, 512);
-        texture->setData(logo, 512, 0, 512, 512);
-
-        auto fbDesc = context->createFrameBufferDescription();
-        ViewportDesc vpDesc;
-        fbDesc->addViewportDesc(vpDesc);
-        ColorAttachmentDesc caDesc;
-        fbDesc->addColorAttachmentDesc(caDesc);
-        auto fb = context->createFrameBuffer(fbDesc);
-
-
 
         while (window->isOpen()){
 
@@ -139,22 +104,15 @@ int main() {
                 }
             }
 
-            fb->bind();
-            fb->clear();
+            context->beginRenderPass();
+
             shader.shaderProgram->bind();
             sampler->bind(0);
             texture->bind(0);
             vao1->drawBuffers();
-            vao2->drawBuffers();
-            fb->unbind();
-
-            context->getDefaultFrameBuffer()->bind();
-            context->getDefaultFrameBuffer()->clear();
-            screenShader.shaderProgram->bind();
-            fb->getColorAttachment(0)->bindShaderResource(0);
-            screenVAO->drawBuffers();
 
             window->onImGuiBegin();
+
 
 
 
@@ -168,6 +126,8 @@ int main() {
             ImGui::End();
 
             window->onImGuiEnd();
+
+            context->endRenderPass();
 
             context->swapBuffers();
         }

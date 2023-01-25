@@ -51,16 +51,16 @@ namespace Syrius{
       m_Context(context),
       m_Texture(nullptr),
       m_TextureView(nullptr){
-        if (desc.m_Image->getChannelCount() == 3){
-            desc.m_Image->extendAlpha();
+        if (desc.image->getChannelCount() == 3){
+            desc.image->extendAlpha();
         }
 
         D3D11_TEXTURE2D_DESC textureDesc = { 0 };
-        textureDesc.Width = desc.m_Image->getWidth();
-        textureDesc.Height = desc.m_Image->getHeight();
+        textureDesc.Width = desc.image->getWidth();
+        textureDesc.Height = desc.image->getHeight();
         textureDesc.MipLevels = 1;
         textureDesc.ArraySize = 1;
-        textureDesc.Format = getFormat(desc.m_Image->getChannelCount());
+        textureDesc.Format = getFormat(desc.image->getChannelCount());
         textureDesc.SampleDesc.Quality = 0;
         textureDesc.SampleDesc.Count = 1;
         textureDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -69,8 +69,8 @@ namespace Syrius{
         textureDesc.MiscFlags = 0;
 
         D3D11_SUBRESOURCE_DATA subresourceData = { 0 };
-        subresourceData.SysMemPitch = desc.m_Image->getWidth() * (sizeof(ubyte) * desc.m_Image->getChannelCount());
-        subresourceData.pSysMem = &desc.m_Image->getData()[0];
+        subresourceData.SysMemPitch = desc.image->getWidth() * (sizeof(ubyte) * desc.image->getChannelCount());
+        subresourceData.pSysMem = &desc.image->getData()[0];
 
         SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, &subresourceData, &m_Texture));
 

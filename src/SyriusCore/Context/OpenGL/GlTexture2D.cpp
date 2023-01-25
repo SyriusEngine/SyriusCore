@@ -28,7 +28,7 @@ namespace Syrius{
         setGlFormats();
 
         glTextureStorage2D(m_TextureID, 1, m_GlInternalFormat, m_Width, m_Height);
-        glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlFormat, m_GlDataType, desc.m_Image->getData().data());
+        glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlFormat, m_GlDataType, desc.image->getData().data());
         glGenerateTextureMipmap(m_TextureID);
 
     }

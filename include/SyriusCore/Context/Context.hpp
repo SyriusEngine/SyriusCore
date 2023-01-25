@@ -107,6 +107,26 @@ namespace Syrius{
 
         void onResize(uint32 width, uint32 height);
 
+        virtual void beginRenderPass(const ResourceView<FrameBuffer>& frameBuffer);
+
+        virtual void beginRenderPass();
+
+        virtual void endRenderPass(const ResourceView<FrameBuffer>& frameBuffer);
+
+        virtual void endRenderPass();
+
+        inline void clear(){
+            m_FrameBuffers[0]->clear();
+        }
+
+        inline void draw(const ResourceView<VertexArray>& vertexArray){
+            vertexArray->drawBuffers();
+        }
+
+        inline void drawInstanced(const ResourceView<VertexArray>& vertexArray, uint32 instanceCount){
+            vertexArray->drawBuffersInstanced(instanceCount);
+        }
+
     protected:
 
         explicit Context(const ContextDesc& desc);

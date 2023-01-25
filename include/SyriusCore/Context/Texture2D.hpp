@@ -17,8 +17,8 @@ namespace Syrius{
     };
 
     struct SR_CORE_API Texture2DImageDesc{
-        ResourceView<Image> m_Image;
-        ResourceView<Sampler> m_Sampler;
+        ResourceView<Image> image;
+        ResourceView<Sampler> sampler;
     };
 
     class SR_CORE_API Texture2D{
