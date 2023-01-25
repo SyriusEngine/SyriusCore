@@ -129,6 +129,16 @@ namespace Syrius{
 
         bool m_VerticalSync;
 
+        /*
+         * The reason why the context must own all resources at all times is that the objects always depend on some
+         * resources that the context manages. For example, D3D11 owns the device, device context and swap chain. If
+         * the context is destroyed, the device, device context and swap chain are destroyed as well. If not all objects
+         * are destroyed BEFORE this happens, the application will crash. Same for OpenGL but here the problem lies
+         * with gl function pointer loading. If the context is destroyed, the function pointers are no longer valid.
+         * This problem is the main reason why the context must own all resources and why we wrote our own smart pointer
+         * that can create 'Views' of actual resources. This way, the context can destroy all resources when it is destroyed
+         * and the corresponding views will be invalidated. This way, no dangling pointers will be left behind.
+         */
         std::vector<Resource<ShaderModule>> m_ShaderModules;
         std::vector<Resource<Shader>> m_Shaders;
         std::vector<Resource<VertexDescription>> m_VertexDescriptions;
