@@ -54,7 +54,7 @@ int main() {
 
         auto window = createWindow(wDesc);
         ContextDesc cDesc;
-        cDesc.api = Syrius::SR_API_D3D11;
+        cDesc.api = Syrius::SR_API_OPENGL;
 
         auto context = window->createContext(cDesc);
         context->setVerticalSynchronisation(true);
@@ -62,10 +62,28 @@ int main() {
 
         auto rect = createRectangle();
         auto screen = createRectangle();
-        auto shader = loadShader("./Resources/Shaders/HLSL/Basic-vs.hlsl", "./Resources/Shaders/HLSL/Basic-fs.hlsl", Syrius::SR_SHADER_CODE_HLSL, context);
-        auto screenShader = loadShader("./Resources/Shaders/HLSL/Screen-vs.hlsl", "./Resources/Shaders/HLSL/Screen-fs.hlsl", Syrius::SR_SHADER_CODE_HLSL, context);
+        auto shader = loadShader("./Resources/Shaders/GLSL/Basic.vert", "./Resources/Shaders/GLSL/Basic.frag", Syrius::SR_SHADER_CODE_GLSL, context);
+        auto screenShader = loadShader("./Resources/Shaders/GLSL/Screen.vert", "./Resources/Shaders/GLSL/Screen.frag", Syrius::SR_SHADER_CODE_GLSL, context);
+        for (auto& v: rect.vertices){
+            v.m_Position[0] += 0.5;
+            if (v.m_TexCoords[0] == 1.0f){
+                v.m_TexCoords[0] = 0.5f;
+            }
+        }
         auto vao1 = loadMesh(rect, shader, context);
-//        vao1->setDrawMode(Syrius::SR_DRAW_LINES_STRIP);
+
+        for (auto& v: rect.vertices){
+            v.m_Position[0] -= 1.0;
+            if (v.m_TexCoords[0] == 0.5f){
+                v.m_TexCoords[0] = 1.0f;
+            }
+            if (v.m_TexCoords[0] == 0.0f){
+                v.m_TexCoords[0] = 0.5f;
+            }
+        }
+        auto vao2 = loadMesh(rect, shader, context);
+
+        auto screenVAO = loadMesh(screen, screenShader, context);
 
         auto face = createImage("./Resources/Textures/awesomeface.png");
         auto logo = createImage("./Resources/Textures/insta.png");
@@ -75,11 +93,33 @@ int main() {
         splrDesc.wrapV = Syrius::SR_TEXTURE_WRAP_MIRROR_REPEAT;
         auto sampler = context->createSampler(splrDesc);
 
-        Texture2DImageDesc texDesc;
-        texDesc.image = face.createView();
+        std::vector<ubyte> temp(512 * 1024 * 4);
+        Texture2DDesc texDesc;
+        texDesc.width = 1024;
+        texDesc.height = 512;
+        texDesc.format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8;
         texDesc.sampler = sampler;
+        texDesc.data = temp.data();
 
         auto texture = context->createTexture2D(texDesc);
+        texture->setData(face, 0, 0, 512, 512);
+        texture->setData(logo, 512, 0, 512, 512);
+
+        auto fbDesc = context->createFrameBufferDescription();
+        ViewportDesc vpDesc;
+        vpDesc.width = 1280;
+        vpDesc.height = 720;
+        fbDesc->addViewportDesc(vpDesc);
+        ColorAttachmentDesc caDesc;
+        caDesc.width = 1280;
+        caDesc.height = 720;
+        fbDesc->addColorAttachmentDesc(caDesc);
+        DepthStencilAttachmentDesc dsDesc;
+        dsDesc.format = SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8;
+        dsDesc.width = 1280;
+        dsDesc.height = 720;
+        dsDesc.enableDepthTest = true;
+        auto fb = context->createFrameBuffer(fbDesc);
 
         while (window->isOpen()){
 
@@ -104,12 +144,21 @@ int main() {
                 }
             }
 
-            context->beginRenderPass();
+            context->beginRenderPass(fb);
 
+            shader.shaderProgram->bind();
             shader.shaderProgram->bind();
             sampler->bind(0);
             texture->bind(0);
             vao1->drawBuffers();
+            vao2->drawBuffers();
+
+            context->endRenderPass(fb);
+
+            context->beginRenderPass();
+            screenShader.shaderProgram->bind();
+            fb->getColorAttachment(0)->bindShaderResource(0);
+            screenVAO->drawBuffers();
 
             window->onImGuiBegin();
 
@@ -132,8 +181,6 @@ int main() {
             context->swapBuffers();
         }
 
-        syriusCoreTerminate();
-
 
 
     } catch (std::exception& e){
@@ -141,6 +188,8 @@ int main() {
     } catch (...) {
         std::cerr << "Unknown Error" << std::endl;
     }
+
+    syriusCoreTerminate();
 
     printf("Allocated Memory: %zu\n", getAllocatedMemory());
     printf("Freed Memory: %zu\n", getFreedMemory());

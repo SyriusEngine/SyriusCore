@@ -35,13 +35,12 @@ namespace Syrius{
 
         GLenum attachmentIndex = GL_COLOR_ATTACHMENT0;
         std::vector<GLenum> drawBuffers;
-        uint32 i = 0;
         for (const auto& attachDesc: desc->getColorAttachmentDesc()){
             auto attachment = new GlColorAttachment(attachDesc);
             m_ColorAttachments.emplace_back(attachment);
             drawBuffers.push_back(attachmentIndex);
-            glNamedFramebufferTexture(m_FrameBufferID, attachmentIndex + i, attachment->getIdentifier(), 0);
-            i++;
+            glNamedFramebufferTexture(m_FrameBufferID, attachmentIndex, attachment->getIdentifier(), 0);
+            attachmentIndex++;
         }
         glNamedFramebufferDrawBuffers(m_FrameBufferID, drawBuffers.size(), &drawBuffers[0]);
 
