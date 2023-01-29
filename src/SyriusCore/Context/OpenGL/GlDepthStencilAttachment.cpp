@@ -57,8 +57,13 @@ namespace Syrius{
 
     void GlDepthStencilAttachment::unbind() {
         glBindRenderbuffer(GL_RENDERBUFFER, 0);
-        glDisable(GL_DEPTH_TEST);
-        glDisable(GL_STENCIL_TEST);
+
+        if (m_EnableDepthTest){
+            glDisable(GL_DEPTH_TEST);
+        }
+        if (m_EnableStencilTest){
+            glDisable(GL_STENCIL_TEST);
+        }
     }
 
     void GlDepthStencilAttachment::bindShaderResource(uint32 slot) {
@@ -67,6 +72,8 @@ namespace Syrius{
     }
 
     void GlDepthStencilAttachment::clear() {
+//        glClearNamedFramebufferfi(m_FrameBufferID, GL_DEPTH_STENCIL, 0, m_ClearDepth, m_ClearStencil);
+
         if (m_EnableDepthTest){
             glClearNamedFramebufferfv(m_FrameBufferID, GL_DEPTH, 0, &m_ClearDepth);
         }

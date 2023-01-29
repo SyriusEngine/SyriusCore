@@ -12,11 +12,11 @@ namespace Syrius{
         bool enableShaderRead = true; // enables sampling from this attachment in shaders
         bool enableAutoResize           = true; // whenever the window is resized, this attachment will be resized as well
 
-        bool enableDepthTest            = true;
+        bool enableDepthTest            = false;
         SR_COMPARISON_FUNC depthFunc    = SR_COMPARISON_FUNC_LESS;
         float clearDepth                = 1.0f;
 
-        bool enableStencilTest                  = true;
+        bool enableStencilTest                  = false;
         SR_COMPARISON_FUNC stencilFunc          = SR_COMPARISON_FUNC_ALWAYS;
         uint32 clearStencil                     = 0;
         uint32 stencilMask                      = 0xFFFFFFFF;

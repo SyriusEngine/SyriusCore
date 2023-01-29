@@ -105,6 +105,16 @@ int main() {
         texture->setData(face, 0, 0, 512, 512);
         texture->setData(logo, 512, 0, 512, 512);
 
+        glm::mat4 model = glm::mat4(1.0f);
+        ConstantBufferDesc cbDesc;
+        cbDesc.size = sizeof(glm::mat4);
+        cbDesc.data = &model[0];
+        cbDesc.type = Syrius::SR_BUFFER_DYNAMIC;
+        cbDesc.name = "ModelMatrix";
+        cbDesc.slot = 0;
+        auto cb = context->createConstantBuffer(cbDesc);
+
+
         auto fbDesc = context->createFrameBufferDescription();
         ViewportDesc vpDesc;
         vpDesc.width = 1280;
@@ -115,10 +125,10 @@ int main() {
         caDesc.height = 720;
         fbDesc->addColorAttachmentDesc(caDesc);
         DepthStencilAttachmentDesc dsDesc;
-        dsDesc.format = SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8;
         dsDesc.width = 1280;
         dsDesc.height = 720;
         dsDesc.enableDepthTest = true;
+        fbDesc->addDepthStencilAttachmentDesc(dsDesc);
         auto fb = context->createFrameBuffer(fbDesc);
 
         while (window->isOpen()){
@@ -150,6 +160,7 @@ int main() {
             shader.shaderProgram->bind();
             sampler->bind(0);
             texture->bind(0);
+            cb->bind();
             vao1->drawBuffers();
             vao2->drawBuffers();
 
@@ -170,7 +181,11 @@ int main() {
             ImGui::InputText("string", str0, IM_ARRAYSIZE(str0));
 
             static float move[3] = {0.0f, 0.0f, 0.0f};
-            ImGui::DragFloat3("Move", move, 0.01f);
+            if (ImGui::SliderFloat3("Move", move, -1.0f, 1.0f)){
+                glm::vec3 moveVec(move[0], move[1], move[2]);
+                glm::mat4 translation = glm::translate(glm::mat4(1.0f), moveVec);
+                cb->setData(&translation[0]);
+            }
 
             ImGui::End();
 

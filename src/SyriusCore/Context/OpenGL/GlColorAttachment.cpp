@@ -2,9 +2,11 @@
 
 namespace Syrius{
 
-    GlColorAttachment::GlColorAttachment(const ColorAttachmentDesc &desc):
+    GlColorAttachment::GlColorAttachment(uint32 framebufferID, uint32 attachmentID, const ColorAttachmentDesc &desc):
     ColorAttachment(desc),
     m_InternalFormat(getGlTextureInternalFormat(desc.format)),
+    m_FrameBufferID(framebufferID),
+    m_AttachmentID(attachmentID),
     m_TextureID(0),
     m_ChannelCount(0){
         SR_CORE_PRECONDITION(desc.format != SR_TEXTURE_DATA_FORMAT_DEPTH_16 and
@@ -36,7 +38,7 @@ namespace Syrius{
     }
 
     void GlColorAttachment::clear() {
-        glClearTexImage(m_TextureID, 0, m_GlFormat, GL_UNSIGNED_BYTE, m_ClearColor);
+        glClearNamedFramebufferfv(m_FrameBufferID, GL_COLOR, m_AttachmentID, &m_ClearColor[0]);
     }
 
     void GlColorAttachment::setSize(uint32 width, uint32 height) {

@@ -7,7 +7,7 @@ namespace Syrius{
     
     class GlColorAttachment : public ColorAttachment{
     public:
-        GlColorAttachment(const ColorAttachmentDesc& desc);
+        GlColorAttachment(uint32 framebufferID, uint32 attachmentID, const ColorAttachmentDesc& desc);
         
         ~GlColorAttachment() override;
 
@@ -25,6 +25,8 @@ namespace Syrius{
 
     private:
         uint32 m_TextureID;
+        const uint32 m_FrameBufferID;
+        const uint32 m_AttachmentID;
 
         GLint m_InternalFormat;
         GLenum m_GlFormat;
