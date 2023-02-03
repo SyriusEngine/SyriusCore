@@ -154,7 +154,13 @@ set(SYRIUSCORE_SRC
         src/SyriusCore/SyriusCore.cpp )
 
 add_library(SyriusCore SHARED ${SYRIUSCORE_SRC})
-install(TARGETS SyriusCore DESTINATION ${PROJECT_BINARY_DIR})
+
+set_target_properties(SyriusCore PROPERTIES
+        CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+message(STATUS "CMAKE_RUNTIME_OUTPUT_DIRECTORY: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+
 
 if (WIN32)
     file(GLOB VULKAN_DLL "./Dependencies/Vulkan/1.3.211.0/Bin/*.dll")
