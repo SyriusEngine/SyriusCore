@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 3.16)
 project(SyriusCore)
 
+set(CMAKE_CXX_STANDARD 17)
+
 add_compile_definitions(SR_CORE_DEBUG)
 add_compile_definitions(SR_CORE_EXPORT_DLL)
 
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
 include_directories(Dependencies/Vulkan/1.3.211.0/Include/)
 link_directories(Dependencies/Vulkan/1.3.211.0/Bin/)
@@ -151,7 +153,8 @@ set(SYRIUSCORE_SRC
         ${SYRIUSCORE_GRAPHICS_API_SRC}
         src/SyriusCore/SyriusCore.cpp )
 
-add_library(syrius-core SHARED ${SYRIUSCORE_SRC})
+add_library(SyriusCore SHARED ${SYRIUSCORE_SRC})
+install(TARGETS SyriusCore DESTINATION ${PROJECT_BINARY_DIR})
 
 if (WIN32)
     file(GLOB VULKAN_DLL "./Dependencies/Vulkan/1.3.211.0/Bin/*.dll")
@@ -191,7 +194,7 @@ elseif(UNIX)
             -lGL)
 endif()
 
-target_link_libraries(syrius-core ${SYRIUS_CORE_LIBS})
+target_link_libraries(SyriusCore ${SYRIUS_CORE_LIBS})
 
 include_directories(/include/)
 include_directories(/glm/)
@@ -199,7 +202,7 @@ link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(SyriusCoreDev main.cpp Driver.cpp Driver.hpp Tests/FramebufferTest.cpp Tests/FramebufferTest.hpp)
 if (MSVC)
-    target_link_libraries(SyriusCoreDev syrius-core)
+    target_link_libraries(SyriusCoreDev SyriusCore)
 else()
-    target_link_libraries(SyriusCoreDev -lsyrius-core)
+    target_link_libraries(SyriusCoreDev -lSyriusCore)
 endif()
