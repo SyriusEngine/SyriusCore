@@ -8,5 +8,5 @@ float4 main(float2 texCoords : TexCoord ) : SV_Target {
 // 	    discard;
 // 	}
 // 	return color1;
-    return float4(0.8f, 0.9f, 0.5f, 1.0f);
+return float4(0.8f, 0.9f, 0.5f, 1.0f);
 }

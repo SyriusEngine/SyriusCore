@@ -1,5 +1,5 @@
 struct VSOut {
-    float2 texCoords: TexCoord;
+	float2 texCoords: TexCoord;
 	float4 pos : SV_Position;
 };
 
