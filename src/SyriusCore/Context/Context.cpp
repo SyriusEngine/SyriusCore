@@ -38,6 +38,8 @@ namespace Syrius{
     }
 
     void Context::onResize(uint32 width, uint32 height) {
+        m_Width = width;
+        m_Height = height;
         for (auto& frameBuffer : m_FrameBuffers){
             frameBuffer->onResize(width, height);
         }
@@ -61,4 +63,11 @@ namespace Syrius{
         m_FrameBuffers[0]->unbind();
     }
 
+    uint32 Context::getWidth() const {
+        return m_Width;
+    }
+
+    uint32 Context::getHeight() const {
+        return m_Height;
+    }
 }
