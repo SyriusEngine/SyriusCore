@@ -111,8 +111,8 @@ namespace Syrius{
     }
 
     void SyriusWindow::destroyContext() {
+        SR_CORE_MESSAGE_ON_CONDITION(!m_UseImGui, "There exists an ImGui context, destroying it");
 
-        SR_CORE_MESSAGE_ON_CONDITION(m_UseImGui, "There exists an ImGui context, destroying it");
         if (m_UseImGui){
             this->destroyImGuiContext();
         }
