@@ -260,6 +260,8 @@ namespace Syrius{
 
     uint8 SR_CORE_API getTextureDataChannelCount(SR_TEXTURE_DATA_FORMAT format);
 
+    SR_DATA_TYPE SR_CORE_API getTextureDataType(SR_TEXTURE_DATA_FORMAT format);
+
     std::string SR_CORE_API getShaderTypeString(SR_SHADER_TYPE type);
 
 }

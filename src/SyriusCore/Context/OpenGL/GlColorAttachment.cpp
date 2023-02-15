@@ -8,7 +8,8 @@ namespace Syrius{
     m_FrameBufferID(framebufferID),
     m_AttachmentID(attachmentID),
     m_TextureID(0),
-    m_ChannelCount(0){
+    m_ChannelCount(0),
+    m_GlDataType(getGlDataType(getTextureDataType(desc.format))){
         SR_CORE_PRECONDITION(desc.format != SR_TEXTURE_DATA_FORMAT_DEPTH_16 and
                              desc.format != SR_TEXTURE_DATA_FORMAT_DEPTH_24 and
                              desc.format != SR_TEXTURE_DATA_FORMAT_DEPTH_32 and
@@ -22,7 +23,14 @@ namespace Syrius{
         glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
-        SR_CORE_OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, GL_UNSIGNED_BYTE, nullptr));
+        GLint supportedFormat = GL_FALSE;
+        glGetInternalformativ(GL_TEXTURE_2D, m_InternalFormat, GL_INTERNALFORMAT_SUPPORTED, 1, &supportedFormat);
+        if (supportedFormat == GL_TRUE){
+            SR_CORE_OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr));
+        }
+        else{
+            SR_CORE_EXCEPTION("OpenGL does not support a color attachment of type: %i", desc.format);
+        }
     }
 
     GlColorAttachment::~GlColorAttachment() {

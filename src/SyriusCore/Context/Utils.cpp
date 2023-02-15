@@ -73,6 +73,10 @@ namespace Syrius{
         return format >> 4;
     }
 
+    SR_DATA_TYPE getTextureDataType(SR_TEXTURE_DATA_FORMAT format){
+        return static_cast<SR_DATA_TYPE>(format << 4);
+    }
+
     std::string getShaderTypeString(SR_SHADER_TYPE type){
         switch (type) {
             case SR_SHADER_VERTEX:

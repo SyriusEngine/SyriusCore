@@ -30,6 +30,7 @@ namespace Syrius{
 
         GLint m_InternalFormat;
         GLenum m_GlFormat;
+        GLenum m_GlDataType;
         uint32 m_ChannelCount;
 
     };
