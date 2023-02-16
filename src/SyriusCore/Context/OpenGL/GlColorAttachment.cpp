@@ -27,6 +27,8 @@ namespace Syrius{
         glGetInternalformativ(GL_TEXTURE_2D, m_InternalFormat, GL_INTERNALFORMAT_SUPPORTED, 1, &supportedFormat);
         if (supportedFormat == GL_TRUE){
             SR_CORE_OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr));
+            glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         }
         else{
             SR_CORE_EXCEPTION("OpenGL does not support a color attachment of type: %i", desc.format);
