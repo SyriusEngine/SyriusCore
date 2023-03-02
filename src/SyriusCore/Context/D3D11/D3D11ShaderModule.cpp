@@ -46,7 +46,9 @@ namespace Syrius{
 
             exceptionBlob->Release();
         }
-
+        if (m_ShaderBlob == nullptr){
+            SR_CORE_EXCEPTION("D3D11ShaderModule failed to compile shader");
+        }
     }
 
     D3D11ShaderModule::~D3D11ShaderModule() {
