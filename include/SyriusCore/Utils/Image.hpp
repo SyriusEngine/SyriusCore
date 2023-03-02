@@ -27,7 +27,7 @@ namespace Syrius{
 
         ~Image();
 
-        void writeToFile(const std::string& fileName, bool flipOnWrite, SR_IMAGE_TYPE imgType = SR_IMAGE_PNG) const;
+        void writeToFile(const std::string& fileName, bool flipOnWrite = true, SR_IMAGE_TYPE imgType = SR_IMAGE_PNG) const;
 
         void resize(int32 newWidth, int32 newHeight);
 

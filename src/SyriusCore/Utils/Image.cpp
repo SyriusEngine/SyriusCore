@@ -98,16 +98,18 @@ namespace Syrius{
 
     void Image::extendAlpha(ubyte alpha) {
         SR_CORE_PRECONDITION(m_ChannelCount == 3, "Image::extendAlpha() can only be used on images with 3 channels")
-
         std::vector<ubyte> extendedData(m_Width * m_Height * 4);
-        for (int32 i = 0; i < m_Width * m_Height; i += 3){
-            extendedData[i] = m_Data[i];
-            extendedData[i + 1] = m_Data[i + 1];
-            extendedData[i + 2] = m_Data[i + 2];
-            extendedData[i + 3] = alpha;
+
+        for (int32 y = 0; y < m_Height; y++){
+            for (int32 x = 0; x < m_Width; x++){
+                for (int32 c = 0; c < m_ChannelCount; c++){
+                    extendedData[y * m_Width * 4 + x * 4 + c] = m_Data[y * m_Width * 3 + x * 3 + c];
+                }
+                extendedData[y * m_Width * 4 + x * 4 + 3] = alpha;
+            }
         }
-        m_ChannelCount = 4;
         m_Data = extendedData;
+        m_ChannelCount = 4;
     }
 
     void Image::runPixelFunc(pixelFunc func) {
