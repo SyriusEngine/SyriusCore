@@ -17,8 +17,10 @@ namespace Syrius{
     };
 
     struct SR_CORE_API Texture2DImageDesc{
-        ResourceView<Image> image;
-        ResourceView<Sampler> sampler;
+        const Resource<Image>& image;
+        const ResourceView<Sampler>& sampler;
+
+        Texture2DImageDesc(const Resource<Image>& image, const ResourceView<Sampler>& sampler);
     };
 
     class SR_CORE_API Texture2D{
@@ -39,6 +41,8 @@ namespace Syrius{
             auto* data = reinterpret_cast<const void*>(img->getData().data()); // VERY IMPORTANT, D3D11 will otherwise display some weir results
             setData(data, x, y, width, height);
         }
+
+        virtual Resource<Image> getData() = 0;
 
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 

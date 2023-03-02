@@ -56,6 +56,15 @@ namespace Syrius{
 
     }
 
+    Resource<Image> GlTexture2D::getData() {
+        auto channelCount = getTextureDataChannelCount(m_Format);
+        auto size = m_Width * m_Height * channelCount;
+        auto data = Resource<uint8>(new uint8[size]);
+        glGetTextureImage(m_TextureID, 0, m_GlFormat, m_GlDataType, size, data.get());
+        return createResource<Image>(data.get(), m_Width, m_Height, channelCount);
+
+    }
+
     uint64 GlTexture2D::getIdentifier() const {
         return m_TextureID;
     }

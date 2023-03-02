@@ -121,6 +121,14 @@ namespace Syrius{
         m_Context->UpdateSubresource(m_Texture, 0, &box, data, width * (sizeof(ubyte) * channelCount), 0);
     }
 
+    Resource<Image> D3D11Texture2D::getData() {
+        auto channelCount = getTextureDataChannelCount(m_Format);
+        auto size = m_Width * m_Height * channelCount;
+        auto data = new ubyte[size];
+//        m_Context->CopyResource(data, m_Texture);
+//        return Resource<Image>(new Image(m_Width, m_Height, channelCount, data));
+    }
+
     uint64 D3D11Texture2D::getIdentifier() const {
         return reinterpret_cast<uint64>(m_Texture);
     }

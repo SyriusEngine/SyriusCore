@@ -21,6 +21,8 @@ namespace Syrius{
 
         void setData(const void* data, uint32 x, uint32 y, uint32 width, uint32 height) override;
 
+        Resource<Image> getData() override;
+
         [[nodiscard]] uint64 getIdentifier() const override;
 
     private:

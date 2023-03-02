@@ -3,8 +3,14 @@
 
 namespace Syrius{
 
-    Texture2D::Texture2D(const Texture2DDesc& desc)
-    : m_Width(desc.width),
+    Texture2DImageDesc::Texture2DImageDesc(const Resource<Image> &image, const ResourceView<Sampler> &sampler):
+    image(image),
+    sampler(sampler){
+
+    }
+
+    Texture2D::Texture2D(const Texture2DDesc& desc):
+    m_Width(desc.width),
     m_Height(desc.height),
     m_Format(desc.format){
         SR_CORE_PRECONDITION(m_Width > 0, "Texture width must be greater than 0");
@@ -12,8 +18,8 @@ namespace Syrius{
         SR_CORE_PRECONDITION(desc.sampler.isValid(), "Sampler must not be null");
     }
 
-    Texture2D::Texture2D(const Texture2DImageDesc &desc)
-    : m_Width(desc.image->getWidth()),
+    Texture2D::Texture2D(const Texture2DImageDesc &desc):
+    m_Width(desc.image->getWidth()),
     m_Height(desc.image->getHeight()){
         switch (desc.image->getChannelCount()){
             case 1: m_Format = SR_TEXTURE_DATA_FORMAT_R_UI8; break;
