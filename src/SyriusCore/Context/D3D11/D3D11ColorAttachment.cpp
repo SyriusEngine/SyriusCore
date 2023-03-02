@@ -104,7 +104,27 @@ namespace Syrius {
     }
 
     Resource<Image> D3D11ColorAttachment::getData() {
-        return Resource<Image>();
+        // we use a staging texture to copy the data back to the CPU as a texture cannot be mapped
+        D3D11_TEXTURE2D_DESC desc;
+        m_ColorBuffer->GetDesc(&desc);
+        desc.Usage = D3D11_USAGE_STAGING;
+        desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+        desc.BindFlags = 0;
+        desc.MiscFlags = 0;
+        ID3D11Texture2D* stagingTexture = nullptr;
+        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&desc, nullptr, &stagingTexture));
+
+        m_Context->CopyResource(stagingTexture, m_ColorBuffer);
+
+        D3D11_MAPPED_SUBRESOURCE mappedResource;
+        SR_CORE_D3D11_CALL(m_Context->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &mappedResource));
+
+        BYTE* data = static_cast<BYTE*>(mappedResource.pData);
+        auto channelCount = getTextureDataChannelCount(m_Format);
+        auto img = Resource<Image>(new Image(data, desc.Width, desc.Height, channelCount));
+        m_Context->Unmap(stagingTexture, 0);
+        stagingTexture->Release();
+        return std::move(img);
     }
 
     uint64 D3D11ColorAttachment::getIdentifier() const {
