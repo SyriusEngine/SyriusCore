@@ -38,7 +38,7 @@ namespace Syrius{
         m_Data.clear();
     }
 
-    void Image::writeToFile(const std::string &fileName, bool flipOnWrite, SR_IMAGE_TYPE imgType) {
+    void Image::writeToFile(const std::string &fileName, bool flipOnWrite, SR_IMAGE_TYPE imgType) const {
         stbi_flip_vertically_on_write(flipOnWrite);
         switch (imgType){
             case SR_IMAGE_PNG: {
