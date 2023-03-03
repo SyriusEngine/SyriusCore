@@ -24,8 +24,6 @@ namespace Syrius{
 
         virtual void setData(const void* data) = 0;
 
-        virtual void addShader(Shader* shader) = 0;
-
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 
         [[nodiscard]] const std::string& getBlockName() const;
