@@ -63,7 +63,7 @@ int main() {
         auto rect = createRectangle();
         auto screen = createRectangle();
         auto shader = loadShader("./Resources/Shaders/HLSL/Basic.vert", "./Resources/Shaders/HLSL/Basic.frag", Syrius::SR_SHADER_CODE_HLSL, context);
-        auto screenShader = loadShader("./Resources/Shaders/HLSL/Screen.vert", "./Resources/Shaders/HLSL/Screen.frag", Syrius::SR_SHADER_CODE_HLSL, context);
+        auto screenShader = loadShader("./Resources/Shajbders/HLSL/Screen.vert", "./Resources/Shaders/HLSL/Screen.frag", Syrius::SR_SHADER_CODE_HLSL, context);
         for (auto& v: rect.vertices){
             v.m_Position[0] += 0.5;
             if (v.m_TexCoords[0] == 1.0f){

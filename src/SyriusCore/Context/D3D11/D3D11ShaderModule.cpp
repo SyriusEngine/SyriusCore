@@ -38,10 +38,10 @@ namespace Syrius{
         if (exceptionBlob){
             auto msg = static_cast<char*>(exceptionBlob->GetBufferPointer());
             if (desc.loadType == SR_LOAD_FROM_FILE){
-                SR_CORE_WARNING("D3D11ShaderModule failed to compile shader, found in file: %s\n, details: %s", desc.code.c_str(), msg);
+                SR_CORE_EXCEPTION("D3D11ShaderModule failed to compile shader, found in file: %s\n, details: %s", desc.code.c_str(), msg);
             }
             else{
-                SR_CORE_WARNING("D3D11ShaderModule failed to compile shader, details: %s", msg);
+                SR_CORE_EXCEPTION("D3D11ShaderModule failed to compile shader, details: %s", msg);
             }
 
             exceptionBlob->Release();
