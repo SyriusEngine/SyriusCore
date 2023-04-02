@@ -28,7 +28,7 @@ namespace Syrius{
         setGlFormats();
 
         glTextureStorage2D(m_TextureID, 1, m_GlInternalFormat, m_Width, m_Height);
-        glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlFormat, m_GlDataType, desc.image->getData().data());
+        glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlFormat, m_GlDataType, desc.image->getData());
         glGenerateTextureMipmap(m_TextureID);
 
     }
@@ -53,6 +53,15 @@ namespace Syrius{
         SR_CORE_PRECONDITION(y + height <= m_Height, "y + height is out of range");
 
         glTextureSubImage2D(m_TextureID, 0, x, y, width, height, m_GlFormat, m_GlDataType, data);
+
+    }
+
+    Resource<Image> GlTexture2D::getData() {
+        auto channelCount = getTextureDataChannelCount(m_Format);
+        auto size = m_Width * m_Height * channelCount;
+        auto data = Resource<uint8>(new uint8[size]);
+        glGetTextureImage(m_TextureID, 0, m_GlFormat, m_GlDataType, size, data.get());
+        return createResource<Image>(data.get(), m_Width, m_Height, m_Format);
 
     }
 

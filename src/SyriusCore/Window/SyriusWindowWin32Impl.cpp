@@ -176,7 +176,8 @@ namespace Syrius{
             DestroyIcon(m_Icon);
             m_Icon = nullptr;
         }
-        std::vector<ubyte> bgra = image->getData();
+        std::vector<ubyte> bgra(image->getWidth() * image->getHeight() * image->getChannelCount());
+        memcpy(&bgra[0], image->getData(), image->getWidth() * image->getHeight() * image->getChannelCount());
         for (uint32 i = 0; i < image->getWidth() * image->getHeight() * image->getChannelCount(); i += image->getChannelCount()){
             std::swap(bgra[i], bgra[i + 2]);
         }

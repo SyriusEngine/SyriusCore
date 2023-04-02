@@ -11,7 +11,7 @@ namespace Syrius{
         uint32 width          = 0;
         uint32 height         = 0;
         ResourceView<Sampler> sampler;
-        SR_TEXTURE_DATA_FORMAT format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8;
+        SR_TEXTURE_DATA_FORMAT format = SR_TEXTURE_DATA_RGBA_UI8;
         const void* data            = nullptr;
 
     };
@@ -36,7 +36,7 @@ namespace Syrius{
         virtual void setData(const void* data, uint32 x, uint32 y, uint32 width, uint32 height) = 0;
 
         inline void setData(Resource<Image>& img, uint32 x, uint32 y, uint32 width, uint32 height){
-            auto* data = reinterpret_cast<const void*>(img->getData().data()); // VERY IMPORTANT, D3D11 will otherwise display some weir results
+            auto* data = img->getData();
             setData(data, x, y, width, height);
         }
 

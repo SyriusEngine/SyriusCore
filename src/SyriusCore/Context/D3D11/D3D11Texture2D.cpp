@@ -70,7 +70,7 @@ namespace Syrius{
 
         D3D11_SUBRESOURCE_DATA subresourceData = { 0 };
         subresourceData.SysMemPitch = desc.image->getWidth() * (sizeof(ubyte) * desc.image->getChannelCount());
-        subresourceData.pSysMem = &desc.image->getData()[0];
+        subresourceData.pSysMem = desc.image->getData();
 
         SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, &subresourceData, &m_Texture));
 
@@ -119,6 +119,29 @@ namespace Syrius{
         box.back = 1;
 
         m_Context->UpdateSubresource(m_Texture, 0, &box, data, width * (sizeof(ubyte) * channelCount), 0);
+    }
+
+    Resource<Image> D3D11Texture2D::getData() {
+        // we use a staging texture to copy the data back to the CPU as a texture cannot be mapped
+        D3D11_TEXTURE2D_DESC desc;
+        m_Texture->GetDesc(&desc);
+        desc.Usage = D3D11_USAGE_STAGING;
+        desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+        desc.BindFlags = 0;
+        desc.MiscFlags = 0;
+        ID3D11Texture2D* stagingTexture = nullptr;
+        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&desc, nullptr, &stagingTexture));
+
+        m_Context->CopyResource(stagingTexture, m_Texture);
+
+        D3D11_MAPPED_SUBRESOURCE mappedResource;
+        SR_CORE_D3D11_CALL(m_Context->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &mappedResource));
+
+        BYTE* data = static_cast<BYTE*>(mappedResource.pData);
+        auto img = Resource<Image>(new Image(data, desc.Width, desc.Height, m_Format));
+        m_Context->Unmap(stagingTexture, 0);
+        stagingTexture->Release();
+        return std::move(img);
     }
 
     uint64 D3D11Texture2D::getIdentifier() const {
