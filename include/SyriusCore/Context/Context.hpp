@@ -127,6 +127,10 @@ namespace Syrius{
             vertexArray->drawBuffersInstanced(instanceCount);
         }
 
+        [[nodiscard]] uint32 getWidth() const;
+
+        [[nodiscard]] uint32 getHeight() const;
+
     protected:
 
         explicit Context(const ContextDesc& desc);

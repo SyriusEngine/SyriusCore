@@ -42,6 +42,7 @@ namespace Syrius{
 
     void GlVertexArray::drawBuffers() {
         glBindVertexArray(m_ArrayID);
+        m_VertexBuffer->bind();
         SR_CORE_OPENGL_CALL(glDrawArrays(m_GlDrawMode, 0, m_VertexBuffer->getCount()));
         glBindVertexArray(0);
     }
@@ -77,6 +78,8 @@ namespace Syrius{
 
     void GlVertexArrayIndexed::drawBuffersInstanced(uint32 instanceCount) {
         glBindVertexArray(m_ArrayID);
+        m_VertexBuffer->bind();
+        m_IndexBuffer->bind();
         SR_CORE_OPENGL_CALL(glDrawElementsInstanced(m_GlDrawMode, m_IndexBuffer->getCount(), m_IndexDataType, nullptr, instanceCount));
         glBindVertexArray(0);
     }

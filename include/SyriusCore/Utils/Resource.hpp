@@ -70,7 +70,7 @@ namespace Syrius{
         }
 
         [[nodiscard]] bool isValid() const{
-            return m_Resource != nullptr;
+            return (m_Resource != nullptr);
         }
 
         void release(){

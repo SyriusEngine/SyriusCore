@@ -35,7 +35,7 @@ namespace Syrius {
 
     SR_CORE_API Resource<Image> createImage(const std::string& fileName, bool flipOnLoad = true);
 
-    SR_CORE_API Resource<Image> createImage(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_DATA_FORMAT format);
+    SR_CORE_API Resource<Image> createImage(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_FORMAT format);
 
     SR_CORE_API Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc);
 

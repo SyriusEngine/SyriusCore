@@ -9,8 +9,6 @@
 namespace Syrius{
 
     Image::Image(const std::string &fileName, bool flipOnLoad){
-        auto isHdr = stbi_is_hdr(fileName.c_str());
-        printf("isHdr: %d", isHdr);
         if (stbi_is_hdr(fileName.c_str())){
             m_ImageData = Resource<ImageData>(new ImageDataF32(fileName, flipOnLoad));
         }
@@ -19,7 +17,7 @@ namespace Syrius{
         }
     }
 
-    Image::Image(const ubyte *pixelData, int32 width, int32 height, SR_TEXTURE_DATA_FORMAT format){
+    Image::Image(const ubyte *pixelData, int32 width, int32 height, SR_TEXTURE_FORMAT format){
         m_ImageData = Resource<ImageData>(new ImageDataUI8(pixelData, width, height, format));
     }
 

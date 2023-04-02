@@ -8,7 +8,7 @@ namespace Syrius{
     public:
         ImageDataUI8(const std::string& fileName, bool flipOnLoad);
 
-        ImageDataUI8(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_DATA_FORMAT format);
+        ImageDataUI8(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_FORMAT format);
 
         ~ImageDataUI8() override;
 

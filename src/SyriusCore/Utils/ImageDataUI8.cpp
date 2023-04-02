@@ -3,17 +3,17 @@
 namespace Syrius{
 
     ImageDataUI8::ImageDataUI8(const std::string &fileName, bool flipOnLoad):
-    ImageData(0, 0, 0, SR_TEXTURE_DATA_RGBA_UI8) {
+    ImageData(0, 0, 0, SR_TEXTURE_RGBA_UI8) {
         stbi_set_flip_vertically_on_load(flipOnLoad);
         ubyte* data = stbi_load(fileName.c_str(), &m_Width, &m_Height, &m_ChannelCount, 0);
         if (data){
             m_Data.resize(m_Width * m_Height * m_ChannelCount);
             memcpy(&m_Data[0], data, m_Width * m_Height * m_ChannelCount);
             switch(m_ChannelCount){
-                case 1: m_Format = SR_TEXTURE_DATA_R_UI8; break;
-                case 2: m_Format = SR_TEXTURE_DATA_RG_UI8; break;
-                case 3: m_Format = SR_TEXTURE_DATA_RGB_UI8; break;
-                case 4: m_Format = SR_TEXTURE_DATA_RGBA_UI8; break;
+                case 1: m_Format = SR_TEXTURE_R_UI8; break;
+                case 2: m_Format = SR_TEXTURE_RG_UI8; break;
+                case 3: m_Format = SR_TEXTURE_RGB_UI8; break;
+                case 4: m_Format = SR_TEXTURE_RGBA_UI8; break;
                 default: SR_CORE_WARNING("Image: %s has an unsupported number of channels: %d", fileName.c_str(), m_ChannelCount);
             }
         }
@@ -23,7 +23,7 @@ namespace Syrius{
         stbi_image_free(data);
     }
 
-    ImageDataUI8::ImageDataUI8(const ubyte *pixelData, int32 width, int32 height, SR_TEXTURE_DATA_FORMAT format):
+    ImageDataUI8::ImageDataUI8(const ubyte *pixelData, int32 width, int32 height, SR_TEXTURE_FORMAT format):
     ImageData(width, height, getTextureDataChannelCount(format), format){
         m_Data.reserve(m_Width * m_Height * m_ChannelCount);
         memcpy(&m_Data[0], pixelData, m_Width * m_Height * m_ChannelCount);

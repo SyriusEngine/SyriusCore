@@ -241,8 +241,8 @@ namespace Syrius{
 
     ResourceView<VertexArray> D3D11Context::createVertexArray(const VertexArrayDesc &desc) {
         VertexArray* ptr;
-        if (!desc.indexBuffer.isValid()) {
-            ptr =  new D3D11VertexArrayIndexed(desc, m_Device, m_DeviceContext);
+        if (desc.indexBuffer.isValid()) {
+            ptr = new D3D11VertexArrayIndexed(desc, m_Device, m_DeviceContext);
         }
         else {
             ptr =  new D3D11VertexArray(desc, m_Device, m_DeviceContext);

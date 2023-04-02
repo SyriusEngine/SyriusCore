@@ -11,14 +11,16 @@ namespace Syrius{
         uint32 width          = 0;
         uint32 height         = 0;
         ResourceView<Sampler> sampler;
-        SR_TEXTURE_DATA_FORMAT format = SR_TEXTURE_DATA_RGBA_UI8;
+        SR_TEXTURE_FORMAT format = SR_TEXTURE_RGBA_UI8;
         const void* data            = nullptr;
 
     };
 
     struct SR_CORE_API Texture2DImageDesc{
-        ResourceView<Image> image;
-        ResourceView<Sampler> sampler;
+        const Resource<Image>& image;
+        const ResourceView<Sampler>& sampler;
+
+        Texture2DImageDesc(const Resource<Image>& image, const ResourceView<Sampler>& sampler);
     };
 
     class SR_CORE_API Texture2D{
@@ -40,18 +42,20 @@ namespace Syrius{
             setData(data, x, y, width, height);
         }
 
+        virtual Resource<Image> getData() = 0;
+
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 
         [[nodiscard]] uint32 getWidth() const;
 
         [[nodiscard]] uint32 getHeight() const;
 
-        [[nodiscard]] SR_TEXTURE_DATA_FORMAT getFormat() const;
+        [[nodiscard]] SR_TEXTURE_FORMAT getFormat() const;
 
     protected:
         uint32 m_Width;
         uint32 m_Height;
-        SR_TEXTURE_DATA_FORMAT m_Format;
+        SR_TEXTURE_FORMAT m_Format;
 
     };
 

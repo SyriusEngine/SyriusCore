@@ -20,6 +20,8 @@ namespace Syrius {
         SR_API_D3D11 = 0x08,
         SR_API_D3D12 = 0x09,
 #elif defined(SR_CORE_PLATFORM_LINUX)
+        SR_API_D3D11 = ~0x08,
+        SR_API_D3D12 = ~0x09,
 
 #endif
 
@@ -174,65 +176,71 @@ namespace Syrius {
     } SR_CHANNEL_FORMAT;
 
     // Texture formats with data types, upper 4 bits represent the number of channels, lower 4 bits represent the data type
-    typedef enum SR_TEXTURE_DATA_FORMAT: uint8 {
+    typedef enum SR_TEXTURE_FORMAT: uint8 {
         // single channel
-        SR_TEXTURE_DATA_R_UI8        = 0x12,
-        SR_TEXTURE_DATA_R_I8         = 0x13,
-        SR_TEXTURE_DATA_R_UI16       = 0x14,
-        SR_TEXTURE_DATA_R_I16        = 0x15,
-        SR_TEXTURE_DATA_R_UI32       = 0x16,
-        SR_TEXTURE_DATA_R_I32        = 0x17,
-        SR_TEXTURE_DATA_R_F16        = 0x1A,
-        SR_TEXTURE_DATA_R_F32        = 0x1B,
+        SR_TEXTURE_R_UI8        = 0x12,
+        SR_TEXTURE_R_I8         = 0x13,
+        SR_TEXTURE_R_UI16       = 0x14,
+        SR_TEXTURE_R_I16        = 0x15,
+        SR_TEXTURE_R_UI32       = 0x16,
+        SR_TEXTURE_R_I32        = 0x17,
+        SR_TEXTURE_R_F16        = 0x1A,
+        SR_TEXTURE_R_F32        = 0x1B,
 
         // two channels
-        SR_TEXTURE_DATA_RG_UI8       = 0x22,
-        SR_TEXTURE_DATA_RG_I8        = 0x23,
-        SR_TEXTURE_DATA_RG_UI16      = 0x24,
-        SR_TEXTURE_DATA_RG_I16       = 0x25,
-        SR_TEXTURE_DATA_RG_UI32      = 0x26,
-        SR_TEXTURE_DATA_RG_I32       = 0x27,
-        SR_TEXTURE_DATA_RG_F16       = 0x2A,
-        SR_TEXTURE_DATA_RG_F32       = 0x2B,
+        SR_TEXTURE_RG_UI8       = 0x22,
+        SR_TEXTURE_RG_I8        = 0x23,
+        SR_TEXTURE_RG_UI16      = 0x24,
+        SR_TEXTURE_RG_I16       = 0x25,
+        SR_TEXTURE_RG_UI32      = 0x26,
+        SR_TEXTURE_RG_I32       = 0x27,
+        SR_TEXTURE_RG_F16       = 0x2A,
+        SR_TEXTURE_RG_F32       = 0x2B,
 
         // three channels
-        SR_TEXTURE_DATA_RGB_UI8      = 0x32,
-        SR_TEXTURE_DATA_RGB_I8       = 0x33,
-        SR_TEXTURE_DATA_RGB_UI16     = 0x34,
-        SR_TEXTURE_DATA_RGB_I16      = 0x35,
-        SR_TEXTURE_DATA_RGB_UI32     = 0x36,
-        SR_TEXTURE_DATA_RGB_I32      = 0x37,
-        SR_TEXTURE_DATA_RGB_F16      = 0x3A,
-        SR_TEXTURE_DATA_RGB_F32      = 0x3B,
+        SR_TEXTURE_RGB_UI8      = 0x32,
+        SR_TEXTURE_RGB_I8       = 0x33,
+        SR_TEXTURE_RGB_UI16     = 0x34,
+        SR_TEXTURE_RGB_I16      = 0x35,
+        SR_TEXTURE_RGB_UI32     = 0x36,
+        SR_TEXTURE_RGB_I32      = 0x37,
+        SR_TEXTURE_RGB_F16      = 0x3A,
+        SR_TEXTURE_RGB_F32      = 0x3B,
 
         // four channels
-        SR_TEXTURE_DATA_RGBA_UI8     = 0x42,
-        SR_TEXTURE_DATA_RGBA_I8      = 0x43,
-        SR_TEXTURE_DATA_RGBA_UI16    = 0x44,
-        SR_TEXTURE_DATA_RGBA_I16     = 0x45,
-        SR_TEXTURE_DATA_RGBA_UI32    = 0x46,
-        SR_TEXTURE_DATA_RGBA_I32     = 0x47,
-        SR_TEXTURE_DATA_RGBA_F16     = 0x4A,
-        SR_TEXTURE_DATA_RGBA_F32     = 0x4B,
+        SR_TEXTURE_RGBA_UI8     = 0x42,
+        SR_TEXTURE_RGBA_I8      = 0x43,
+        SR_TEXTURE_RGBA_UI16    = 0x44,
+        SR_TEXTURE_RGBA_I16     = 0x45,
+        SR_TEXTURE_RGBA_UI32    = 0x46,
+        SR_TEXTURE_RGBA_I32     = 0x47,
+        SR_TEXTURE_RGBA_F16     = 0x4A,
+        SR_TEXTURE_RGBA_F32     = 0x4B,
 
         // special formats
-        SR_TEXTURE_DATA_DEPTH_16     = 0x51,
-        SR_TEXTURE_DATA_DEPTH_24     = 0x52,
-        SR_TEXTURE_DATA_DEPTH_32     = 0x53,
-        SR_TEXTURE_DATA_DEPTH_24_STENCIL_8    = 0x54,
-        SR_TEXTURE_DATA_DEPTH_32_STENCIL_8    = 0x55
+        SR_TEXTURE_DEPTH_16     = 0x51,
+        SR_TEXTURE_DEPTH_24     = 0x52,
+        SR_TEXTURE_DEPTH_32     = 0x53,
+        SR_TEXTURE_DEPTH_24_STENCIL_8    = 0x54,
+        SR_TEXTURE_DEPTH_32_STENCIL_8    = 0x55
 
     } SR_TEXTURE_DATA_FORMAT;
 
+#if defined(SR_CORE_DEBUG)
+    const static bool s_SyriusDebugMode = true;
+#else
+    const static bool s_SyriusDebugMode = false;
+#endif
+
     /**
-     * @brief This function will return the size of a type in bytes
-     * @example SR_UINT8 -> 1 byte
-     * @example SR_UINT16 -> 2 bytes
-     * @example SR_UINT32 -> 4 bytes
-     * @example SR_UINT64 -> 8 bytes
-     * @param type The type to get the size of
-     * @return the number of bytes needed to store data of that type
-     */
+ * @brief This function will return the size of a type in bytes
+ * @example SR_UINT8 -> 1 byte
+ * @example SR_UINT16 -> 2 bytes
+ * @example SR_UINT32 -> 4 bytes
+ * @example SR_UINT64 -> 8 bytes
+ * @param type The type to get the size of
+ * @return the number of bytes needed to store data of that type
+ */
     uint8 SR_CORE_API getTypeSize(SR_DATA_TYPE type);
     uint8 SR_CORE_API getTypeSize(SR_SCALAR_TYPE type);
 
@@ -248,19 +256,13 @@ namespace Syrius {
 
     SR_DATA_TYPE SR_CORE_API getScalarDataType(SR_SCALAR_TYPE type);
 
-    SR_CHANNEL_FORMAT SR_CORE_API getChannelFormat(SR_TEXTURE_DATA_FORMAT format);
+    SR_CHANNEL_FORMAT SR_CORE_API getTextureFormat(SR_TEXTURE_FORMAT format);
 
-    uint8 SR_CORE_API getChannelCount(SR_CHANNEL_FORMAT format);
+    uint8 SR_CORE_API getTextureChannelCount(SR_CHANNEL_FORMAT format);
 
-    uint8 SR_CORE_API getTextureDataChannelCount(SR_TEXTURE_DATA_FORMAT format);
+    uint8 SR_CORE_API getTextureDataChannelCount(SR_TEXTURE_FORMAT format);
 
-    SR_DATA_TYPE SR_CORE_API getTextureDataType(SR_TEXTURE_DATA_FORMAT format);
-
-#if defined(SR_CORE_DEBUG)
-    const static bool s_SyriusDebugMode = true;
-#else
-    const static bool s_SyriusDebugMode = false;
-#endif
+    SR_DATA_TYPE SR_CORE_API getTextureDataType(SR_TEXTURE_FORMAT format);
 
 }
 

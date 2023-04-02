@@ -11,15 +11,15 @@ namespace Syrius {
     m_ColorBuffer(nullptr),
     m_RenderTargetView(nullptr),
     m_BufferView(nullptr) {
-        SR_CORE_PRECONDITION(desc.format != SR_TEXTURE_DATA_DEPTH_16 and
-                             desc.format != SR_TEXTURE_DATA_DEPTH_24 and
-                             desc.format != SR_TEXTURE_DATA_DEPTH_32 and
-                             desc.format != SR_TEXTURE_DATA_DEPTH_24_STENCIL_8 and
-                             desc.format != SR_TEXTURE_DATA_DEPTH_32_STENCIL_8,
+        SR_CORE_PRECONDITION(desc.format != SR_TEXTURE_DEPTH_16 and
+                             desc.format != SR_TEXTURE_DEPTH_24 and
+                             desc.format != SR_TEXTURE_DEPTH_32 and
+                             desc.format != SR_TEXTURE_DEPTH_24_STENCIL_8 and
+                             desc.format != SR_TEXTURE_DEPTH_32_STENCIL_8,
                              "Depth/stencil format is not supported for color attachment");
 
-        SR_CHANNEL_FORMAT sF = getChannelFormat(desc.format);
-        auto channelCount = getChannelCount(sF);
+        SR_CHANNEL_FORMAT sF = getTextureFormat(desc.format);
+        auto channelCount = getTextureChannelCount(sF);
 
         D3D11_TEXTURE2D_DESC textureDesc = {0};
         textureDesc.Width = desc.width;
@@ -84,8 +84,8 @@ namespace Syrius {
             m_ColorBuffer->Release();
         }
 
-        SR_CHANNEL_FORMAT sF = getChannelFormat(m_Format);
-        auto channelCount = getChannelCount(sF);
+        SR_CHANNEL_FORMAT sF = getTextureFormat(m_Format);
+        auto channelCount = getTextureChannelCount(sF);
 
         D3D11_TEXTURE2D_DESC textureDesc = {0};
         textureDesc.Width = m_Width;

@@ -78,45 +78,45 @@ namespace Syrius{
         }
     }
 
-    GLint getGlTextureInternalFormat(SR_TEXTURE_DATA_FORMAT format){
+    GLint getGlTextureInternalFormat(SR_TEXTURE_FORMAT format){
         switch (format) {
-            case SR_TEXTURE_DATA_R_I8:       return GL_R8I;
-            case SR_TEXTURE_DATA_R_I16:      return GL_R16I;
-            case SR_TEXTURE_DATA_R_I32:      return GL_R32I;
-            case SR_TEXTURE_DATA_R_UI8:      return GL_R8UI;
-            case SR_TEXTURE_DATA_R_UI16:     return GL_R16UI;
-            case SR_TEXTURE_DATA_R_UI32:     return GL_R32UI;
-            case SR_TEXTURE_DATA_R_F16:      return GL_R16F;
-            case SR_TEXTURE_DATA_R_F32:      return GL_R32F;
-            case SR_TEXTURE_DATA_RG_I8:      return GL_RG8I;
-            case SR_TEXTURE_DATA_RG_I16:     return GL_RG16I;
-            case SR_TEXTURE_DATA_RG_I32:     return GL_RG32I;
-            case SR_TEXTURE_DATA_RG_UI8:     return GL_RG8UI;
-            case SR_TEXTURE_DATA_RG_UI16:    return GL_RG16UI;
-            case SR_TEXTURE_DATA_RG_UI32:    return GL_RG32UI;
-            case SR_TEXTURE_DATA_RG_F16:     return GL_RG16F;
-            case SR_TEXTURE_DATA_RG_F32:     return GL_RG32F;
-            case SR_TEXTURE_DATA_RGB_I8:     return GL_RGB8I;
-            case SR_TEXTURE_DATA_RGB_I16:    return GL_RGB16I;
-            case SR_TEXTURE_DATA_RGB_I32:    return GL_RGB32I;
-            case SR_TEXTURE_DATA_RGB_UI8:    return GL_RGB8UI;
-            case SR_TEXTURE_DATA_RGB_UI16:   return GL_RGB16UI;
-            case SR_TEXTURE_DATA_RGB_UI32:   return GL_RGB32UI;
-            case SR_TEXTURE_DATA_RGB_F16:    return GL_RGB16F;
-            case SR_TEXTURE_DATA_RGB_F32:    return GL_RGB32F;
-            case SR_TEXTURE_DATA_RGBA_I8:    return GL_RGBA8I;
-            case SR_TEXTURE_DATA_RGBA_I16:   return GL_RGBA16I;
-            case SR_TEXTURE_DATA_RGBA_I32:   return GL_RGBA32I;
-            case SR_TEXTURE_DATA_RGBA_UI8:   return GL_RGBA8UI;
-            case SR_TEXTURE_DATA_RGBA_UI16:  return GL_RGBA16UI;
-            case SR_TEXTURE_DATA_RGBA_UI32:  return GL_RGBA32UI;
-            case SR_TEXTURE_DATA_RGBA_F16:   return GL_RGBA16F;
-            case SR_TEXTURE_DATA_RGBA_F32:   return GL_RGBA32F;
-            case SR_TEXTURE_DATA_DEPTH_16:   return GL_DEPTH_COMPONENT16;
-            case SR_TEXTURE_DATA_DEPTH_24:   return GL_DEPTH_COMPONENT24;
-            case SR_TEXTURE_DATA_DEPTH_32:   return GL_DEPTH_COMPONENT32;
-            case SR_TEXTURE_DATA_DEPTH_24_STENCIL_8: return GL_DEPTH24_STENCIL8;
-            case SR_TEXTURE_DATA_DEPTH_32_STENCIL_8: return GL_DEPTH32F_STENCIL8;
+            case SR_TEXTURE_R_I8:       return GL_R8I;
+            case SR_TEXTURE_R_I16:      return GL_R16I;
+            case SR_TEXTURE_R_I32:      return GL_R32I;
+            case SR_TEXTURE_R_UI8:      return GL_R8UI;
+            case SR_TEXTURE_R_UI16:     return GL_R16UI;
+            case SR_TEXTURE_R_UI32:     return GL_R32UI;
+            case SR_TEXTURE_R_F16:      return GL_R16F;
+            case SR_TEXTURE_R_F32:      return GL_R32F;
+            case SR_TEXTURE_RG_I8:      return GL_RG8I;
+            case SR_TEXTURE_RG_I16:     return GL_RG16I;
+            case SR_TEXTURE_RG_I32:     return GL_RG32I;
+            case SR_TEXTURE_RG_UI8:     return GL_RG8UI;
+            case SR_TEXTURE_RG_UI16:    return GL_RG16UI;
+            case SR_TEXTURE_RG_UI32:    return GL_RG32UI;
+            case SR_TEXTURE_RG_F16:     return GL_RG16F;
+            case SR_TEXTURE_RG_F32:     return GL_RG32F;
+            case SR_TEXTURE_RGB_I8:     return GL_RGB8I;
+            case SR_TEXTURE_RGB_I16:    return GL_RGB16I;
+            case SR_TEXTURE_RGB_I32:    return GL_RGB32I;
+            case SR_TEXTURE_RGB_UI8:    return GL_RGB8UI;
+            case SR_TEXTURE_RGB_UI16:   return GL_RGB16UI;
+            case SR_TEXTURE_RGB_UI32:   return GL_RGB32UI;
+            case SR_TEXTURE_RGB_F16:    return GL_RGB16F;
+            case SR_TEXTURE_RGB_F32:    return GL_RGB32F;
+            case SR_TEXTURE_RGBA_I8:    return GL_RGBA8I;
+            case SR_TEXTURE_RGBA_I16:   return GL_RGBA16I;
+            case SR_TEXTURE_RGBA_I32:   return GL_RGBA32I;
+            case SR_TEXTURE_RGBA_UI8:   return GL_RGBA8UI;
+            case SR_TEXTURE_RGBA_UI16:  return GL_RGBA16UI;
+            case SR_TEXTURE_RGBA_UI32:  return GL_RGBA32UI;
+            case SR_TEXTURE_RGBA_F16:   return GL_RGBA16F;
+            case SR_TEXTURE_RGBA_F32:   return GL_RGBA32F;
+            case SR_TEXTURE_DEPTH_16:   return GL_DEPTH_COMPONENT16;
+            case SR_TEXTURE_DEPTH_24:   return GL_DEPTH_COMPONENT24;
+            case SR_TEXTURE_DEPTH_32:   return GL_DEPTH_COMPONENT32;
+            case SR_TEXTURE_DEPTH_24_STENCIL_8: return GL_DEPTH24_STENCIL8;
+            case SR_TEXTURE_DEPTH_32_STENCIL_8: return GL_DEPTH32F_STENCIL8;
             default: {
                 SR_CORE_WARNING("Invalid type given to converter, return default: GL_RGBA8");
                 return GL_RGBA8UI;
@@ -183,7 +183,7 @@ namespace Syrius{
         }
     }
 
-    GLenum getGlTextureDataType(SR_TEXTURE_DATA_FORMAT format){
+    GLenum getGlTextureDataType(SR_TEXTURE_FORMAT format){
         auto data = format & 0x0F;
         data <<= 4;
         switch (data) {

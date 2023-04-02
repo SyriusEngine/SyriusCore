@@ -35,7 +35,7 @@ namespace Syrius{
         return m_Height;
     }
 
-    SR_TEXTURE_DATA_FORMAT DepthStencilAttachment::getFormat() const {
+    SR_TEXTURE_FORMAT DepthStencilAttachment::getFormat() const {
         return m_Format;
     }
 

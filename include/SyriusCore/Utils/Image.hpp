@@ -16,16 +16,16 @@ namespace Syrius{
 
     class SR_CORE_API Image{
     private:
-         Resource<ImageData> m_ImageData;
+        Resource<ImageData> m_ImageData;
 
     public:
         Image(const std::string& fileName, bool flipOnLoad);
 
-        Image(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_DATA_FORMAT format);
+        Image(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_FORMAT format);
 
         ~Image();
 
-        void writeToFile(const std::string& fileName, bool flipOnWrite, SR_IMAGE_TYPE imgType = SR_IMAGE_PNG);
+        void writeToFile(const std::string& fileName, bool flipOnWrite, SR_IMAGE_TYPE imgType = SR_IMAGE_PNG) const;
 
         void resize(int32 newWidth, int32 newHeight);
 

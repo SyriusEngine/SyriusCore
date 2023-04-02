@@ -25,7 +25,7 @@ namespace Syrius{
 
     protected:
 
-        ImageData(int32 width, int32 height, int32 channelCount, SR_TEXTURE_DATA_FORMAT format):
+        ImageData(int32 width, int32 height, int32 channelCount, SR_TEXTURE_FORMAT format):
         m_Width(width),
         m_Height(height),
         m_ChannelCount(channelCount),
@@ -41,7 +41,7 @@ namespace Syrius{
         int32 m_Height;
         int32 m_ChannelCount;
 
-        SR_TEXTURE_DATA_FORMAT m_Format;
+        SR_TEXTURE_FORMAT m_Format;
     };
 
     template<typename T>

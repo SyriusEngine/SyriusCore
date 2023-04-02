@@ -49,10 +49,6 @@ namespace Syrius{
         m_Context->Unmap(m_Buffer, 0);
     }
 
-    void D3D11ConstantBufferBase::addShader(Shader *shader) {
-        // D3D11 does not need to be bound to a shader
-    }
-
     uint64 D3D11ConstantBufferBase::getIdentifier() const {
         return reinterpret_cast<uint64>(m_Buffer);
     }
