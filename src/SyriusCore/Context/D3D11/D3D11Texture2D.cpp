@@ -70,7 +70,7 @@ namespace Syrius{
 
         D3D11_SUBRESOURCE_DATA subresourceData = { 0 };
         subresourceData.SysMemPitch = desc.image->getWidth() * (sizeof(ubyte) * desc.image->getChannelCount());
-        subresourceData.pSysMem = &desc.image->getData()[0];
+        subresourceData.pSysMem = desc.image->getData();
 
         SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, &subresourceData, &m_Texture));
 
@@ -138,8 +138,7 @@ namespace Syrius{
         SR_CORE_D3D11_CALL(m_Context->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &mappedResource));
 
         BYTE* data = static_cast<BYTE*>(mappedResource.pData);
-        auto channelCount = getTextureDataChannelCount(m_Format);
-        auto img = Resource<Image>(new Image(data, desc.Width, desc.Height, channelCount));
+        auto img = Resource<Image>(new Image(data, desc.Width, desc.Height, m_Format));
         m_Context->Unmap(stagingTexture, 0);
         stagingTexture->Release();
         return std::move(img);

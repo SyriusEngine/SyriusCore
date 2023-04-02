@@ -98,10 +98,12 @@ set(SYRIUSCORE_CORE_SRC
         src/SyriusCore/Core/CoreCommand.cpp
         src/SyriusCore/Core/Message.cpp
         src/SyriusCore/Core/MemoryAllocationTracker.cpp
-        )
+        src/SyriusCore/Core/SyriusCoreInclude.cpp)
 
 set(SYRIUSCORE_UTILS_SRC
-        src/SyriusCore/Utils/Image.cpp)
+        src/SyriusCore/Utils/Image.cpp
+        src/SyriusCore/Utils/ImageDataF32.cpp
+        src/SyriusCore/Utils/ImageDataUI8.cpp)
 
 set(SYRIUSCORE_WINDOW_SRC
         ${SYRIUSCORE_PLATFORM_WINDOW_SRC}

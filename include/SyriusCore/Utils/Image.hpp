@@ -1,33 +1,31 @@
 #pragma once
 
 #include "../Core/SyriusCoreInclude.hpp"
+#include "Resource.hpp"
 
 namespace Syrius{
 
     typedef enum SR_IMAGE_TYPE {
         SR_IMAGE_PNG    = 0x01,
         SR_IMAGE_JPG    = 0x02,
-        SR_IMAGE_BMP    = 0x03
+        SR_IMAGE_BMP    = 0x03,
+        SR_IMAGE_HDR    = 0x04,
     } SR_IMAGE_TYPE;
 
-    typedef ubyte(*pixelFunc)(ubyte* pixel, int32 x, int32 y, int32 comp);
+    class ImageData;
 
     class SR_CORE_API Image{
     private:
-        int32 m_Width;
-        int32 m_Height;
-        int32 m_ChannelCount;
-
-        std::vector<ubyte> m_Data;
+        Resource<ImageData> m_ImageData;
 
     public:
         Image(const std::string& fileName, bool flipOnLoad);
 
-        Image(const ubyte* pixelData, int32 width, int32 height, int32 channelCount);
+        Image(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_DATA_FORMAT format);
 
         ~Image();
 
-        void writeToFile(const std::string& fileName, bool flipOnWrite = true, SR_IMAGE_TYPE imgType = SR_IMAGE_PNG) const;
+        void writeToFile(const std::string& fileName, bool flipOnWrite, SR_IMAGE_TYPE imgType = SR_IMAGE_PNG) const;
 
         void resize(int32 newWidth, int32 newHeight);
 
@@ -37,13 +35,9 @@ namespace Syrius{
 
         [[nodiscard]] int32 getChannelCount() const;
 
-        [[nodiscard]] const std::vector<ubyte>& getData() const;
-
-        void flipVertically();
+        [[nodiscard]] const void* getData() const;
 
         void extendAlpha(ubyte alpha = 255);
-
-        void runPixelFunc(pixelFunc func);
 
     };
 
