@@ -11,7 +11,7 @@ namespace Syrius{
         uint32 width          = 0;
         uint32 height         = 0;
         ResourceView<Sampler> sampler;
-        SR_TEXTURE_DATA_FORMAT format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8;
+        SR_TEXTURE_FORMAT format = SR_TEXTURE_RGBA_UI8;
         const void* data            = nullptr;
 
     };
@@ -50,12 +50,12 @@ namespace Syrius{
 
         [[nodiscard]] uint32 getHeight() const;
 
-        [[nodiscard]] SR_TEXTURE_DATA_FORMAT getFormat() const;
+        [[nodiscard]] SR_TEXTURE_FORMAT getFormat() const;
 
     protected:
         uint32 m_Width;
         uint32 m_Height;
-        SR_TEXTURE_DATA_FORMAT m_Format;
+        SR_TEXTURE_FORMAT m_Format;
 
     };
 

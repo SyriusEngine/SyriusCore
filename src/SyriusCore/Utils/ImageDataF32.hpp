@@ -8,7 +8,7 @@ namespace Syrius{
     public:
         ImageDataF32(const std::string& fileName, bool flipOnLoad);
 
-        ImageDataF32(const float* pixelData, int32 width, int32 height, SR_TEXTURE_DATA_FORMAT format);
+        ImageDataF32(const float* pixelData, int32 width, int32 height, SR_TEXTURE_FORMAT format);
 
         ~ImageDataF32() override;
 

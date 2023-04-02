@@ -21,7 +21,7 @@ namespace Syrius{
     public:
         Image(const std::string& fileName, bool flipOnLoad);
 
-        Image(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_DATA_FORMAT format);
+        Image(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_FORMAT format);
 
         ~Image();
 

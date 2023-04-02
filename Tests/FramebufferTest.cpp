@@ -73,7 +73,7 @@ void testFramebuffer(SR_SUPPORTED_API api){
     Texture2DDesc texDesc;
     texDesc.width = 1024;
     texDesc.height = 512;
-    texDesc.format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8;
+    texDesc.format = SR_TEXTURE_RGBA_UI8;
     texDesc.sampler = sampler;
     texDesc.data = temp.data();
 

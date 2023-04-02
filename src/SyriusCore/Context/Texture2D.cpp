@@ -22,13 +22,13 @@ namespace Syrius{
     m_Width(desc.image->getWidth()),
     m_Height(desc.image->getHeight()){
         switch (desc.image->getChannelCount()){
-            case 1: m_Format = SR_TEXTURE_DATA_FORMAT_R_UI8; break;
-            case 2: m_Format = SR_TEXTURE_DATA_FORMAT_RG_UI8; break;
-            case 3: m_Format = SR_TEXTURE_DATA_FORMAT_RGB_UI8; break;
-            case 4: m_Format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8; break;
+            case 1: m_Format = SR_TEXTURE_R_UI8; break;
+            case 2: m_Format = SR_TEXTURE_RG_UI8; break;
+            case 3: m_Format = SR_TEXTURE_RGB_UI8; break;
+            case 4: m_Format = SR_TEXTURE_RGBA_UI8; break;
             default: {
                 SR_CORE_WARNING("Unsupported image format: %i", desc.image->getChannelCount());
-                m_Format = SR_TEXTURE_DATA_FORMAT_RGBA_UI8;
+                m_Format = SR_TEXTURE_RGBA_UI8;
             }
         }
 
@@ -46,7 +46,7 @@ namespace Syrius{
         return m_Height;
     }
 
-    SR_TEXTURE_DATA_FORMAT Texture2D::getFormat() const {
+    SR_TEXTURE_FORMAT Texture2D::getFormat() const {
         return m_Format;
     }
 

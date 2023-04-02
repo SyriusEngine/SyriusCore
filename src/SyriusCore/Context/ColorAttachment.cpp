@@ -31,7 +31,7 @@ namespace Syrius{
         return m_Height;
     }
 
-    SR_TEXTURE_DATA_FORMAT ColorAttachment::getFormat() const {
+    SR_TEXTURE_FORMAT ColorAttachment::getFormat() const {
         return m_Format;
     }
 

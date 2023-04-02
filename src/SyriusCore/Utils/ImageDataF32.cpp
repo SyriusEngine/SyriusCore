@@ -3,24 +3,24 @@
 namespace Syrius{
 
     ImageDataF32::ImageDataF32(const std::string &fileName, bool flipOnLoad):
-    ImageData(0, 0, 0, SR_TEXTURE_DATA_FORMAT_RGBA_F32){
+    ImageData(0, 0, 0, SR_TEXTURE_RGBA_F32){
         stbi_set_flip_vertically_on_load(flipOnLoad);
         float* data = stbi_loadf(fileName.c_str(), &m_Width, &m_Height, &m_ChannelCount, 0);
         if (data){
             m_Data.resize(m_Width * m_Height * m_ChannelCount);
             memcpy(&m_Data[0], data, m_Width * m_Height * m_ChannelCount);
             switch(m_ChannelCount){
-                case 1: m_Format = SR_TEXTURE_DATA_FORMAT_R_F32; break;
-                case 2: m_Format = SR_TEXTURE_DATA_FORMAT_RG_F32; break;
-                case 3: m_Format = SR_TEXTURE_DATA_FORMAT_RGB_F32; break;
-                case 4: m_Format = SR_TEXTURE_DATA_FORMAT_RGBA_F32; break;
+                case 1: m_Format = SR_TEXTURE_R_F32; break;
+                case 2: m_Format = SR_TEXTURE_RG_F32; break;
+                case 3: m_Format = SR_TEXTURE_RGB_F32; break;
+                case 4: m_Format = SR_TEXTURE_RGBA_F32; break;
                 default: SR_CORE_WARNING("Image: %s has an unsupported number of channels: %d", fileName.c_str(), m_ChannelCount);
             }
         }
         stbi_image_free(data);
     }
 
-    ImageDataF32::ImageDataF32(const float *pixelData, int32 width, int32 height, SR_TEXTURE_DATA_FORMAT format):
+    ImageDataF32::ImageDataF32(const float *pixelData, int32 width, int32 height, SR_TEXTURE_FORMAT format):
     ImageData(width, height, getTextureDataChannelCount(format), format){
         m_Data.reserve(m_Width * m_Height * m_ChannelCount);
         memcpy(&m_Data[0], pixelData, m_Width * m_Height * m_ChannelCount);

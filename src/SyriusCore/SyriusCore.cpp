@@ -29,7 +29,7 @@ namespace Syrius {
         return createResource<Image>(fileName, flipOnLoad);
     }
 
-    Resource<Image> createImage(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_DATA_FORMAT format){
+    Resource<Image> createImage(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_FORMAT format){
         return createResource<Image>(pixelData, width, height, format);
     }
 

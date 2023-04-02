@@ -19,9 +19,9 @@ namespace Syrius{
 
     GLenum getGlBufferType(SR_BUFFER_TYPE type);
 
-    GLenum getGlTextureType(SR_TEXTURE_FORMAT type);
+    GLenum getGlTextureType(SR_CHANNEL_FORMAT type);
 
-    GLint getGlTextureInternalFormat(SR_TEXTURE_DATA_FORMAT format);
+    GLint getGlTextureInternalFormat(SR_TEXTURE_FORMAT format);
 
     GLenum getGlComparisonFunc(SR_COMPARISON_FUNC func);
 
@@ -31,7 +31,7 @@ namespace Syrius{
 
     GLint getGlStencilFunc(SR_STENCIL_FUNC);
 
-    GLenum getGlTextureDataType(SR_TEXTURE_DATA_FORMAT format);
+    GLenum getGlTextureDataType(SR_TEXTURE_FORMAT format);
 
 }
 

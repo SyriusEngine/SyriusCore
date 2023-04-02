@@ -5,9 +5,9 @@
 namespace Syrius{
 
     struct SR_CORE_API DepthStencilAttachmentDesc{
-        uint32 width                    = SR_DEFAULT_WIDTH;
-        uint32 height                   = SR_DEFAULT_HEIGHT;
-        SR_TEXTURE_DATA_FORMAT format   = SR_TEXTURE_DATA_FORMAT_DEPTH_24_STENCIL_8;
+        uint32 width               = SR_DEFAULT_WIDTH;
+        uint32 height              = SR_DEFAULT_HEIGHT;
+        SR_TEXTURE_FORMAT format   = SR_TEXTURE_DEPTH_24_STENCIL_8;
 
         bool enableShaderRead = true; // enables sampling from this attachment in shaders
         bool enableAutoResize           = true; // whenever the window is resized, this attachment will be resized as well
@@ -49,7 +49,7 @@ namespace Syrius{
 
         [[nodiscard]] uint32 getHeight() const;
 
-        [[nodiscard]] SR_TEXTURE_DATA_FORMAT getFormat() const;
+        [[nodiscard]] SR_TEXTURE_FORMAT getFormat() const;
 
         [[nodiscard]] bool shaderReadEnabled() const;
 
@@ -76,7 +76,7 @@ namespace Syrius{
     protected:
         uint32 m_Width;
         uint32 m_Height;
-        SR_TEXTURE_DATA_FORMAT m_Format;
+        SR_TEXTURE_FORMAT m_Format;
         bool m_EnableShaderRead;
 
         bool m_EnableDepthTest;

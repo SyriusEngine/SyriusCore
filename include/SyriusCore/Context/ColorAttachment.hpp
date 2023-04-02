@@ -5,12 +5,12 @@
 namespace Syrius{
 
     struct SR_CORE_API ColorAttachmentDesc{
-        uint32 width                    = SR_DEFAULT_WIDTH;
-        uint32 height                   = SR_DEFAULT_HEIGHT;
-        float clearColor[4]             = {0.1f, 0.2f, 0.3f, 1.0f};
-        SR_TEXTURE_DATA_FORMAT format   = SR_TEXTURE_DATA_FORMAT_RGBA_F32;
-        bool enableShaderRead           = true; // enables sampling from this attachment in shaders
-        bool enableAutoResize           = true; // whenever the window is resized, this attachment will be resized as well
+        uint32 width                = SR_DEFAULT_WIDTH;
+        uint32 height               = SR_DEFAULT_HEIGHT;
+        float clearColor[4]         = {0.1f, 0.2f, 0.3f, 1.0f};
+        SR_TEXTURE_FORMAT format    = SR_TEXTURE_RGBA_F32;
+        bool enableShaderRead       = true; // enables sampling from this attachment in shaders
+        bool enableAutoResize       = true; // whenever the window is resized, this attachment will be resized as well
     };
 
     class SR_CORE_API ColorAttachment{
@@ -37,7 +37,7 @@ namespace Syrius{
 
         [[nodiscard]] uint32 getHeight() const;
 
-        [[nodiscard]] SR_TEXTURE_DATA_FORMAT getFormat() const;
+        [[nodiscard]] SR_TEXTURE_FORMAT getFormat() const;
 
         [[nodiscard]] const float* getClearColor() const;
 
@@ -47,7 +47,7 @@ namespace Syrius{
         uint32 m_Width;
         uint32 m_Height;
         float m_ClearColor[4];
-        SR_TEXTURE_DATA_FORMAT m_Format;
+        SR_TEXTURE_FORMAT m_Format;
         bool m_EnableShaderRead;
 
     private:
