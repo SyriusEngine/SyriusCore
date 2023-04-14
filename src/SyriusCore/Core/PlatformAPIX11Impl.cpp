@@ -40,8 +40,7 @@ namespace Syrius{
         return m_DefaultScreen->height;
     }
 
-    void PlatformAPIX11Impl::initPlatformGlad(GlPlatformDesc *glDesc) {
-        auto glxDesc = dynamic_cast<GlPlatformDescX11*>(glDesc);
+    void PlatformAPIX11Impl::initPlatformGlad() {
         if (m_GladInstanceCount == 0){
             if (glxDesc != nullptr){
                 int32 glxVersion = gladLoaderLoadGLX(m_Display, DefaultScreen(m_Display));

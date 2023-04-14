@@ -1,5 +1,4 @@
 #include "SyriusWindowWin32Impl.hpp"
-#include "../Core/CoreCommand.hpp"
 #include "../Context/OpenGL/Internal/WglContext.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
@@ -8,14 +7,14 @@ namespace Syrius{
 
     uint32 SyriusWindowWin32Impl::m_WindowCount = 0;
 
-    SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc, CoreCommand* coreCommand)
-    : SyriusWindow(desc, coreCommand),
-      m_Hwnd(nullptr),
-      m_Callback(0),
-      m_Icon(nullptr),
-      m_CaptureMouseAndKeyboardEvents(true){
+    SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc, PlatformAPIWin32Impl* platformAPI):
+    SyriusWindow(desc),
+    m_Hwnd(nullptr),
+    m_Callback(0),
+    m_Icon(nullptr),
+    m_CaptureMouseAndKeyboardEvents(true),
+    m_PlatformAPI(platformAPI) {
         if (!m_WindowCount){
-            setProcessDpiAware();
             registerClass();
         }
 
@@ -253,8 +252,8 @@ namespace Syrius{
 
     void SyriusWindowWin32Impl::centerWindow() {
         if (!m_Fullscreen){
-            auto posX = static_cast<int32>((m_CoreState->getPrimaryScreenWidth() - m_Width) / 2);
-            auto posY = static_cast<int32>((m_CoreState->getPrimaryScreenHeight() - m_Height) / 2);
+            auto posX = static_cast<int32>((m_PlatformAPI->getPrimaryScreenWidth() - m_Width) / 2);
+            auto posY = static_cast<int32>((m_PlatformAPI->getPrimaryScreenHeight() - m_Height) / 2);
             setPosition(posX, posY);
         }
     }
@@ -311,7 +310,7 @@ namespace Syrius{
         }
         switch (desc.api) {
             case SR_API_OPENGL:
-                m_Context = Resource<Context>(new WglContext(m_Hwnd, desc, m_CoreState));
+                m_Context = Resource<Context>(new WglContext(m_Hwnd, desc, m_PlatformAPI));
                 break;
 //            case SR_API_VULKAN:
 //                m_Context = new VulkanContextWin32(m_Hwnd, desc);

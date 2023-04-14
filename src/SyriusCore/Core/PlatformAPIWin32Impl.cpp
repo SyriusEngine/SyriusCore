@@ -1,4 +1,5 @@
 #include "PlatformAPIWin32Impl.hpp"
+#include "../Window/SyriusWindowWin32Impl.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 
@@ -10,14 +11,9 @@ namespace Syrius{
         addExtension("VK_KHR_win32_surface");
     }
 
-    GlPlatformDescWin32::GlPlatformDescWin32(HDC hdc)
-    : m_HDC(hdc){
-
-    }
-
     PlatformAPIWin32Impl::PlatformAPIWin32Impl()
     : PlatformAPI(VulkanPlatformDescWin32()){
-
+        setProcessDpiAware();
     }
 
     PlatformAPIWin32Impl::~PlatformAPIWin32Impl() {
@@ -38,11 +34,9 @@ namespace Syrius{
         return height;
     }
 
-    void PlatformAPIWin32Impl::initPlatformGlad(GlPlatformDesc *glDesc) {
-        auto wglDesc = dynamic_cast<GlPlatformDescWin32*>(glDesc);
-
+    void PlatformAPIWin32Impl::initPlatformGlad(HDC hdc) {
         if (!m_PlatformGladInstances){
-            m_GlVersion = gladLoaderLoadWGL(wglDesc->m_HDC);
+            m_GlVersion = gladLoaderLoadWGL(hdc);
             SR_CORE_ASSERT(m_GlVersion > 0, "Failed to initialize WGL");
         }
         m_PlatformGladInstances++;
@@ -52,8 +46,46 @@ namespace Syrius{
         m_PlatformGladInstances--;
     }
 
-    Resource<SyriusWindow> PlatformAPIWin32Impl::createWindow(const WindowDesc &windowDesc, CoreCommand* coreCommand) {
-        return Resource<SyriusWindow>(new SyriusWindowWin32Impl(windowDesc, coreCommand));
+    Resource<SyriusWindow> PlatformAPIWin32Impl::createWindow(const WindowDesc &windowDesc) {
+        return Resource<SyriusWindow>(new SyriusWindowWin32Impl(windowDesc, this));
+    }
+
+    void PlatformAPIWin32Impl::setProcessDpiAware() {
+        HINSTANCE shCoreDll = LoadLibraryW(L"Shcore.dll");
+        if (shCoreDll){
+            enum ProcessDpiAwareness
+            {
+                ProcessDpiUnaware         = 0,
+                ProcessSystemDpiAware     = 1,
+                ProcessPerMonitorDpiAware = 2
+            };
+            typedef HRESULT (WINAPI* SetProcessDpiAwarenessFuncType)(ProcessDpiAwareness);
+            auto setProcessDpiAwarenessFunc = reinterpret_cast<SetProcessDpiAwarenessFuncType>(GetProcAddress(shCoreDll, "SetProcessDpiAwareness"));
+            if (setProcessDpiAwarenessFunc){
+                if (setProcessDpiAwarenessFunc(ProcessSystemDpiAware) == E_INVALIDARG){
+                    SR_CORE_WARNING("Failed to set process DPI awareness using shCore.dll libary, falling back on user32.dll");
+                }
+                else{
+                    FreeLibrary(shCoreDll);
+                    return;
+                }
+            }
+            FreeLibrary(shCoreDll);
+
+        }
+        // when setting DPI awareness using shcore.dll failed, fall back and use user32.dll and try again
+        HINSTANCE user32Dll = LoadLibraryW(L"user32.dll");
+        if (user32Dll){
+            typedef BOOL (WINAPI* SetProcessDPIAwareFuncType)(void);
+            auto setProcessDPIAwareFunc = reinterpret_cast<SetProcessDPIAwareFuncType>(GetProcAddress(user32Dll, "SetProcessDPIAware"));
+            if (setProcessDPIAwareFunc){
+                if (!setProcessDPIAwareFunc()){
+                    SR_CORE_WARNING("Failed to set process DPI awareness");
+                }
+            }
+            FreeLibrary(user32Dll);
+
+        }
     }
 
 }

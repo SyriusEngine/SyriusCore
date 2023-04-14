@@ -7,13 +7,11 @@
 
 namespace Syrius{
 
-    GlxContext::GlxContext(Display *display, GLXFBConfig fbConfig, Window& window, const ContextDesc &desc, CoreCommand* coreCommand)
-    : GlContext(desc, coreCommand),
+    GlxContext::GlxContext(Display *display, GLXFBConfig fbConfig, Window& window, const ContextDesc &desc, PlatformAPIX11Impl* platformAPI):
+    GlContext(desc, platformAPI),
     m_Display(display),
     m_Window(window){
-        auto glxDesc = new GlPlatformDescX11();
-        m_CoreCommand->initPlatformGlad(glxDesc);
-        delete glxDesc;
+        m_PlatformAPI->initPlatformGlad(glxDesc);
 
         int32 contextAttribs[] = {
             GLX_CONTEXT_MAJOR_VERSION_ARB, 4,
@@ -40,7 +38,7 @@ namespace Syrius{
         glXMakeContextCurrent(m_Display, None, None, nullptr);
         glXDestroyContext(m_Display, m_Context);
 
-        m_CoreCommand->terminatePlatformGlad();
+        m_PlatformAPI->terminatePlatformGlad();
     }
 
     void GlxContext::makeCurrent() {

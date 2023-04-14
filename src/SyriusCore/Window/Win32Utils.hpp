@@ -14,10 +14,6 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 namespace Syrius{
 
-    static const wchar_t* s_SyriusWindowClass = L"SYRIUS_CORE_API";
-
-    void  setProcessDpiAware();
-
     SR_KEYBOARD_KEY convertVirtualKey(WPARAM key, LPARAM flags);
 
     DWORD decodeWindowStyle(uint32_t srWinStyle);

@@ -12,14 +12,6 @@ namespace Syrius{
 
         ~CoreCommand();
 
-        void initGlad();
-
-        void terminateGlad();
-
-        void initPlatformGlad(GlPlatformDesc* glDesc);
-
-        void terminatePlatformGlad();
-
         Time getStartupTime();
 
         Time getElapsedTimeSinceStart();

@@ -32,13 +32,6 @@ namespace Syrius {
 
     };
 
-    struct SR_CORE_API GlPlatformDesc{
-        GlPlatformDesc() = default;
-
-        virtual ~GlPlatformDesc() = default;
-
-    };
-
     class SR_CORE_API PlatformAPI{
     public:
         virtual ~PlatformAPI();
@@ -47,11 +40,15 @@ namespace Syrius {
 
         virtual uint32 getPrimaryScreenHeight() = 0;
 
-        virtual void initPlatformGlad(GlPlatformDesc* glDesc) = 0;
+        // virtual void initPlatformGlad(...) = 0; X11 and WIN32 obviously have different parameters, no idea how to handle this
 
         virtual void terminatePlatformGlad() = 0;
 
-        virtual Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc, CoreCommand* coreCommand) = 0;
+        virtual Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc) = 0;
+
+        void initGlad();
+
+        void terminateGlad();
 
         [[nodiscard]] int32 getGlVersion() const;
 
@@ -66,6 +63,11 @@ namespace Syrius {
         uint32 m_PlatformGladInstances;
 
         VulkanPlatformDesc m_VulkanPlatformDesc;
+
+    private:
+        static PlatformAPI* m_Instance;
+
+        uint32 m_GladInstances;
     };
 
 }

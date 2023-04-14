@@ -13,7 +13,7 @@ namespace Syrius{
 
     class GlxContext: public GlContext{
     public:
-        GlxContext(Display* display, GLXFBConfig fbConfig, Window& window, const ContextDesc& desc, CoreCommand* coreCommand);
+        GlxContext(Display* display, GLXFBConfig fbConfig, Window& window, const ContextDesc& desc, PlatformAPIX11Impl* platformAPI);
 
         ~GlxContext() override;
 
