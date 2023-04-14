@@ -9,6 +9,8 @@
 // #include "../../../Dependencies/imgui/imgui_impl_x11.h"
 #include "../../../Dependencies/glad/glad/glx.h"
 
+#include "../../../Core/PlatformAPIX11Impl.hpp"
+
 namespace Syrius{
 
     class GlxContext: public GlContext{
@@ -36,6 +38,8 @@ namespace Syrius{
         void onImGuiEnd() override;
 
     private:
+        PlatformAPIX11Impl* m_PlatformAPIX11;
+
         Display* m_Display;
         Window& m_Window;
 

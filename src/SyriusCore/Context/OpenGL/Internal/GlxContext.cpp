@@ -1,8 +1,5 @@
 #include "GlxContext.hpp"
 
-#include "../../../Core/CoreCommand.hpp"
-#include "../../../Core/PlatformAPIX11Impl.hpp"
-
 #if defined(SR_CORE_PLATFORM_LINUX)
 
 namespace Syrius{
@@ -10,8 +7,9 @@ namespace Syrius{
     GlxContext::GlxContext(Display *display, GLXFBConfig fbConfig, Window& window, const ContextDesc &desc, PlatformAPIX11Impl* platformAPI):
     GlContext(desc, platformAPI),
     m_Display(display),
-    m_Window(window){
-        m_PlatformAPI->initPlatformGlad(glxDesc);
+    m_Window(window),
+    m_PlatformAPIX11(platformAPI){
+        m_PlatformAPIX11->initPlatformGlad();
 
         int32 contextAttribs[] = {
             GLX_CONTEXT_MAJOR_VERSION_ARB, 4,

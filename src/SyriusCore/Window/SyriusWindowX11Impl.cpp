@@ -9,7 +9,7 @@ namespace Syrius{
     m_PlatformAPI(platformAPI),
     m_Display(display){
         // by default, init GLX
-        m_PlatformAPI->initPlatformGlad(glxDesc);
+        m_PlatformAPI->initPlatformGlad();
 
         XVisualInfo *visualInfo = selectBestVisual();
         XSetWindowAttributes attributes;

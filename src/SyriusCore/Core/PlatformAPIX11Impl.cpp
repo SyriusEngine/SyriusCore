@@ -11,12 +11,8 @@ namespace Syrius{
         addExtension("VK_KHR_xlib_surface");
     }
 
-    GlPlatformDescX11::GlPlatformDescX11() {
-
-    }
-
-    PlatformAPIX11Impl::PlatformAPIX11Impl()
-    : PlatformAPI(VulkanPlatformDescX11()),
+    PlatformAPIX11Impl::PlatformAPIX11Impl():
+    PlatformAPI(VulkanPlatformDescX11()),
     m_Display(XOpenDisplay(nullptr)),
     m_GladInstanceCount(0) {
         // first thing, set the error handler
@@ -42,14 +38,9 @@ namespace Syrius{
 
     void PlatformAPIX11Impl::initPlatformGlad() {
         if (m_GladInstanceCount == 0){
-            if (glxDesc != nullptr){
-                int32 glxVersion = gladLoaderLoadGLX(m_Display, DefaultScreen(m_Display));
-                SR_CORE_ASSERT(glxVersion > 0, "Failed to initialize GLX");
-                SR_CORE_MESSAGE("GLX initialized with version : %i.%i", GLAD_VERSION_MAJOR(glxVersion), GLAD_VERSION_MINOR(glxVersion));
-            }
-            else{
-                SR_CORE_EXCEPTION("Failed to cast GlPlatformDesc to GlPlatformDescX11");
-            }
+            int32 glxVersion = gladLoaderLoadGLX(m_Display, DefaultScreen(m_Display));
+            SR_CORE_ASSERT(glxVersion > 0, "Failed to initialize GLX");
+            SR_CORE_MESSAGE("GLX initialized with version : %i.%i", GLAD_VERSION_MAJOR(glxVersion), GLAD_VERSION_MINOR(glxVersion));
         }
         m_GladInstanceCount++;
     }
@@ -62,8 +53,8 @@ namespace Syrius{
 
     }
 
-    Resource<SyriusWindow> PlatformAPIX11Impl::createWindow(const WindowDesc &windowDesc, CoreCommand* coreCommand) {
-        return Resource<SyriusWindow>(new SyriusWindowX11Impl(windowDesc, m_Display, coreCommand));
+    Resource<SyriusWindow> PlatformAPIX11Impl::createWindow(const WindowDesc &windowDesc) {
+        return Resource<SyriusWindow>(new SyriusWindowX11Impl(windowDesc, m_Display, this));
     }
 
     Display *PlatformAPIX11Impl::getDisplay() const {

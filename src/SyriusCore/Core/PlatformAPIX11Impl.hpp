@@ -29,7 +29,7 @@ namespace Syrius{
 
         void terminatePlatformGlad() override;
 
-        Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc, CoreCommand* coreCommand) override;
+        Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc) override;
 
         [[nodiscard]] Display* getDisplay() const;
 
