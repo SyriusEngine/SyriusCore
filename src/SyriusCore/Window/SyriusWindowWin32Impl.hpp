@@ -83,13 +83,11 @@ namespace Syrius{
 
         void mouseTracker(bool enableTracking);
 
-        static void registerClass();
+    private:
 
-        static void unregisterClass();
+        friend class PlatformAPIWin32Impl; // needed to access windowEventProc function when creating the WNDCLASS structure
 
     private:
-        static uint32 m_WindowCount;
-
         PlatformAPIWin32Impl* m_PlatformAPI;
 
         HWND m_Hwnd;

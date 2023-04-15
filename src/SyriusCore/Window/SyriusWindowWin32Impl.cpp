@@ -5,8 +5,6 @@
 
 namespace Syrius{
 
-    uint32 SyriusWindowWin32Impl::m_WindowCount = 0;
-
     SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc, PlatformAPIWin32Impl* platformAPI):
     SyriusWindow(desc),
     m_Hwnd(nullptr),
@@ -14,10 +12,6 @@ namespace Syrius{
     m_Icon(nullptr),
     m_CaptureMouseAndKeyboardEvents(true),
     m_PlatformAPI(platformAPI) {
-        if (!m_WindowCount){
-            registerClass();
-        }
-
         DWORD winStyles = decodeWindowStyle(desc.style);
         DWORD exWinStyles = decodeExtendedWindowStyle(desc.style);
 
@@ -39,8 +33,6 @@ namespace Syrius{
                                  GetModuleHandleW(nullptr),
                                  this);
         if (m_Hwnd){
-            m_WindowCount++;
-
             ShowWindow(m_Hwnd, SW_SHOW);
             m_Open = true;
             m_Focused = true;
@@ -75,10 +67,6 @@ namespace Syrius{
     SyriusWindowWin32Impl::~SyriusWindowWin32Impl() {
         if (m_Hwnd){
             DestroyWindow(m_Hwnd);
-            m_WindowCount--;
-            if (m_WindowCount == 0){
-                unregisterClass();
-            }
         }
     }
 
@@ -636,30 +624,6 @@ namespace Syrius{
         mouseEvent.hwndTrack = m_Hwnd;
         mouseEvent.dwHoverTime = HOVER_DEFAULT;
         TrackMouseEvent(&mouseEvent);
-    }
-
-    void SyriusWindowWin32Impl::registerClass() {
-        WNDCLASSEXW wndClass;
-        wndClass.cbSize = sizeof(WNDCLASSEXW);
-        wndClass.style = 0;
-        wndClass.lpfnWndProc = &SyriusWindowWin32Impl::windowEventProc;
-        wndClass.cbClsExtra = 0;
-        wndClass.cbWndExtra = 0;
-        wndClass.hInstance = GetModuleHandleW(nullptr);
-        wndClass.hIcon = nullptr;
-        wndClass.hCursor = nullptr;
-        wndClass.hbrBackground = 0;
-        wndClass.lpszMenuName = L"SYRIUS_CORE";
-        wndClass.lpszClassName = s_SyriusWindowClass;
-        wndClass.hIconSm = nullptr;
-
-        RegisterClassExW(&wndClass);
-
-        SR_CORE_HRESULT(GetLastError());
-    }
-
-    void SyriusWindowWin32Impl::unregisterClass() {
-        UnregisterClassW(s_SyriusWindowClass, GetModuleHandleW(nullptr));
     }
 
 }

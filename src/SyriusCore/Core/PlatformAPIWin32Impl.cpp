@@ -14,10 +14,11 @@ namespace Syrius{
     PlatformAPIWin32Impl::PlatformAPIWin32Impl()
     : PlatformAPI(VulkanPlatformDescWin32()){
         setProcessDpiAware();
+        registerWindowClass();
     }
 
     PlatformAPIWin32Impl::~PlatformAPIWin32Impl() {
-
+        unregisterWindowClass();
     }
 
     uint32 PlatformAPIWin32Impl::getPrimaryScreenWidth() {
@@ -86,6 +87,30 @@ namespace Syrius{
             FreeLibrary(user32Dll);
 
         }
+    }
+
+    void PlatformAPIWin32Impl::registerWindowClass() {
+        WNDCLASSEXW wndClass;
+        wndClass.cbSize = sizeof(WNDCLASSEXW);
+        wndClass.style = 0;
+        wndClass.lpfnWndProc = &SyriusWindowWin32Impl::windowEventProc;
+        wndClass.cbClsExtra = 0;
+        wndClass.cbWndExtra = 0;
+        wndClass.hInstance = GetModuleHandleW(nullptr);
+        wndClass.hIcon = nullptr;
+        wndClass.hCursor = nullptr;
+        wndClass.hbrBackground = 0;
+        wndClass.lpszMenuName = L"SYRIUS_CORE";
+        wndClass.lpszClassName = s_SyriusWindowClass;
+        wndClass.hIconSm = nullptr;
+
+        RegisterClassExW(&wndClass);
+
+        SR_CORE_HRESULT(GetLastError());
+    }
+
+    void PlatformAPIWin32Impl::unregisterWindowClass() {
+        UnregisterClassW(s_SyriusWindowClass, GetModuleHandleW(nullptr));
     }
 
 }

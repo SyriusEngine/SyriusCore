@@ -37,6 +37,10 @@ namespace Syrius{
 
         void setProcessDpiAware();
 
+        void registerWindowClass();
+
+        void unregisterWindowClass();
+
     };
 
 }
