@@ -44,7 +44,7 @@ namespace Syrius {
 
     private:
 
-        PlatformAPIWin32Impl* m_PlatformAPI;
+        PlatformAPIWin32Impl* m_PlatformAPIWin32;
 
         PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = NULL;
         PFNWGLGETSWAPINTERVALEXTPROC wglGetSwapIntervalEXT = NULL;

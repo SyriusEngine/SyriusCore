@@ -11,7 +11,8 @@ namespace Syrius{
     m_Hwnd(hwnd),
     m_Context(nullptr),
     m_HardwareDeviceContext(nullptr),
-    m_ImGuiContext(nullptr){
+    m_ImGuiContext(nullptr),
+    m_PlatformAPIWin32(platformAPI){
         m_HardwareDeviceContext = GetDC(m_Hwnd);
 
         uint8_t pixelType = desc.redBits + desc.greenBits + desc.blueBits + desc.alphaBits;
@@ -53,7 +54,7 @@ namespace Syrius{
         HGLRC tempContext = wglCreateContext(m_HardwareDeviceContext);
         wglMakeCurrent(m_HardwareDeviceContext, tempContext);
 
-        m_PlatformAPI->initPlatformGlad(m_HardwareDeviceContext);
+        m_PlatformAPIWin32->initPlatformGlad(m_HardwareDeviceContext);
 
         if (wglCreateContextAttribsARB != nullptr){
             // create the actual context
