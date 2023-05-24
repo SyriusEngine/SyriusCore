@@ -157,7 +157,7 @@ namespace Syrius{
             return m_Resource;
         }
 
-        [[nodiscard]] ResourceView<T> createView() const {
+        [[nodiscard]] ResourceView<T> createView() {
             return ResourceView<T>(this, m_NextViewID++);
         }
 
@@ -201,7 +201,7 @@ namespace Syrius{
     private:
 
 
-        mutable uint64 m_NextViewID;
+        uint64 m_NextViewID;
         std::unordered_map<uint64, ResourceView<T>*> m_Views;
         Pointer m_Resource;
 

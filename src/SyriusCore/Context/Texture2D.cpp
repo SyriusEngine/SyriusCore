@@ -3,6 +3,12 @@
 
 namespace Syrius{
 
+    Texture2DImageDesc::Texture2DImageDesc(const Resource<Image> &image, const ResourceView<Sampler> &sampler):
+    image(image),
+    sampler(sampler){
+
+    }
+
     Texture2D::Texture2D(const Texture2DDesc& desc):
     m_Width(desc.width),
     m_Height(desc.height),
@@ -43,5 +49,4 @@ namespace Syrius{
     SR_TEXTURE_FORMAT Texture2D::getFormat() const {
         return m_Format;
     }
-
 }

@@ -17,8 +17,11 @@ namespace Syrius{
     };
 
     struct SR_CORE_API Texture2DImageDesc{
-        ResourceView<Image> image;
+        const Resource<Image>& image;
         ResourceView<Sampler> sampler;
+
+        // this construction is really stupid and should be removed. However, removing this will break the entire engine
+        Texture2DImageDesc(const Resource<Image>& image, const ResourceView<Sampler>& sampler);
     };
 
     class SR_CORE_API Texture2D{
