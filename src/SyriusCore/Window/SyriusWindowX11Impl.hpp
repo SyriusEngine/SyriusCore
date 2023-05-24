@@ -14,7 +14,7 @@ namespace Syrius{
     class SyriusWindowX11Impl: public SyriusWindow{
     public:
 
-        SyriusWindowX11Impl(const WindowDesc& desc, Display* display, CoreCommand* coreCommand);
+        SyriusWindowX11Impl(const WindowDesc& desc, Display* display, PlatformAPIX11Impl* platformAPI);
 
         SyriusWindowX11Impl(const SyriusWindowX11Impl&) = delete;
 
@@ -77,6 +77,8 @@ namespace Syrius{
         void setWindowStyles(SR_WINDOW_STYLE style);
 
     private:
+        PlatformAPIX11Impl* m_PlatformAPI;
+
         Display* m_Display;
 
         Window m_Window;

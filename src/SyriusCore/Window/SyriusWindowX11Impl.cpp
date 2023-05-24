@@ -4,13 +4,12 @@
 
 namespace Syrius{
 
-    SyriusWindowX11Impl::SyriusWindowX11Impl(const WindowDesc &desc, Display* display, CoreCommand* coreCommand)
-    : SyriusWindow(desc, coreCommand),
+    SyriusWindowX11Impl::SyriusWindowX11Impl(const WindowDesc &desc, Display* display, PlatformAPIX11Impl* platformAPI): 
+    SyriusWindow(desc),
+    m_PlatformAPI(platformAPI),
     m_Display(display){
         // by default, init GLX
-        auto glxDesc = new GlPlatformDescX11();
-        m_CoreState->initPlatformGlad(glxDesc);
-        delete glxDesc;
+        m_PlatformAPI->initPlatformGlad();
 
         XVisualInfo *visualInfo = selectBestVisual();
         XSetWindowAttributes attributes;
@@ -41,7 +40,7 @@ namespace Syrius{
     }
 
     SyriusWindowX11Impl::~SyriusWindowX11Impl() {
-        m_CoreState->terminatePlatformGlad();
+        m_PlatformAPI->terminatePlatformGlad();
         XDestroyWindow(m_Display, m_Window);
     }
 
@@ -289,7 +288,7 @@ namespace Syrius{
         }
         switch (desc.api) {
             case SR_API_OPENGL:
-                m_Context = Resource<Context>(new GlxContext(m_Display, m_BestFBConfig, m_Window, desc, m_CoreState));
+                m_Context = Resource<Context>(new GlxContext(m_Display, m_BestFBConfig, m_Window, desc, m_PlatformAPI));
                 break;
             default:
                 SR_CORE_WARNING("cannot create context: %i", desc.api);

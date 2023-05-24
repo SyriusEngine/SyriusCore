@@ -5,10 +5,10 @@ namespace Syrius{
     // keep track of with gl context is currently active
     uint64 GlContext::m_ActiveContextID = 0;
 
-    GlContext::GlContext(const ContextDesc& desc, CoreCommand* coreCommand)
-    : Context(desc),
+    GlContext::GlContext(const ContextDesc& desc, PlatformAPI* platformAPI):
+    Context(desc),
     m_ID(generateID()),
-    m_CoreCommand(coreCommand) {
+    m_PlatformAPI(platformAPI) {
         m_ActiveContextID = m_ID;
     }
 
@@ -33,11 +33,11 @@ namespace Syrius{
         clearVec(m_FrameBuffers);
         clearVec(m_FrameBufferDescriptions);
 
-        m_CoreCommand->terminateGlad();
+        m_PlatformAPI->terminateGlad();
     }
 
     void GlContext::initGl(const ContextDesc& desc) {
-        m_CoreCommand->initGlad();
+        m_PlatformAPI->initGlad();
 
         auto defaultFbDesc = createFrameBufferDescription();
         ViewportDesc viewportDesc;

@@ -2,25 +2,18 @@
 
 #include "../../../../include/SyriusCore/Core/PlatformAPI.hpp"
 #include "PlatformInclude.hpp"
-#include "../Window/SyriusWindowWin32Impl.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
 
+    static const wchar_t* s_SyriusWindowClass = L"SYRIUS_CORE_API";
+
+
     struct VulkanPlatformDescWin32: public VulkanPlatformDesc{
     public:
 
         VulkanPlatformDescWin32();
-    };
-
-    struct GlPlatformDescWin32: public GlPlatformDesc{
-        HDC m_HDC;
-
-        explicit GlPlatformDescWin32(HDC hdc);
-
-        ~GlPlatformDescWin32() override = default;
-
     };
 
     class PlatformAPIWin32Impl: public PlatformAPI{
@@ -34,11 +27,20 @@ namespace Syrius{
 
         uint32 getPrimaryScreenHeight() override;
 
-        void initPlatformGlad(GlPlatformDesc* glDesc) override;
+        void initPlatformGlad(HDC hdc);
 
         void terminatePlatformGlad() override;
 
-        Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc, CoreCommand* coreCommand) override;
+        Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc) override;
+
+    private:
+
+        void setProcessDpiAware();
+
+        void registerWindowClass();
+
+        void unregisterWindowClass();
+
     };
 
 }

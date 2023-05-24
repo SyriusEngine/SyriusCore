@@ -1,24 +1,17 @@
 #include "SyriusWindowWin32Impl.hpp"
-#include "../Core/CoreCommand.hpp"
 #include "../Context/OpenGL/Internal/WglContext.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
 
-    uint32 SyriusWindowWin32Impl::m_WindowCount = 0;
-
-    SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc, CoreCommand* coreCommand)
-    : SyriusWindow(desc, coreCommand),
-      m_Hwnd(nullptr),
-      m_Callback(0),
-      m_Icon(nullptr),
-      m_CaptureMouseAndKeyboardEvents(true){
-        if (!m_WindowCount){
-            setProcessDpiAware();
-            registerClass();
-        }
-
+    SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc, PlatformAPIWin32Impl* platformAPI):
+    SyriusWindow(desc),
+    m_Hwnd(nullptr),
+    m_Callback(0),
+    m_Icon(nullptr),
+    m_CaptureMouseAndKeyboardEvents(true),
+    m_PlatformAPI(platformAPI) {
         DWORD winStyles = decodeWindowStyle(desc.style);
         DWORD exWinStyles = decodeExtendedWindowStyle(desc.style);
 
@@ -40,8 +33,6 @@ namespace Syrius{
                                  GetModuleHandleW(nullptr),
                                  this);
         if (m_Hwnd){
-            m_WindowCount++;
-
             ShowWindow(m_Hwnd, SW_SHOW);
             m_Open = true;
             m_Focused = true;
@@ -76,10 +67,6 @@ namespace Syrius{
     SyriusWindowWin32Impl::~SyriusWindowWin32Impl() {
         if (m_Hwnd){
             DestroyWindow(m_Hwnd);
-            m_WindowCount--;
-            if (m_WindowCount == 0){
-                unregisterClass();
-            }
         }
     }
 
@@ -253,8 +240,8 @@ namespace Syrius{
 
     void SyriusWindowWin32Impl::centerWindow() {
         if (!m_Fullscreen){
-            auto posX = static_cast<int32>((m_CoreState->getPrimaryScreenWidth() - m_Width) / 2);
-            auto posY = static_cast<int32>((m_CoreState->getPrimaryScreenHeight() - m_Height) / 2);
+            auto posX = static_cast<int32>((m_PlatformAPI->getPrimaryScreenWidth() - m_Width) / 2);
+            auto posY = static_cast<int32>((m_PlatformAPI->getPrimaryScreenHeight() - m_Height) / 2);
             setPosition(posX, posY);
         }
     }
@@ -311,7 +298,7 @@ namespace Syrius{
         }
         switch (desc.api) {
             case SR_API_OPENGL:
-                m_Context = Resource<Context>(new WglContext(m_Hwnd, desc, m_CoreState));
+                m_Context = Resource<Context>(new WglContext(m_Hwnd, desc, m_PlatformAPI));
                 break;
 //            case SR_API_VULKAN:
 //                m_Context = new VulkanContextWin32(m_Hwnd, desc);
@@ -637,30 +624,6 @@ namespace Syrius{
         mouseEvent.hwndTrack = m_Hwnd;
         mouseEvent.dwHoverTime = HOVER_DEFAULT;
         TrackMouseEvent(&mouseEvent);
-    }
-
-    void SyriusWindowWin32Impl::registerClass() {
-        WNDCLASSEXW wndClass;
-        wndClass.cbSize = sizeof(WNDCLASSEXW);
-        wndClass.style = 0;
-        wndClass.lpfnWndProc = &SyriusWindowWin32Impl::windowEventProc;
-        wndClass.cbClsExtra = 0;
-        wndClass.cbWndExtra = 0;
-        wndClass.hInstance = GetModuleHandleW(nullptr);
-        wndClass.hIcon = nullptr;
-        wndClass.hCursor = nullptr;
-        wndClass.hbrBackground = 0;
-        wndClass.lpszMenuName = L"SYRIUS_CORE";
-        wndClass.lpszClassName = s_SyriusWindowClass;
-        wndClass.hIconSm = nullptr;
-
-        RegisterClassExW(&wndClass);
-
-        SR_CORE_HRESULT(GetLastError());
-    }
-
-    void SyriusWindowWin32Impl::unregisterClass() {
-        UnregisterClassW(s_SyriusWindowClass, GetModuleHandleW(nullptr));
     }
 
 }

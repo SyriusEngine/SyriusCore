@@ -15,14 +15,6 @@ namespace Syrius{
         VulkanPlatformDescX11();
     };
 
-    struct GlPlatformDescX11: public GlPlatformDesc{
-
-        explicit GlPlatformDescX11();
-
-        ~GlPlatformDescX11() override = default;
-
-    };
-
     class PlatformAPIX11Impl: public PlatformAPI{
     public:
         PlatformAPIX11Impl();
@@ -33,11 +25,11 @@ namespace Syrius{
 
         uint32 getPrimaryScreenHeight() override;
 
-        void initPlatformGlad(GlPlatformDesc* glDesc) override;
+        void initPlatformGlad();
 
         void terminatePlatformGlad() override;
 
-        Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc, CoreCommand* coreCommand) override;
+        Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc) override;
 
         [[nodiscard]] Display* getDisplay() const;
 

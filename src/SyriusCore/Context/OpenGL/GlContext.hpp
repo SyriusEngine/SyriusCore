@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../../include/SyriusCore/Context/Context.hpp"
-#include "../../Core/CoreCommand.hpp"
+#include "../../../../include/SyriusCore/Core/PlatformAPI.hpp"
 #include "GlShaderModule.hpp"
 #include "GlShader.hpp"
 #include "GlViewport.hpp"
@@ -73,13 +73,13 @@ namespace Syrius{
         ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferDescription>& desc) override;
 
     protected:
-        explicit GlContext(const ContextDesc& desc, CoreCommand* coreCommand);
+        explicit GlContext(const ContextDesc& desc, PlatformAPI* platformAPI);
         
         void initGl(const ContextDesc& desc);
 
     protected:
 
-        CoreCommand* m_CoreCommand;
+        PlatformAPI* m_PlatformAPI;
 
     private:
 

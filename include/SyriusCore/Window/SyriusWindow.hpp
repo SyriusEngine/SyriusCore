@@ -127,7 +127,7 @@ namespace Syrius{
 
     protected:
 
-        explicit SyriusWindow(const WindowDesc& desc, CoreCommand* coreCommand);
+        explicit SyriusWindow(const WindowDesc& desc);
 
         void dispatchEvent(const Event& event);
 
@@ -151,8 +151,6 @@ namespace Syrius{
         static uint32 m_ImGuiInstances;
 
         Resource<Context> m_Context;
-
-        CoreCommand* m_CoreState;
 
     private:
         std::deque<Event> m_EventQueue;

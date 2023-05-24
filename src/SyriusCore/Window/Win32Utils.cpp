@@ -5,44 +5,6 @@
 
 namespace Syrius {
 
-    void setProcessDpiAware(){
-        HINSTANCE shCoreDll = LoadLibraryW(L"Shcore.dll");
-        if (shCoreDll){
-            enum ProcessDpiAwareness
-            {
-                ProcessDpiUnaware         = 0,
-                ProcessSystemDpiAware     = 1,
-                ProcessPerMonitorDpiAware = 2
-            };
-            typedef HRESULT (WINAPI* SetProcessDpiAwarenessFuncType)(ProcessDpiAwareness);
-            auto setProcessDpiAwarenessFunc = reinterpret_cast<SetProcessDpiAwarenessFuncType>(GetProcAddress(shCoreDll, "SetProcessDpiAwareness"));
-            if (setProcessDpiAwarenessFunc){
-                if (setProcessDpiAwarenessFunc(ProcessSystemDpiAware) == E_INVALIDARG){
-                    SR_CORE_WARNING("Failed to set process DPI awareness using shCore.dll libary, falling back on user32.dll");
-                }
-                else{
-                    FreeLibrary(shCoreDll);
-                    return;
-                }
-            }
-            FreeLibrary(shCoreDll);
-
-        }
-        // when setting DPI awareness using shcore.dll failed, fall back and use user32.dll and try again
-        HINSTANCE user32Dll = LoadLibraryW(L"user32.dll");
-        if (user32Dll){
-            typedef BOOL (WINAPI* SetProcessDPIAwareFuncType)(void);
-            auto setProcessDPIAwareFunc = reinterpret_cast<SetProcessDPIAwareFuncType>(GetProcAddress(user32Dll, "SetProcessDPIAware"));
-            if (setProcessDPIAwareFunc){
-                if (!setProcessDPIAwareFunc()){
-                    SR_CORE_WARNING("Failed to set process DPI awareness");
-                }
-            }
-            FreeLibrary(user32Dll);
-
-        }
-    }
-
     SR_KEYBOARD_KEY convertVirtualKey(WPARAM key, LPARAM flags){
         switch (key) {
             case VK_SHIFT: {

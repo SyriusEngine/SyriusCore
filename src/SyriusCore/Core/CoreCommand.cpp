@@ -47,56 +47,6 @@ namespace Syrius{
         }
     }
 
-    void CoreCommand::initGlad() {
-        if (!m_GladInstances){
-            int32 version = gladLoaderLoadGL();
-#if defined(SR_CORE_DEBUG)
-            if (version > 0){
-                int32 major = GLAD_VERSION_MAJOR(version);
-                int32 minor = GLAD_VERSION_MINOR(version);
-                SR_CORE_MESSAGE("OpenGL initialized with version: %i.%i", major, minor)
-                if (major < 4 || (major == 4 && minor < 6)){
-                    SR_CORE_WARNING("OpenGL version is lower than 4.5, some features may not work")
-                }
-                glEnable(GL_DEBUG_OUTPUT);
-                glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-#if defined(SR_COMPILER_MSVC)
-                auto func = (GLDEBUGPROC) DebugMessageHandler::pushOpenGLMessageCallback;
-                glDebugMessageCallback(func, nullptr);
-#else
-                glDebugMessageCallback(DebugMessageHandler::pushOpenGLMessageCallback, nullptr);
-#endif
-
-            }
-            else {
-                SR_CORE_EXCEPTION("Failed to initialize OpenGL");
-            }
-
-#endif
-
-        }
-        m_GladInstances++;
-    }
-
-    void CoreCommand::terminateGlad() {
-        m_GladInstances--;
-        if (!m_GladInstances){
-            gladLoaderUnloadGL();
-        }
-    }
-
-    void CoreCommand::initPlatformGlad(GlPlatformDesc* glDesc){
-        SR_CORE_PRECONDITION(m_PlatformAPI.isValid(), "Cannot initialize platform glad, no platform API was created");
-
-        m_PlatformAPI->initPlatformGlad(glDesc);
-    }
-
-    void CoreCommand::terminatePlatformGlad() {
-        SR_CORE_PRECONDITION(m_PlatformAPI.isValid(), "Cannot initialize platform glad, no platform API was created");
-
-        m_PlatformAPI->terminatePlatformGlad();
-    }
-
     Time CoreCommand::getStartupTime() {
         return m_StartupTime;
     }
@@ -119,7 +69,7 @@ namespace Syrius{
     Resource<SyriusWindow> CoreCommand::createWindow(const WindowDesc &windowDesc) {
         SR_CORE_PRECONDITION(m_PlatformAPI.isValid(), "Cannot create window, no platform API was created");
 
-        return m_PlatformAPI->createWindow(windowDesc, this);
+        return m_PlatformAPI->createWindow(windowDesc);
     }
 
 }

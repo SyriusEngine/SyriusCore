@@ -6,12 +6,13 @@
 
 namespace Syrius{
 
-    WglContext::WglContext(HWND &hwnd, const ContextDesc& desc, CoreCommand* coreCommand)
-    : GlContext(desc, coreCommand),
+    WglContext::WglContext(HWND &hwnd, const ContextDesc& desc, PlatformAPIWin32Impl* platformAPI):
+    GlContext(desc, platformAPI),
     m_Hwnd(hwnd),
     m_Context(nullptr),
     m_HardwareDeviceContext(nullptr),
-    m_ImGuiContext(nullptr){
+    m_ImGuiContext(nullptr),
+    m_PlatformAPIWin32(platformAPI){
         m_HardwareDeviceContext = GetDC(m_Hwnd);
 
         uint8_t pixelType = desc.redBits + desc.greenBits + desc.blueBits + desc.alphaBits;
@@ -53,9 +54,7 @@ namespace Syrius{
         HGLRC tempContext = wglCreateContext(m_HardwareDeviceContext);
         wglMakeCurrent(m_HardwareDeviceContext, tempContext);
 
-        auto gDesc = new GlPlatformDescWin32(m_HardwareDeviceContext);
-        m_CoreCommand->initPlatformGlad(gDesc);
-        delete gDesc;
+        m_PlatformAPIWin32->initPlatformGlad(m_HardwareDeviceContext);
 
         if (wglCreateContextAttribsARB != nullptr){
             // create the actual context
@@ -117,7 +116,7 @@ namespace Syrius{
         }
 
         wglDeleteContext(m_Context);
-        m_CoreCommand->terminatePlatformGlad();
+        m_PlatformAPI->terminatePlatformGlad();
     }
 
     void WglContext::makeCurrent() {
@@ -142,7 +141,7 @@ namespace Syrius{
         ImGui::CreateContext();
         ImGui::StyleColorsDark();
         ImGui_ImplWin32_Init(m_Hwnd);
-        m_CoreCommand->initGlad();
+        m_PlatformAPI->initGlad();
         ImGui_ImplOpenGL3_Init("#version 150");
 
         m_ImGuiContext = ImGui::GetCurrentContext();
@@ -155,7 +154,7 @@ namespace Syrius{
 
         ImGui::SetCurrentContext(m_ImGuiContext);
         ImGui_ImplOpenGL3_Shutdown();
-        m_CoreCommand->terminateGlad();
+        m_PlatformAPI->terminateGlad();
         ImGui_ImplWin32_Shutdown();
         ImGui::DestroyContext();
 
