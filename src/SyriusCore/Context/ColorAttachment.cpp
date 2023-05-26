@@ -1,4 +1,5 @@
 #include "../../../../include/SyriusCore/Context/ColorAttachment.hpp"
+#include "../Core/DebugMacros.hpp"
 
 namespace Syrius{
 
@@ -9,6 +10,12 @@ namespace Syrius{
     m_ClearColor{desc.clearColor[0], desc.clearColor[1], desc.clearColor[2], desc.clearColor[3]},
     m_EnableShaderRead(desc.enableShaderRead),
     m_EnableAutoResize(desc.enableAutoResize){
+        SR_CORE_PRECONDITION(desc.format != SR_TEXTURE_DEPTH_16 and
+                             desc.format != SR_TEXTURE_DEPTH_24 and
+                             desc.format != SR_TEXTURE_DEPTH_32 and
+                             desc.format != SR_TEXTURE_DEPTH_24_STENCIL_8 and
+                             desc.format != SR_TEXTURE_DEPTH_32_STENCIL_8,
+                             "Depth/stencil format: %i is not supported for color attachment", desc.format);
 
     }
 

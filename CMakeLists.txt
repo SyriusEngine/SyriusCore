@@ -146,7 +146,8 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
         src/SyriusCore/Context/OpenGL/GlSampler.cpp
         src/SyriusCore/Context/OpenGL/GlFrameBuffer.cpp
         src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp
-        src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp)
+        src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp
+        )
 
 set(SYRIUSCORE_SRC
         ${SYRIUSCORE_CORE_SRC}

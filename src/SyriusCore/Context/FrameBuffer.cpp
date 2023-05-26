@@ -4,6 +4,11 @@
 namespace Syrius{
 
     FrameBuffer::FrameBuffer(const ResourceView<FrameBufferDescription> &desc) {
+        SR_CORE_PRECONDITION(desc.isValid(), "Invalid framebuffer description");
+        SR_CORE_PRECONDITION(desc->getViewportDesc().size() > 0, "No viewport description was added to the framebuffer description");
+        SR_CORE_PRECONDITION(!desc->getColorAttachmentDesc().empty() or
+                             !desc->getDepthStencilAttachmentDesc().empty(),
+                             "No color attachment description was added to the framebuffer description");
 
     }
 

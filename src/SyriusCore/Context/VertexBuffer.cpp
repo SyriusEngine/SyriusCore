@@ -9,6 +9,7 @@ namespace Syrius{
     m_Size(0),
     m_Layout(desc.layout){
         SR_CORE_PRECONDITION(desc.layout.isValid(), "Vertex layout cannot be null");
+        SR_CORE_PRECONDITION(desc.count > 0, "Vertex count must be greater than 0");
 
         m_Size = desc.layout->getStride() * desc.count;
 

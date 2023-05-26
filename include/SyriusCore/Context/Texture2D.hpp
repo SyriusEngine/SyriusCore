@@ -10,7 +10,6 @@ namespace Syrius{
     struct SR_CORE_API Texture2DDesc{
         uint32 width          = 0;
         uint32 height         = 0;
-        ResourceView<Sampler> sampler;
         SR_TEXTURE_FORMAT format = SR_TEXTURE_RGBA_UI8;
         const void* data            = nullptr;
 
@@ -18,10 +17,9 @@ namespace Syrius{
 
     struct SR_CORE_API Texture2DImageDesc{
         const Resource<Image>& image;
-        ResourceView<Sampler> sampler;
 
         // this construction is really stupid and should be removed. However, removing this will break the entire engine
-        Texture2DImageDesc(const Resource<Image>& image, const ResourceView<Sampler>& sampler);
+        explicit Texture2DImageDesc(const Resource<Image>& image);
     };
 
     class SR_CORE_API Texture2D{

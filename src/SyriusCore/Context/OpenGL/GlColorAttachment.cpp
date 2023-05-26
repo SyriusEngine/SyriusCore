@@ -10,12 +10,6 @@ namespace Syrius{
     m_TextureID(0),
     m_ChannelCount(0),
     m_GlDataType(getGlDataType(getTextureDataType(desc.format))){
-        SR_CORE_PRECONDITION(desc.format != SR_TEXTURE_DEPTH_16 and
-                             desc.format != SR_TEXTURE_DEPTH_24 and
-                             desc.format != SR_TEXTURE_DEPTH_32 and
-                             desc.format != SR_TEXTURE_DEPTH_24_STENCIL_8 and
-                             desc.format != SR_TEXTURE_DEPTH_32_STENCIL_8 , "Depth/stencil format is not supported for color attachment");
-
         SR_CHANNEL_FORMAT baseFormat = getTextureFormat(desc.format);
         m_GlFormat = getGlTextureType(baseFormat);
         m_ChannelCount = getTextureChannelCount(baseFormat);

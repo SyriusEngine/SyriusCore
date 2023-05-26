@@ -1,4 +1,5 @@
 #include "../../../../include/SyriusCore/Context/Viewport.hpp"
+#include "../Core/DebugMacros.hpp"
 
 namespace Syrius{
 
@@ -10,6 +11,11 @@ namespace Syrius{
     m_MinDepth(desc.minDepth),
     m_MaxDepth(desc.maxDepth),
     m_EnableAutoResize(desc.enableAutoResize){
+        SR_CORE_PRECONDITION(m_Width > 0, "Viewport width must be greater than 0");
+        SR_CORE_PRECONDITION(m_Height > 0, "Viewport height must be greater than 0");
+        SR_CORE_PRECONDITION(m_MinDepth >= 0.0f && m_MinDepth <= 1.0f, "Viewport min depth must be between 0.0f and 1.0f");
+        SR_CORE_PRECONDITION(m_MaxDepth >= 0.0f && m_MaxDepth <= 1.0f, "Viewport max depth must be between 0.0f and 1.0f");
+        SR_CORE_PRECONDITION(m_MinDepth < m_MaxDepth, "Viewport min depth must be less than max depth");
 
     }
 

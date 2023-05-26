@@ -1,4 +1,5 @@
 #include "../../../../include/SyriusCore/Context/DepthStencilAttachment.hpp"
+#include "../Core/DebugMacros.hpp"
 
 namespace Syrius{
 
@@ -20,6 +21,14 @@ namespace Syrius{
     m_StencilPass(desc.stencilPass),
     m_StencilPassDepthFail(desc.stencilPassDepthFail),
     m_EnableAutoResize(desc.enableAutoResize){
+        SR_CORE_PRECONDITION(m_Width > 0, "DepthStencilAttachment width must be greater than 0");
+        SR_CORE_PRECONDITION(m_Height > 0, "DepthStencilAttachment height must be greater than 0");
+        SR_CORE_PRECONDITION(desc.format == SR_TEXTURE_DEPTH_16 or
+                             desc.format == SR_TEXTURE_DEPTH_24 or
+                             desc.format == SR_TEXTURE_DEPTH_32 or
+                             desc.format == SR_TEXTURE_DEPTH_24_STENCIL_8 or
+                             desc.format == SR_TEXTURE_DEPTH_32_STENCIL_8,
+                             "Depth/stencil format: %i is not supported for color attachment", desc.format);
 
     }
 
