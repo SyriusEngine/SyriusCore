@@ -15,7 +15,7 @@ namespace Syrius{
         for (const auto& element: m_VertexBuffer->getVertexDescription()->getAttributes()) {
             glEnableVertexArrayAttrib(m_ArrayID, attribPtr);
             glVertexArrayAttribBinding(m_ArrayID, attribPtr, 0);
-            SR_DATA_TYPE dataType = getScalarDataType(element.type);
+            SR_TYPE dataType = getScalarType(element.type);
             glVertexArrayAttribFormat(m_ArrayID, attribPtr, element.elementCount, getGlDataType(dataType), GL_FALSE,
                                       offset);
 

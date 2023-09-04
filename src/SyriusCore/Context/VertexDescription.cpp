@@ -28,7 +28,7 @@ namespace Syrius{
 
     void VertexDescription::addAttribute(const std::string &name, SR_SCALAR_TYPE dataType) {
         uint8 elementCount = getScalarComponentCount(dataType);
-        uint8 size = getTypeSize(dataType);
+        uint8 size = getScalarSize(dataType);
 
         m_Attributes.emplace_back(name, dataType, size, elementCount);
         m_Stride += size;

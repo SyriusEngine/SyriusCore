@@ -23,8 +23,8 @@ int test(){
     try{
         syriusCoreInit();
         setDebugMessageCallback(messageCallback);
-        testFramebuffer(Syrius::SR_API_OPENGL);
-        testFramebuffer(Syrius::SR_API_D3D11);
+        testFramebuffer(SR_API_OPENGL);
+        testFramebuffer(SR_API_D3D11);
         syriusCoreTerminate();
     } catch (std::exception& e){
         std::cerr << e.what() << std::endl;
@@ -54,7 +54,7 @@ int main() {
 
         auto window = createWindow(wDesc);
         ContextDesc cDesc;
-        cDesc.api = Syrius::SR_API_D3D11;
+        cDesc.api = SR_API_D3D11;
 
         auto context = window->createContext(cDesc);
         context->setVerticalSynchronisation(true);

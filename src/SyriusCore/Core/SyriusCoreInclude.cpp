@@ -3,7 +3,26 @@
 
 namespace Syrius{
 
-    uint8 getTypeSize(SR_DATA_TYPE type){
+    std::string getAPIName(SR_SUPPORTED_API api) {
+        switch (api) {
+            case SR_API_NONE:
+                return "None";
+            case SR_API_OPENGL:
+                return "OpenGL";
+            case SR_API_VULKAN:
+                return "Vulkan";
+#if defined(SR_CORE_PLATFORM_WIN64)
+            case SR_API_D3D11:
+                return "DirectX 11";
+            case SR_API_D3D12:
+                return "DirectX 12";
+#endif
+            default:
+                return "Unknown";
+        }
+    }
+
+    uint8 getTypeSize(SR_TYPE type){
         switch (type) {
             case SR_TYPE_NONE:  return 0;
             case SR_VOID:       return 0;
@@ -24,11 +43,11 @@ namespace Syrius{
             }
         }
     }
-    uint8 getTypeSize(SR_SCALAR_TYPE type){
+    uint8 getScalarSize(SR_SCALAR_TYPE type){
         uint8 trunc = type << 4;
         uint8 shifted = (trunc >> 4);
         shifted++;
-        return getTypeSize(static_cast<SR_DATA_TYPE>(static_cast<SR_DATA_TYPE>((type >> 4) << 4))) * shifted;
+        return getTypeSize(static_cast<SR_TYPE>(static_cast<SR_TYPE>((type >> 4) << 4))) * shifted;
     }
 
     uint8 getScalarComponentCount(SR_SCALAR_TYPE type){
@@ -38,8 +57,8 @@ namespace Syrius{
         return shifted;
     }
 
-    SR_DATA_TYPE getScalarDataType(SR_SCALAR_TYPE type){
-        return static_cast<SR_DATA_TYPE>((type >> 4) << 4);
+    SR_TYPE getScalarType(SR_SCALAR_TYPE type){
+        return static_cast<SR_TYPE>((type >> 4) << 4);
     }
 
     SR_CHANNEL_FORMAT getTextureFormat(SR_TEXTURE_FORMAT format){
@@ -73,8 +92,8 @@ namespace Syrius{
         return format >> 4;
     }
 
-    SR_DATA_TYPE getTextureDataType(SR_TEXTURE_FORMAT format){
-        return static_cast<SR_DATA_TYPE>(format << 4);
+    SR_TYPE getTextureDataType(SR_TEXTURE_FORMAT format){
+        return static_cast<SR_TYPE>(format << 4);
     }
 
 }

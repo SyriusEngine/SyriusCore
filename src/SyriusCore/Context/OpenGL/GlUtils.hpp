@@ -15,7 +15,7 @@ namespace Syrius{
 
     GLenum getGlDrawType(SR_DRAW_TYPE type);
 
-    GLenum getGlDataType(SR_DATA_TYPE type);
+    GLenum getGlDataType(SR_TYPE type);
 
     GLenum getGlBufferType(SR_BUFFER_TYPE type);
 

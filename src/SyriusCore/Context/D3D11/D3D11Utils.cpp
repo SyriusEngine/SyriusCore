@@ -16,7 +16,7 @@ namespace Syrius{
         }
     }
 
-    DXGI_FORMAT getD3d11DataType(SR_DATA_TYPE dataType){
+    DXGI_FORMAT getD3d11DataType(SR_TYPE dataType){
         switch (dataType){
             case SR_UINT8:      return DXGI_FORMAT_R8_UINT;
             case SR_INT8:       return DXGI_FORMAT_R8_SINT;

@@ -31,7 +31,7 @@ namespace Syrius{
         }
     }
 
-    GLenum getGlDataType(SR_DATA_TYPE type){
+    GLenum getGlDataType(SR_TYPE type){
         switch (type) {
             case SR_INT8:       return GL_BYTE;
             case SR_UINT8:      return GL_UNSIGNED_BYTE;

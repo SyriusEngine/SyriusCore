@@ -6,14 +6,14 @@ void testFramebuffer(SR_SUPPORTED_API api){
     std::string vScreenShader;
     std::string fScreenShader;
     SR_SHADER_CODE_TYPE shaderType = SR_SHADER_CODE_GLSL;
-    if (api == Syrius::SR_API_D3D11){
+    if (api == SR_API_D3D11){
         vShader = "./Resources/Shaders/HLSL/Basic.frag";
         fShader = "./Resources/Shaders/HLSL/Basic.vert";
         vScreenShader = "./Resources/Shaders/HLSL/Screen.frag";
         fScreenShader = "./Resources/Shaders/HLSL/Screen.vert";
         shaderType = Syrius::SR_SHADER_CODE_HLSL;
     }
-    else if (api == Syrius::SR_API_OPENGL){
+    else if (api == SR_API_OPENGL){
         vShader = "./Resources/Shaders/GLSL/Basic.vert";
         fShader = "./Resources/Shaders/GLSL/Basic.frag";
         vScreenShader = "./Resources/Shaders/GLSL/Screen.vert";

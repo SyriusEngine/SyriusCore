@@ -28,7 +28,7 @@ namespace Syrius{
         return m_Type;
     }
 
-    SR_DATA_TYPE IndexBuffer::getDataType() const {
+    SR_TYPE IndexBuffer::getDataType() const {
         return m_DataType;
     }
 }
