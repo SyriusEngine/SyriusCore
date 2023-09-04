@@ -5,13 +5,19 @@
 
 namespace Syrius{
 
-    SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc, PlatformAPIWin32Impl* platformAPI):
+    uint32 SyriusWindowWin32Impl::m_WindowCount = 0;
+
+    SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc):
     SyriusWindow(desc),
     m_Hwnd(nullptr),
     m_Callback(0),
     m_Icon(nullptr),
-    m_CaptureMouseAndKeyboardEvents(true),
-    m_PlatformAPI(platformAPI) {
+    m_CaptureMouseAndKeyboardEvents(true) {
+        if (m_WindowCount == 0){
+            registerWindowClass();
+            setProcessDPIAwareness();
+        }
+
         DWORD winStyles = decodeWindowStyle(desc.style);
         DWORD exWinStyles = decodeExtendedWindowStyle(desc.style);
 
@@ -33,6 +39,7 @@ namespace Syrius{
                                  GetModuleHandleW(nullptr),
                                  this);
         if (m_Hwnd){
+            m_WindowCount++;
             ShowWindow(m_Hwnd, SW_SHOW);
             m_Open = true;
             m_Focused = true;
@@ -67,6 +74,11 @@ namespace Syrius{
     SyriusWindowWin32Impl::~SyriusWindowWin32Impl() {
         if (m_Hwnd){
             DestroyWindow(m_Hwnd);
+            m_Hwnd = nullptr;
+            m_WindowCount--;
+        }
+        if (m_WindowCount == 0){
+            unregisterWindowClass();
         }
     }
 
@@ -240,8 +252,12 @@ namespace Syrius{
 
     void SyriusWindowWin32Impl::centerWindow() {
         if (!m_Fullscreen){
-            auto posX = static_cast<int32>((m_PlatformAPI->getPrimaryScreenWidth() - m_Width) / 2);
-            auto posY = static_cast<int32>((m_PlatformAPI->getPrimaryScreenHeight() - m_Height) / 2);
+            HDC screenDC = GetDC(nullptr);
+            uint32 width = GetDeviceCaps(screenDC, HORZRES);
+            uint32 height = GetDeviceCaps(screenDC, VERTRES);
+            ReleaseDC(nullptr, screenDC);
+            auto posX = static_cast<int32>((width - m_Width) / 2);
+            auto posY = static_cast<int32>((height - m_Height) / 2);
             setPosition(posX, posY);
         }
     }
@@ -298,11 +314,8 @@ namespace Syrius{
         }
         switch (desc.api) {
             case SR_API_OPENGL:
-                m_Context = Resource<Context>(new WglContext(m_Hwnd, desc, m_PlatformAPI));
+                m_Context = Resource<Context>(new WglContext(m_Hwnd, desc));
                 break;
-//            case SR_API_VULKAN:
-//                m_Context = new VulkanContextWin32(m_Hwnd, desc);
-//                return m_Context;
             case SR_API_D3D11:
                 m_Context = Resource<Context>(new D3D11Context(m_Hwnd, desc));
                 break;
@@ -624,6 +637,68 @@ namespace Syrius{
         mouseEvent.hwndTrack = m_Hwnd;
         mouseEvent.dwHoverTime = HOVER_DEFAULT;
         TrackMouseEvent(&mouseEvent);
+    }
+
+    void SyriusWindowWin32Impl::registerWindowClass() {
+        WNDCLASSEXW wndClass;
+        wndClass.cbSize = sizeof(WNDCLASSEXW);
+        wndClass.style = 0;
+        wndClass.lpfnWndProc = &SyriusWindowWin32Impl::windowEventProc;
+        wndClass.cbClsExtra = 0;
+        wndClass.cbWndExtra = 0;
+        wndClass.hInstance = GetModuleHandleW(nullptr);
+        wndClass.hIcon = nullptr;
+        wndClass.hCursor = nullptr;
+        wndClass.hbrBackground = 0;
+        wndClass.lpszMenuName = L"SYRIUS_CORE";
+        wndClass.lpszClassName = s_SyriusWindowClass;
+        wndClass.hIconSm = nullptr;
+
+        RegisterClassExW(&wndClass);
+
+        SR_CORE_HRESULT(GetLastError());
+    }
+
+    void SyriusWindowWin32Impl::unregisterWindowClass() {
+        UnregisterClassW(s_SyriusWindowClass, GetModuleHandleW(nullptr));
+    }
+
+    void SyriusWindowWin32Impl::setProcessDPIAwareness() {
+        HINSTANCE shCoreDll = LoadLibraryW(L"Shcore.dll");
+        if (shCoreDll){
+            enum ProcessDpiAwareness
+            {
+                ProcessDpiUnaware         = 0,
+                ProcessSystemDpiAware     = 1,
+                ProcessPerMonitorDpiAware = 2
+            };
+            typedef HRESULT (WINAPI* SetProcessDpiAwarenessFuncType)(ProcessDpiAwareness);
+            auto setProcessDpiAwarenessFunc = reinterpret_cast<SetProcessDpiAwarenessFuncType>(GetProcAddress(shCoreDll, "SetProcessDpiAwareness"));
+            if (setProcessDpiAwarenessFunc){
+                if (setProcessDpiAwarenessFunc(ProcessSystemDpiAware) == E_INVALIDARG){
+                    SR_CORE_WARNING("Failed to set process DPI awareness using shCore.dll libary, falling back on user32.dll");
+                }
+                else{
+                    FreeLibrary(shCoreDll);
+                    return;
+                }
+            }
+            FreeLibrary(shCoreDll);
+
+        }
+        // when setting DPI awareness using shcore.dll failed, fall back and use user32.dll and try again
+        HINSTANCE user32Dll = LoadLibraryW(L"user32.dll");
+        if (user32Dll){
+            typedef BOOL (WINAPI* SetProcessDPIAwareFuncType)(void);
+            auto setProcessDPIAwareFunc = reinterpret_cast<SetProcessDPIAwareFuncType>(GetProcAddress(user32Dll, "SetProcessDPIAware"));
+            if (setProcessDPIAwareFunc){
+                if (!setProcessDPIAwareFunc()){
+                    SR_CORE_WARNING("Failed to set process DPI awareness");
+                }
+            }
+            FreeLibrary(user32Dll);
+
+        }
     }
 
 }

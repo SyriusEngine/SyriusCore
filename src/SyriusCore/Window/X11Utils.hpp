@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../include/SyriusCore/Core/PlatformDetection.hpp"
-#include "../Core/DebugMacros.hpp"
+#include "../../../include/SyriusCore/Utils/PlatformDetection.hpp"
+#include "../Utils/DebugMacros.hpp"
 
 #include "../../../include/SyriusCore/Window/Event/KeyboardEvent.hpp"
 

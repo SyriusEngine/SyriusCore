@@ -1,7 +1,7 @@
 #pragma once
 
 #include <unordered_map>
-#include "../Core/SyriusCoreInclude.hpp"
+#include "SyriusCoreInclude.hpp"
 
 namespace Syrius{
 

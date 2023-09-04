@@ -1,5 +1,5 @@
-#include "../../../../include/SyriusCore/Context/Texture2D.hpp"
-#include "../Core/DebugMacros.hpp"
+#include "../../../include/SyriusCore/Context/Texture2D.hpp"
+#include "../Utils/DebugMacros.hpp"
 
 namespace Syrius{
 

@@ -9,13 +9,12 @@
 #include "../../../Dependencies/imgui/imgui_impl_win32.h"
 #include "../../../Dependencies/glad/glad/wgl.h"
 
-#include "../../../Core/PlatformAPIWin32Impl.hpp"
 
 namespace Syrius {
 
     class WglContext : public GlContext {
     public:
-        WglContext(HWND &hwnd, const ContextDesc& desc, PlatformAPIWin32Impl* platformAPI);
+        WglContext(HWND &hwnd, const ContextDesc& desc);
 
         ~WglContext() override;
 
@@ -42,9 +41,14 @@ namespace Syrius {
 
         void loadExtensions();
 
-    private:
+        void initWGL();
 
-        PlatformAPIWin32Impl* m_PlatformAPIWin32;
+        void terminateWGL();
+
+    private:
+        static uint32 m_ContextCount;
+
+        uint32 m_WGLVersion;
 
         PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = NULL;
         PFNWGLGETSWAPINTERVALEXTPROC wglGetSwapIntervalEXT = NULL;

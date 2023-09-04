@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../../../include/SyriusCore/Core/SyriusCoreInclude.hpp"
+#include "../../../include/SyriusCore/Utils/SyriusCoreInclude.hpp"
 #include "../../../include/SyriusCore/Utils/Image.hpp"
 
 #include "../Dependencies/stb_image/stb_image.hpp"
 #include "../Dependencies/stb_image/stb_image_resize.hpp"
 #include "../Dependencies/stb_image/stb_image_write.hpp"
 
-#include "../Core/DebugMacros.hpp"
+#include "DebugMacros.hpp"
 
 namespace Syrius{
 

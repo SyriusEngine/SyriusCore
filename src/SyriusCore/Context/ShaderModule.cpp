@@ -1,5 +1,5 @@
 #include "../../../include/SyriusCore/Context/ShaderModule.hpp"
-#include "../Core/DebugMacros.hpp"
+#include "../Utils/DebugMacros.hpp"
 
 namespace Syrius{
 

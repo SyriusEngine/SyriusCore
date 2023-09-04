@@ -4,11 +4,11 @@ namespace Syrius{
 
     // keep track of with gl context is currently active
     uint64 GlContext::m_ActiveContextID = 0;
+    uint32 GlContext::m_ContextCount = 0;
 
-    GlContext::GlContext(const ContextDesc& desc, PlatformAPI* platformAPI):
+    GlContext::GlContext(const ContextDesc& desc):
     Context(desc),
-    m_ID(generateID()),
-    m_PlatformAPI(platformAPI) {
+    m_ID(generateID()){
         m_ActiveContextID = m_ID;
     }
 
@@ -33,24 +33,7 @@ namespace Syrius{
         clearVec(m_FrameBuffers);
         clearVec(m_FrameBufferDescriptions);
 
-        m_PlatformAPI->terminateGlad();
-    }
-
-    void GlContext::initGl(const ContextDesc& desc) {
-        m_PlatformAPI->initGlad();
-
-        auto defaultFbDesc = createFrameBufferDescription();
-        ViewportDesc viewportDesc;
-        viewportDesc.width = desc.backBufferWidth;
-        viewportDesc.height = desc.backBufferHeight;
-        defaultFbDesc->addViewportDesc(viewportDesc);
-        ColorAttachmentDesc colorAttachmentDesc;
-        colorAttachmentDesc.width = desc.backBufferWidth;
-        colorAttachmentDesc.height = desc.backBufferHeight;
-        defaultFbDesc->addColorAttachmentDesc(colorAttachmentDesc);
-
-        auto ptr = new GlDefaultFrameBuffer(defaultFbDesc);
-        m_FrameBuffers.emplace_back(ptr);
+        terminateGlad();
     }
 
     std::string GlContext::getAPIVersion() {
@@ -201,5 +184,60 @@ namespace Syrius{
         return m_FrameBuffers.back().createView();
     }
 
+    void GlContext::initGl(const ContextDesc& desc) {
+        initGlad();
+
+        auto defaultFbDesc = createFrameBufferDescription();
+        ViewportDesc viewportDesc;
+        viewportDesc.width = desc.backBufferWidth;
+        viewportDesc.height = desc.backBufferHeight;
+        defaultFbDesc->addViewportDesc(viewportDesc);
+        ColorAttachmentDesc colorAttachmentDesc;
+        colorAttachmentDesc.width = desc.backBufferWidth;
+        colorAttachmentDesc.height = desc.backBufferHeight;
+        defaultFbDesc->addColorAttachmentDesc(colorAttachmentDesc);
+
+        auto ptr = new GlDefaultFrameBuffer(defaultFbDesc);
+        m_FrameBuffers.emplace_back(ptr);
+    }
+
+    void GlContext::terminateGl() {
+        terminateGlad();
+    }
+
+    void GlContext::initGlad() {
+        if (m_ContextCount == 0) {
+            int32 version = gladLoaderLoadGL();
+#if defined(SR_CORE_DEBUG)
+            if (version > 0){
+                int32 major = GLAD_VERSION_MAJOR(version);
+                int32 minor = GLAD_VERSION_MINOR(version);
+                SR_CORE_MESSAGE("OpenGL initialized with version: %i.%i", major, minor)
+                if (major < 4 || (major == 4 && minor < 5)){
+                    SR_CORE_WARNING("Supported OpenGL version is 4.5. Some features may not be available with version  %i.%i", major, minor)
+                }
+                glEnable(GL_DEBUG_OUTPUT);
+                glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+#if defined(SR_COMPILER_MSVC)
+                auto func = (GLDEBUGPROC) DebugMessageHandler::pushOpenGLMessageCallback;
+                glDebugMessageCallback(func, nullptr);
+#else
+                glDebugMessageCallback(DebugMessageHandler::pushOpenGLMessageCallback, nullptr);
+#endif
+            }
+            else {
+                SR_CORE_EXCEPTION("Failed to initialize OpenGL");
+            }
+#endif
+        }
+        m_ContextCount++;
+    }
+
+    void GlContext::terminateGlad() {
+        m_ContextCount--;
+        if (m_ContextCount == 0) {
+            gladLoaderUnloadGL();
+        }
+    }
 }
 

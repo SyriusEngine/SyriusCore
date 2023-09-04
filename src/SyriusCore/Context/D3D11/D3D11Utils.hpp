@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../../../../include/SyriusCore/Context/Utils.hpp"
-#include "../../Core/PlatformInclude.hpp"
-#include "../../Core/DebugMacros.hpp"
+#include "../../Utils/PlatformInclude.hpp"
+#include "../../Utils/DebugMacros.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 

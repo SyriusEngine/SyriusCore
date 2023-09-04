@@ -1,18 +1,18 @@
 #include "WglContext.hpp"
-#include "../../../Core/CoreCommand.hpp"
-#include "../../../Core/PlatformAPIWin32Impl.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
 
-    WglContext::WglContext(HWND &hwnd, const ContextDesc& desc, PlatformAPIWin32Impl* platformAPI):
-    GlContext(desc, platformAPI),
+    uint32 WglContext::m_ContextCount = 0;
+
+    WglContext::WglContext(HWND &hwnd, const ContextDesc& desc):
+    GlContext(desc),
     m_Hwnd(hwnd),
     m_Context(nullptr),
     m_HardwareDeviceContext(nullptr),
     m_ImGuiContext(nullptr),
-    m_PlatformAPIWin32(platformAPI){
+    m_WGLVersion(0){
         m_HardwareDeviceContext = GetDC(m_Hwnd);
 
         uint8_t pixelType = desc.redBits + desc.greenBits + desc.blueBits + desc.alphaBits;
@@ -54,26 +54,26 @@ namespace Syrius{
         HGLRC tempContext = wglCreateContext(m_HardwareDeviceContext);
         wglMakeCurrent(m_HardwareDeviceContext, tempContext);
 
-        m_PlatformAPIWin32->initPlatformGlad(m_HardwareDeviceContext);
+        initWGL();
 
         if (wglCreateContextAttribsARB != nullptr){
             // create the actual context
             const int attribList[] =
-                    {
-                            WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
-                            WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
-                            WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
+                {
+                    WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
+                    WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
+                    WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
 #if defined(SR_CORE_DEBUG)
-                            WGL_CONTEXT_DEBUG_BIT_ARB,		GL_TRUE,
+                    WGL_CONTEXT_DEBUG_BIT_ARB,		GL_TRUE,
 #else
-                            WGL_CONTEXT_DEBUG_BIT_ARB,		GL_FALSE,
+                    WGL_CONTEXT_DEBUG_BIT_ARB,		GL_FALSE,
 #endif
-                            WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
-                            WGL_COLOR_BITS_ARB, pixelType,
-                            WGL_DEPTH_BITS_ARB, desc.depthBits,
-                            WGL_STENCIL_BITS_ARB, desc.stencilBits,
-                            0, // End
-                    };
+                    WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
+                    WGL_COLOR_BITS_ARB, pixelType,
+                    WGL_DEPTH_BITS_ARB, desc.depthBits,
+                    WGL_STENCIL_BITS_ARB, desc.stencilBits,
+                    0, // End
+                };
 
             int pixelFormat;
             UINT numFormats;
@@ -116,7 +116,7 @@ namespace Syrius{
         }
 
         wglDeleteContext(m_Context);
-        m_PlatformAPI->terminatePlatformGlad();
+        terminateWGL();
     }
 
     void WglContext::makeCurrent() {
@@ -141,7 +141,7 @@ namespace Syrius{
         ImGui::CreateContext();
         ImGui::StyleColorsDark();
         ImGui_ImplWin32_Init(m_Hwnd);
-        m_PlatformAPI->initGlad();
+        initGlad();
         ImGui_ImplOpenGL3_Init("#version 150");
 
         m_ImGuiContext = ImGui::GetCurrentContext();
@@ -154,7 +154,7 @@ namespace Syrius{
 
         ImGui::SetCurrentContext(m_ImGuiContext);
         ImGui_ImplOpenGL3_Shutdown();
-        m_PlatformAPI->terminateGlad();
+        terminateGlad();
         ImGui_ImplWin32_Shutdown();
         ImGui::DestroyContext();
 
@@ -207,6 +207,23 @@ namespace Syrius{
         size.m_Width = area.right;
         size.m_Height = area.bottom;
         return size;
+    }
+
+    void WglContext::initWGL() {
+        if (m_ContextCount == 0){
+            m_WGLVersion = gladLoaderLoadWGL(m_HardwareDeviceContext);
+            SR_CORE_ASSERT(m_WGLVersion > 0, "Failed to initialize WGL");
+            SR_CORE_MESSAGE("Initialized WGL version: %i", m_WGLVersion);
+        }
+        m_ContextCount++;
+
+    }
+
+    void WglContext::terminateWGL() {
+        m_ContextCount--;
+        if (m_ContextCount == 0){
+//            gladLoaderUnloadWGL(); TODO: fix this
+        }
     }
 
 }

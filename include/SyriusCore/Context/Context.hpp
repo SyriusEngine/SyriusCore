@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Core/SyriusCoreInclude.hpp"
+#include "../Utils/SyriusCoreInclude.hpp"
 #include "../Utils/Resource.hpp"
 #include "ShaderModule.hpp"
 #include "Shader.hpp"

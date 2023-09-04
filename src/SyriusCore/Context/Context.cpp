@@ -1,5 +1,5 @@
 #include "../../../include/SyriusCore/Context/Context.hpp"
-#include "../Core/DebugMacros.hpp"
+#include "../Utils/DebugMacros.hpp"
 
 namespace Syrius{
 

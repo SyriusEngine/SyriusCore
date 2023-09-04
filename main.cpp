@@ -21,11 +21,9 @@ void messageCallback(const Syrius::Message& msg){
 
 int test(){
     try{
-        syriusCoreInit();
         setDebugMessageCallback(messageCallback);
         testFramebuffer(SR_API_OPENGL);
         testFramebuffer(SR_API_D3D11);
-        syriusCoreTerminate();
     } catch (std::exception& e){
         std::cerr << e.what() << std::endl;
     } catch (...) {
@@ -42,7 +40,6 @@ int test(){
 int main() {
     try{
 
-        syriusCoreInit();
         setDebugMessageCallback(messageCallback);
 
         WindowDesc wDesc;
@@ -202,8 +199,6 @@ int main() {
     } catch (...) {
         std::cerr << "Unknown Error" << std::endl;
     }
-
-    syriusCoreTerminate();
 
     printf("Allocated Memory: %zu\n", getAllocatedMemory());
     printf("Freed Memory: %zu\n", getFreedMemory());

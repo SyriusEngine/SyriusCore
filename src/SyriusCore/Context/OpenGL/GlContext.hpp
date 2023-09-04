@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../../include/SyriusCore/Context/Context.hpp"
-#include "../../../../include/SyriusCore/Core/PlatformAPI.hpp"
+#include "../../../../include/SyriusCore/Utils/PlatformAPI.hpp"
 #include "GlShaderModule.hpp"
 #include "GlShader.hpp"
 #include "GlViewport.hpp"
@@ -73,16 +73,18 @@ namespace Syrius{
         ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferDescription>& desc) override;
 
     protected:
-        explicit GlContext(const ContextDesc& desc, PlatformAPI* platformAPI);
+        explicit GlContext(const ContextDesc& desc);
         
         void initGl(const ContextDesc& desc);
 
-    protected:
+        void terminateGl();
 
-        PlatformAPI* m_PlatformAPI;
+        void initGlad();
+
+        void terminateGlad();
 
     private:
-
+        static uint32 m_ContextCount;
         static uint64 m_ActiveContextID;
 
         uint64 m_ID;

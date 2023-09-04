@@ -1,5 +1,5 @@
 #include "Win32Utils.hpp"
-#include "../Core/DebugMacros.hpp"
+#include "../Utils/DebugMacros.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 

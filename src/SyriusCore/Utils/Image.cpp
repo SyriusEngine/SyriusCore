@@ -1,4 +1,4 @@
-#include "../../../../include/SyriusCore/Utils/Image.hpp"
+#include "../../../include/SyriusCore/Utils/Image.hpp"
 #include "ImageDataF32.hpp"
 #include "ImageDataUI8.hpp"
 

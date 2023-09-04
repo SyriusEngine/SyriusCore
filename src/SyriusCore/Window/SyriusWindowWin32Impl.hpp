@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../../../../include/SyriusCore/Window/SyriusWindow.hpp"
-#include "../Core/PlatformAPIWin32Impl.hpp"
+#include "../../../include/SyriusCore/Window/SyriusWindow.hpp"
 #include "../Context/D3D11/D3D11Context.hpp"
 
 #include "Win32Utils.hpp"
@@ -17,9 +16,11 @@ namespace Syrius{
         RECT m_Rect;
     };
 
+    static const wchar_t* s_SyriusWindowClass = L"SYRIUS_CORE_API";
+
     class SyriusWindowWin32Impl: public SyriusWindow{
     public:
-        explicit SyriusWindowWin32Impl(const WindowDesc& desc, PlatformAPIWin32Impl* platformAPI);
+        explicit SyriusWindowWin32Impl(const WindowDesc& desc);
 
         SyriusWindowWin32Impl(const SyriusWindowWin32Impl&) = delete;
 
@@ -83,12 +84,14 @@ namespace Syrius{
 
         void mouseTracker(bool enableTracking);
 
-    private:
+        void registerWindowClass();
 
-        friend class PlatformAPIWin32Impl; // needed to access windowEventProc function when creating the WNDCLASS structure
+        void unregisterWindowClass();
+
+        void setProcessDPIAwareness();
 
     private:
-        PlatformAPIWin32Impl* m_PlatformAPI;
+        static uint32 m_WindowCount;
 
         HWND m_Hwnd;
         LONG_PTR m_Callback;

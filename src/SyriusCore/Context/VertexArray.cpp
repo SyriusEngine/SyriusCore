@@ -1,5 +1,5 @@
-#include "../../../../include/SyriusCore/Context/VertexArray.hpp"
-#include "../Core/DebugMacros.hpp"
+#include "../../../include/SyriusCore/Context/VertexArray.hpp"
+#include "../Utils/DebugMacros.hpp"
 
 namespace Syrius{
 

@@ -1,5 +1,5 @@
-#include "../../../../include/SyriusCore/Context/DepthStencilAttachment.hpp"
-#include "../Core/DebugMacros.hpp"
+#include "../../../include/SyriusCore/Context/DepthStencilAttachment.hpp"
+#include "../Utils/DebugMacros.hpp"
 
 namespace Syrius{
 

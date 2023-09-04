@@ -1,5 +1,5 @@
-#include "../../../../include/SyriusCore/Context/FrameBuffer.hpp"
-#include "../Core/DebugMacros.hpp"
+#include "../../../include/SyriusCore/Context/FrameBuffer.hpp"
+#include "../Utils/DebugMacros.hpp"
 
 namespace Syrius{
 

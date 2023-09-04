@@ -9,28 +9,26 @@
 
 #include "../Context/Context.hpp"
 
+typedef enum SR_WINDOW_STYLE {
+    SR_WINDOW_STYLE_POPUP       = 0x01,   // 0000 0001
+    SR_WINDOW_STYLE_TITLEBAR    = 0x02,    // 0000 0010
+    SR_WINDOW_STYLE_RESIZE      = 0x04,    // 0000 0100
+    SR_WINDOW_STYLE_CLOSE       = 0x08,    // 0000 1000
+    SR_WINDOW_STYLE_FILE_DROP   = 0x10,    // 0001 0000
+    SR_WINDOW_STYLE_SUNKEN_EDGE = 0x20,    // 0010 0000
+    SR_WINDOW_STYLE_RAISED_EDGE = 0x40,    // 0100 0000
+    SR_WINDOW_STYLE_DEFAULT     = 0x1e    // 0001 1110
+
+} SR_WINDOW_STYLE;
+
+typedef enum SR_WIDOW_ICON {
+    SR_WINDOW_ICON_NONE     = 0x00,
+    SR_WINDOW_ICON_SMALL    = 0x01,
+    SR_WINDOW_ICON_BIG      = 0x02
+
+} SR_WINDOW_ICON;
+
 namespace Syrius{
-
-    class CoreCommand;
-
-    typedef enum SR_WINDOW_STYLE {
-        SR_WINDOW_STYLE_POPUP       = 0x01,   // 0000 0001
-        SR_WINDOW_STYLE_TITLEBAR    = 0x02,    // 0000 0010
-        SR_WINDOW_STYLE_RESIZE      = 0x04,    // 0000 0100
-        SR_WINDOW_STYLE_CLOSE       = 0x08,    // 0000 1000
-        SR_WINDOW_STYLE_FILE_DROP   = 0x10,    // 0001 0000
-        SR_WINDOW_STYLE_SUNKEN_EDGE = 0x20,    // 0010 0000
-        SR_WINDOW_STYLE_RAISED_EDGE = 0x40,    // 0100 0000
-        SR_WINDOW_STYLE_DEFAULT     = 0x1e    // 0001 1110
-
-    } SR_WINDOW_STYLE;
-
-    typedef enum SR_WIDOW_ICON {
-        SR_WINDOW_ICON_NONE     = 0x00,
-        SR_WINDOW_ICON_SMALL    = 0x01,
-        SR_WINDOW_ICON_BIG      = 0x02
-
-    } SR_WINDOW_ICON;
 
     struct WindowDesc{
         int32 xPos            = 200;
