@@ -11,52 +11,11 @@ namespace Syrius {
     m_ColorBuffer(nullptr),
     m_RenderTargetView(nullptr),
     m_BufferView(nullptr) {
-
-        SR_CHANNEL_FORMAT sF = getTextureFormat(desc.format);
-        auto channelCount = getTextureChannelCount(sF);
-
-        D3D11_TEXTURE2D_DESC textureDesc = {0};
-        textureDesc.Width = desc.width;
-        textureDesc.Height = desc.height;
-        textureDesc.MipLevels = 1;
-        textureDesc.ArraySize = 1;
-        textureDesc.Format = getFormat(channelCount);
-        textureDesc.SampleDesc.Quality = 0;
-        textureDesc.SampleDesc.Count = 1;
-        textureDesc.Usage = D3D11_USAGE_DEFAULT;
-        textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-        textureDesc.CPUAccessFlags = 0;
-        textureDesc.MiscFlags = 0;
-
-        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_ColorBuffer));
-
-        D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc = {};
-        renderTargetViewDesc.Format = textureDesc.Format;
-        renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-        renderTargetViewDesc.Texture2D.MipSlice = 0;
-
-        SR_CORE_D3D11_CALL(m_Device->CreateRenderTargetView(m_ColorBuffer, &renderTargetViewDesc, &m_RenderTargetView));
-
-        D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc = {};
-        textureViewDesc.Format = textureDesc.Format;
-        textureViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-        textureViewDesc.Texture2D.MipLevels = 1;
-        textureViewDesc.Texture2D.MostDetailedMip = 0;
-
-        SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_ColorBuffer, &textureViewDesc, &m_BufferView));
-
+        createResources(desc.width, desc.height);
     }
 
     D3D11ColorAttachment::~D3D11ColorAttachment() {
-        if (m_BufferView) {
-            m_BufferView->Release();
-        }
-        if (m_RenderTargetView) {
-            m_RenderTargetView->Release();
-        }
-        if (m_ColorBuffer) {
-            m_ColorBuffer->Release();
-        }
+        destroyResources();
     }
 
     void D3D11ColorAttachment::bind() {
@@ -72,29 +31,10 @@ namespace Syrius {
     }
 
     void D3D11ColorAttachment::setSize(uint32 width, uint32 height) {
+        destroyResources();
         m_Width = width;
         m_Height = height;
-        if (m_ColorBuffer) {
-            m_ColorBuffer->Release();
-        }
-
-        SR_CHANNEL_FORMAT sF = getTextureFormat(m_Format);
-        auto channelCount = getTextureChannelCount(sF);
-
-        D3D11_TEXTURE2D_DESC textureDesc = {0};
-        textureDesc.Width = m_Width;
-        textureDesc.Height = m_Height;
-        textureDesc.MipLevels = 1;
-        textureDesc.ArraySize = 1;
-        textureDesc.Format = getFormat(channelCount);
-        textureDesc.SampleDesc.Quality = 0;
-        textureDesc.SampleDesc.Count = 1;
-        textureDesc.Usage = D3D11_USAGE_DEFAULT;
-        textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-        textureDesc.CPUAccessFlags = 0;
-        textureDesc.MiscFlags = 0;
-
-        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_ColorBuffer));
+        createResources(width, height);
     }
 
     Resource<Image> D3D11ColorAttachment::getData() {
@@ -142,6 +82,54 @@ namespace Syrius {
                 SR_CORE_WARNING("Unknown channel count: " + std::to_string(channelCount));
                 return DXGI_FORMAT_R8G8B8A8_UNORM;
             }
+        }
+    }
+
+    void  D3D11ColorAttachment::createResources(uint32 width, uint32 height){
+        SR_CHANNEL_FORMAT sF = getTextureFormat(m_Format);
+        auto channelCount = getTextureChannelCount(sF);
+
+        D3D11_TEXTURE2D_DESC textureDesc = {0};
+        textureDesc.Width = width;
+        textureDesc.Height = height;
+        textureDesc.MipLevels = 1;
+        textureDesc.ArraySize = 1;
+        textureDesc.Format = getFormat(channelCount);
+        textureDesc.SampleDesc.Quality = 0;
+        textureDesc.SampleDesc.Count = 1;
+        textureDesc.Usage = D3D11_USAGE_DEFAULT;
+        textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+        textureDesc.CPUAccessFlags = 0;
+        textureDesc.MiscFlags = 0;
+
+        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_ColorBuffer));
+
+        D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc = {};
+        renderTargetViewDesc.Format = textureDesc.Format;
+        renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+        renderTargetViewDesc.Texture2D.MipSlice = 0;
+
+        SR_CORE_D3D11_CALL(m_Device->CreateRenderTargetView(m_ColorBuffer, &renderTargetViewDesc, &m_RenderTargetView));
+
+        D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc = {};
+        textureViewDesc.Format = textureDesc.Format;
+        textureViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+        textureViewDesc.Texture2D.MipLevels = 1;
+        textureViewDesc.Texture2D.MostDetailedMip = 0;
+
+        SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_ColorBuffer, &textureViewDesc, &m_BufferView));
+
+    }
+
+    void  D3D11ColorAttachment::destroyResources(){
+        if (m_BufferView) {
+            m_BufferView->Release();
+        }
+        if (m_RenderTargetView) {
+            m_RenderTargetView->Release();
+        }
+        if (m_ColorBuffer) {
+            m_ColorBuffer->Release();
         }
     }
 

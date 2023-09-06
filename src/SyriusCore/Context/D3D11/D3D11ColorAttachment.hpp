@@ -29,6 +29,12 @@ namespace Syrius{
 
     private:
 
+        void createResources(uint32 width, uint32 height);
+
+        void destroyResources();
+
+    private:
+
         DXGI_FORMAT getFormat(uint32 channelCount);
 
     private:

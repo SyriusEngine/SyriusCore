@@ -42,9 +42,7 @@ namespace Syrius{
     void Context::onResize(uint32 width, uint32 height) {
         m_Width = width;
         m_Height = height;
-        for (auto& frameBuffer : m_FrameBuffers){
-            frameBuffer->onResize(width, height);
-        }
+        m_FrameBuffers[0]->onResize(width, height);
     }
 
     void Context::beginRenderPass(const ResourceView<FrameBuffer> &frameBuffer) {

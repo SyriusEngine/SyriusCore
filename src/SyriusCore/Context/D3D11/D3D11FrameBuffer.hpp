@@ -20,10 +20,13 @@ namespace Syrius{
 
         void unbind() override;
 
+        void onResize(uint32 width, uint32 height) override;
+
     private:
         ID3D11Device* m_Device;
         ID3D11DeviceContext* m_DeviceContext;
 
+        std::vector<D3D11ColorAttachment*> m_D3D11ColorAttachments;
         std::vector<ID3D11RenderTargetView*> m_RenderTargetViews;
         std::vector<ID3D11RenderTargetView*> m_NullableRenderTargetViews;
         std::vector<ID3D11ShaderResourceView*> m_NullableShaderResourceViews;

@@ -20,7 +20,7 @@ namespace Syrius{
 
         void clear();
 
-        void onResize(uint32 width, uint32 height);
+        virtual void onResize(uint32 width, uint32 height);
 
         ResourceView<Viewport> getViewport(uint32 index = 0);
 

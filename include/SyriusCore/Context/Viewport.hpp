@@ -44,6 +44,7 @@ namespace Syrius{
     private:
 
         friend class FrameBuffer;
+        friend class D3D11FrameBuffer;
 
         void onResize(uint32 width, uint32 height); // called by the framebuffer when its owning window is resized
 

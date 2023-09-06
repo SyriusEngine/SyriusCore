@@ -136,6 +136,8 @@ int main() {
                     window->close();
                 }
                 else if (event.type == Syrius::SR_EVENT_WINDOW_RESIZED){
+                    context->onResize(event.windowWidth, event.windowHeight);
+                    fb->onResize(event.windowWidth, event.windowHeight);
 
                 }
                 else if (event.type == Syrius::SR_EVENT_KEYBOARD_KEY_PRESSED){
@@ -152,7 +154,6 @@ int main() {
 
             context->beginRenderPass(fb);
 
-            shader.shaderProgram->bind();
             shader.shaderProgram->bind();
             sampler->bind(0);
             texture->bind(0);
