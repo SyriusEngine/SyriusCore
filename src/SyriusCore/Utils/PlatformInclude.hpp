@@ -36,6 +36,8 @@
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 
+#include <cstring>
+
 #endif
 
 namespace Syrius{

@@ -48,10 +48,6 @@ elseif(UNIX)
     set(IMGUI_PLATFORM_SRC
         )
 
-    set(SYRIUSCORE_CORE_PLATFORM_SRC
-        src/SyriusCore/Core/PlatformAPIX11Impl.cpp
-        )
-
     set(SYRIUSCORE_PLATFORM_WINDOW_SRC
         src/SyriusCore/Window/SyriusWindowX11Impl.cpp
         src/SyriusCore/Window/X11Utils.cpp)

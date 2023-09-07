@@ -4,12 +4,14 @@
 
 namespace Syrius{
 
-    GlxContext::GlxContext(Display *display, GLXFBConfig fbConfig, Window& window, const ContextDesc &desc, PlatformAPIX11Impl* platformAPI):
-    GlContext(desc, platformAPI),
+    uint32 GlxContext::m_ContextCount = 0;
+    int32 GlxContext::m_GlxVersion = 0;
+
+    GlxContext::GlxContext(Display *display, GLXFBConfig fbConfig, Window& window, const ContextDesc &desc):
+    GlContext(desc),
     m_Display(display),
-    m_Window(window),
-    m_PlatformAPIX11(platformAPI){
-        m_PlatformAPIX11->initPlatformGlad();
+    m_Window(window){
+        initGLX(display);
 
         int32 contextAttribs[] = {
             GLX_CONTEXT_MAJOR_VERSION_ARB, 4,
@@ -35,8 +37,7 @@ namespace Syrius{
     GlxContext::~GlxContext() {
         glXMakeContextCurrent(m_Display, None, None, nullptr);
         glXDestroyContext(m_Display, m_Context);
-
-        m_PlatformAPI->terminatePlatformGlad();
+        terminateGLX();
     }
 
     void GlxContext::makeCurrent() {
@@ -78,6 +79,22 @@ namespace Syrius{
 
     void GlxContext::onImGuiEnd() {
 
+    }
+
+    void GlxContext::initGLX(Display *display) {
+        if (m_ContextCount == 0){
+            m_GlxVersion = gladLoaderLoadGLX(display, DefaultScreen(display));
+            SR_CORE_ASSERT(m_GlxVersion > 0, "Failed to initialize GLX");
+            SR_CORE_MESSAGE("GLX initialized with version : %i.%i", GLAD_VERSION_MAJOR(m_GlxVersion), GLAD_VERSION_MINOR(m_GlxVersion));
+        }
+        m_ContextCount++;
+    }
+
+    void GlxContext::terminateGLX() {
+        m_ContextCount--;
+        if (m_ContextCount == 0){
+            gladLoaderUnloadGLX();
+        }
     }
 }
 

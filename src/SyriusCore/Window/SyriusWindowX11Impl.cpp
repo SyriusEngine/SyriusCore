@@ -4,12 +4,15 @@
 
 namespace Syrius{
 
-    SyriusWindowX11Impl::SyriusWindowX11Impl(const WindowDesc &desc, Display* display, PlatformAPIX11Impl* platformAPI): 
-    SyriusWindow(desc),
-    m_PlatformAPI(platformAPI),
-    m_Display(display){
+    uint32 SyriusWindowX11Impl::m_WindowCount = 0;
+    Display* SyriusWindowX11Impl::m_Display = nullptr;
+    Screen* SyriusWindowX11Impl::m_Screen = nullptr;
+
+    SyriusWindowX11Impl::SyriusWindowX11Impl(const WindowDesc &desc):
+    SyriusWindow(desc){
+        initDisplay();
         // by default, init GLX
-        m_PlatformAPI->initPlatformGlad();
+        GlxContext::initGLX(m_Display);
 
         XVisualInfo *visualInfo = selectBestVisual();
         XSetWindowAttributes attributes;
@@ -40,8 +43,9 @@ namespace Syrius{
     }
 
     SyriusWindowX11Impl::~SyriusWindowX11Impl() {
-        m_PlatformAPI->terminatePlatformGlad();
+        GlxContext::terminateGLX();
         XDestroyWindow(m_Display, m_Window);
+        terminateDisplay();
     }
 
     void SyriusWindowX11Impl::close() {
@@ -288,7 +292,7 @@ namespace Syrius{
         }
         switch (desc.api) {
             case SR_API_OPENGL:
-                m_Context = Resource<Context>(new GlxContext(m_Display, m_BestFBConfig, m_Window, desc, m_PlatformAPI));
+                m_Context = Resource<Context>(new GlxContext(m_Display, m_BestFBConfig, m_Window, desc));
                 break;
             default:
                 SR_CORE_WARNING("cannot create context: %i", desc.api);
@@ -399,12 +403,30 @@ namespace Syrius{
             hints.functions |= MWM_FUNC_CLOSE;
         }
 
-
-
-
         XChangeProperty(m_Display, m_Window, wmHints, wmHints, 32, PropModeReplace, (unsigned char *) &hints, 5);
 
     }
+
+    void SyriusWindowX11Impl::initDisplay() {
+        if (m_WindowCount == 0){
+            XSetErrorHandler(&DebugMessageHandler::x11ErrorHandler);
+            m_Display = XOpenDisplay(nullptr);
+            if (!m_Display) {
+                SR_CORE_EXCEPTION("Failed to open X11 display");
+                return;
+            }
+            m_Screen = DefaultScreenOfDisplay(m_Display);
+        }
+        m_WindowCount++;
+    }
+
+    void SyriusWindowX11Impl::terminateDisplay() {
+        m_WindowCount--;
+        if (m_WindowCount == 0){
+            XCloseDisplay(m_Display);
+        }
+    }
+
 }
 
 #endif
