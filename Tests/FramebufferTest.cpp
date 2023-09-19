@@ -92,13 +92,13 @@ void testFramebuffer(SR_SUPPORTED_API api){
         window->pollEvents();
         while (window->hasEvent()){
             auto event = window->getEvent();
-            if (event.type == Syrius::SR_EVENT_WINDOW_CLOSED){
+            if (event.type == SR_EVENT_WINDOW_CLOSED){
                 window->close();
             }
-            else if (event.type == Syrius::SR_EVENT_WINDOW_RESIZED){
+            else if (event.type == SR_EVENT_WINDOW_RESIZED){
 
             }
-            else if (event.type == Syrius::SR_EVENT_KEYBOARD_KEY_PRESSED){
+            else if (event.type == SR_EVENT_KEYBOARD_KEY_PRESSED){
                 if (event.keyCode == SR_KEY_F){
                     if (!window->isFullscreen()){
                         window->enableFullscreen();

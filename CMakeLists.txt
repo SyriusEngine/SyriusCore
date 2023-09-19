@@ -193,7 +193,13 @@ include_directories(/include/)
 include_directories(/glm/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(SyriusCoreDev main.cpp Driver.cpp Driver.hpp Tests/FramebufferTest.cpp Tests/FramebufferTest.hpp)
+set(SYRIUSCOREDEV_SRC
+        SyriusCoreDev/Driver.cpp
+        SyriusCoreDev/SyriusCoreDev.cpp
+        )
+
+add_executable(SyriusCoreDev main.cpp ${SYRIUSCOREDEV_SRC}
+        Tests/FramebufferTest.cpp )
 if (MSVC)
     target_link_libraries(SyriusCoreDev SyriusCore)
 else()
