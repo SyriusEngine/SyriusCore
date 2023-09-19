@@ -46,14 +46,14 @@ namespace Syrius{
 
     ResourceView<Viewport> FrameBuffer::getViewport(uint32 index) {
         SR_CORE_PRECONDITION(m_Viewports.size() > 0, "No viewport was added to the framebuffer");
-        SR_CORE_PRECONDITION(index < m_Viewports.size(), "Index out of bounds for viewport");
+        SR_CORE_PRECONDITION(index < m_Viewports.size(), "Index: %i is out of bounds for viewport", index);
 
         return m_Viewports[index].createView();
     }
 
     ResourceView<ColorAttachment> FrameBuffer::getColorAttachment(uint32 index) {
         SR_CORE_PRECONDITION(m_ColorAttachments.size() > 0, "No color attachment was added to the framebuffer");
-        SR_CORE_PRECONDITION(index < m_ColorAttachments.size(), "Index out of bounds for color attachment");
+        SR_CORE_PRECONDITION(index < m_ColorAttachments.size(), "Index: %i is out of bounds for color attachment", index);
 
         return m_ColorAttachments[index].createView();
     }

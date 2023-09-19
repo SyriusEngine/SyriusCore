@@ -9,7 +9,6 @@ namespace Syrius{
     m_Width(desc.backBufferWidth),
     m_Height(desc.backBufferHeight){
         SR_CORE_MESSAGE("Created context with backend: " + getAPIName(m_Type));
-
     }
 
     Context::~Context() {

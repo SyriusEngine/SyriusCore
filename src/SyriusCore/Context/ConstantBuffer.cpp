@@ -8,8 +8,8 @@ namespace Syrius{
     m_Size(desc.size),
     m_BindingIndex(desc.slot),
     m_Type(desc.type){
-        SR_CORE_PRECONDITION(desc.size > 0, "Constant buffer size must be greater than 0");
-        SR_CORE_PRECONDITION(desc.size % 16 == 0, "Constant buffer size must be a multiple of 16");
+        SR_CORE_PRECONDITION(desc.size > 0, "Size %i is not greater than 0", desc.size);
+        SR_CORE_PRECONDITION(desc.size % 16 == 0, "Constant buffer size must be aligned to 16 bytes, size: %i", desc.size);
         SR_CORE_PRECONDITION(desc.data != nullptr, "Constant buffer data must not be null");
         SR_CORE_PRECONDITION(!desc.name.empty(), "Constant buffer block name must not be empty");
     }
