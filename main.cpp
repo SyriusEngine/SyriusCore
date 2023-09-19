@@ -43,8 +43,8 @@ void run(){
 
     auto rect = createRectangle();
     auto screen = createRectangle();
-    auto shader = loadShader("./Resources/Shaders/HLSL/Basic.vert", "./Resources/Shaders/HLSL/Basic.frag", Syrius::SR_SHADER_CODE_HLSL, context);
-    auto screenShader = loadShader("./Resources/Shaders/HLSL/Screen.vert", "./Resources/Shaders/HLSL/Screen.frag", Syrius::SR_SHADER_CODE_HLSL, context);
+    auto shader = loadShader("./Resources/Shaders/HLSL/Basic.vert", "./Resources/Shaders/HLSL/Basic.frag", SR_SHADER_CODE_HLSL, context);
+    auto screenShader = loadShader("./Resources/Shaders/HLSL/Screen.vert", "./Resources/Shaders/HLSL/Screen.frag", SR_SHADER_CODE_HLSL, context);
     for (auto& v: rect.vertices){
         v.m_Position[0] += 0.5;
         if (v.m_TexCoords[0] == 1.0f){
@@ -70,8 +70,8 @@ void run(){
     auto logo = createImage("./Resources/Textures/insta.png");
 
     SamplerDesc splrDesc;
-    splrDesc.wrapU = Syrius::SR_TEXTURE_WRAP_MIRROR_REPEAT;
-    splrDesc.wrapV = Syrius::SR_TEXTURE_WRAP_MIRROR_REPEAT;
+    splrDesc.wrapU = SR_TEXTURE_WRAP_MIRROR_REPEAT;
+    splrDesc.wrapV = SR_TEXTURE_WRAP_MIRROR_REPEAT;
     auto sampler = context->createSampler(splrDesc);
 
     std::vector<ubyte> temp(512 * 1024 * 4);
@@ -89,7 +89,7 @@ void run(){
     ConstantBufferDesc cbDesc;
     cbDesc.size = sizeof(glm::mat4);
     cbDesc.data = &model[0];
-    cbDesc.type = Syrius::SR_BUFFER_DYNAMIC;
+    cbDesc.type = SR_BUFFER_DYNAMIC;
     cbDesc.name = "ModelMatrix";
     cbDesc.slot = 0;
     auto cb = context->createConstantBuffer(cbDesc);

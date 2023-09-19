@@ -11,14 +11,14 @@ void testFramebuffer(SR_SUPPORTED_API api){
         fShader = "./Resources/Shaders/HLSL/Basic.vert";
         vScreenShader = "./Resources/Shaders/HLSL/Screen.frag";
         fScreenShader = "./Resources/Shaders/HLSL/Screen.vert";
-        shaderType = Syrius::SR_SHADER_CODE_HLSL;
+        shaderType = SR_SHADER_CODE_HLSL;
     }
     else if (api == SR_API_OPENGL){
         vShader = "./Resources/Shaders/GLSL/Basic.vert";
         fShader = "./Resources/Shaders/GLSL/Basic.frag";
         vScreenShader = "./Resources/Shaders/GLSL/Screen.vert";
         fScreenShader = "./Resources/Shaders/GLSL/Screen.frag";
-        shaderType = Syrius::SR_SHADER_CODE_GLSL;
+        shaderType = SR_SHADER_CODE_GLSL;
     }
     WindowDesc wDesc;
     wDesc.xPos = 200;
@@ -65,7 +65,7 @@ void testFramebuffer(SR_SUPPORTED_API api){
     auto logo = createImage("./Resources/Textures/insta.png");
 
     SamplerDesc splrDesc;
-    splrDesc.wrapU = Syrius::SR_TEXTURE_WRAP_MIRROR_REPEAT;
+    splrDesc.wrapU = SR_TEXTURE_WRAP_MIRROR_REPEAT;
     auto sampler = context->createSampler(splrDesc);
 
     std::vector<ubyte> temp(512 * 1024 * 4);
