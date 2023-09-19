@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Include.hpp"
+#include "Utils.hpp"
 
 class SyriusCoreDev{
 public:
@@ -9,6 +9,10 @@ public:
     ~SyriusCoreDev();
 
     void run();
+
+private:
+
+    void processEvents();
 
 private:
     EasyIni::Configuration m_Config;

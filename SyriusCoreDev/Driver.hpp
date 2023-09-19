@@ -10,8 +10,6 @@
 
 using namespace Syrius;
 
-void eventDisplayer(const Event& event);
-
 struct Vertex{
     float m_Position[3];
     float m_TexCoords[2];

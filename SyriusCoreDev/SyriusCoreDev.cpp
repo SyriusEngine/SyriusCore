@@ -15,6 +15,10 @@ m_Config(iniFile){
     m_Context = m_Window->createContext(cDesc);
     m_Context->setVerticalSynchronisation(m_Config["Context"]["VerticalSync"].getOrDefault<bool>(true));
 
+    if (m_Config["Content"]["PrintContextInfo"].getOrDefault<bool>(true)){
+        printContextInfo(m_Context);
+    }
+
 }
 
 SyriusCoreDev::~SyriusCoreDev() {
@@ -23,15 +27,22 @@ SyriusCoreDev::~SyriusCoreDev() {
 
 void SyriusCoreDev::run() {
     while (m_Window->isOpen()){
-        m_Window->pollEvents();
-        while (m_Window->hasEvent()){
-            auto event = m_Window->getEvent();
-            if (event.type == SR_EVENT_WINDOW_CLOSED){
-                m_Window->close();
-            }
-        }
+       processEvents();
 
         m_Context->swapBuffers();
     }
 
+}
+
+void SyriusCoreDev::processEvents() {
+    m_Window->pollEvents();
+    while (m_Window->hasEvent()){
+        auto event = m_Window->getEvent();
+        if (m_Config["Window"]["PrintEventInfo"].getOrDefault<bool>(false)){
+            printEventInfo(event);
+        }
+        if (event.type == SR_EVENT_WINDOW_CLOSED){
+            m_Window->close();
+        }
+    }
 }
