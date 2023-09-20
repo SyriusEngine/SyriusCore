@@ -140,7 +140,7 @@ set(SYRIUSCORE_SRC
         ${SYRIUSCORE_UTILS_SRC}
         ${SYRIUSCORE_WINDOW_SRC}
         ${SYRIUSCORE_GRAPHICS_API_SRC}
-        src/SyriusCore/SyriusCore.cpp )
+        src/SyriusCore/SyriusCore.cpp)
 
 add_library(SyriusCore SHARED ${SYRIUSCORE_SRC})
 
@@ -199,6 +199,7 @@ set(SYRIUSCOREDEV_SRC
         SyriusCoreDev/Utils.cpp
         SyriusCoreDev/Camera.cpp
         SyriusCoreDev/Layer.cpp
+        TestLayers/BasicLayer.cpp
         AppLayer.cpp )
 
 add_executable(SyriusCoreDev main.cpp ${SYRIUSCOREDEV_SRC})

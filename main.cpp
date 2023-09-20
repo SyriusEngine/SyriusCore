@@ -1,15 +1,13 @@
-#include <iostream>
-
-
 #include "SyriusCoreDev/SyriusCoreDev.hpp"
 #include "AppLayer.hpp"
+#include "TestLayers/BasicLayer.hpp"
 
 
 int main(int argc, char** argv) {
     try {
         for (int i = 1; i < argc; ++i) {
             SyriusCoreDev dev(argv[i]);
-            dev.pushLayer<AppLayer>();
+            dev.pushLayer<BasicLayer>();
             dev.run();
         }
 

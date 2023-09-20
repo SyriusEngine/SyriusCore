@@ -11,12 +11,10 @@ namespace Syrius{
                 return "OpenGL";
             case SR_API_VULKAN:
                 return "Vulkan";
-#if defined(SR_CORE_PLATFORM_WIN64)
             case SR_API_D3D11:
                 return "DirectX 11";
             case SR_API_D3D12:
                 return "DirectX 12";
-#endif
             default:
                 return "Unknown";
         }

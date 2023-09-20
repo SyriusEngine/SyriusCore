@@ -16,7 +16,7 @@ m_Config(iniFile){
     m_Context = m_Window->createContext(cDesc);
     m_Context->setVerticalSynchronisation(m_Config["Context"]["VerticalSync"].getOrDefault<bool>(true));
 
-    if (m_Config["Content"]["PrintContextInfo"].getOrDefault<bool>(true)){
+    if (m_Config["Context"]["PrintContextInfo"].getOrDefault<bool>(true)){
         printContextInfo(m_Context);
     }
 }
