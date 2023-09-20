@@ -11,6 +11,8 @@ public:
 
     void update(const Event& event, float deltaTime);
 
+    void bind();
+
 private:
     float m_Sensitivity;
     float m_Speed;

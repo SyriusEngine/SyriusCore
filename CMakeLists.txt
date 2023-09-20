@@ -196,7 +196,7 @@ link_directories(${CMAKE_CURRENT_BINARY_DIR})
 set(SYRIUSCOREDEV_SRC
         SyriusCoreDev/Driver.cpp
         SyriusCoreDev/SyriusCoreDev.cpp
-        SyriusCoreDev/ShaderLibrary.cpp SyriusCoreDev/ShaderLibrary.hpp SyriusCoreDev/Utils.cpp SyriusCoreDev/Utils.hpp SyriusCoreDev/Camera.cpp SyriusCoreDev/Camera.hpp)
+        SyriusCoreDev/ShaderLibrary.cpp SyriusCoreDev/ShaderLibrary.hpp SyriusCoreDev/Utils.cpp SyriusCoreDev/Utils.hpp SyriusCoreDev/Camera.cpp SyriusCoreDev/Camera.hpp SyriusCoreDev/Layer.cpp SyriusCoreDev/Layer.hpp)
 
 add_executable(SyriusCoreDev main.cpp ${SYRIUSCOREDEV_SRC}
         Tests/FramebufferTest.cpp )

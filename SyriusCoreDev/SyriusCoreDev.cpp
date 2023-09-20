@@ -1,5 +1,6 @@
 #include "SyriusCoreDev.hpp"
 
+
 SyriusCoreDev::SyriusCoreDev(const std::string &iniFile):
 m_Config(iniFile){
     WindowDesc wDesc;
@@ -18,7 +19,6 @@ m_Config(iniFile){
     if (m_Config["Content"]["PrintContextInfo"].getOrDefault<bool>(true)){
         printContextInfo(m_Context);
     }
-
 }
 
 SyriusCoreDev::~SyriusCoreDev() {
@@ -29,9 +29,12 @@ void SyriusCoreDev::run() {
     while (m_Window->isOpen()){
        processEvents();
 
+       for (const auto& layer: m_Layers){
+           layer->onUpdate();
+       }
+
         m_Context->swapBuffers();
     }
-
 }
 
 void SyriusCoreDev::processEvents() {
@@ -43,6 +46,10 @@ void SyriusCoreDev::processEvents() {
         }
         if (event.type == SR_EVENT_WINDOW_CLOSED){
             m_Window->close();
+        }
+
+        for (const auto& layer: m_Layers) {
+            layer->onEvent(event);
         }
     }
 }

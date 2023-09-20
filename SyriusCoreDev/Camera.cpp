@@ -99,3 +99,8 @@ void Camera::update(const Event &event, float deltaTime) {
     m_ViewMat = glm::lookAt(m_Position, m_Position + m_Front, m_Up);
     m_CameraData->setData(&m_ViewMat);
 }
+
+void Camera::bind() {
+    m_CameraData->bind();
+
+}
