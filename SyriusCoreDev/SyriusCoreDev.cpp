@@ -22,6 +22,9 @@ m_Config(iniFile){
 }
 
 SyriusCoreDev::~SyriusCoreDev() {
+    for (auto& layer: m_Layers){
+        layer->onDetach();
+    }
     m_Config.save();
 }
 

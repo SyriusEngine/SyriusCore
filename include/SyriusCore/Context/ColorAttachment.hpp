@@ -39,7 +39,7 @@ namespace Syrius{
 
         [[nodiscard]] SR_TEXTURE_FORMAT getFormat() const;
 
-        [[nodiscard]] const float* getClearColor() const;
+        [[nodiscard]] float* getClearColor();
 
         [[nodiscard]] bool shaderReadEnabled() const;
 

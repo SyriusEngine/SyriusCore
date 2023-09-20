@@ -42,7 +42,7 @@ namespace Syrius{
         return m_Format;
     }
 
-    const float* ColorAttachment::getClearColor() const {
+    float* ColorAttachment::getClearColor(){
         return m_ClearColor;
     }
 

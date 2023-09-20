@@ -1,5 +1,51 @@
 #include "Utils.hpp"
 
+Mesh createRectangle(){
+    Mesh mesh;
+    mesh.vertices = {
+            {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}},
+            {{0.5f, -0.5f, 0.0f},  {1.0f, 0.0f}},
+            {{0.5f, 0.5f, 0.0f},   {1.0f, 1.0f}},
+            {{-0.5f, 0.5f, 0.0f},  {0.0f, 1.0f}}
+    };
+    mesh.indices = {
+            0, 3, 1,
+            3, 2, 1
+    };
+    return mesh;
+}
+
+#if defined(SR_COMPILER_MSVC)
+#define M_PI 3.14159265358979323846
+#define M_PI_2 1.57079632679489661923
+#endif
+
+Mesh createSphere(uint32 rings, uint32 sectors){
+    Mesh mesh;
+    float const R = 1.0f/(float)(rings-1);
+    float const S = 1.0f/(float)(sectors-1);
+    uint32 r, s;
+
+    for(r = 0; r < rings; r++) for(s = 0; s < sectors; s++) {
+            float const y = sin( -M_PI_2 + M_PI * r * R );
+            float const x = cos(2*M_PI * s * S) * sin( M_PI * r * R );
+            float const z = sin(2*M_PI * s * S) * sin( M_PI * r * R );
+
+            mesh.vertices.push_back({{x, y, z},  {s*S, r*R}});
+        }
+
+    for(r = 0; r < rings-1; r++) for(s = 0; s < sectors-1; s++) {
+            mesh.indices.push_back(r * sectors + s);
+            mesh.indices.push_back(r * sectors + (s+1));
+            mesh.indices.push_back((r+1) * sectors + (s+1));
+
+            mesh.indices.push_back(r * sectors + s);
+            mesh.indices.push_back((r+1) * sectors + (s+1));
+            mesh.indices.push_back((r+1) * sectors + s);
+        }
+    return mesh;
+}
+
 void printEventInfo(const Event& event){
     switch (event.type){
         case SR_EVENT_WINDOW_CLOSED:
