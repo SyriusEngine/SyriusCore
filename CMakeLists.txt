@@ -200,7 +200,7 @@ set(SYRIUSCOREDEV_SRC
         SyriusCoreDev/Camera.cpp
         SyriusCoreDev/Layer.cpp
         TestLayers/BasicLayer.cpp
-        AppLayer.cpp )
+        AppLayer.cpp SyriusCoreDev/Projection.cpp SyriusCoreDev/Projection.hpp)
 
 add_executable(SyriusCoreDev main.cpp ${SYRIUSCOREDEV_SRC})
 
