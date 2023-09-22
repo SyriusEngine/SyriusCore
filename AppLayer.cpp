@@ -4,7 +4,9 @@
 AppLayer::AppLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config):
 Layer(context, window, config),
 m_DeltaTime(0.0),
-m_LastFrameTime(0.0) {
+m_LastFrameTime(0.0),
+m_Camera(0.1f, 0.02f, context),
+m_Projection(context, window->getWidth(), window->getHeight()){
 
 }
 
@@ -19,21 +21,30 @@ void AppLayer::onUpdate() {
 }
 
 void AppLayer::onEvent(const Event &event) {
+    m_Camera.update(event, m_DeltaTime);
 
 }
 
 void AppLayer::onAttach() {
     m_Window->createImGuiContext();
 
-    auto rectangle = createRectangle();
-    m_ShaderProgram = m_ShaderLibrary.loadShader("Basic");
-    m_VertexArray = loadMesh(rectangle, m_ShaderProgram);
+    auto mesh = createCube();
+    m_ShaderProgram = m_ShaderLibrary.loadShader("Geometry", "Basic");
+    m_VertexArray = loadMesh(mesh, m_ShaderProgram);
 
     SamplerDesc samplerDesc;
     m_Sampler = m_Context->createSampler(samplerDesc);
     auto image = createImage("./Resources/Textures/awesomeface.png");
     Texture2DImageDesc t2dDesc(image);
     m_Texture = m_Context->createTexture2D(t2dDesc);
+
+    glm::mat4 model = glm::mat4(1.0f);
+    ConstantBufferDesc cbDesc;
+    cbDesc.size = sizeof(glm::mat4);
+    cbDesc.name = "ModelData";
+    cbDesc.data = &model;
+    cbDesc.slot = 2;
+    m_ModelDataBuffer = m_Context->createConstantBuffer(cbDesc);
 
 }
 
@@ -56,6 +67,9 @@ void AppLayer::render() {
     m_ShaderProgram.shaderProgram->bind();
     m_Sampler->bind(0);
     m_Texture->bind(0);
+    m_Camera.bind();
+    m_Projection.bind();
+    m_ModelDataBuffer->bind();
     m_Context->draw(m_VertexArray);
 
     m_Context->endRenderPass();

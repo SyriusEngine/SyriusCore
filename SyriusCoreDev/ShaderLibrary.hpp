@@ -8,7 +8,7 @@ public:
 
     ~ShaderLibrary();
 
-    ShaderProgram loadShader(const std::string& name);
+    ShaderProgram loadShader(const std::string& vertexShader, const std::string& fragmentShader = "");
 
 private:
     ResourceView<Context> m_Context;

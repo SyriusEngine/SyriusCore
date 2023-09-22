@@ -10,7 +10,11 @@ ShaderLibrary::~ShaderLibrary() {
 
 }
 
-ShaderProgram ShaderLibrary::loadShader(const std::string &name) {
+ShaderProgram ShaderLibrary::loadShader(const std::string& vertexShader, const std::string& fragmentShader) {
+    if (fragmentShader.empty()){
+        return loadShader(vertexShader, vertexShader);
+    }
+
     auto apiPath = m_LibraryPath;
     std::string extension;
     SR_SHADER_CODE_TYPE codeType;
@@ -36,7 +40,7 @@ ShaderProgram ShaderLibrary::loadShader(const std::string &name) {
     ShaderModuleDesc vsDesc;
     vsDesc.shaderType = SR_SHADER_VERTEX;
     vsDesc.codeType = codeType;
-    vsDesc.code = apiPath + name + "_vs" + extension;
+    vsDesc.code = apiPath + vertexShader + "_vs" + extension;
     vsDesc.loadType = SR_LOAD_FROM_FILE;
     vsDesc.entryPoint = "main";
     vsDesc.codeLength = 0;
@@ -45,7 +49,7 @@ ShaderProgram ShaderLibrary::loadShader(const std::string &name) {
     ShaderModuleDesc fsDesc;
     fsDesc.shaderType = SR_SHADER_FRAGMENT;
     fsDesc.codeType = codeType;
-    fsDesc.code = apiPath + name + "_fs" + extension;
+    fsDesc.code = apiPath + fragmentShader + "_fs" + extension;
     fsDesc.loadType = SR_LOAD_FROM_FILE;
     fsDesc.entryPoint = "main";
     fsDesc.codeLength = 0;

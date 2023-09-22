@@ -22,6 +22,8 @@ Mesh createRectangle();
 
 Mesh createSphere(uint32 rings, uint32 sectors);
 
+Mesh createCube();
+
 void printEventInfo(const Event& event);
 
 void printContextInfo(const ResourceView<Context>& context);

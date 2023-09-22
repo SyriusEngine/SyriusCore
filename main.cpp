@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
     try {
         for (int i = 1; i < argc; ++i) {
             SyriusCoreDev dev(argv[i]);
-            dev.pushLayer<BasicLayer>();
+            dev.pushLayer<AppLayer>();
             dev.run();
         }
 

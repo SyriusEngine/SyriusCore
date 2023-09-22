@@ -11,7 +11,7 @@ m_Context(context){
     desc.type = SR_BUFFER_DYNAMIC;
     desc.name = "ProjectionData";
     desc.data = &m_ProjectionData;
-    desc.slot = 1;
+    desc.slot = 0;
     m_Resource = m_Context->createConstantBuffer(desc);
 }
 
