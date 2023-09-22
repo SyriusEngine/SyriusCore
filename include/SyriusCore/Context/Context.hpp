@@ -30,6 +30,8 @@ namespace Syrius{
         uint8 alphaBits        = 8;
         uint32 backBufferWidth = 0; // if 0, will be set to window width
         uint32 backBufferHeight= 0; // if 0, will be set to window height
+        bool enableDepthTest   = false;
+        bool enableStencilTest = false;
         SR_SUPPORTED_API api   = SR_API_OPENGL;
     };
 

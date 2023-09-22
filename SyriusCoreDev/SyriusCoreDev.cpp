@@ -12,6 +12,7 @@ m_Config(iniFile){
 
     ContextDesc cDesc;
     cDesc.api = static_cast<SR_SUPPORTED_API>(m_Config["Context"]["API"].getOrDefault<uint32>(SR_API_OPENGL));
+    cDesc.enableDepthTest = m_Config["Context"]["EnableDepthTest"].getOrDefault<bool>(true);
 
     m_Context = m_Window->createContext(cDesc);
     m_Context->setVerticalSynchronisation(m_Config["Context"]["VerticalSync"].getOrDefault<bool>(true));

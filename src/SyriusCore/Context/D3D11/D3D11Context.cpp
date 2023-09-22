@@ -45,14 +45,26 @@ namespace Syrius{
 
 
         auto defaultFbDesc = createFrameBufferDescription();
+
         ViewportDesc viewportDesc;
         viewportDesc.width = desc.backBufferWidth;
         viewportDesc.height = desc.backBufferHeight;
         defaultFbDesc->addViewportDesc(viewportDesc);
+
         ColorAttachmentDesc colorAttachmentDesc;
         colorAttachmentDesc.width = desc.backBufferWidth;
         colorAttachmentDesc.height = desc.backBufferHeight;
         defaultFbDesc->addColorAttachmentDesc(colorAttachmentDesc);
+
+        if (desc.enableDepthTest or desc.enableStencilTest){
+            DepthStencilAttachmentDesc dsaDesc;
+            dsaDesc.width = desc.backBufferWidth;
+            dsaDesc.height = desc.backBufferHeight;
+            dsaDesc.enableDepthTest = desc.enableDepthTest;
+            dsaDesc.enableStencilTest = desc.enableStencilTest;
+            defaultFbDesc->addDepthStencilAttachmentDesc(dsaDesc);
+        }
+
         auto ptr = new D3D11DefaultFrameBuffer(defaultFbDesc, m_Device, m_DeviceContext, m_SwapChain);
         m_FrameBuffers.emplace_back(ptr);
 

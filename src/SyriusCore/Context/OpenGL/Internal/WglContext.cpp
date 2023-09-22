@@ -115,6 +115,7 @@ namespace Syrius{
             destroyImGuiContext();
         }
 
+        terminateGl();
         wglDeleteContext(m_Context);
         terminateWGL();
     }
