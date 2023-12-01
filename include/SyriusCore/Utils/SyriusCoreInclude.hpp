@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <deque>
+#include <cstdint>
 
 #define SR_DEFAULT_WIDTH 1280
 #define SR_DEFAULT_HEIGHT 720
