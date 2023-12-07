@@ -15,7 +15,7 @@ m_ViewMat(glm::mat4(1.0f)),
 m_Context(context){
     ConstantBufferDesc desc;
     desc.size = sizeof(glm::mat4);
-    desc.type = SR_BUFFER_DYNAMIC;
+    desc.usage = SR_BUFFER_USAGE_DYNAMIC;
     desc.data = &m_ViewMat;
     desc.name = "CameraData";
     desc.shaderStage = SR_SHADER_VERTEX;

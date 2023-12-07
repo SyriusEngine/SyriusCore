@@ -8,11 +8,11 @@ namespace Syrius{
     uint32 SyriusWindowWin32Impl::m_WindowCount = 0;
 
     SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc):
-    SyriusWindow(desc),
-    m_Hwnd(nullptr),
-    m_Callback(0),
-    m_Icon(nullptr),
-    m_CaptureMouseAndKeyboardEvents(true) {
+            Window(desc),
+            m_Hwnd(nullptr),
+            m_Callback(0),
+            m_Icon(nullptr),
+            m_CaptureMouseAndKeyboardEvents(true) {
         if (m_WindowCount == 0){
             registerWindowClass();
             setProcessDPIAwareness();
@@ -44,7 +44,7 @@ namespace Syrius{
             m_Open = true;
             m_Focused = true;
 
-            // store a pointer to our SyriusWindow on the Win32 API side
+            // store a pointer to our Window on the Win32 API side
             SetWindowLongPtrW(m_Hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
             m_Callback = SetWindowLongPtrW(m_Hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&SyriusWindowWin32Impl::windowEventProc));
 

@@ -2,15 +2,15 @@
 
 #include "Utils.hpp"
 #include "../Utils/Resource.hpp"
-#include "VertexDescription.hpp"
+#include "VertexLayout.hpp"
 
 namespace Syrius{
 
     struct SR_CORE_API VertexBufferDesc{
         const void* data              = nullptr;
         uint32 count                  = 0;
-        SR_BUFFER_TYPE type           = SR_BUFFER_DEFAULT;
-        ResourceView<VertexDescription> layout;
+        SR_BUFFER_USAGE usage           = SR_BUFFER_USAGE_DEFAULT;
+        ResourceView<VertexLayout> layout;
     };
 
     class SR_CORE_API VertexBuffer{
@@ -29,15 +29,15 @@ namespace Syrius{
 
         [[nodiscard]] uint32 getCount() const;
 
-        [[nodiscard]] SR_BUFFER_TYPE getType() const;
+        [[nodiscard]] SR_BUFFER_USAGE getType() const;
 
-        [[nodiscard]] const ResourceView<VertexDescription>& getVertexDescription() const;
+        [[nodiscard]] const ResourceView<VertexLayout>& getVertexDescription() const;
 
     protected:
         uint32 m_Size;
         uint32 m_Count;
-        ResourceView<VertexDescription> m_Layout;
-        SR_BUFFER_TYPE m_Type;
+        ResourceView<VertexLayout> m_Layout;
+        SR_BUFFER_USAGE m_Type;
 
     };
 

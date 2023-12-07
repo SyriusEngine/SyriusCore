@@ -4,13 +4,13 @@
 
 namespace Syrius{
 
-    D3D11_USAGE getD3d11BufferType(SR_BUFFER_TYPE type){
+    D3D11_USAGE getD3d11BufferType(SR_BUFFER_USAGE type){
         switch (type){
-            case SR_BUFFER_DEFAULT:     return D3D11_USAGE_DEFAULT;
-            case SR_BUFFER_DYNAMIC:     return D3D11_USAGE_DYNAMIC;
-            case SR_BUFFER_STATIC:      return D3D11_USAGE_IMMUTABLE;
+            case SR_BUFFER_USAGE_DEFAULT:     return D3D11_USAGE_DEFAULT;
+            case SR_BUFFER_USAGE_DYNAMIC:     return D3D11_USAGE_DYNAMIC;
+            case SR_BUFFER_USAGE_STATIC:      return D3D11_USAGE_IMMUTABLE;
             default: {
-                SR_CORE_WARNING("Invalid type given to converter, return D3D11_USAGE_DEFAULT");
+                SR_CORE_WARNING("Invalid usage given to converter, return D3D11_USAGE_DEFAULT");
                 return D3D11_USAGE_DEFAULT;
             }
         }
@@ -27,7 +27,7 @@ namespace Syrius{
             case SR_FLOAT16:    return DXGI_FORMAT_R16_FLOAT;
             case SR_FLOAT32:    return DXGI_FORMAT_R32_FLOAT;;
             default: {
-                SR_CORE_WARNING("Invalid type given to converter, return DXGI_FORMAT_R32_FLOAT");
+                SR_CORE_WARNING("Invalid usage given to converter, return DXGI_FORMAT_R32_FLOAT");
                 return DXGI_FORMAT_R32_FLOAT;
             }
         }
@@ -102,7 +102,7 @@ namespace Syrius{
 //            case SR_FLOAT64_3X3:    break;
 //            case SR_FLOAT64_4X4:    break;
             default:{
-                SR_CORE_WARNING("Invalid type given to converter, note that D3D11 does not support most 3-component vectors or 64bit types");
+                SR_CORE_WARNING("Invalid usage given to converter, note that D3D11 does not support most 3-component vectors or 64bit types");
                 return DXGI_FORMAT_UNKNOWN;
             }
         }
@@ -116,7 +116,7 @@ namespace Syrius{
             case SR_DRAW_TRIANGLES:         return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
             case SR_DRAW_TRIANGLE_STRIP:    return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
             default: {
-                SR_CORE_WARNING("Invalid type given to converter, return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST");
+                SR_CORE_WARNING("Invalid usage given to converter, return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST");
                 return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
             }
         }
@@ -129,7 +129,7 @@ namespace Syrius{
             case SR_TEXTURE_WRAP_CLAMP_EDGE:            return D3D11_TEXTURE_ADDRESS_CLAMP;
             case SR_TEXTURE_WRAP_CLAMP_BORDER:          return D3D11_TEXTURE_ADDRESS_BORDER;
             default: {
-                SR_CORE_WARNING("Invalid type given to converter, return D3D11_TEXTURE_ADDRESS_WRAP");
+                SR_CORE_WARNING("Invalid usage given to converter, return D3D11_TEXTURE_ADDRESS_WRAP");
                 return D3D11_TEXTURE_ADDRESS_WRAP;
             }
         }
@@ -149,7 +149,7 @@ namespace Syrius{
             return D3D11_FILTER_MIN_MAG_MIP_POINT;
         }
         else {
-            SR_CORE_WARNING("Invalid type given to converter, return D3D11_FILTER_MIN_MAG_MIP_LINEAR");
+            SR_CORE_WARNING("Invalid usage given to converter, return D3D11_FILTER_MIN_MAG_MIP_LINEAR");
             return D3D11_FILTER_MIN_MAG_MIP_LINEAR;
         }
     }
@@ -165,7 +165,7 @@ namespace Syrius{
             case SR_COMPARISON_FUNC_GREATER_EQUAL:   return D3D11_COMPARISON_GREATER_EQUAL;
             case SR_COMPARISON_FUNC_NOT_EQUAL:       return D3D11_COMPARISON_NOT_EQUAL;
             default: {
-                SR_CORE_WARNING("Invalid type given to converter, return D3D11_COMPARISON_LESS");
+                SR_CORE_WARNING("Invalid usage given to converter, return D3D11_COMPARISON_LESS");
                 return D3D11_COMPARISON_LESS;
             }
         }
@@ -182,7 +182,7 @@ namespace Syrius{
             case SR_STENCIL_FUNC_DECR_WRAP:     return D3D11_STENCIL_OP_DECR_SAT;
             case SR_STENCIL_FUNC_INVERT:        return D3D11_STENCIL_OP_INVERT;
             default: {
-                SR_CORE_WARNING("Invalid type given to converter, return D3D11_STENCIL_OP_KEEP");
+                SR_CORE_WARNING("Invalid usage given to converter, return D3D11_STENCIL_OP_KEEP");
                 return D3D11_STENCIL_OP_KEEP;
             }
         }

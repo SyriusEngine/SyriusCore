@@ -1102,7 +1102,7 @@ STBIWDEF unsigned char *stbi_write_png_to_mem(const unsigned char *pixels, int s
                 filter_type = best_filter;
             }
         }
-        // when we get here, filter_type contains the filter type, and line_buffer contains the data
+        // when we get here, filter_type contains the filter usage, and line_buffer contains the data
         filt[j*(x*n+1)] = (unsigned char) filter_type;
         STBIW_MEMMOVE(filt+j*(x*n+1)+1, line_buffer, x*n);
     }

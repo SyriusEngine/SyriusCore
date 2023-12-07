@@ -7,7 +7,7 @@ namespace Syrius{
     struct SR_CORE_API IndexBufferDesc{
         const void* data      = nullptr;
         uint32 count          = 0;
-        SR_BUFFER_TYPE type   = SR_BUFFER_DEFAULT;
+        SR_BUFFER_USAGE usage   = SR_BUFFER_USAGE_DEFAULT;
         SR_TYPE dataType = SR_UINT32;
     };
 
@@ -27,14 +27,14 @@ namespace Syrius{
 
         [[nodiscard]] uint32 getCount() const;
 
-        [[nodiscard]] SR_BUFFER_TYPE getType() const;
+        [[nodiscard]] SR_BUFFER_USAGE getType() const;
 
         [[nodiscard]] SR_TYPE getDataType() const;
 
     protected:
         uint32 m_Size;
         uint32 m_Count;
-        SR_BUFFER_TYPE m_Type;
+        SR_BUFFER_USAGE m_Type;
         SR_TYPE m_DataType;
     };
 }

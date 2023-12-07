@@ -8,18 +8,18 @@
 #include "Utils/Image.hpp"
 #include "Utils/Resource.hpp"
 
-#include "Window/SyriusWindow.hpp"
+#include "Window/Window.hpp"
 
 #include "Context/Context.hpp"
 #include "Context/ShaderModule.hpp"
 #include "Context/Shader.hpp"
-#include "Context/VertexDescription.hpp"
+#include "Context/VertexLayout.hpp"
 #include "Context/VertexBuffer.hpp"
 #include "Context/IndexBuffer.hpp"
 #include "Context/VertexArray.hpp"
 #include "Context/Texture2D.hpp"
 #include "Context/ConstantBuffer.hpp"
-#include "Context/FrameBuffer.hpp"
+#include "Context/Framebuffer.hpp"
 
 #include "Dependencies/imgui/imgui.h"
 
@@ -29,7 +29,7 @@ namespace Syrius {
 
     SR_CORE_API Resource<Image> createImage(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_FORMAT format);
 
-    SR_CORE_API Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc);
+    SR_CORE_API Resource<Window> createWindow(const WindowDesc& windowDesc);
 
     SR_CORE_API void setDebugMessageCallback(handleDebugMessageFunc callback);
 

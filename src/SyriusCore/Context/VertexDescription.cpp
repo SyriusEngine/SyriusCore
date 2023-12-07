@@ -1,4 +1,4 @@
-#include "../../../include/SyriusCore/Context/VertexDescription.hpp"
+#include "../../../include/SyriusCore/Context/VertexLayout.hpp"
 #include "../Utils/DebugMacros.hpp"
 
 namespace Syrius{
@@ -18,15 +18,15 @@ namespace Syrius{
     }
 
 
-    VertexDescription::VertexDescription()
+    VertexLayout::VertexLayout()
     : m_Stride(0),
     m_AttributeCount(0){
 
     }
 
-    VertexDescription::~VertexDescription() = default;
+    VertexLayout::~VertexLayout() = default;
 
-    void VertexDescription::addAttribute(const std::string &name, SR_SCALAR_TYPE dataType) {
+    void VertexLayout::addAttribute(const std::string &name, SR_SCALAR_TYPE dataType) {
         uint8 elementCount = getScalarComponentCount(dataType);
         uint8 size = getScalarSize(dataType);
 
@@ -36,15 +36,15 @@ namespace Syrius{
 
     }
 
-    uint32 VertexDescription::getStride() const {
+    uint32 VertexLayout::getStride() const {
         return m_Stride;
     }
 
-    const std::vector<VertexAttribute> &VertexDescription::getAttributes() const {
+    const std::vector<VertexAttribute> &VertexLayout::getAttributes() const {
         return m_Attributes;
     }
 
-    uint32 VertexDescription::getAttributeCount() const {
+    uint32 VertexLayout::getAttributeCount() const {
         return m_AttributeCount;
     }
 

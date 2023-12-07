@@ -354,7 +354,7 @@ extern "C" {
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// PRIMARY API - works on images of any type
+// PRIMARY API - works on images of any usage
 //
 
 //
@@ -693,7 +693,7 @@ static int stbi__cpuid3(void)
 }
 #endif
 
-#define STBI_SIMD_ALIGN(type, name) __declspec(align(16)) type name
+#define STBI_SIMD_ALIGN(usage, name) __declspec(align(16)) usage name
 
 #if !defined(STBI_NO_JPEG) && defined(STBI_SSE2)
 static int stbi__sse2_available(void)
@@ -727,11 +727,11 @@ static int stbi__sse2_available(void)
 #ifdef STBI_NEON
 #include <arm_neon.h>
 // assume GCC or Clang on ARM targets
-#define STBI_SIMD_ALIGN(type, name) type name __attribute__((aligned(16)))
+#define STBI_SIMD_ALIGN(usage, name) usage name __attribute__((aligned(16)))
 #endif
 
 #ifndef STBI_SIMD_ALIGN
-#define STBI_SIMD_ALIGN(type, name) type name
+#define STBI_SIMD_ALIGN(usage, name) usage name
 #endif
 
 ///////////////////////////////////////////////
@@ -1090,7 +1090,7 @@ static void *stbi__load_main(stbi__context *s, int *x, int *y, int *comp, int re
       return stbi__tga_load(s,x,y,comp,req_comp, ri);
    #endif
 
-   return stbi__errpuc("unknown image type", "Image not of any known type, or corrupt");
+   return stbi__errpuc("unknown image usage", "Image not of any known usage, or corrupt");
 }
 
 static stbi_uc *stbi__convert_16_to_8(stbi__uint16 *orig, int w, int h, int channels)
@@ -1374,7 +1374,7 @@ static float *stbi__loadf_main(stbi__context *s, int *x, int *y, int *comp, int 
    data = stbi__load_and_postprocess_8bit(s, x, y, comp, req_comp);
    if (data)
       return stbi__ldr_to_hdr(data, *x, *y, req_comp ? req_comp : *comp);
-   return stbi__errpf("unknown image type", "Image not of any known type, or corrupt");
+   return stbi__errpf("unknown image usage", "Image not of any known usage, or corrupt");
 }
 
 STBIDEF float *stbi_loadf_from_memory(stbi_uc const *buffer, int len, int *x, int *y, int *comp, int req_comp)
@@ -2999,7 +2999,7 @@ static int stbi__process_marker(stbi__jpeg *z, int m)
             int q = stbi__get8(z->s);
             int p = q >> 4, sixteen = (p != 0);
             int t = q & 15,i;
-            if (p != 0 && p != 1) return stbi__err("bad DQT type","Corrupt JPEG");
+            if (p != 0 && p != 1) return stbi__err("bad DQT usage","Corrupt JPEG");
             if (t > 3) return stbi__err("bad DQT table","Corrupt JPEG");
 
             for (i=0; i < 64; ++i)
@@ -5040,7 +5040,7 @@ static int stbi__parse_png_file(stbi__png *z, int scan, int req_comp)
                invalid_chunk[2] = STBI__BYTECAST(c.type >>  8);
                invalid_chunk[3] = STBI__BYTECAST(c.type >>  0);
                #endif
-               return stbi__err(invalid_chunk, "PNG not supported: unknown PNG chunk type");
+               return stbi__err(invalid_chunk, "PNG not supported: unknown PNG chunk usage");
             }
             stbi__skip(s, c.length);
             break;
@@ -5219,7 +5219,7 @@ static void *stbi__bmp_parse_header(stbi__context *s, stbi__bmp_data *info)
    info->mr = info->mg = info->mb = info->ma = 0;
    info->extra_read = 14;
 
-   if (hsz != 12 && hsz != 40 && hsz != 56 && hsz != 108 && hsz != 124) return stbi__errpuc("unknown BMP", "BMP type not supported: unknown");
+   if (hsz != 12 && hsz != 40 && hsz != 56 && hsz != 108 && hsz != 124) return stbi__errpuc("unknown BMP", "BMP usage not supported: unknown");
    if (hsz == 12) {
       s->img_x = stbi__get16le(s);
       s->img_y = stbi__get16le(s);
@@ -5231,7 +5231,7 @@ static void *stbi__bmp_parse_header(stbi__context *s, stbi__bmp_data *info)
    info->bpp = stbi__get16le(s);
    if (hsz != 12) {
       int compress = stbi__get32le(s);
-      if (compress == 1 || compress == 2) return stbi__errpuc("BMP RLE", "BMP type not supported: RLE");
+      if (compress == 1 || compress == 2) return stbi__errpuc("BMP RLE", "BMP usage not supported: RLE");
       stbi__get32le(s); // discard sizeof
       stbi__get32le(s); // discard hres
       stbi__get32le(s); // discard vres
@@ -5502,12 +5502,12 @@ static int stbi__tga_info(stbi__context *s, int *x, int *y, int *comp)
     int tga_w, tga_h, tga_comp, tga_image_type, tga_bits_per_pixel, tga_colormap_bpp;
     int sz, tga_colormap_type;
     stbi__get8(s);                   // discard Offset
-    tga_colormap_type = stbi__get8(s); // colormap type
+    tga_colormap_type = stbi__get8(s); // colormap usage
     if( tga_colormap_type > 1 ) {
         stbi__rewind(s);
         return 0;      // only RGB or indexed allowed
     }
-    tga_image_type = stbi__get8(s); // image type
+    tga_image_type = stbi__get8(s); // image usage
     if ( tga_colormap_type == 1 ) { // colormapped (paletted) image
         if (tga_image_type != 1 && tga_image_type != 9) {
             stbi__rewind(s);
@@ -5567,11 +5567,11 @@ static int stbi__tga_test(stbi__context *s)
    int res = 0;
    int sz, tga_color_type;
    stbi__get8(s);      //   discard Offset
-   tga_color_type = stbi__get8(s);   //   color type
+   tga_color_type = stbi__get8(s);   //   color usage
    if ( tga_color_type > 1 ) goto errorEnd;   //   only RGB or indexed allowed
-   sz = stbi__get8(s);   //   image type
+   sz = stbi__get8(s);   //   image usage
    if ( tga_color_type == 1 ) { // colormapped (paletted) image
-      if (sz != 1 && sz != 9) goto errorEnd; // colortype 1 demands image type 1 or 9
+      if (sz != 1 && sz != 9) goto errorEnd; // colortype 1 demands image usage 1 or 9
       stbi__skip(s,4);       // skip index of first colormap entry and number of entries
       sz = stbi__get8(s);    //   check bits per palette color entry
       if ( (sz != 8) && (sz != 15) && (sz != 16) && (sz != 24) && (sz != 32) ) goto errorEnd;
@@ -5874,7 +5874,7 @@ static void *stbi__psd_load(stbi__context *s, int *x, int *y, int *comp, int req
    if (stbi__get32be(s) != 0x38425053)   // "8BPS"
       return stbi__errpuc("not PSD", "Corrupt PSD image");
 
-   // Check file type version.
+   // Check file usage version.
    if (stbi__get16be(s) != 1)
       return stbi__errpuc("wrong version", "Unsupported version of PSD image");
 
@@ -6158,7 +6158,7 @@ static stbi_uc *stbi__pic_load_core(stbi__context *s,int width,int height,int *c
 
          switch (packet->type) {
             default:
-               return stbi__errpuc("bad format","packet has bad compression type");
+               return stbi__errpuc("bad format","packet has bad compression usage");
 
             case 0: {//uncompressed
                int x;
@@ -6740,7 +6740,7 @@ static void *stbi__load_gif_main(stbi__context *s, int **delays, int *x, int *y,
       *z = layers;
       return out;
    } else {
-      return stbi__errpuc("not GIF", "Image was not as a gif type.");
+      return stbi__errpuc("not GIF", "Image was not as a gif usage.");
    }
 }
 
@@ -7339,7 +7339,7 @@ static int stbi__info_main(stbi__context *s, int *x, int *y, int *comp)
    if (stbi__tga_info(s, x, y, comp))
        return 1;
    #endif
-   return stbi__err("unknown image type", "Image not of any known type, or corrupt");
+   return stbi__err("unknown image usage", "Image not of any known usage, or corrupt");
 }
 
 static int stbi__is_16_main(stbi__context *s)
@@ -7551,7 +7551,7 @@ STBIDEF int stbi_is_16_bit_from_callbacks(stbi_io_callbacks const *c, void *user
       1.24  (2010-07-12)
               perf improvements reading from files on platforms with lock-heavy fgetc()
               minor perf improvements for jpeg
-              deprecated type-specific functions so we'll get feedback if they're needed
+              deprecated usage-specific functions so we'll get feedback if they're needed
               attempt to fix trans_data warning (Won Chun)
       1.23    fixed bug in iPhone support
       1.22  (2010-07-10)
@@ -7607,7 +7607,7 @@ STBIDEF int stbi_is_16_bit_from_callbacks(stbi_io_callbacks const *c, void *user
       0.53    fix bug in png 3->4; speedup png decoding
       0.52    png handles req_comp=3,4 directly; minor cleanup; jpeg comments
       0.51    obey req_comp requests, 1-component jpegs return as 1-component,
-              on 'test' only check type, not whether we support this variant
+              on 'test' only check usage, not whether we support this variant
       0.50  (2006-11-19)
               first released version
 */

@@ -36,7 +36,7 @@ namespace Syrius{
             case SR_FLOAT32:    return 4;
             case SR_FLOAT64:    return 8;
             default: {
-                SR_CORE_WARNING("Unknown type given to converter");
+                SR_CORE_WARNING("Unknown usage given to converter");
                 return 0;
             }
         }
@@ -80,7 +80,7 @@ namespace Syrius{
             case SR_CHANNEL_BGRA:
                 return 4;
             default: {
-                SR_CORE_WARNING("Unknown type given to converter");
+                SR_CORE_WARNING("Unknown usage given to converter");
                 return 0;
             }
         }

@@ -43,7 +43,7 @@ namespace glm
 	/// @param m Input matrix multiplied by this translation matrix.
 	/// @param v Coordinates of a translation vector.
 	///
-	/// @tparam T A floating-point scalar type
+	/// @tparam T A floating-point scalar usage
 	/// @tparam Q A value from qualifier enum
 	///
 	/// @code
@@ -70,7 +70,7 @@ namespace glm
 	/// @param angle Rotation angle expressed in radians.
 	/// @param axis Rotation axis, recommended to be normalized.
 	///
-	/// @tparam T A floating-point scalar type
+	/// @tparam T A floating-point scalar usage
 	/// @tparam Q A value from qualifier enum
 	///
 	/// @see - rotate(mat<4, 4, T, Q> const& m, T angle, T x, T y, T z)
@@ -85,7 +85,7 @@ namespace glm
 	/// @param m Input matrix multiplied by this scale matrix.
 	/// @param v Ratio of scaling for each axis.
 	///
-	/// @tparam T A floating-point scalar type
+	/// @tparam T A floating-point scalar usage
 	/// @tparam Q A value from qualifier enum
 	///
 	/// @see - scale(mat<4, 4, T, Q> const& m, T x, T y, T z)
@@ -101,7 +101,7 @@ namespace glm
 	/// @param center Position where the camera is looking at
 	/// @param up Normalized up vector, how the camera is oriented. Typically (0, 0, 1)
 	///
-	/// @tparam T A floating-point scalar type
+	/// @tparam T A floating-point scalar usage
 	/// @tparam Q A value from qualifier enum
 	///
 	/// @see - frustum(T const& left, T const& right, T const& bottom, T const& top, T const& nearVal, T const& farVal) frustum(T const& left, T const& right, T const& bottom, T const& top, T const& nearVal, T const& farVal)
@@ -115,7 +115,7 @@ namespace glm
 	/// @param center Position where the camera is looking at
 	/// @param up Normalized up vector, how the camera is oriented. Typically (0, 0, 1)
 	///
-	/// @tparam T A floating-point scalar type
+	/// @tparam T A floating-point scalar usage
 	/// @tparam Q A value from qualifier enum
 	///
 	/// @see - frustum(T const& left, T const& right, T const& bottom, T const& top, T const& nearVal, T const& farVal) frustum(T const& left, T const& right, T const& bottom, T const& top, T const& nearVal, T const& farVal)
@@ -129,7 +129,7 @@ namespace glm
 	/// @param center Position where the camera is looking at
 	/// @param up Normalized up vector, how the camera is oriented. Typically (0, 0, 1)
 	///
-	/// @tparam T A floating-point scalar type
+	/// @tparam T A floating-point scalar usage
 	/// @tparam Q A value from qualifier enum
 	///
 	/// @see - frustum(T const& left, T const& right, T const& bottom, T const& top, T const& nearVal, T const& farVal) frustum(T const& left, T const& right, T const& bottom, T const& top, T const& nearVal, T const& farVal)

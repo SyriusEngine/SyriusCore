@@ -102,10 +102,10 @@ while (window->isOpen()){
     while (window->hasEvent()){ // Check if there are any events
         
         auto event = window->getEvent();    // get the first event
-        if (event.type == Syrius::SR_EVENT_WINDOW_CLOSED){
+        if (event.usage == Syrius::SR_EVENT_WINDOW_CLOSED){
             window->close();
         }
-        else if (event.type == Syrius::SR_EVENT_WINDOW_RESIZED){
+        else if (event.usage == Syrius::SR_EVENT_WINDOW_RESIZED){
             context->onResize(event.windowWidth, event.windowHeight);
         }
     }

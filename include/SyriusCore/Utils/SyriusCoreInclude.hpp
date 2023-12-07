@@ -55,7 +55,7 @@ typedef enum SR_LOAD_TYPE {
 } SR_LOAD_TYPE;
 
 // scalar types
-// upper 4 bits are the data type
+// upper 4 bits are the data usage
 // lower 4 bits are the component count (NOTE: 0 represents 1 component, F represents 16 components)
 typedef enum SR_SCALAR_TYPE: uint8 {
     SR_UINT8_1      = 0x20,
@@ -146,7 +146,7 @@ typedef enum SR_CHANNEL_FORMAT: uint8 {
     SR_CHANNEL_BGRA  = 0x41
 } SR_CHANNEL_FORMAT;
 
-// Texture formats with data types, upper 4 bits represent the number of channels, lower 4 bits represent the data type
+// Texture formats with data types, upper 4 bits represent the number of channels, lower 4 bits represent the data usage
 typedef enum SR_TEXTURE_FORMAT: uint8 {
     // single channel
     SR_TEXTURE_R_UI8        = 0x12,
@@ -215,24 +215,24 @@ namespace Syrius {
     std::string SR_CORE_API getAPIName(SR_SUPPORTED_API api);
 
     /**
-     * @brief This function will return the size of a type in bytes
+     * @brief This function will return the size of a usage in bytes
      * @example SR_UINT8 -> 1 byte
      * @example SR_UINT16 -> 2 bytes
      * @example SR_UINT32 -> 4 bytes
      * @example SR_UINT64 -> 8 bytes
-     * @param type The type to get the size of
-     * @return the number of bytes needed to store data of that type
+     * @param type The usage to get the size of
+     * @return the number of bytes needed to store data of that usage
      */
     uint8 SR_CORE_API getTypeSize(SR_TYPE type);
     uint8 SR_CORE_API getScalarSize(SR_SCALAR_TYPE type);
 
     /**
-     * @brief Returns the number of components in a scalar type
+     * @brief Returns the number of components in a scalar usage
      * @example SR_FLOAT32_1 -> 1
      * @example SR_FLOAT64_1 -> 1
      * @example SR_UINT8_4 -> 4
      * @param type
-     * @return the number of components in the scalar type
+     * @return the number of components in the scalar usage
      */
     uint8 SR_CORE_API getScalarComponentCount(SR_SCALAR_TYPE type);
 

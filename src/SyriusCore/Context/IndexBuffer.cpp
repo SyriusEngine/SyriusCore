@@ -5,9 +5,9 @@ namespace Syrius{
 
     IndexBuffer::IndexBuffer(const IndexBufferDesc &desc)
     : m_Count(desc.count),
-    m_Type(desc.type),
+    m_Type(desc.usage),
     m_DataType(desc.dataType) {
-        SR_CORE_PRECONDITION(desc.dataType <= SR_INT64, "Index buffer only supports integer data, type %i is not supported", desc.dataType);
+        SR_CORE_PRECONDITION(desc.dataType <= SR_INT64, "Index buffer only supports integer data, usage %i is not supported", desc.dataType);
 
         m_Size = m_Count * getTypeSize(m_DataType);
     }
@@ -24,7 +24,7 @@ namespace Syrius{
         return m_Count;
     }
 
-    SR_BUFFER_TYPE IndexBuffer::getType() const {
+    SR_BUFFER_USAGE IndexBuffer::getType() const {
         return m_Type;
     }
 

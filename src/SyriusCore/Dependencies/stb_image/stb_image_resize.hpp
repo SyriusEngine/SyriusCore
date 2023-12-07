@@ -244,13 +244,13 @@ STBIRDEF int stbir_resize_uint8_srgb_edgemode(const unsigned char *input_pixels 
 //         * Alpha channel will not be gamma corrected (unless flags&STBIR_FLAG_GAMMA_CORRECT)
 //         * Filters will be weighted by alpha channel (unless flags&STBIR_FLAG_ALPHA_PREMULTIPLIED)
 //     * Filter can be selected explicitly
-//     * uint16 image type
+//     * uint16 image usage
 //     * sRGB colorspace available for all types
 //     * context parameter for passing to STBIR_MALLOC
 
 typedef enum
 {
-    STBIR_FILTER_DEFAULT      = 0,  // use same filter type that easy-to-use API chooses
+    STBIR_FILTER_DEFAULT      = 0,  // use same filter usage that easy-to-use API chooses
     STBIR_FILTER_BOX          = 1,  // A trapezoid w/1-pixel wide ramps, same result as box for integer scale ratios
     STBIR_FILTER_TRIANGLE     = 2,  // On upsampling, produces same results as bilinear texture filtering
     STBIR_FILTER_CUBICBSPLINE = 3,  // The cubic b-spline (aka Mitchell-Netrevalli with B=1,C=0), gaussian-esque
@@ -266,7 +266,7 @@ typedef enum
     STBIR_MAX_COLORSPACES,
 } stbir_colorspace;
 
-// The following functions are all identical except for the type of the image data
+// The following functions are all identical except for the usage of the image data
 
 STBIRDEF int stbir_resize_uint8_generic( const unsigned char *input_pixels , int input_w , int input_h , int input_stride_in_bytes,
                                          unsigned char *output_pixels, int output_w, int output_h, int output_stride_in_bytes,
@@ -294,7 +294,7 @@ STBIRDEF int stbir_resize_float_generic( const float *input_pixels         , int
 //
 // This extends the medium API as follows:
 //
-//       * uint32 image type
+//       * uint32 image usage
 //     * not typesafe
 //     * separate filter types for each axis
 //     * separate edge modes for each axis
@@ -956,7 +956,7 @@ static int stbir__edge_wrap_slow(stbir_edge edge, int n, int max)
             // NOTREACHED
 
         default:
-            STBIR_ASSERT(!"Unimplemented edge type");
+            STBIR_ASSERT(!"Unimplemented edge usage");
             return 0;
     }
 }
@@ -1330,7 +1330,7 @@ static void stbir__decode_scanline(stbir__info* stbir_info, int n)
             break;
 
         default:
-            STBIR_ASSERT(!"Unknown type/colorspace/channels combination.");
+            STBIR_ASSERT(!"Unknown usage/colorspace/channels combination.");
             break;
     }
 
@@ -1823,7 +1823,7 @@ static void stbir__encode_scanline(stbir__info* stbir_info, int num_pixels, void
             break;
 
         default:
-            STBIR_ASSERT(!"Unknown type/colorspace/channels combination.");
+            STBIR_ASSERT(!"Unknown usage/colorspace/channels combination.");
             break;
     }
 }
@@ -2267,7 +2267,7 @@ static int stbir__resize_allocated(stbir__info *info,
     unsigned char overwrite_output_after_pre[OVERWRITE_ARRAY_SIZE];
     unsigned char overwrite_tempmem_after_pre[OVERWRITE_ARRAY_SIZE];
 
-    size_t begin_forbidden = width_stride_output * (info->output_h - 1) + info->output_w * info->channels * stbir__type_size[type];
+    size_t begin_forbidden = width_stride_output * (info->output_h - 1) + info->output_w * info->channels * stbir__type_size[usage];
     memcpy(overwrite_output_before_pre, &((unsigned char*)output_data)[-OVERWRITE_ARRAY_SIZE], OVERWRITE_ARRAY_SIZE);
     memcpy(overwrite_output_after_pre, &((unsigned char*)output_data)[begin_forbidden], OVERWRITE_ARRAY_SIZE);
     memcpy(overwrite_tempmem_before_pre, &((unsigned char*)tempmem)[-OVERWRITE_ARRAY_SIZE], OVERWRITE_ARRAY_SIZE);

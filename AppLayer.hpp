@@ -6,7 +6,7 @@
 
 class AppLayer: public Layer{
 public:
-    AppLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    AppLayer(ResourceView<Context>& context, const Resource<Window>& window, EasyIni::Configuration& config);
 
     ~AppLayer() override;
 

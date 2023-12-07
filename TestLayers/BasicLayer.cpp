@@ -1,6 +1,6 @@
 #include "BasicLayer.hpp"
 
-BasicLayer::BasicLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config):
+BasicLayer::BasicLayer(ResourceView<Context> &context, const Resource<Window> &window, EasyIni::Configuration &config):
 Layer(context, window, config) {
 
 }

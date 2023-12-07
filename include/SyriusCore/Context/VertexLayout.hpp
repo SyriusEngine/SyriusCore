@@ -13,11 +13,11 @@ namespace Syrius{
         VertexAttribute(const std::string& name, SR_SCALAR_TYPE type, uint8 size, uint8 elementCount);
     };
 
-    class SR_CORE_API VertexDescription{
+    class SR_CORE_API VertexLayout{
     public:
-        VertexDescription();
+        VertexLayout();
 
-        ~VertexDescription();
+        ~VertexLayout();
 
         void addAttribute(const std::string& name, SR_SCALAR_TYPE dataType);
 

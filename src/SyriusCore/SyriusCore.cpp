@@ -15,13 +15,13 @@ namespace Syrius {
         return createResource<Image>(pixelData, width, height, format);
     }
 
-    Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc){
+    Resource<Window> createWindow(const WindowDesc& windowDesc){
 #if defined(SR_CORE_PLATFORM_WIN64)
         auto ptr = new SyriusWindowWin32Impl(windowDesc);
-        return Resource<SyriusWindow>(ptr);
+        return Resource<Window>(ptr);
 #elif defined(SR_CORE_PLATFORM_LINUX)
         auto ptr = new SyriusWindowX11Impl(windowDesc);
-        return Resource<SyriusWindow>(ptr);
+        return Resource<Window>(ptr);
 #endif
     }
 

@@ -30,7 +30,7 @@ namespace glm
 	/// Returns the component-wise comparison result of x < y.
 	///
 	/// @tparam L An integer between 1 and 4 included that qualify the dimension of the vector.
-	/// @tparam T A floating-point or integer scalar type.
+	/// @tparam T A floating-point or integer scalar usage.
 	///
 	/// @see <a href="http://www.opengl.org/sdk/docs/manglsl/xhtml/lessThan.xml">GLSL lessThan man page</a>
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 8.7 Vector Relational Functions</a>
@@ -40,7 +40,7 @@ namespace glm
 	/// Returns the component-wise comparison of result x <= y.
 	///
 	/// @tparam L An integer between 1 and 4 included that qualify the dimension of the vector.
-	/// @tparam T A floating-point or integer scalar type.
+	/// @tparam T A floating-point or integer scalar usage.
 	///
 	/// @see <a href="http://www.opengl.org/sdk/docs/manglsl/xhtml/lessThanEqual.xml">GLSL lessThanEqual man page</a>
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 8.7 Vector Relational Functions</a>
@@ -50,7 +50,7 @@ namespace glm
 	/// Returns the component-wise comparison of result x > y.
 	///
 	/// @tparam L An integer between 1 and 4 included that qualify the dimension of the vector.
-	/// @tparam T A floating-point or integer scalar type.
+	/// @tparam T A floating-point or integer scalar usage.
 	///
 	/// @see <a href="http://www.opengl.org/sdk/docs/manglsl/xhtml/greaterThan.xml">GLSL greaterThan man page</a>
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 8.7 Vector Relational Functions</a>
@@ -60,7 +60,7 @@ namespace glm
 	/// Returns the component-wise comparison of result x >= y.
 	///
 	/// @tparam L An integer between 1 and 4 included that qualify the dimension of the vector.
-	/// @tparam T A floating-point or integer scalar type.
+	/// @tparam T A floating-point or integer scalar usage.
 	///
 	/// @see <a href="http://www.opengl.org/sdk/docs/manglsl/xhtml/greaterThanEqual.xml">GLSL greaterThanEqual man page</a>
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 8.7 Vector Relational Functions</a>
@@ -70,7 +70,7 @@ namespace glm
 	/// Returns the component-wise comparison of result x == y.
 	///
 	/// @tparam L An integer between 1 and 4 included that qualify the dimension of the vector.
-	/// @tparam T A floating-point, integer or bool scalar type.
+	/// @tparam T A floating-point, integer or bool scalar usage.
 	///
 	/// @see <a href="http://www.opengl.org/sdk/docs/manglsl/xhtml/equal.xml">GLSL equal man page</a>
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 8.7 Vector Relational Functions</a>
@@ -80,7 +80,7 @@ namespace glm
 	/// Returns the component-wise comparison of result x != y.
 	///
 	/// @tparam L An integer between 1 and 4 included that qualify the dimension of the vector.
-	/// @tparam T A floating-point, integer or bool scalar type.
+	/// @tparam T A floating-point, integer or bool scalar usage.
 	///
 	/// @see <a href="http://www.opengl.org/sdk/docs/manglsl/xhtml/notEqual.xml">GLSL notEqual man page</a>
 	/// @see <a href="http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf">GLSL 4.20.8 specification, section 8.7 Vector Relational Functions</a>

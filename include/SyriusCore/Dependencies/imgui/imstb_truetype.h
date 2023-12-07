@@ -1300,7 +1300,7 @@ static int stbtt__isfont(stbtt_uint8 *font)
 {
    // check the version number
    if (stbtt_tag4(font, '1',0,0,0))  return 1; // TrueType 1
-   if (stbtt_tag(font, "typ1"))   return 1; // TrueType with type 1 font -- we don't support this!
+   if (stbtt_tag(font, "typ1"))   return 1; // TrueType with usage 1 font -- we don't support this!
    if (stbtt_tag(font, "OTTO"))   return 1; // OpenType with CFF
    if (stbtt_tag4(font, 0,1,0,0)) return 1; // OpenType 1.0
    if (stbtt_tag(font, "true"))   return 1; // Apple specification for TrueType fonts
@@ -2488,7 +2488,7 @@ static stbtt_int32  stbtt__GetGlyphClass(stbtt_uint8 *classDefTable, int glyph)
       }
 
       default:
-         return -1; // Unsupported definition type, return an error.
+         return -1; // Unsupported definition usage, return an error.
    }
 
    // "All glyphs not assigned to a class fall into class 0". (OpenType spec)

@@ -27,8 +27,8 @@ namespace Syrius{
         return m_FrameBuffers[0].createView();
     }
 
-    ResourceView<VertexDescription> Context::createVertexDescription() {
-        m_VertexDescriptions.emplace_back(new VertexDescription());
+    ResourceView<VertexLayout> Context::createVertexDescription() {
+        m_VertexDescriptions.emplace_back(new VertexLayout());
         return m_VertexDescriptions.back().createView();
     }
 

@@ -30,7 +30,7 @@ namespace Syrius{
 
         virtual ~Texture2D();
 
-        virtual void bind(uint32_t slot) = 0;
+        virtual void bind(uint32 slot) = 0;
 
         virtual void unbind() = 0;
 

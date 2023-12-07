@@ -11,7 +11,7 @@ namespace Syrius{
             case SR_SHADER_TESSELATION_EVALUATION:  return GL_TESS_EVALUATION_SHADER;
             case SR_SHADER_COMPUTE:                 return GL_COMPUTE_SHADER;
             default: {
-                SR_CORE_WARNING("Invalid type given to converter, return default: GL_VERTEX_SHADER");
+                SR_CORE_WARNING("Invalid usage given to converter, return default: GL_VERTEX_SHADER");
                 return GL_VERTEX_SHADER;
             }
         }
@@ -25,7 +25,7 @@ namespace Syrius{
             case SR_DRAW_TRIANGLES:         return GL_TRIANGLES;
             case SR_DRAW_TRIANGLE_STRIP:    return GL_TRIANGLE_STRIP;
             default: {
-                SR_CORE_WARNING("Invalid type given to converter, return default: GL_TRIANGLES");
+                SR_CORE_WARNING("Invalid usage given to converter, return default: GL_TRIANGLES");
                 return GL_TRIANGLES;
             }
         }
@@ -45,19 +45,19 @@ namespace Syrius{
             case SR_FLOAT32:    return GL_FLOAT;
             case SR_FLOAT64:    return GL_DOUBLE;
             default: {
-                SR_CORE_WARNING("Invalid type given to converter, return default: GL_FLOAT");
+                SR_CORE_WARNING("Invalid usage given to converter, return default: GL_FLOAT");
                 return GL_FLOAT;
             }
         }
     }
 
-    GLenum getGlBufferType(SR_BUFFER_TYPE type){
+    GLenum getGlBufferType(SR_BUFFER_USAGE type){
         switch (type){
-            case SR_BUFFER_DEFAULT: return GL_STATIC_DRAW;
-            case SR_BUFFER_DYNAMIC: return GL_DYNAMIC_DRAW;
-            case SR_BUFFER_STATIC:  return GL_STATIC_DRAW;
+            case SR_BUFFER_USAGE_DEFAULT: return GL_STATIC_DRAW;
+            case SR_BUFFER_USAGE_DYNAMIC: return GL_DYNAMIC_DRAW;
+            case SR_BUFFER_USAGE_STATIC:  return GL_STATIC_DRAW;
             default: {
-                SR_CORE_WARNING("Invalid type given to converter, return default: GL_STATIC_DRAW");
+                SR_CORE_WARNING("Invalid usage given to converter, return default: GL_STATIC_DRAW");
                 return GL_STATIC_DRAW;
             }
         }
@@ -72,7 +72,7 @@ namespace Syrius{
             case SR_CHANNEL_BGR:     return GL_BGR;
             case SR_CHANNEL_BGRA:    return GL_BGRA;
             default: {
-                SR_CORE_WARNING("Invalid type given to converter, return default: GL_RGBA");
+                SR_CORE_WARNING("Invalid usage given to converter, return default: GL_RGBA");
                 return GL_RGBA;
             }
         }
@@ -118,7 +118,7 @@ namespace Syrius{
             case SR_TEXTURE_DEPTH_24_STENCIL_8: return GL_DEPTH24_STENCIL8;
             case SR_TEXTURE_DEPTH_32_STENCIL_8: return GL_DEPTH32F_STENCIL8;
             default: {
-                SR_CORE_WARNING("Invalid type given to converter, return default: GL_RGBA8");
+                SR_CORE_WARNING("Invalid usage given to converter, return default: GL_RGBA8");
                 return GL_RGBA8UI;
             }
         }

@@ -39,11 +39,11 @@ namespace Syrius{
         SR_WINDOW_STYLE style = SR_WINDOW_STYLE_DEFAULT;
     };
 
-    class SR_CORE_API SyriusWindow{
+    class SR_CORE_API Window{
     public:
-        SyriusWindow() = delete;
+        Window() = delete;
 
-        virtual ~SyriusWindow();
+        virtual ~Window();
 
         [[nodiscard]] int32 getPosX() const;
 
@@ -125,7 +125,7 @@ namespace Syrius{
 
     protected:
 
-        explicit SyriusWindow(const WindowDesc& desc);
+        explicit Window(const WindowDesc& desc);
 
         void dispatchEvent(const Event& event);
 

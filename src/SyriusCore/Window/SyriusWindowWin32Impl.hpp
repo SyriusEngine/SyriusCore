@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../include/SyriusCore/Window/SyriusWindow.hpp"
+#include "../../../include/SyriusCore/Window/Window.hpp"
 #include "../Context/D3D11/D3D11Context.hpp"
 
 #include "Win32Utils.hpp"
@@ -18,7 +18,7 @@ namespace Syrius{
 
     static const wchar_t* s_SyriusWindowClass = L"SYRIUS_CORE_API";
 
-    class SyriusWindowWin32Impl: public SyriusWindow{
+    class SyriusWindowWin32Impl: public Window{
     public:
         explicit SyriusWindowWin32Impl(const WindowDesc& desc);
 

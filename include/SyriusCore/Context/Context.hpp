@@ -5,7 +5,7 @@
 #include "ShaderModule.hpp"
 #include "Shader.hpp"
 #include "Viewport.hpp"
-#include "VertexDescription.hpp"
+#include "VertexLayout.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "VertexArray.hpp"
@@ -19,7 +19,7 @@
 
 namespace Syrius{
 
-    class SyriusWindow;
+    class Window;
 
     struct SR_CORE_API ContextDesc{
         uint8 depthBits        = 24;
@@ -87,7 +87,7 @@ namespace Syrius{
 
         virtual ResourceView<Shader> createShader(const ShaderDesc& desc) = 0;
 
-        ResourceView<VertexDescription> createVertexDescription();
+        ResourceView<VertexLayout> createVertexDescription();
 
         virtual ResourceView<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) = 0;
 
@@ -147,7 +147,7 @@ namespace Syrius{
 
     protected:
 
-        friend SyriusWindow;
+        friend Window;
 
     protected:
         uint32 m_Width;
@@ -167,7 +167,7 @@ namespace Syrius{
          */
         std::vector<Resource<ShaderModule>> m_ShaderModules;
         std::vector<Resource<Shader>> m_Shaders;
-        std::vector<Resource<VertexDescription>> m_VertexDescriptions;
+        std::vector<Resource<VertexLayout>> m_VertexDescriptions;
         std::vector<Resource<VertexBuffer>> m_VertexBuffers;
         std::vector<Resource<IndexBuffer>> m_IndexBuffers;
         std::vector<Resource<VertexArray>> m_VertexArrays;

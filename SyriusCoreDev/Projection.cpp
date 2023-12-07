@@ -8,7 +8,7 @@ m_Context(context){
     ConstantBufferDesc desc;
     desc.shaderStage = SR_SHADER_VERTEX;
     desc.size = sizeof(ProjectionData);
-    desc.type = SR_BUFFER_DYNAMIC;
+    desc.usage = SR_BUFFER_USAGE_DYNAMIC;
     desc.name = "ProjectionData";
     desc.data = &m_ProjectionData;
     m_Resource = m_Context->createConstantBuffer(desc);

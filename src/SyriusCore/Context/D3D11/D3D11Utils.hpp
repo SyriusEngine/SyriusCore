@@ -8,7 +8,7 @@
 
 namespace Syrius{
 
-    D3D11_USAGE getD3d11BufferType(SR_BUFFER_TYPE type);
+    D3D11_USAGE getD3d11BufferType(SR_BUFFER_USAGE type);
 
     DXGI_FORMAT getD3d11DataType(SR_TYPE dataType);
 

@@ -95,7 +95,7 @@ Index of this file:
 #ifdef _MSC_VER
 #pragma warning (disable: 4127)     // condition expression is constant
 #pragma warning (disable: 4996)     // 'This function or variable may be unsafe': strcpy, strdup, sprintf, vsnprintf, sscanf, fopen
-#pragma warning (disable: 26451)    // [Static Analyzer] Arithmetic overflow : Using operator 'xxx' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator 'xxx' to avoid overflow(io.2).
+#pragma warning (disable: 26451)    // [Static Analyzer] Arithmetic overflow : Using operator 'xxx' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider usage before calling operator 'xxx' to avoid overflow(io.2).
 #endif
 
 // Clang/GCC warnings with -Weverything
@@ -106,7 +106,7 @@ Index of this file:
 #pragma clang diagnostic ignored "-Wunknown-pragmas"                // warning: unknown warning group 'xxx'
 #pragma clang diagnostic ignored "-Wold-style-cast"                 // warning: use of old-style cast                           // yes, they are more terse.
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"        // warning: 'xx' is deprecated: The POSIX name for this..   // for strdup used in demo code (so user can copy & paste the code)
-#pragma clang diagnostic ignored "-Wint-to-void-pointer-cast"       // warning: cast to 'void *' from smaller integer type
+#pragma clang diagnostic ignored "-Wint-to-void-pointer-cast"       // warning: cast to 'void *' from smaller integer usage
 #pragma clang diagnostic ignored "-Wformat-security"                // warning: format string is not a string literal
 #pragma clang diagnostic ignored "-Wexit-time-destructors"          // warning: declaration requires an exit-time destructor    // exit-time destruction order is undefined. if MemFree() leads to users code that has been disabled before exit it might cause problems. ImGui coding style welcomes static/globals.
 #pragma clang diagnostic ignored "-Wunused-macros"                  // warning: macro is not used                               // we define snprintf/vsnprintf on Windows so they are available, but not always used.
@@ -710,7 +710,7 @@ static void ShowDemoWindowWidgets()
         }
 
         {
-            // To wire InputText() with std::string or any other custom string type,
+            // To wire InputText() with std::string or any other custom string usage,
             // see the "Text Input > Resize Callback" section of this demo, and the misc/cpp/imgui_stdlib.h file.
             IMGUI_DEMO_MARKER("Widgets/Basic/InputText");
             static char str0[128] = "Hello, world!";
@@ -725,7 +725,7 @@ static void ShowDemoWindowWidgets()
                 "ESCAPE to revert.\n\n"
                 "PROGRAMMER:\n"
                 "You can use the ImGuiInputTextFlags_CallbackResize facility if you need to wire InputText() "
-                "to a dynamic string type. See misc/cpp/imgui_stdlib.h for an example (this is not demonstrated "
+                "to a dynamic string usage. See misc/cpp/imgui_stdlib.h for an example (this is not demonstrated "
                 "in imgui_demo.cpp).");
 
             static char str1[128] = "";
@@ -873,7 +873,7 @@ static void ShowDemoWindowWidgets()
             // 'selection_mask' is dumb representation of what may be user-side selection state.
             //  You may retain selection state inside or outside your objects in whatever format you see fit.
             // 'node_clicked' is temporary storage of what node we have clicked to process selection at the end
-            /// of the loop. May be a pointer to your own node type, etc.
+            /// of the loop. May be a pointer to your own node usage, etc.
             static int selection_mask = (1 << 2);
             int node_clicked = -1;
             for (int i = 0; i < 6; i++)
@@ -1055,7 +1055,7 @@ static void ShowDemoWindowWidgets()
         ImGuiIO& io = ImGui::GetIO();
         ImGui::TextWrapped(
             "Below we are displaying the font texture (which is the only texture we have access to in this demo). "
-            "Use the 'ImTextureID' type as storage to pass pointers or identifier to your own texture data. "
+            "Use the 'ImTextureID' usage as storage to pass pointers or identifier to your own texture data. "
             "Hover the texture for a zoomed view!");
 
         // Below we are displaying the font texture because it is the only texture we have access to inside the demo!
@@ -1378,7 +1378,7 @@ static void ShowDemoWindowWidgets()
         ImGui::TreePop();
     }
 
-    // To wire InputText() with std::string or any other custom string type,
+    // To wire InputText() with std::string or any other custom string usage,
     // see the "Text Input > Resize Callback" section of this demo, and the misc/cpp/imgui_stdlib.h file.
     IMGUI_DEMO_MARKER("Widgets/Text Input");
     if (ImGui::TreeNode("Text Input"))
@@ -1401,7 +1401,7 @@ static void ShowDemoWindowWidgets()
                 "\tlock cmpxchg8b eax\n";
 
             static ImGuiInputTextFlags flags = ImGuiInputTextFlags_AllowTabInput;
-            HelpMarker("You can use the ImGuiInputTextFlags_CallbackResize facility if you need to wire InputTextMultiline() to a dynamic string type. See misc/cpp/imgui_stdlib.h for an example. (This is not demonstrated in imgui_demo.cpp because we don't want to include <string> in here)");
+            HelpMarker("You can use the ImGuiInputTextFlags_CallbackResize facility if you need to wire InputTextMultiline() to a dynamic string usage. See misc/cpp/imgui_stdlib.h for an example. (This is not demonstrated in imgui_demo.cpp because we don't want to include <string> in here)");
             ImGui::CheckboxFlags("ImGuiInputTextFlags_ReadOnly", &flags, ImGuiInputTextFlags_ReadOnly);
             ImGui::CheckboxFlags("ImGuiInputTextFlags_AllowTabInput", &flags, ImGuiInputTextFlags_AllowTabInput);
             ImGui::CheckboxFlags("ImGuiInputTextFlags_CtrlEnterForNewLine", &flags, ImGuiInputTextFlags_CtrlEnterForNewLine);
@@ -1502,11 +1502,11 @@ static void ShowDemoWindowWidgets()
         IMGUI_DEMO_MARKER("Widgets/Text Input/Resize Callback");
         if (ImGui::TreeNode("Resize Callback"))
         {
-            // To wire InputText() with std::string or any other custom string type,
+            // To wire InputText() with std::string or any other custom string usage,
             // you can use the ImGuiInputTextFlags_CallbackResize flag + create a custom ImGui::InputText() wrapper
-            // using your preferred type. See misc/cpp/imgui_stdlib.h for an implementation of this using std::string.
+            // using your preferred usage. See misc/cpp/imgui_stdlib.h for an implementation of this using std::string.
             HelpMarker(
-                "Using ImGuiInputTextFlags_CallbackResize to wire your custom string type to InputText().\n\n"
+                "Using ImGuiInputTextFlags_CallbackResize to wire your custom string usage to InputText().\n\n"
                 "See misc/cpp/imgui_stdlib.h for an implementation of this for std::string.");
             struct Funcs
             {
@@ -2017,9 +2017,9 @@ static void ShowDemoWindowWidgets()
         // - 8/16/32/64-bits
         // - integer/float/double
         // To avoid polluting the public API with all possible combinations, we use the ImGuiDataType enum
-        // to pass the type, and passing all arguments by pointer.
+        // to pass the usage, and passing all arguments by pointer.
         // This is the reason the test code below creates local variables to hold "zero" "one" etc. for each types.
-        // In practice, if you frequently use a given type that is not covered by the normal API entry points,
+        // In practice, if you frequently use a given usage that is not covered by the normal API entry points,
         // you can wrap it yourself inside a 1 line function which can take typed argument as value instead of void*,
         // and then pass their address to the generic function. For example:
         //   bool MySliderU64(const char *label, u64* value, u64 min = 0, u64 max = 0, const char* format = "%lld")
@@ -2028,7 +2028,7 @@ static void ShowDemoWindowWidgets()
         //   }
 
         // Setup limits (as helper variables so we can take their address, as explained above)
-        // Note: SliderScalar() functions have a maximum usable range of half the natural type maximum, hence the /2.
+        // Note: SliderScalar() functions have a maximum usable range of half the natural usage maximum, hence the /2.
         #ifndef LLONG_MIN
         ImS64 LLONG_MIN = -9223372036854775807LL - 1;
         ImS64 LLONG_MAX = 9223372036854775807LL;
@@ -2349,7 +2349,7 @@ static void ShowDemoWindowWidgets()
     IMGUI_DEMO_MARKER("Widgets/Querying Item Status (Edited,Active,Hovered etc.)");
     if (ImGui::TreeNode("Querying Item Status (Edited/Active/Hovered etc.)"))
     {
-        // Select an item type
+        // Select an item usage
         const char* item_names[] =
         {
             "Text", "Button", "Button (w/ repeat)", "Checkbox", "SliderFloat", "InputText", "InputTextMultiline", "InputFloat",
@@ -3877,9 +3877,9 @@ static void ShowDemoWindowTables()
 
         // [Method 3] We call TableNextColumn() _before_ each cell. We never call TableNextRow(),
         // as TableNextColumn() will automatically wrap around and create new roes as needed.
-        // This is generally more convenient when your cells all contains the same type of data.
+        // This is generally more convenient when your cells all contains the same usage of data.
         HelpMarker(
-            "Only using TableNextColumn(), which tends to be convenient for tables where every cells contains the same type of contents.\n"
+            "Only using TableNextColumn(), which tends to be convenient for tables where every cells contains the same usage of contents.\n"
             "This is also more similar to the old NextColumn() function of the Columns API, and provided to facilitate the Columns->Tables API transition.");
         if (ImGui::BeginTable("table3", 3))
         {
@@ -4761,9 +4761,9 @@ static void ShowDemoWindowTables()
         ImGui::CheckboxFlags("ImGuiTableFlags_Borders", &flags, ImGuiTableFlags_Borders);
         ImGui::CheckboxFlags("ImGuiTableFlags_RowBg", &flags, ImGuiTableFlags_RowBg);
         ImGui::SameLine(); HelpMarker("ImGuiTableFlags_RowBg automatically sets RowBg0 to alternative colors pulled from the Style.");
-        ImGui::Combo("row bg type", (int*)&row_bg_type, "None\0Red\0Gradient\0");
+        ImGui::Combo("row bg usage", (int*)&row_bg_type, "None\0Red\0Gradient\0");
         ImGui::Combo("row bg target", (int*)&row_bg_target, "RowBg0\0RowBg1\0"); ImGui::SameLine(); HelpMarker("Target RowBg0 to override the alternating odd/even colors,\nTarget RowBg1 to blend with them.");
-        ImGui::Combo("cell bg type", (int*)&cell_bg_type, "None\0Blue\0"); ImGui::SameLine(); HelpMarker("We are colorizing cells to B1->C2 here.");
+        ImGui::Combo("cell bg usage", (int*)&cell_bg_type, "None\0Blue\0"); ImGui::SameLine(); HelpMarker("We are colorizing cells to B1->C2 here.");
         IM_ASSERT(row_bg_type >= 0 && row_bg_type <= 2);
         IM_ASSERT(row_bg_target >= 0 && row_bg_target <= 1);
         IM_ASSERT(cell_bg_type >= 0 && cell_bg_type <= 1);
@@ -5422,7 +5422,7 @@ static void ShowDemoWindowTables()
                     ImGui::PushID(item->ID);
                     ImGui::TableNextRow(ImGuiTableRowFlags_None, row_min_height);
 
-                    // For the demo purpose we can select among different type of items submitted in the first column
+                    // For the demo purpose we can select among different usage of items submitted in the first column
                     ImGui::TableSetColumnIndex(0);
                     char label[32];
                     sprintf(label, "%04d", item->ID);
@@ -6744,7 +6744,7 @@ struct ExampleAppConsole
                 continue;
 
             // Normally you would store more information in your item than just a string.
-            // (e.g. make Items[] an array of structure, store color/type etc.)
+            // (e.g. make Items[] an array of structure, store color/usage etc.)
             ImVec4 color;
             bool has_color = false;
             if (strstr(item, "[error]"))          { color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f); has_color = true; }
@@ -7272,7 +7272,7 @@ static void ShowExampleAppLongText(bool* p_open)
     static ImGuiTextBuffer log;
     static int lines = 0;
     ImGui::Text("Printing unusually long amount of text.");
-    ImGui::Combo("Test type", &test_type,
+    ImGui::Combo("Test usage", &test_type,
         "Single call to TextUnformatted()\0"
         "Multiple calls to Text(), clipped\0"
         "Multiple calls to Text(), not clipped (slow)\0");

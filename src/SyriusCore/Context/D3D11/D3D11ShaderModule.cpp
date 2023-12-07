@@ -68,7 +68,7 @@ namespace Syrius{
             case SR_SHADER_FRAGMENT:
                 return "ps_5_0";
             default: {
-                SR_CORE_WARNING("Invalid shader type given to D3D11 shader");
+                SR_CORE_WARNING("Invalid shader usage given to D3D11 shader");
                 return "";
             }
         }

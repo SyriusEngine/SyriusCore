@@ -520,7 +520,7 @@ namespace glm
 	/// significand * exp(2, exponent)
 	///
 	/// If this product is too large to be represented in the
-	/// floating-point type, the result is undefined.
+	/// floating-point usage, the result is undefined.
 	///
 	/// @tparam genType Floating-point scalar or vector types.
 	///

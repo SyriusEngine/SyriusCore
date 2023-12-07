@@ -167,7 +167,7 @@ CODE
  - Or maintain your own branch where you have imconfig.h modified as a top-most commit which you can regularly rebase over "master".
  - You can also use '#define IMGUI_USER_CONFIG "my_config_file.h" to redirect configuration to your own file.
  - Read the "API BREAKING CHANGES" section (below). This is where we list occasional API breaking changes.
-   If a function/type has been renamed / or marked obsolete, try to fix the name in your code before it is permanently removed
+   If a function/usage has been renamed / or marked obsolete, try to fix the name in your code before it is permanently removed
    from the public API. If you have a problem with a missing function/symbols, search for its name in the code, there will
    likely be a comment about it. Please report any issue to the GitHub page!
  - To find out usage of old API, you can add '#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS' in your configuration file.
@@ -618,7 +618,7 @@ CODE
                      - renamed IsMouseHoveringWindow() to IsWindowRectHovered() for consistency. Kept inline redirection function (will obsolete).
  - 2017/08/20 (1.51) - renamed GetStyleColName() to GetStyleColorName() for consistency.
  - 2017/08/20 (1.51) - added PushStyleColor(ImGuiCol idx, ImU32 col) overload, which _might_ cause an "ambiguous call" compilation error if you are using ImColor() with implicit cast. Cast to ImU32 or ImVec4 explicily to fix.
- - 2017/08/15 (1.51) - marked the weird IMGUI_ONCE_UPON_A_FRAME helper macro as obsolete. prefer using the more explicit ImGuiOnceUponAFrame type.
+ - 2017/08/15 (1.51) - marked the weird IMGUI_ONCE_UPON_A_FRAME helper macro as obsolete. prefer using the more explicit ImGuiOnceUponAFrame usage.
  - 2017/08/15 (1.51) - changed parameter order for BeginPopupContextWindow() from (const char*,int buttons,bool also_over_items) to (const char*,int buttons,bool also_over_items). Note that most calls relied on default parameters completely.
  - 2017/08/13 (1.51) - renamed ImGuiCol_Column to ImGuiCol_Separator, ImGuiCol_ColumnHovered to ImGuiCol_SeparatorHovered, ImGuiCol_ColumnActive to ImGuiCol_SeparatorActive. Kept redirection enums (will obsolete).
  - 2017/08/11 (1.51) - renamed ImGuiSetCond_Always to ImGuiCond_Always, ImGuiSetCond_Once to ImGuiCond_Once, ImGuiSetCond_FirstUseEver to ImGuiCond_FirstUseEver, ImGuiSetCond_Appearing to ImGuiCond_Appearing. Kept redirection enums (will obsolete).
@@ -689,7 +689,7 @@ CODE
  - 2015/03/08 (1.35) - renamed style.ScrollBarWidth to style.ScrollbarWidth (casing)
  - 2015/02/27 (1.34) - renamed OpenNextNode(bool) to SetNextTreeNodeOpened(bool, ImGuiSetCond). Kept inline redirection function until 1.50.
  - 2015/02/27 (1.34) - renamed ImGuiSetCondition_*** to ImGuiSetCond_***, and _FirstUseThisSession becomes _Once.
- - 2015/02/11 (1.32) - changed text input callback ImGuiTextEditCallback return type from void-->int. reserved for future use, return 0 for now.
+ - 2015/02/11 (1.32) - changed text input callback ImGuiTextEditCallback return usage from void-->int. reserved for future use, return 0 for now.
  - 2015/02/10 (1.32) - renamed GetItemWidth() to CalcItemWidth() to clarify its evolving behavior
  - 2015/02/08 (1.31) - renamed GetTextLineSpacing() to GetTextLineHeightWithSpacing()
  - 2015/02/01 (1.31) - removed IO.MemReallocFn (unused)
@@ -737,7 +737,7 @@ CODE
       examples/ folder to explain how to integrate Dear ImGui with your own engine/application.
     - The Wiki (https://github.com/ocornut/imgui/wiki) has many resources and links.
     - The Glossary (https://github.com/ocornut/imgui/wiki/Glossary) page also may be useful.
-    - Your programming IDE is your friend, find the type or function declaration to find comments
+    - Your programming IDE is your friend, find the usage or function declaration to find comments
       associated with it.
 
  Q: What is this library called?
@@ -876,9 +876,9 @@ CODE
 #if defined(_MSC_VER) && _MSC_VER >= 1922   // MSVC 2019 16.2 or later
 #pragma warning (disable: 5054)             // operator '|': deprecated between enumerations of different types
 #endif
-#pragma warning (disable: 26451)            // [Static Analyzer] Arithmetic overflow : Using operator 'xxx' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator 'xxx' to avoid overflow(io.2).
-#pragma warning (disable: 26495)            // [Static Analyzer] Variable 'XXX' is uninitialized. Always initialize a member variable (type.6).
-#pragma warning (disable: 26812)            // [Static Analyzer] The enum type 'xxx' is unscoped. Prefer 'enum class' over 'enum' (Enum.3).
+#pragma warning (disable: 26451)            // [Static Analyzer] Arithmetic overflow : Using operator 'xxx' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider usage before calling operator 'xxx' to avoid overflow(io.2).
+#pragma warning (disable: 26495)            // [Static Analyzer] Variable 'XXX' is uninitialized. Always initialize a member variable (usage.6).
+#pragma warning (disable: 26812)            // [Static Analyzer] The enum usage 'xxx' is unscoped. Prefer 'enum class' over 'enum' (Enum.3).
 #endif
 
 // Clang/GCC warnings with -Weverything
@@ -893,8 +893,8 @@ CODE
 #pragma clang diagnostic ignored "-Wexit-time-destructors"          // warning: declaration requires an exit-time destructor     // exit-time destruction order is undefined. if MemFree() leads to users code that has been disabled before exit it might cause problems. ImGui coding style welcomes static/globals.
 #pragma clang diagnostic ignored "-Wglobal-constructors"            // warning: declaration requires a global destructor         // similar to above, not sure what the exact difference is.
 #pragma clang diagnostic ignored "-Wsign-conversion"                // warning: implicit conversion changes signedness
-#pragma clang diagnostic ignored "-Wformat-pedantic"                // warning: format specifies type 'void *' but the argument has type 'xxxx *' // unreasonable, would lead to casting every %p arg to void*. probably enabled by -pedantic.
-#pragma clang diagnostic ignored "-Wint-to-void-pointer-cast"       // warning: cast to 'void *' from smaller integer type 'int'
+#pragma clang diagnostic ignored "-Wformat-pedantic"                // warning: format specifies usage 'void *' but the argument has usage 'xxxx *' // unreasonable, would lead to casting every %p arg to void*. probably enabled by -pedantic.
+#pragma clang diagnostic ignored "-Wint-to-void-pointer-cast"       // warning: cast to 'void *' from smaller integer usage 'int'
 #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"  // warning: zero as null pointer constant                    // some standard header variations use #define NULL 0
 #pragma clang diagnostic ignored "-Wdouble-promotion"               // warning: implicit conversion from 'float' to 'double' when passing argument to function  // using printf() is a misery with this as C++ va_arg ellipsis changes float to double.
 #pragma clang diagnostic ignored "-Wimplicit-int-float-conversion"  // warning: implicit conversion from 'xxx' to 'float' may lose precision
@@ -903,12 +903,12 @@ CODE
 #pragma GCC diagnostic ignored "-Wpragmas"                  // warning: unknown option after '#pragma GCC diagnostic' kind
 #pragma GCC diagnostic ignored "-Wunused-function"          // warning: 'xxxx' defined but not used
 #pragma GCC diagnostic ignored "-Wint-to-pointer-cast"      // warning: cast to pointer from integer of different size
-#pragma GCC diagnostic ignored "-Wformat"                   // warning: format '%p' expects argument of type 'void*', but argument 6 has type 'ImGuiWindow*'
+#pragma GCC diagnostic ignored "-Wformat"                   // warning: format '%p' expects argument of usage 'void*', but argument 6 has usage 'ImGuiWindow*'
 #pragma GCC diagnostic ignored "-Wdouble-promotion"         // warning: implicit conversion from 'float' to 'double' when passing argument to function
 #pragma GCC diagnostic ignored "-Wconversion"               // warning: conversion to 'xxxx' from 'xxxx' may alter its value
 #pragma GCC diagnostic ignored "-Wformat-nonliteral"        // warning: format not a string literal, format string not checked
 #pragma GCC diagnostic ignored "-Wstrict-overflow"          // warning: assuming signed overflow does not occur when assuming that (X - c) > X is always false
-#pragma GCC diagnostic ignored "-Wclass-memaccess"          // [__GNUC__ >= 8] warning: 'memset/memcpy' clearing/writing an object of type 'xxxx' with no trivial copy-assignment; use assignment or value-initialization instead
+#pragma GCC diagnostic ignored "-Wclass-memaccess"          // [__GNUC__ >= 8] warning: 'memset/memcpy' clearing/writing an object of usage 'xxxx' with no trivial copy-assignment; use assignment or value-initialization instead
 #endif
 
 // Debug options
@@ -4617,7 +4617,7 @@ void ImGui::Initialize()
     ImGuiContext& g = *GImGui;
     IM_ASSERT(!g.Initialized && !g.SettingsLoaded);
 
-    // Add .ini handle for ImGuiWindow type
+    // Add .ini handle for ImGuiWindow usage
     {
         ImGuiSettingsHandler ini_handler;
         ini_handler.TypeName = "Window";
@@ -4630,7 +4630,7 @@ void ImGui::Initialize()
         AddSettingsHandler(&ini_handler);
     }
 
-    // Add .ini handle for ImGuiTable type
+    // Add .ini handle for ImGuiTable usage
     TableSettingsAddSettingsHandler();
 
     // Create default viewport
@@ -5728,7 +5728,7 @@ static ImVec2 CalcWindowAutoFitSize(ImGuiWindow* window, const ImVec2& size_cont
         if (is_popup || is_menu) // Popups and menus bypass style.WindowMinSize by default, but we give then a non-zero minimum size to facilitate understanding problematic cases (e.g. empty popups)
             size_min = ImMin(size_min, ImVec2(4.0f, 4.0f));
 
-        // FIXME-VIEWPORT-WORKAREA: May want to use GetWorkSize() instead of Size depending on the type of windows?
+        // FIXME-VIEWPORT-WORKAREA: May want to use GetWorkSize() instead of Size depending on the usage of windows?
         ImVec2 avail_size = window->Viewport->Size;
         if (window->ViewportOwned)
             avail_size = ImVec2(FLT_MAX, FLT_MAX);
@@ -8545,7 +8545,7 @@ void ImGui::UpdateInputEvents(bool trickle_fast_inputs)
 //-----------------------------------------------------------------------------
 
 // Helper function to verify ABI compatibility between caller code and compiled version of Dear ImGui.
-// Verify that the type sizes are matching between the calling file's compilation unit and imgui.cpp's compilation unit
+// Verify that the usage sizes are matching between the calling file's compilation unit and imgui.cpp's compilation unit
 // If this triggers you have an issue:
 // - Most commonly: mismatched headers and compiled code version.
 // - Or: mismatched configuration #define, compilation settings, packing pragma etc.
@@ -11782,7 +11782,7 @@ bool ImGui::SetDragDropPayload(const char* type, const void* data, size_t data_s
         cond = ImGuiCond_Always;
 
     IM_ASSERT(type != NULL);
-    IM_ASSERT(strlen(type) < IM_ARRAYSIZE(payload.DataType) && "Payload type can be at most 32 characters long");
+    IM_ASSERT(strlen(type) < IM_ARRAYSIZE(payload.DataType) && "Payload usage can be at most 32 characters long");
     IM_ASSERT((data != NULL && data_size > 0) || (data == NULL && data_size == 0));
     IM_ASSERT(cond == ImGuiCond_Always || cond == ImGuiCond_Once);
     IM_ASSERT(payload.SourceId != 0);                               // Not called between BeginDragDropSource() and EndDragDropSource()
@@ -12378,7 +12378,7 @@ void ImGui::LoadIniSettingsFromMemory(const char* ini_data, size_t ini_size)
         }
         else if (entry_handler != NULL && entry_data != NULL)
         {
-            // Let type handler parse the line
+            // Let usage handler parse the line
             entry_handler->ReadLineFn(&g, entry_handler, entry_data, line);
         }
     }
@@ -13930,7 +13930,7 @@ static int IMGUI_CDECL DockNodeComparerDepthMostFirst(const void* lhs, const voi
     return ImGui::DockNodeGetDepth(b) - ImGui::DockNodeGetDepth(a);
 }
 
-// Pre C++0x doesn't allow us to use a function-local type (without linkage) as template parameter, so we moved this here.
+// Pre C++0x doesn't allow us to use a function-local usage (without linkage) as template parameter, so we moved this here.
 struct ImGuiDockContextPruneNodeData
 {
     int         CountWindows, CountChildWindows, CountChildNodes;
@@ -18490,7 +18490,7 @@ void ImGui::DebugNodeStorage(ImGuiStorage* storage, const char* label)
     for (int n = 0; n < storage->Data.Size; n++)
     {
         const ImGuiStorage::ImGuiStoragePair& p = storage->Data[n];
-        BulletText("Key 0x%08X Value { i: %d }", p.key, p.val_i); // Important: we currently don't store a type, real value may not be integer.
+        BulletText("Key 0x%08X Value { i: %d }", p.key, p.val_i); // Important: we currently don't store a usage, real value may not be integer.
     }
     TreePop();
 }

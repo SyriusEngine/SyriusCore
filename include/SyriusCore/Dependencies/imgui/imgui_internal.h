@@ -64,8 +64,8 @@ Index of this file:
 #ifdef _MSC_VER
 #pragma warning (push)
 #pragma warning (disable: 4251)     // class 'xxx' needs to have dll-interface to be used by clients of struct 'xxx' // when IMGUI_API is set to__declspec(dllexport)
-#pragma warning (disable: 26812)    // The enum type 'xxx' is unscoped. Prefer 'enum class' over 'enum' (Enum.3). [MSVC Static Analyzer)
-#pragma warning (disable: 26495)    // [Static Analyzer] Variable 'XXX' is uninitialized. Always initialize a member variable (type.6).
+#pragma warning (disable: 26812)    // The enum usage 'xxx' is unscoped. Prefer 'enum class' over 'enum' (Enum.3). [MSVC Static Analyzer)
+#pragma warning (disable: 26495)    // [Static Analyzer] Variable 'XXX' is uninitialized. Always initialize a member variable (usage.6).
 #if defined(_MSC_VER) && _MSC_VER >= 1922 // MSVC 2019 16.2 or later
 #pragma warning (disable: 5054)     // operator '|': deprecated between enumerations of different types
 #endif
@@ -89,7 +89,7 @@ Index of this file:
 #elif defined(__GNUC__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpragmas"              // warning: unknown option after '#pragma GCC diagnostic' kind
-#pragma GCC diagnostic ignored "-Wclass-memaccess"      // [__GNUC__ >= 8] warning: 'memset/memcpy' clearing/writing an object of type 'xxxx' with no trivial copy-assignment; use assignment or value-initialization instead
+#pragma GCC diagnostic ignored "-Wclass-memaccess"      // [__GNUC__ >= 8] warning: 'memset/memcpy' clearing/writing an object of usage 'xxxx' with no trivial copy-assignment; use assignment or value-initialization instead
 #endif
 
 // Legacy defines
@@ -133,7 +133,7 @@ struct ImGuiNextItemData;           // Storage for SetNextItem** functions
 struct ImGuiOldColumnData;          // Storage data for a single column for legacy Columns() api
 struct ImGuiOldColumns;             // Storage data for a columns set for legacy Columns() api
 struct ImGuiPopupData;              // Storage for current popup stack
-struct ImGuiSettingsHandler;        // Storage for one type registered in the .ini file
+struct ImGuiSettingsHandler;        // Storage for one usage registered in the .ini file
 struct ImGuiStackSizes;             // Storage of stack sizes for debugging/asserting
 struct ImGuiStyleMod;               // Stacked style modifier, backup of modified data so we can restore it
 struct ImGuiTabBar;                 // Storage for a tab bar
@@ -864,7 +864,7 @@ enum ImGuiTreeNodeFlagsPrivate_
 enum ImGuiSeparatorFlags_
 {
     ImGuiSeparatorFlags_None                = 0,
-    ImGuiSeparatorFlags_Horizontal          = 1 << 0,   // Axis default to current layout type, so generally Horizontal unless e.g. in a menu bar
+    ImGuiSeparatorFlags_Horizontal          = 1 << 0,   // Axis default to current layout usage, so generally Horizontal unless e.g. in a menu bar
     ImGuiSeparatorFlags_Vertical            = 1 << 1,
     ImGuiSeparatorFlags_SpanAllColumns      = 1 << 2
 };
@@ -928,9 +928,9 @@ struct ImGuiDataTypeTempStorage
 struct ImGuiDataTypeInfo
 {
     size_t      Size;           // Size in bytes
-    const char* Name;           // Short descriptive name for the type, for debugging
-    const char* PrintFmt;       // Default printf format for the type
-    const char* ScanFmt;        // Default scanf format for the type
+    const char* Name;           // Short descriptive name for the usage, for debugging
+    const char* PrintFmt;       // Default printf format for the usage
+    const char* ScanFmt;        // Default scanf format for the usage
 };
 
 // Extend ImGuiDataType_
@@ -948,7 +948,7 @@ struct ImGuiColorMod
     ImVec4          BackupValue;
 };
 
-// Stacked style modifier, backup of modified data so we can restore it. Data type inferred from the variable.
+// Stacked style modifier, backup of modified data so we can restore it. Data usage inferred from the variable.
 struct ImGuiStyleMod
 {
     ImGuiStyleVar   VarIdx;
@@ -2208,7 +2208,7 @@ struct IMGUI_API ImGuiWindowTempData
     ImGuiOldColumns*        CurrentColumns;         // Current columns set
     int                     CurrentTableIdx;        // Current table index (into g.Tables)
     ImGuiLayoutType         LayoutType;
-    ImGuiLayoutType         ParentLayoutType;       // Layout type of parent window at the time of Begin()
+    ImGuiLayoutType         ParentLayoutType;       // Layout usage of parent window at the time of Begin()
 
     // Local parameters stacks
     // We store the current settings outside of the vectors to increase memory locality (reduce cache misses). The vectors are rarely modified. Also it allows us to not heap allocate for short-lived windows which are not using those settings.
@@ -3119,7 +3119,7 @@ namespace ImGui
     template<typename T>                                        IMGUI_API T     RoundScalarWithFormatT(const char* format, ImGuiDataType data_type, T v);
     template<typename T>                                        IMGUI_API bool  CheckboxFlagsT(const char* label, T* flags, T flags_value);
 
-    // Data type helpers
+    // Data usage helpers
     IMGUI_API const ImGuiDataTypeInfo*  DataTypeGetInfo(ImGuiDataType data_type);
     IMGUI_API int           DataTypeFormatString(char* buf, int buf_size, ImGuiDataType data_type, const void* p_data, const char* format);
     IMGUI_API void          DataTypeApplyOp(ImGuiDataType data_type, int op, void* output, const void* arg_1, const void* arg_2);

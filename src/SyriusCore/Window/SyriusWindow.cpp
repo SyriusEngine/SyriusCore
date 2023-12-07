@@ -1,11 +1,11 @@
-#include "../../../include/SyriusCore/Window/SyriusWindow.hpp"
+#include "../../../include/SyriusCore/Window/Window.hpp"
 #include "../Utils/DebugMacros.hpp"
 
 namespace Syrius{
 
-    uint32 SyriusWindow::m_ImGuiInstances = 0;
+    uint32 Window::m_ImGuiInstances = 0;
 
-    SyriusWindow::SyriusWindow(const WindowDesc &desc)
+    Window::Window(const WindowDesc &desc)
     : m_PosX(desc.xPos),
       m_PosY(desc.yPos),
       m_Width(desc.width),
@@ -25,55 +25,55 @@ namespace Syrius{
 
     }
 
-    SyriusWindow::~SyriusWindow() {
+    Window::~Window() {
         if (m_UseImGui){
             this->destroyImGuiContext();
         }
     }
 
-    int32 SyriusWindow::getPosX() const {
+    int32 Window::getPosX() const {
         return m_PosX;
     }
 
-    int32 SyriusWindow::getPosY() const {
+    int32 Window::getPosY() const {
         return m_PosY;
     }
 
-    uint32 SyriusWindow::getWidth() const {
+    uint32 Window::getWidth() const {
         return m_Width;
     }
 
-    uint32 SyriusWindow::getHeight() const {
+    uint32 Window::getHeight() const {
         return m_Height;
     }
 
-    const std::string &SyriusWindow::getTitle() const {
+    const std::string &Window::getTitle() const {
         return m_Title;
     }
 
-    bool SyriusWindow::isOpen() const {
+    bool Window::isOpen() const {
         return m_Open;
     }
 
-    bool SyriusWindow::isFocused() const {
+    bool Window::isFocused() const {
         return m_Focused;
     }
 
-    bool SyriusWindow::isFullscreen() const {
+    bool Window::isFullscreen() const {
         return m_Fullscreen;
     }
 
-    bool SyriusWindow::hasEvent() const {
+    bool Window::hasEvent() const {
         return !m_EventQueue.empty();
     }
 
-    Event SyriusWindow::getEvent() {
+    Event Window::getEvent() {
         auto event = m_EventQueue[0];
         m_EventQueue.pop_front();
         return event;
     }
 
-    void SyriusWindow::createImGuiContext() {
+    void Window::createImGuiContext() {
         SR_CORE_PRECONDITION(m_Context.isValid(), "A valid context must be created in order to create an ImGui context")
         SR_CORE_PRECONDITION(!m_UseImGui, "There exists already an ImGui context")
 
@@ -82,7 +82,7 @@ namespace Syrius{
         m_ImGuiInstances++;
     }
 
-    void SyriusWindow::destroyImGuiContext() {
+    void Window::destroyImGuiContext() {
         SR_CORE_PRECONDITION(m_Context.isValid(), "A valid context must be created in order to destroy an ImGui context")
         SR_CORE_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
 
@@ -91,25 +91,25 @@ namespace Syrius{
         m_ImGuiInstances--;
     }
 
-    void SyriusWindow::onImGuiBegin() {
+    void Window::onImGuiBegin() {
         SR_CORE_PRECONDITION(m_Context.isValid(), "A valid context must be created in order to destroy an ImGui context")
         SR_CORE_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
 
         m_Context->onImGuiBegin();
     }
 
-    void SyriusWindow::onImGuiEnd() {
+    void Window::onImGuiEnd() {
         SR_CORE_PRECONDITION(m_Context.isValid(), "A valid context must be created in order to destroy an ImGui context")
         SR_CORE_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
 
         m_Context->onImGuiEnd();
     }
 
-    void SyriusWindow::dispatchEvent(const Event &event) {
+    void Window::dispatchEvent(const Event &event) {
         m_EventQueue.push_back(event);
     }
 
-    void SyriusWindow::destroyContext() {
+    void Window::destroyContext() {
         SR_CORE_MESSAGE_ON_CONDITION(!m_UseImGui, "There exists an ImGui context, destroying it");
 
         if (m_UseImGui){

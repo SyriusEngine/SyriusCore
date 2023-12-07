@@ -42,7 +42,7 @@ namespace glm
 	/// @param proj Specifies the current projection matrix
 	/// @param viewport Specifies the current viewport
 	/// @return Return the computed window coordinates.
-	/// @tparam T Native type used for the computation. Currently supported: half (not recommended), float or double.
+	/// @tparam T Native usage used for the computation. Currently supported: half (not recommended), float or double.
 	/// @tparam U Currently supported: Floating-point types and integer types.
 	///
 	/// @see <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluProject.xml">gluProject man page</a>
@@ -58,7 +58,7 @@ namespace glm
 	/// @param proj Specifies the current projection matrix
 	/// @param viewport Specifies the current viewport
 	/// @return Return the computed window coordinates.
-	/// @tparam T Native type used for the computation. Currently supported: half (not recommended), float or double.
+	/// @tparam T Native usage used for the computation. Currently supported: half (not recommended), float or double.
 	/// @tparam U Currently supported: Floating-point types and integer types.
 	///
 	/// @see <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluProject.xml">gluProject man page</a>
@@ -74,7 +74,7 @@ namespace glm
 	/// @param proj Specifies the current projection matrix
 	/// @param viewport Specifies the current viewport
 	/// @return Return the computed window coordinates.
-	/// @tparam T Native type used for the computation. Currently supported: half (not recommended), float or double.
+	/// @tparam T Native usage used for the computation. Currently supported: half (not recommended), float or double.
 	/// @tparam U Currently supported: Floating-point types and integer types.
 	///
 	/// @see <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluProject.xml">gluProject man page</a>
@@ -90,7 +90,7 @@ namespace glm
 	/// @param proj Specifies the projection matrix
 	/// @param viewport Specifies the viewport
 	/// @return Returns the computed object coordinates.
-	/// @tparam T Native type used for the computation. Currently supported: half (not recommended), float or double.
+	/// @tparam T Native usage used for the computation. Currently supported: half (not recommended), float or double.
 	/// @tparam U Currently supported: Floating-point types and integer types.
 	///
 	/// @see <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluUnProject.xml">gluUnProject man page</a>
@@ -106,7 +106,7 @@ namespace glm
 	/// @param proj Specifies the projection matrix
 	/// @param viewport Specifies the viewport
 	/// @return Returns the computed object coordinates.
-	/// @tparam T Native type used for the computation. Currently supported: half (not recommended), float or double.
+	/// @tparam T Native usage used for the computation. Currently supported: half (not recommended), float or double.
 	/// @tparam U Currently supported: Floating-point types and integer types.
 	///
 	/// @see <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluUnProject.xml">gluUnProject man page</a>
@@ -122,7 +122,7 @@ namespace glm
 	/// @param proj Specifies the projection matrix
 	/// @param viewport Specifies the viewport
 	/// @return Returns the computed object coordinates.
-	/// @tparam T Native type used for the computation. Currently supported: half (not recommended), float or double.
+	/// @tparam T Native usage used for the computation. Currently supported: half (not recommended), float or double.
 	/// @tparam U Currently supported: Floating-point types and integer types.
 	///
 	/// @see <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluUnProject.xml">gluUnProject man page</a>
@@ -135,7 +135,7 @@ namespace glm
 	/// @param center Specify the center of a picking region in window coordinates.
 	/// @param delta Specify the width and height, respectively, of the picking region in window coordinates.
 	/// @param viewport Rendering viewport
-	/// @tparam T Native type used for the computation. Currently supported: half (not recommended), float or double.
+	/// @tparam T Native usage used for the computation. Currently supported: half (not recommended), float or double.
 	/// @tparam U Currently supported: Floating-point types and integer types.
 	///
 	/// @see <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluPickMatrix.xml">gluPickMatrix man page</a>

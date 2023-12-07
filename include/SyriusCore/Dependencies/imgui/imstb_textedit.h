@@ -82,12 +82,12 @@
 //   separately).
 //
 //   To compile in this mode, you must define STB_TEXTEDIT_CHARTYPE to a
-//   primitive type that defines a single character (e.g. char, wchar_t, etc).
+//   primitive usage that defines a single character (e.g. char, wchar_t, etc).
 //
 //   To save space or increase undo-ability, you can optionally define the
 //   following things that are used by the undo system:
 //
-//      STB_TEXTEDIT_POSITIONTYPE         small int type encoding a valid cursor position
+//      STB_TEXTEDIT_POSITIONTYPE         small int usage encoding a valid cursor position
 //      STB_TEXTEDIT_UNDOSTATECOUNT       the number of undo states to allow
 //      STB_TEXTEDIT_UNDOCHARCOUNT        the number of characters to store in the undo buffer
 //
@@ -118,14 +118,14 @@
 //
 // Symbols that must be the same in header-file and implementation mode:
 //
-//     STB_TEXTEDIT_CHARTYPE             the character type
-//     STB_TEXTEDIT_POSITIONTYPE         small type that is a valid cursor position
+//     STB_TEXTEDIT_CHARTYPE             the character usage
+//     STB_TEXTEDIT_POSITIONTYPE         small usage that is a valid cursor position
 //     STB_TEXTEDIT_UNDOSTATECOUNT       the number of undo states to allow
 //     STB_TEXTEDIT_UNDOCHARCOUNT        the number of characters to store in the undo buffer
 //
 // Symbols you must define for implementation mode:
 //
-//    STB_TEXTEDIT_STRING               the type of object representing a string being edited,
+//    STB_TEXTEDIT_STRING               the usage of object representing a string being edited,
 //                                      typically this is a wrapper object with other data you need
 //
 //    STB_TEXTEDIT_STRINGLEN(obj)       the length of the string (ideally O(1))
@@ -136,7 +136,7 @@
 //                                        starting at character #n (i.e. accounts for kerning
 //                                        with previous char)
 //    STB_TEXTEDIT_KEYTOTEXT(k)         maps a keyboard input to an insertable character
-//                                        (return type is int, -1 means not valid to insert)
+//                                        (return usage is int, -1 means not valid to insert)
 //    STB_TEXTEDIT_GETCHAR(obj,i)       returns the i'th character of obj, 0-based
 //    STB_TEXTEDIT_NEWLINE              the character returned by _GETCHAR() we recognize
 //                                        as manually wordwrapping for end-of-line positioning
@@ -241,7 +241,7 @@
 //          various definitions like STB_TEXTEDIT_K_LEFT have the is-key-event bit
 //          set, and make STB_TEXTEDIT_KEYTOCHAR check that the is-key-event bit is
 //          clear. STB_TEXTEDIT_KEYTYPE defaults to int, but you can #define it to
-//          anything other type you wante before including.
+//          anything other usage you wante before including.
 //
 //
 //   When rendering, you can read the cursor position and selection state from
@@ -1275,7 +1275,7 @@ static void stb_text_undo(STB_TEXTEDIT_STRING *str, STB_TexteditState *state)
       STB_TEXTEDIT_DELETECHARS(str, u.where, u.delete_length);
    }
 
-   // check type of recorded action:
+   // check usage of recorded action:
    if (u.insert_length) {
       // easy case: was a deletion, so we need to insert n characters
       STB_TEXTEDIT_INSERTCHARS(str, u.where, &s->undo_char[u.char_storage], u.insert_length);

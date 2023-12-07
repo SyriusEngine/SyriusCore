@@ -9,7 +9,7 @@ namespace Syrius{
         std::string name;
         uint32 size                 = 0;
         const void* data            = nullptr;
-        SR_BUFFER_TYPE type         = SR_BUFFER_DEFAULT;
+        SR_BUFFER_USAGE usage         = SR_BUFFER_USAGE_DEFAULT;
         SR_SHADER_TYPE shaderStage  = SR_SHADER_VERTEX;
     };
 
@@ -29,11 +29,11 @@ namespace Syrius{
 
         [[nodiscard]] uint32 getSize() const;
 
-        [[nodiscard]] SR_BUFFER_TYPE getBufferType() const;
+        [[nodiscard]] SR_BUFFER_USAGE getBufferType() const;
 
     protected:
         uint32 m_Size;
-        SR_BUFFER_TYPE m_Type;
+        SR_BUFFER_USAGE m_Type;
         std::string m_BlockName;
 
     };

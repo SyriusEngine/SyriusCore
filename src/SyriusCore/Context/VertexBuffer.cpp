@@ -5,7 +5,7 @@ namespace Syrius{
 
     VertexBuffer::VertexBuffer(const VertexBufferDesc &desc)
     : m_Count(desc.count),
-    m_Type(desc.type),
+    m_Type(desc.usage),
     m_Size(0),
     m_Layout(desc.layout){
         SR_CORE_PRECONDITION(desc.layout.isValid(), "Vertex layout cannot be null");
@@ -27,11 +27,11 @@ namespace Syrius{
         return m_Count;
     }
 
-    SR_BUFFER_TYPE VertexBuffer::getType() const {
+    SR_BUFFER_USAGE VertexBuffer::getType() const {
         return m_Type;
     }
 
-    const ResourceView<VertexDescription>& VertexBuffer::getVertexDescription() const {
+    const ResourceView<VertexLayout>& VertexBuffer::getVertexDescription() const {
         return m_Layout;
     }
 }

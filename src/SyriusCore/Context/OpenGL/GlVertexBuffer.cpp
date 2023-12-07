@@ -6,7 +6,7 @@ namespace Syrius{
     : VertexBuffer(desc),
     m_BufferID(0){
         glCreateBuffers(1, &m_BufferID);
-        glNamedBufferData(m_BufferID, m_Size, desc.data, getGlBufferType(desc.type));
+        glNamedBufferData(m_BufferID, m_Size, desc.data, getGlBufferType(desc.usage));
     }
 
     GlVertexBuffer::~GlVertexBuffer() {

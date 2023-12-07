@@ -279,7 +279,7 @@ namespace detail
 	}
 
 	// sign
-	// fast and works for any type
+	// fast and works for any usage
 	template<typename genFIType>
 	GLM_FUNC_QUALIFIER genFIType sign(genFIType x)
 	{

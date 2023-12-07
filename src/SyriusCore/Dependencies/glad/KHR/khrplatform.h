@@ -66,10 +66,10 @@
  *    khronos_utime_nanoseconds_t unsigned time interval or absolute time in
  *                                         nanoseconds
  *    khronos_stime_nanoseconds_t signed time interval in nanoseconds
- *    khronos_boolean_enum_t      enumerated boolean type. This should
- *      only be used as a base type when a client API's boolean type is
- *      an enum. Client APIs which use an integer or other type for
- *      booleans cannot use this as the base type for their boolean.
+ *    khronos_boolean_enum_t      enumerated boolean usage. This should
+ *      only be used as a base usage when a client API's boolean usage is
+ *      an enum. Client APIs which use an integer or other usage for
+ *      booleans cannot use this as the base usage for their boolean.
  *
  * Tokens defined in khrplatform.h:
  *
@@ -97,7 +97,7 @@
 /*-------------------------------------------------------------------------
  * Definition of KHRONOS_APICALL
  *-------------------------------------------------------------------------
- * This precedes the return type of the function in the function prototype.
+ * This precedes the return usage of the function in the function prototype.
  */
 #if defined(KHRONOS_STATIC)
     /* If the preprocessor constant KHRONOS_STATIC is defined, make the
@@ -116,7 +116,7 @@
 /*-------------------------------------------------------------------------
  * Definition of KHRONOS_APIENTRY
  *-------------------------------------------------------------------------
- * This follows the return type of the function  and precedes the function
+ * This follows the return usage of the function  and precedes the function
  * name in the function prototype.
  */
 #if defined(_WIN32) && !defined(_WIN32_WCE) && !defined(__SCITECH_SNAP__)
@@ -138,7 +138,7 @@
 #endif
 
 /*-------------------------------------------------------------------------
- * basic type definitions
+ * basic usage definitions
  *-----------------------------------------------------------------------*/
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || defined(__GNUC__) || defined(__SCO__) || defined(__USLC__)
 
@@ -249,7 +249,7 @@ typedef unsigned long  int     khronos_usize_t;
 
 #if KHRONOS_SUPPORT_FLOAT
 /*
- * Float type
+ * Float usage
  */
 typedef          float         khronos_float_t;
 #endif
@@ -276,7 +276,7 @@ typedef khronos_int64_t        khronos_stime_nanoseconds_t;
 #endif
 
 /*
- * Enumerated boolean type
+ * Enumerated boolean usage
  *
  * Values other than zero should be considered to be true.  Therefore
  * comparisons should not be made against KHRONOS_TRUE.

@@ -2,7 +2,7 @@
 
 #include "../Utils/PlatformInclude.hpp"
 
-#include "../../../include/SyriusCore/Window/SyriusWindow.hpp"
+#include "../../../include/SyriusCore/Window/Window.hpp"
 #include "../../../include/SyriusCore/Window/Event/KeyboardEvent.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)

@@ -1,6 +1,6 @@
 #include "Layer.hpp"
 
-Layer::Layer(ResourceView<Context>& context, const Resource<SyriusWindow> &window, EasyIni::Configuration& config):
+Layer::Layer(ResourceView<Context>& context, const Resource<Window> &window, EasyIni::Configuration& config):
 m_Context(context),
 m_Window(window),
 m_Config(config),
@@ -18,7 +18,7 @@ ResourceView<VertexArray> Layer::loadMesh(Mesh &mesh, ShaderProgram &program) {
     layout->addAttribute("TexCoord", SR_FLOAT32_2);
 
     VertexBufferDesc vboDesc;
-    vboDesc.type = SR_BUFFER_DEFAULT;
+    vboDesc.usage = SR_BUFFER_USAGE_DEFAULT;
     vboDesc.data = &mesh.vertices[0];
     vboDesc.layout = layout;
     vboDesc.count = mesh.vertices.size();
@@ -27,7 +27,7 @@ ResourceView<VertexArray> Layer::loadMesh(Mesh &mesh, ShaderProgram &program) {
     IndexBufferDesc iboDesc;
     iboDesc.data = &mesh.indices[0];
     iboDesc.count = mesh.indices.size();
-    iboDesc.type = SR_BUFFER_DEFAULT;
+    iboDesc.usage = SR_BUFFER_USAGE_DEFAULT;
     iboDesc.dataType = SR_UINT32;
     auto ibo = m_Context->createIndexBuffer(iboDesc);
 

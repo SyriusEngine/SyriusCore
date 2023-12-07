@@ -23,12 +23,12 @@ typedef enum SR_SHADER_CODE_TYPE {
 } SR_SHADER_CODE_TYPE;
 
 // buffer access types
-typedef enum SR_BUFFER_TYPE {
-    SR_BUFFER_DEFAULT       = 0x01,
-    SR_BUFFER_DYNAMIC       = 0x02,
-    SR_BUFFER_STATIC        = 0x03
+typedef enum SR_BUFFER_USAGE {
+    SR_BUFFER_USAGE_DEFAULT       = 0x01,
+    SR_BUFFER_USAGE_DYNAMIC       = 0x02,
+    SR_BUFFER_USAGE_STATIC        = 0x03
 
-} SR_BUFFER_TYPE;
+} SR_BUFFER_USAGE;
 
 // drawing modes
 typedef enum SR_DRAW_TYPE {

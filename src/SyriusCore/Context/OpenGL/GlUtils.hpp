@@ -17,7 +17,7 @@ namespace Syrius{
 
     GLenum getGlDataType(SR_TYPE type);
 
-    GLenum getGlBufferType(SR_BUFFER_TYPE type);
+    GLenum getGlBufferType(SR_BUFFER_USAGE type);
 
     GLenum getGlTextureType(SR_CHANNEL_FORMAT type);
 

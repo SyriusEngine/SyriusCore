@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../include/SyriusCore/Window/SyriusWindow.hpp"
+#include "../../../include/SyriusCore/Window/Window.hpp"
 #include "../../../include/SyriusCore/Utils/PlatformDetection.hpp"
 #include "../Utils/DebugMacros.hpp"
 #include "X11Utils.hpp"
@@ -10,7 +10,7 @@
 
 namespace Syrius{
 
-    class SyriusWindowX11Impl: public SyriusWindow{
+    class SyriusWindowX11Impl: public Window{
     public:
 
         explicit SyriusWindowX11Impl(const WindowDesc& desc);
