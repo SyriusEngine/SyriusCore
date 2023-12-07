@@ -5,7 +5,7 @@
 
 class Layer{
 public:
-    Layer(ResourceView<Context>& context, const Resource<Window>& window, EasyIni::Configuration& config);
+    Layer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
 
     virtual ~Layer();
 
@@ -24,6 +24,6 @@ protected:
 protected:
     ResourceView<Context>& m_Context;
     EasyIni::Configuration& m_Config;
-    const Resource<Window>& m_Window;
+    const Resource<SyriusWindow>& m_Window;
     ShaderLibrary m_ShaderLibrary;
 };

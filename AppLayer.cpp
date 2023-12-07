@@ -1,7 +1,7 @@
 #include <chrono>
 #include "AppLayer.hpp"
 
-AppLayer::AppLayer(ResourceView<Context> &context, const Resource<Window> &window, EasyIni::Configuration &config):
+AppLayer::AppLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config):
 Layer(context, window, config),
 m_DeltaTime(0.0),
 m_LastFrameTime(0.0),

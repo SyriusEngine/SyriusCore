@@ -8,7 +8,7 @@ namespace Syrius{
     uint32 SyriusWindowWin32Impl::m_WindowCount = 0;
 
     SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc):
-            Window(desc),
+            SyriusWindow(desc),
             m_Hwnd(nullptr),
             m_Callback(0),
             m_Icon(nullptr),

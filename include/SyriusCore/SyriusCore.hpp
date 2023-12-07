@@ -8,7 +8,7 @@
 #include "Image/Image.hpp"
 #include "Utils/Resource.hpp"
 
-#include "Window/Window.hpp"
+#include "Window/SyriusWindow.hpp"
 
 #include "Context/Context.hpp"
 #include "Context/ShaderModule.hpp"
@@ -25,7 +25,7 @@
 
 namespace Syrius {
 
-    SR_CORE_API Resource<Window> createWindow(const WindowDesc& windowDesc);
+    SR_CORE_API Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc);
 
     SR_CORE_API void setDebugMessageCallback(handleDebugMessageFunc callback);
 

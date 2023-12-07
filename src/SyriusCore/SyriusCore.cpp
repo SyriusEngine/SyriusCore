@@ -7,10 +7,10 @@
 
 namespace Syrius {
 
-    Resource<Window> createWindow(const WindowDesc& windowDesc){
+    Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc){
 #if defined(SR_CORE_PLATFORM_WIN64)
         auto ptr = new SyriusWindowWin32Impl(windowDesc);
-        return Resource<Window>(ptr);
+        return Resource<SyriusWindow>(ptr);
 #elif defined(SR_CORE_PLATFORM_LINUX)
         auto ptr = new SyriusWindowX11Impl(windowDesc);
         return Resource<Window>(ptr);

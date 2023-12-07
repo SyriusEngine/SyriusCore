@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../include/SyriusCore/Window/Window.hpp"
+#include "../../../include/SyriusCore/Window/SyriusWindow.hpp"
 #include "../../../include/SyriusCore/Utils/PlatformDetection.hpp"
 #include "../Utils/DebugMacros.hpp"
 #include "X11Utils.hpp"

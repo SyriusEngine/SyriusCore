@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SyriusCoreInclude.hpp"
-#include "../Window/Window.hpp"
+#include "../Window/SyriusWindow.hpp"
 
 namespace Syrius {
 
@@ -44,7 +44,7 @@ namespace Syrius {
 
         virtual void terminatePlatformGlad() = 0;
 
-        virtual Resource<Window> createWindow(const WindowDesc& windowDesc) = 0;
+        virtual Resource<SyriusWindow> createWindow(const WindowDesc& windowDesc) = 0;
 
         void initGlad();
 

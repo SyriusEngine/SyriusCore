@@ -24,7 +24,7 @@ private:
 
 private:
     EasyIni::Configuration m_Config;
-    Resource<Window> m_Window;
+    Resource<SyriusWindow> m_Window;
     ResourceView<Context> m_Context;
 
     std::vector<RCP<Layer>> m_Layers;

@@ -19,7 +19,7 @@
 
 namespace Syrius{
 
-    class Window;
+    class SyriusWindow;
 
     struct SR_CORE_API ContextDesc{
         uint8 depthBits        = 24;
@@ -170,7 +170,7 @@ namespace Syrius{
 
     protected:
 
-        friend Window;
+        friend SyriusWindow;
 
     protected:
         uint32 m_Width;

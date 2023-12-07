@@ -4,7 +4,7 @@
 
 class BasicLayer: public Layer{
 public:
-    BasicLayer(ResourceView<Context>& context, const Resource<Window>& window, EasyIni::Configuration& config);
+    BasicLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~BasicLayer() override;
 
