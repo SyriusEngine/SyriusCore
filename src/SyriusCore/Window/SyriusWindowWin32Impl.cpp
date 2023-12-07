@@ -164,13 +164,12 @@ namespace Syrius{
         SR_CORE_CHECK_CALL(SetWindowTextW(m_Hwnd, wTitle.c_str()), "Failed to set window title");
     }
 
-    void SyriusWindowWin32Impl::setIcon(const std::string &imagePath, bool flipVertically, uint32 icons) {
-        auto img = new Image(imagePath, flipVertically);
+    void SyriusWindowWin32Impl::setIcon(const ImageFileDesc& desc, uint32 icons) {
+        auto img = createImage(desc);
         setIcon(img, icons);
-        delete img;
     }
 
-    void SyriusWindowWin32Impl::setIcon(Image *image, uint32 icons) {
+    void SyriusWindowWin32Impl::setIcon(const Resource<Image>& image, uint32 icons) {
         if (m_Icon){
             DestroyIcon(m_Icon);
             m_Icon = nullptr;

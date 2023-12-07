@@ -34,7 +34,9 @@ void AppLayer::onAttach() {
 
     SamplerDesc samplerDesc;
     m_Sampler = m_Context->createSampler(samplerDesc);
-    auto image = createImage("./Resources/Textures/awesomeface.png");
+    ImageFileDesc imgDesc;
+    imgDesc.fileName = "./Resources/Textures/awesomeface.png";
+    auto image = createImage(imgDesc);
     Texture2DImageDesc t2dDesc(image);
     m_Texture = m_Context->createTexture2D(t2dDesc);
 

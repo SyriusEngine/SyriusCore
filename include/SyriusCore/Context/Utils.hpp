@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Utils/SyriusCoreInclude.hpp"
-#include "../Utils/Image.hpp"
+#include "../Image/ImageFactory.hpp"
 #include "../Utils/Resource.hpp"
 
 // shader types

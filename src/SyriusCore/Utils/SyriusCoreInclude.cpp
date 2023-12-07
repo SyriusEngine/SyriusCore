@@ -86,7 +86,7 @@ namespace Syrius{
         }
     }
 
-    uint8 getTextureDataChannelCount(SR_TEXTURE_FORMAT format){
+    uint8 getTextureFormatChannelCount(SR_TEXTURE_FORMAT format){
         return format >> 4;
     }
 

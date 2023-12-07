@@ -5,7 +5,7 @@
 #include "Utils/PlatformAPI.hpp"
 #include "Utils/PlatformDetection.hpp"
 
-#include "Utils/Image.hpp"
+#include "Image/Image.hpp"
 #include "Utils/Resource.hpp"
 
 #include "Window/Window.hpp"
@@ -24,10 +24,6 @@
 #include "Dependencies/imgui/imgui.h"
 
 namespace Syrius {
-
-    SR_CORE_API Resource<Image> createImage(const std::string& fileName, bool flipOnLoad = true);
-
-    SR_CORE_API Resource<Image> createImage(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_FORMAT format);
 
     SR_CORE_API Resource<Window> createWindow(const WindowDesc& windowDesc);
 

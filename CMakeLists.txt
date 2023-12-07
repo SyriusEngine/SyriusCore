@@ -86,10 +86,11 @@ set(SYRIUSCORE_CORE_SRC
         src/SyriusCore/Utils/MemoryAllocationTracker.cpp
         src/SyriusCore/Utils/SyriusCoreInclude.cpp)
 
-set(SYRIUSCORE_UTILS_SRC
-    src/SyriusCore/Utils/Image.cpp
-    src/SyriusCore/Utils/ImageDataF32.cpp
-    src/SyriusCore/Utils/ImageDataUI8.cpp)
+set(SYRIUSCORE_IMAGE_SRC
+    src/SyriusCore/Image/Image.cpp
+    src/SyriusCore/Image/ImageFactory.cpp
+    src/SyriusCore/Image/ImageUI8.cpp
+    src/SyriusCore/Image/ImageF32.cpp )
 
 set(SYRIUSCORE_WINDOW_SRC
     ${SYRIUSCORE_PLATFORM_WINDOW_SRC}
@@ -101,6 +102,7 @@ set(SYRIUSCORE_WINDOW_SRC
 
 set(SYRIUSCORE_GRAPHICS_API_SRC
     ${SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC}
+    ${SYRIUSCORE_IMAGE_SRC}
 
     src/SyriusCore/Context/Context.cpp
     src/SyriusCore/Context/Viewport.cpp
@@ -136,11 +138,10 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
     )
 
 set(SYRIUSCORE_SRC
-        ${SYRIUSCORE_CORE_SRC}
-        ${SYRIUSCORE_UTILS_SRC}
-        ${SYRIUSCORE_WINDOW_SRC}
-        ${SYRIUSCORE_GRAPHICS_API_SRC}
-        src/SyriusCore/SyriusCore.cpp)
+    ${SYRIUSCORE_CORE_SRC}
+    ${SYRIUSCORE_WINDOW_SRC}
+    ${SYRIUSCORE_GRAPHICS_API_SRC}
+    src/SyriusCore/SyriusCore.cpp )
 
 add_library(SyriusCore SHARED ${SYRIUSCORE_SRC})
 
@@ -152,9 +153,6 @@ message(STATUS "CMAKE_RUNTIME_OUTPUT_DIRECTORY: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY
 
 
 if (WIN32)
-    file(GLOB VULKAN_DLL "./Dependencies/Vulkan/1.3.211.0/Bin/*.dll")
-    file(COPY ${VULKAN_DLL} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
     if (MINGW)
         set(SYRIUS_CORE_LIBS
                 -limm32
@@ -194,13 +192,14 @@ include_directories(/glm/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(SYRIUSCOREDEV_SRC
-        SyriusCoreDev/SyriusCoreDev.cpp
-        SyriusCoreDev/ShaderLibrary.cpp
-        SyriusCoreDev/Utils.cpp
-        SyriusCoreDev/Camera.cpp
-        SyriusCoreDev/Layer.cpp
-        TestLayers/BasicLayer.cpp
-        AppLayer.cpp SyriusCoreDev/Projection.cpp SyriusCoreDev/Projection.hpp)
+    SyriusCoreDev/SyriusCoreDev.cpp
+    SyriusCoreDev/ShaderLibrary.cpp
+    SyriusCoreDev/Utils.cpp
+    SyriusCoreDev/Camera.cpp
+    SyriusCoreDev/Layer.cpp
+    TestLayers/BasicLayer.cpp
+    AppLayer.cpp
+    SyriusCoreDev/Projection.cpp SyriusCoreDev/Projection.hpp)
 
 add_executable(SyriusCoreDev main.cpp ${SYRIUSCOREDEV_SRC})
 

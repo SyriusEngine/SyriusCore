@@ -57,12 +57,16 @@ namespace Syrius{
     }
 
     Resource<Image> GlTexture2D::getData() {
-        auto channelCount = getTextureDataChannelCount(m_Format);
+        auto channelCount = getTextureFormatChannelCount(m_Format);
         auto size = m_Width * m_Height * channelCount;
         auto data = Resource<uint8>(new uint8[size]);
         glGetTextureImage(m_TextureID, 0, m_GlFormat, m_GlDataType, size, data.get());
-        return createResource<Image>(data.get(), m_Width, m_Height, m_Format);
-
+        ImageUI8Desc imgDesc;
+        imgDesc.width = m_Width;
+        imgDesc.height = m_Height;
+        imgDesc.format = m_Format;
+        imgDesc.pixelData = data.get();
+        return createImageUI8(imgDesc);
     }
 
     uint64 GlTexture2D::getIdentifier() const {
@@ -70,7 +74,7 @@ namespace Syrius{
     }
 
     void GlTexture2D::setGlFormats() {
-        auto channelCount = getTextureDataChannelCount(m_Format);
+        auto channelCount = getTextureFormatChannelCount(m_Format);
         switch (channelCount){
             case 4:
                 m_GlFormat = GL_RGBA;

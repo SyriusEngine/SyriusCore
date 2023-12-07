@@ -7,14 +7,6 @@
 
 namespace Syrius {
 
-    Resource<Image> createImage(const std::string& fileName, bool flipOnLoad){
-        return createResource<Image>(fileName, flipOnLoad);
-    }
-
-    Resource<Image> createImage(const ubyte* pixelData, int32 width, int32 height, SR_TEXTURE_FORMAT format){
-        return createResource<Image>(pixelData, width, height, format);
-    }
-
     Resource<Window> createWindow(const WindowDesc& windowDesc){
 #if defined(SR_CORE_PLATFORM_WIN64)
         auto ptr = new SyriusWindowWin32Impl(windowDesc);

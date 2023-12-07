@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Utils/Image.hpp"
+#include "../Image/Image.hpp"
 #include "../Utils/Resource.hpp"
 #include "Utils.hpp"
 #include "Sampler.hpp"

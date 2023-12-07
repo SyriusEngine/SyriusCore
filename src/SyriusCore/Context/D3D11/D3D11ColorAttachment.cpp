@@ -54,7 +54,12 @@ namespace Syrius {
         SR_CORE_D3D11_CALL(m_Context->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &mappedResource));
 
         BYTE* data = static_cast<BYTE*>(mappedResource.pData);
-        auto img = Resource<Image>(new Image(data, desc.Width, desc.Height, m_Format));
+        ImageUI8Desc imgDesc;
+        imgDesc.width = desc.Width;
+        imgDesc.height = desc.Height;
+        imgDesc.format = m_Format;
+        imgDesc.pixelData = data;
+        auto img = createImageUI8(imgDesc);
         m_Context->Unmap(stagingTexture, 0);
         stagingTexture->Release();
         return std::move(img);

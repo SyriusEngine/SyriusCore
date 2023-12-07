@@ -12,7 +12,7 @@ namespace Syrius{
     m_TextureView(nullptr){
         SR_CORE_PRECONDITION(desc.data != nullptr, "Texture data must not be null");
 
-        auto channelCount = getTextureDataChannelCount(desc.format);
+        auto channelCount = getTextureFormatChannelCount(desc.format);
         if (channelCount == 3){
             SR_CORE_EXCEPTION("D3D11 does not support 3 channel textures, please supply data in format with 1, 2 or 4 channels");
         }
@@ -109,7 +109,7 @@ namespace Syrius{
         SR_CORE_PRECONDITION(y + height <= m_Height, "y + height is out of range");
 
         // TODO: Test this code because dont know if it works
-        auto channelCount = getTextureDataChannelCount(m_Format);
+        auto channelCount = getTextureFormatChannelCount(m_Format);
         D3D11_BOX box = { 0 };
         box.left = x;
         box.right = x + width;
@@ -138,7 +138,12 @@ namespace Syrius{
         SR_CORE_D3D11_CALL(m_Context->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &mappedResource));
 
         BYTE* data = static_cast<BYTE*>(mappedResource.pData);
-        auto img = Resource<Image>(new Image(data, desc.Width, desc.Height, m_Format));
+        ImageUI8Desc imgDesc;
+        imgDesc.width = desc.Width;
+        imgDesc.height = desc.Height;
+        imgDesc.format = m_Format;
+        imgDesc.pixelData = data;
+        auto img = createImageUI8(imgDesc);
         m_Context->Unmap(stagingTexture, 0);
         stagingTexture->Release();
         return std::move(img);

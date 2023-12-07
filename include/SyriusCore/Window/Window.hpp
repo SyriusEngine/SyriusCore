@@ -5,7 +5,7 @@
 #include "Event/MouseEvent.hpp"
 #include "Event/WindowEvent.hpp"
 
-#include "../Utils/Image.hpp"
+#include "../Image/ImageFactory.hpp"
 
 #include "../Context/Context.hpp"
 
@@ -93,9 +93,9 @@ namespace Syrius{
 
         virtual void setTitle(const std::string& newTitle) = 0;
 
-        virtual void setIcon(const std::string& imagePath, bool flipVertically, uint32 icons) = 0;
+        virtual void setIcon(const ImageFileDesc& desc, uint32 icons) = 0;
 
-        virtual void setIcon(Image* image, uint32 icons) = 0;
+        virtual void setIcon(const Resource<Image>& image, uint32 icons) = 0;
 
         virtual void pollEvents() = 0;
 

@@ -148,6 +148,8 @@ typedef enum SR_CHANNEL_FORMAT: uint8 {
 
 // Texture formats with data types, upper 4 bits represent the number of channels, lower 4 bits represent the data usage
 typedef enum SR_TEXTURE_FORMAT: uint8 {
+    SR_TEXTURE_NONE         = 0x00,
+
     // single channel
     SR_TEXTURE_R_UI8        = 0x12,
     SR_TEXTURE_R_I8         = 0x13,
@@ -242,7 +244,7 @@ namespace Syrius {
 
     uint8 SR_CORE_API getTextureChannelCount(SR_CHANNEL_FORMAT format);
 
-    uint8 SR_CORE_API getTextureDataChannelCount(SR_TEXTURE_FORMAT format);
+    uint8 SR_CORE_API getTextureFormatChannelCount(SR_TEXTURE_FORMAT format);
 
     SR_TYPE SR_CORE_API getTextureDataType(SR_TEXTURE_FORMAT format);
 
