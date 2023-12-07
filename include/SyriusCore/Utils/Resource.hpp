@@ -199,8 +199,6 @@ namespace Syrius{
         }
 
     private:
-
-
         uint64 m_NextViewID;
         std::unordered_map<uint64, ResourceView<T>*> m_Views;
         Pointer m_Resource;
