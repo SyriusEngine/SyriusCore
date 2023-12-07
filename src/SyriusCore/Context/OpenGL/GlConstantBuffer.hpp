@@ -12,7 +12,7 @@ namespace Syrius{
 
         ~GlConstantBuffer() override;
 
-        void bind() override;
+        void bind(uint32 slot) override;
 
         void setData(const void* data) override;
 

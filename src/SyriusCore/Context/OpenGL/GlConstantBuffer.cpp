@@ -13,8 +13,8 @@ namespace Syrius{
         glDeleteBuffers(1, &m_BufferID);
     }
 
-    void GlConstantBuffer::bind() {
-        glBindBufferBase(GL_UNIFORM_BUFFER, m_BindingIndex, m_BufferID);
+    void GlConstantBuffer::bind(uint32 slot) {
+        glBindBufferBase(GL_UNIFORM_BUFFER, slot, m_BufferID);
     }
 
     void GlConstantBuffer::setData(const void *data) {

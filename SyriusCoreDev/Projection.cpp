@@ -11,7 +11,6 @@ m_Context(context){
     desc.type = SR_BUFFER_DYNAMIC;
     desc.name = "ProjectionData";
     desc.data = &m_ProjectionData;
-    desc.slot = 0;
     m_Resource = m_Context->createConstantBuffer(desc);
 }
 
@@ -21,6 +20,6 @@ Projection::~Projection() {
 }
 
 void Projection::bind() {
-    m_Resource->bind();
+    m_Resource->bind(0);
 }
 

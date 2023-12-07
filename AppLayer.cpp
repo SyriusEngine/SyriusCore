@@ -43,7 +43,6 @@ void AppLayer::onAttach() {
     cbDesc.size = sizeof(glm::mat4);
     cbDesc.name = "ModelData";
     cbDesc.data = &model;
-    cbDesc.slot = 2;
     m_ModelDataBuffer = m_Context->createConstantBuffer(cbDesc);
 
 }
@@ -69,7 +68,7 @@ void AppLayer::render() {
     m_Texture->bind(0);
     m_Camera.bind();
     m_Projection.bind();
-    m_ModelDataBuffer->bind();
+    m_ModelDataBuffer->bind(2);
     m_Context->draw(m_VertexArray);
 
     m_Context->endRenderPass();

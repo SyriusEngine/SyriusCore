@@ -53,8 +53,8 @@ namespace Syrius{
 
     }
 
-    void D3D11ConstantBufferVertex::bind() {
-        m_Context->VSSetConstantBuffers(m_BindingIndex, 1, &m_Buffer);
+    void D3D11ConstantBufferVertex::bind(uint32 slot) {
+        m_Context->VSSetConstantBuffers(slot, 1, &m_Buffer);
     }
 
     D3D11ConstantBufferPixel::D3D11ConstantBufferPixel(const ConstantBufferDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context)
@@ -62,8 +62,8 @@ namespace Syrius{
 
     }
 
-    void D3D11ConstantBufferPixel::bind() {
-        m_Context->PSSetConstantBuffers(m_BindingIndex, 1, &m_Buffer);
+    void D3D11ConstantBufferPixel::bind(uint32 slot) {
+        m_Context->PSSetConstantBuffers(slot, 1, &m_Buffer);
     }
 
     D3D11ConstantBufferGeometry::D3D11ConstantBufferGeometry(const ConstantBufferDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context)
@@ -71,8 +71,8 @@ namespace Syrius{
 
     }
 
-    void D3D11ConstantBufferGeometry::bind() {
-        m_Context->GSSetConstantBuffers(m_BindingIndex, 1, &m_Buffer);
+    void D3D11ConstantBufferGeometry::bind(uint32 slot) {
+        m_Context->GSSetConstantBuffers(slot, 1, &m_Buffer);
     }
 }
 

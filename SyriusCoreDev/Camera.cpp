@@ -17,12 +17,11 @@ m_Context(context){
     desc.size = sizeof(glm::mat4);
     desc.type = SR_BUFFER_DYNAMIC;
     desc.data = &m_ViewMat;
-    desc.slot = 1;
     desc.name = "CameraData";
     desc.shaderStage = SR_SHADER_VERTEX;
     m_CameraData = m_Context->createConstantBuffer(desc);
 
-    m_CameraData->bind();
+    m_CameraData->bind(1);
 
 }
 
@@ -101,6 +100,6 @@ void Camera::update(const Event &event, float deltaTime) {
 }
 
 void Camera::bind() {
-    m_CameraData->bind();
+    m_CameraData->bind(1);
 
 }
