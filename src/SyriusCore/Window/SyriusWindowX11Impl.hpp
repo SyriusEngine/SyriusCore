@@ -10,7 +10,7 @@
 
 namespace Syrius{
 
-    class SyriusWindowX11Impl: public Window{
+    class SyriusWindowX11Impl: public SyriusWindow{
     public:
 
         explicit SyriusWindowX11Impl(const WindowDesc& desc);
@@ -37,9 +37,9 @@ namespace Syrius{
 
         void setTitle(const std::string& newTitle) override;
 
-        void setIcon(const std::string& imagePath, bool flipVertically, uint32 icons) override;
+        void setIcon(const ImageFileDesc& desc, uint32 icons) override;
 
-        void setIcon(Image* image, uint32 icons) override;
+        void setIcon(const Resource<Image>& image, uint32 icons) override;
 
         void pollEvents() override;
 

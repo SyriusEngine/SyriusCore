@@ -19,7 +19,7 @@
 #include "Context/VertexArray.hpp"
 #include "Context/Texture2D.hpp"
 #include "Context/ConstantBuffer.hpp"
-#include "Context/Framebuffer.hpp"
+#include "Context/FrameBuffer.hpp"
 
 #include "Dependencies/imgui/imgui.h"
 

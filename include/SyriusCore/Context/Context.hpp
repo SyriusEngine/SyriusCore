@@ -13,7 +13,7 @@
 #include "ConstantBuffer.hpp"
 #include "Sampler.hpp"
 #include "FramebufferDescription.hpp"
-#include "Framebuffer.hpp"
+#include "FrameBuffer.hpp"
 #include "ColorAttachment.hpp"
 #include "DepthStencilAttachment.hpp"
 

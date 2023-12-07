@@ -181,7 +181,6 @@ elseif(UNIX)
     set(SYRIUS_CORE_LIBS
             -lX11
             -ldl
-            -lvulkan
             -lGL)
 endif()
 

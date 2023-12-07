@@ -111,11 +111,12 @@ namespace Syrius{
         m_Title = newTitle;
     }
 
-    void SyriusWindowX11Impl::setIcon(const std::string &imagePath, bool flipVertically, uint32 icons) {
-
+    void SyriusWindowX11Impl::setIcon(const ImageFileDesc& desc, uint32 icons) {
+        auto image = createImage(desc);
+        setIcon(image, icons);
     }
 
-    void SyriusWindowX11Impl::setIcon(Image *image, uint32 icons) {
+    void SyriusWindowX11Impl::setIcon(const Resource<Image>& image, uint32 icons) {
 
     }
 
