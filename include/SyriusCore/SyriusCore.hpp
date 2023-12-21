@@ -2,7 +2,6 @@
 
 #include "Utils/SyriusCoreInclude.hpp"
 #include "Utils/Message.hpp"
-#include "Utils/PlatformAPI.hpp"
 #include "Utils/PlatformDetection.hpp"
 
 #include "Image/Image.hpp"

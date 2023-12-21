@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../../../../include/SyriusCore/Context/Context.hpp"
-#include "../../../../include/SyriusCore/Utils/PlatformAPI.hpp"
 #include "GlShaderModule.hpp"
 #include "GlShader.hpp"
 #include "GlViewport.hpp"
