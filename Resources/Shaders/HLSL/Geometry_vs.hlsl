@@ -23,7 +23,12 @@ struct VS_OUT{
 
 VS_OUT main(VS_IN input){
     VS_OUT output;
-    output.position = mul(mul(mul(float4(input.position, 1.0f), modelMatrix), view), perspective);
+
+    float4 worldPosition = mul(modelMatrix, float4(input.position, 1.0f));
+    float4 viewPosition = mul(view, worldPosition);
+    float4 clipPosition = mul(perspective, viewPosition);
+
+    output.position = clipPosition;
     output.texCoords = input.texCoords;
     return output;
 }
