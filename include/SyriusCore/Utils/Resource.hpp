@@ -179,6 +179,10 @@ namespace Syrius{
             m_Resource = nullptr;
         }
 
+        [[nodiscard]] uint64 getResourceID() const {
+            return static_cast<uint64>(m_Resource);
+        }
+
     protected:
         friend class ResourceView<T>;
 
