@@ -35,7 +35,7 @@ namespace Syrius{
     ImageF32::ImageF32(const ImageF32Desc &desc):
     Image(desc.width, desc.height, desc.format),
     m_Data(desc.width * desc.height * getTextureFormatChannelCount(desc.format)){
-        memcpy(&m_Data[0], desc.pixelData, desc.width * desc.height * getTextureFormatChannelCount(desc.format));
+        memcpy(&m_Data[0], desc.data, desc.width * desc.height * getTextureFormatChannelCount(desc.format));
     }
 
     ImageF32::~ImageF32() {

@@ -18,15 +18,22 @@ namespace Syrius{
         uint32 requestedChannelCount= 0;
     };
 
+    struct SR_CORE_API ImageDesc{
+        void* data                   = nullptr;
+        int32 width                  = 0;
+        int32 height                 = 0;
+        SR_TEXTURE_FORMAT format     = SR_TEXTURE_NONE;
+    };
+
     struct SR_CORE_API ImageUI8Desc{
-        const ubyte* pixelData  = nullptr;
+        const ubyte* data       = nullptr;
         int32 width             = 0;
         int32 height            = 0;
         SR_TEXTURE_FORMAT format= SR_TEXTURE_RGBA_UI8;
     };
 
     struct SR_CORE_API ImageF32Desc{
-        const float* pixelData  = nullptr;
+        const float* data       = nullptr;
         int32 width             = 0;
         int32 height            = 0;
         SR_TEXTURE_FORMAT format= SR_TEXTURE_RGBA_F32;

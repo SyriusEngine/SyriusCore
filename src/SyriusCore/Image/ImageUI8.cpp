@@ -37,7 +37,7 @@ namespace Syrius{
     ImageUI8::ImageUI8(const ImageUI8Desc &desc):
     Image(desc.width, desc.height, desc.format),
     m_Data(desc.width * desc.height * getTextureFormatChannelCount(desc.format)){
-        memcpy(&m_Data[0], desc.pixelData, desc.width * desc.height * getTextureFormatChannelCount(desc.format));
+        memcpy(&m_Data[0], desc.data, desc.width * desc.height * getTextureFormatChannelCount(desc.format));
     }
 
     ImageUI8::~ImageUI8() {

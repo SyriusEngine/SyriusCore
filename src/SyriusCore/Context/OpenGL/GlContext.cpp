@@ -154,12 +154,16 @@ namespace Syrius{
     }
 
     ResourceView<ConstantBuffer> GlContext::createConstantBuffer(const ConstantBufferDesc &desc) {
+        SR_CORE_PRECONDITION(desc.size <= getMaxConstantBufferSize(), "Constant buffer size (%llu) exceeds maximum allowed size (%llu)", desc.size, getMaxConstantBufferSize());
+
         auto ptr = new GlConstantBuffer(desc);
         m_ConstantBuffers.emplace_back(ptr);
         return m_ConstantBuffers.back().createView();
     }
 
     ResourceView<Texture2D> GlContext::createTexture2D(const Texture2DDesc& desc) {
+        SR_CORE_PRECONDITION(desc.width * desc.height * getTextureFormatChannelCount(desc.format) <= getMaxTexture2DSize(), "Texture size (%llu) exceeds maximum allowed size (%llu)", desc.width * desc.height * getTextureFormatChannelCount(desc.format), getMaxTexture2DSize());
+
         auto ptr = new GlTexture2D(desc);
         m_Textures2D.emplace_back(ptr);
 

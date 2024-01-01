@@ -1,5 +1,6 @@
 #include "../../../include/SyriusCore/Image/ImageFactory.hpp"
 
+#include "ImageImpl.hpp"
 #include "ImageUI8.hpp"
 #include "ImageF32.hpp"
 
@@ -20,6 +21,11 @@ namespace Syrius{
             auto img = new ImageUI8(desc);
             return Resource<Image>(img);
         }
+    }
+
+    Resource<Image> createImage(const ImageDesc& desc){
+        auto img = new ImageImpl(desc);
+        return Resource<Image>(img);
     }
 
     Resource<Image> createImageF32(const ImageF32Desc& desc){

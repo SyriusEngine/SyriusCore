@@ -65,7 +65,7 @@ namespace Syrius{
         imgDesc.width = m_Width;
         imgDesc.height = m_Height;
         imgDesc.format = m_Format;
-        imgDesc.pixelData = data.get();
+        imgDesc.data = data.get();
         return createImageUI8(imgDesc);
     }
 

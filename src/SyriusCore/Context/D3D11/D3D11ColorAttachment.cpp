@@ -58,7 +58,7 @@ namespace Syrius {
         imgDesc.width = desc.Width;
         imgDesc.height = desc.Height;
         imgDesc.format = m_Format;
-        imgDesc.pixelData = data;
+        imgDesc.data = data;
         auto img = createImageUI8(imgDesc);
         m_Context->Unmap(stagingTexture, 0);
         stagingTexture->Release();
