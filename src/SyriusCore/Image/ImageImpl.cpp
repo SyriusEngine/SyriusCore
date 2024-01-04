@@ -1,4 +1,5 @@
 #include "ImageImpl.hpp"
+#include <cstring> // memcpy on UNIX
 
 namespace Syrius{
 

@@ -15,7 +15,10 @@ m_Config(iniFile){
     cDesc.enableDepthTest = m_Config["Context"]["EnableDepthTest"].getOrDefault<bool>(true);
 
     m_Context = m_Window->createContext(cDesc);
-    m_Context->setVerticalSynchronisation(m_Config["Context"]["VerticalSync"].getOrDefault<bool>(true));
+    auto vsync = m_Config["Context"]["VerticalSync"].getOrDefault<bool>(true);
+    if (vsync){
+        m_Context->setVerticalSynchronisation(true);
+    }
 
     if (m_Config["Context"]["PrintContextInfo"].getOrDefault<bool>(true)){
         printContextInfo(m_Context);
