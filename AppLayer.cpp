@@ -77,13 +77,13 @@ void AppLayer::render() {
 }
 
 void AppLayer::renderImGui() {
-    m_Window->onImGuiBegin();
-
-    ImGui::Begin("SyriusCoreDev");
-    ImGui::Text("FPS: %.2f", 1000.0 / m_DeltaTime);
-    ImGui::ColorPicker3("Background Color", m_Context->getDefaultFrameBuffer()->getColorAttachment(0)->getClearColor());
-
-    ImGui::End();
-
-    m_Window->onImGuiEnd();
+//    m_Window->onImGuiBegin();
+//
+//    ImGui::Begin("SyriusCoreDev");
+//    ImGui::Text("FPS: %.2f", 1000.0 / m_DeltaTime);
+//    ImGui::ColorPicker3("Background Color", m_Context->getDefaultFrameBuffer()->getColorAttachment(0)->getClearColor());
+//
+//    ImGui::End();
+//
+//    m_Window->onImGuiEnd();
 }

@@ -10,6 +10,7 @@
 #include <iostream>
 #include <chrono>
 #include <random>
+#include <filesystem>
 #include <map>
 
 #include "../../../include/SyriusCore/Utils/SyriusCoreInclude.hpp"

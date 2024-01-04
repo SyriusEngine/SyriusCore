@@ -3,6 +3,8 @@
 ShaderLibrary::ShaderLibrary(const std::string &libraryPath, const ResourceView<Context> &context):
 m_Context(context),
 m_LibraryPath(libraryPath) {
+    // remove \r from path
+    m_LibraryPath.erase(std::remove(m_LibraryPath.begin(), m_LibraryPath.end(), '\r'), m_LibraryPath.end());
 
 }
 
