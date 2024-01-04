@@ -46,7 +46,7 @@ elseif(UNIX)
         src/SyriusCore/Dependencies/glad/src/glx.c)
 
     set(IMGUI_PLATFORM_SRC
-        )
+        src/SyriusCore/Dependencies/imgui/imgui_impl_x11.cpp)
 
     set(SYRIUSCORE_PLATFORM_WINDOW_SRC
         src/SyriusCore/Window/SyriusWindowX11Impl.cpp

@@ -37,7 +37,7 @@
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 
-#include <cstring>
+#include <cstring> // for memset, memcpy
 
 #endif
 
