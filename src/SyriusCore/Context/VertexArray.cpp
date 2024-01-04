@@ -5,16 +5,17 @@ namespace Syrius{
 
     VertexArray::VertexArray(const VertexArrayDesc &desc)
     : m_VertexBuffer(desc.vertexBuffer),
-    m_IndexBuffer(desc.indexBuffer),
     m_DrawMode(desc.drawMode) {
-
-    }
-
-    VertexArray::~VertexArray() {
 
     }
 
     SR_DRAW_TYPE VertexArray::getDrawMode() const {
         return m_DrawMode;
+    }
+
+    VertexArrayIndexed::VertexArrayIndexed(const VertexArrayDesc &desc)
+    : VertexArray(desc),
+    m_IndexBuffer(desc.indexBuffer) {
+
     }
 }

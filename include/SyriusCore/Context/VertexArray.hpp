@@ -19,7 +19,7 @@ namespace Syrius{
     public:
         explicit VertexArray(const VertexArrayDesc& desc);
 
-        virtual ~VertexArray();
+        virtual ~VertexArray() = default;
 
         virtual void bind() = 0;
 
@@ -36,6 +36,15 @@ namespace Syrius{
     protected:
         SR_DRAW_TYPE m_DrawMode;
         ResourceView<VertexBuffer> m_VertexBuffer;
+    };
+
+    class SR_CORE_API VertexArrayIndexed: public VertexArray{
+    public:
+        explicit VertexArrayIndexed(const VertexArrayDesc& desc);
+
+        ~VertexArrayIndexed() override = default;
+
+    protected:
         ResourceView<IndexBuffer> m_IndexBuffer;
     };
 

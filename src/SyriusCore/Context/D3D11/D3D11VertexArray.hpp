@@ -23,7 +23,7 @@ namespace Syrius{
 
         void setDrawMode(SR_DRAW_TYPE drawMode) override;
 
-    protected:
+    private:
         ID3D11Device* m_Device;
         ID3D11DeviceContext* m_Context;
 
@@ -32,7 +32,7 @@ namespace Syrius{
         D3D11_PRIMITIVE_TOPOLOGY m_D3d11DrawMode;
     };
 
-    class D3D11VertexArrayIndexed: public D3D11VertexArray{
+    class D3D11VertexArrayIndexed: public VertexArrayIndexed{
     public:
         D3D11VertexArrayIndexed(const VertexArrayDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
 
@@ -40,9 +40,21 @@ namespace Syrius{
 
         void bind() override;
 
+        void unbind() override;
+
         void drawBuffers() override;
 
         void drawBuffersInstanced(uint32 instanceCount) override;
+
+        void setDrawMode(SR_DRAW_TYPE drawMode) override;
+
+    private:
+        ID3D11Device* m_Device;
+        ID3D11DeviceContext* m_Context;
+
+        ID3D11InputLayout* m_InputLayout;
+
+        D3D11_PRIMITIVE_TOPOLOGY m_D3d11DrawMode;
     };
 
 }

@@ -33,6 +33,11 @@ private:
     ResourceView<Texture2D> m_Texture;
     ResourceView<Sampler> m_Sampler;
     ResourceView<VertexArray> m_VertexArray;
+
+    ResourceView<VertexArray> m_SbVAO;
+    ShaderProgram m_SbShader;
+    ResourceView<Cubemap> m_Cubemap;
+
     ResourceView<ConstantBuffer> m_ModelDataBuffer;
     ShaderProgram m_ShaderProgram;
 

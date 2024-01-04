@@ -21,23 +21,31 @@ namespace Syrius{
 
         void setDrawMode(SR_DRAW_TYPE drawMode) override;
 
-    protected:
+    private:
         uint32 m_ArrayID;
         GLenum m_GlDrawMode;
 
     };
 
-    class GlVertexArrayIndexed : public GlVertexArray{
+    class GlVertexArrayIndexed : public VertexArrayIndexed{
     public:
         explicit GlVertexArrayIndexed(const VertexArrayDesc& desc);
 
         ~GlVertexArrayIndexed() override;
 
+        void bind() override;
+
+        void unbind() override;
+
         void drawBuffers() override;
 
         void drawBuffersInstanced(uint32 instanceCount) override;
 
+        void setDrawMode(SR_DRAW_TYPE drawMode) override;
+
     private:
+        uint32 m_ArrayID;
+        GLenum m_GlDrawMode;
         GLenum m_IndexDataType;
     };
 }

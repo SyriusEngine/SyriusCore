@@ -1,6 +1,51 @@
 #include <chrono>
 #include "AppLayer.hpp"
 
+float skyboxVertices[] = {
+        // positions
+        -1.0f,  1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+        -1.0f,  1.0f, -1.0f,
+        1.0f,  1.0f, -1.0f,
+        1.0f,  1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+        1.0f, -1.0f,  1.0f
+};
+
 AppLayer::AppLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config):
 Layer(context, window, config),
 m_DeltaTime(0.0),
@@ -47,6 +92,53 @@ void AppLayer::onAttach() {
     cbDesc.data = &model;
     m_ModelDataBuffer = m_Context->createConstantBuffer(cbDesc);
 
+
+
+    /// SKYBOX
+
+    ImageFileDesc right;
+    right.fileName = "./Resources/Textures/Skybox1/right.jpg";
+    ImageFileDesc left;
+    left.fileName = "./Resources/Textures/Skybox1/left.jpg";
+    ImageFileDesc top;
+    top.fileName = "./Resources/Textures/Skybox1/top.jpg";
+    ImageFileDesc bottom;
+    bottom.fileName = "./Resources/Textures/Skybox1/bottom.jpg";
+    ImageFileDesc front;
+    front.fileName = "./Resources/Textures/Skybox1/front.jpg";
+    ImageFileDesc back;
+    back.fileName = "./Resources/Textures/Skybox1/back.jpg";
+    CubemapImageDesc cmiDesc;
+    auto rightImg = createImage(right);
+    auto leftImg = createImage(left);
+    auto topImg = createImage(top);
+    auto bottomImg = createImage(bottom);
+    auto frontImg = createImage(front);
+    auto backImg = createImage(back);
+    cmiDesc.right = rightImg.createView();
+    cmiDesc.left = leftImg.createView();
+    cmiDesc.top = topImg.createView();
+    cmiDesc.bottom = bottomImg.createView();
+    cmiDesc.front = frontImg.createView();
+    cmiDesc.back = backImg.createView();
+    m_Cubemap = m_Context->createCubemap(cmiDesc);
+
+    m_SbShader = m_ShaderLibrary.loadShader("Skybox", "Skybox");
+
+    auto skyboxLayout = m_Context->createVertexDescription();
+    skyboxLayout->addAttribute("Position", SR_FLOAT32_3);
+
+    VertexBufferDesc sbVboDesc;
+    sbVboDesc.data = skyboxVertices;
+    sbVboDesc.count = 36;
+    sbVboDesc.layout = skyboxLayout;
+    auto sbVbo = m_Context->createVertexBuffer(sbVboDesc);
+
+    VertexArrayDesc sbVaoDesc;
+    sbVaoDesc.vertexBuffer = sbVbo;
+    sbVaoDesc.vertexShader = m_SbShader.vertexShader;
+    m_SbVAO = m_Context->createVertexArray(sbVaoDesc);
+
 }
 
 void AppLayer::onDetach() {
@@ -65,13 +157,18 @@ void AppLayer::updateTime() {
 void AppLayer::render() {
     m_Context->beginRenderPass();
 
-    m_ShaderProgram.shaderProgram->bind();
     m_Sampler->bind(0);
-    m_Texture->bind(0);
     m_Camera.bind();
     m_Projection.bind();
-    m_ModelDataBuffer->bind(2);
-    m_Context->draw(m_VertexArray);
+
+    m_SbShader.shaderProgram->bind();
+    m_Cubemap->bind(0);
+    m_Context->draw(m_SbVAO);
+
+//    m_Texture->bind(0);
+//    m_ShaderProgram.shaderProgram->bind();
+//    m_ModelDataBuffer->bind(2);
+//    m_Context->draw(m_VertexArray);
 
     m_Context->endRenderPass();
 }
