@@ -304,6 +304,14 @@ namespace Syrius{
         return m_FrameBuffers.back().createView();
     }
 
+    ResourceView<Cubemap> D3D11Context::createCubemap(const CubemapDesc &desc) {
+        return ResourceView<Cubemap>();
+    }
+
+    ResourceView<Cubemap> D3D11Context::createCubemap(const CubemapImageDesc &desc) {
+        return ResourceView<Cubemap>();
+    }
+
 }
 
 #endif

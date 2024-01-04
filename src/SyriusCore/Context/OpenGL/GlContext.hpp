@@ -11,6 +11,7 @@
 #include "GlConstantBuffer.hpp"
 #include "GlSampler.hpp"
 #include "GlFrameBuffer.hpp"
+#include "GlCubemap.hpp"
 
 
 namespace Syrius{
@@ -70,6 +71,10 @@ namespace Syrius{
         ResourceView<Sampler> createSampler(const SamplerDesc& desc) override;
 
         ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferDescription>& desc) override;
+
+        ResourceView<Cubemap> createCubemap(const CubemapDesc& desc) override;
+
+        ResourceView<Cubemap> createCubemap(const CubemapImageDesc& desc) override;
 
     protected:
         explicit GlContext(const ContextDesc& desc);

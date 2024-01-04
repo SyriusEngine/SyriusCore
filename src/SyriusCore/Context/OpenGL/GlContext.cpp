@@ -188,6 +188,18 @@ namespace Syrius{
         return m_FrameBuffers.back().createView();
     }
 
+    ResourceView<Cubemap> GlContext::createCubemap(const CubemapDesc &desc) {
+        auto ptr = new GlCubemap(desc);
+        m_Cubemaps.emplace_back(ptr);
+        return m_Cubemaps.back().createView();
+    }
+
+    ResourceView<Cubemap> GlContext::createCubemap(const CubemapImageDesc &desc) {
+        auto ptr = new GlCubemap(desc);
+        m_Cubemaps.emplace_back(ptr);
+        return m_Cubemaps.back().createView();
+    }
+
     void GlContext::initGl(const ContextDesc& desc) {
         initGlad();
 

@@ -90,7 +90,9 @@ set(SYRIUSCORE_IMAGE_SRC
     src/SyriusCore/Image/Image.cpp
     src/SyriusCore/Image/ImageFactory.cpp
     src/SyriusCore/Image/ImageUI8.cpp
-    src/SyriusCore/Image/ImageF32.cpp src/SyriusCore/Image/ImageImpl.cpp src/SyriusCore/Image/ImageImpl.cpp src/SyriusCore/Image/ImageImpl.hpp)
+    src/SyriusCore/Image/ImageF32.cpp
+    src/SyriusCore/Image/ImageImpl.cpp
+    )
 
 set(SYRIUSCORE_WINDOW_SRC
     ${SYRIUSCORE_PLATFORM_WINDOW_SRC}
@@ -120,6 +122,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
     src/SyriusCore/Context/FrameBuffer.cpp
     src/SyriusCore/Context/ColorAttachment.cpp
     src/SyriusCore/Context/DepthStencilAttachment.cpp
+    src/SyriusCore/Context/Cubemap.cpp
 
     src/SyriusCore/Context/OpenGL/GlContext.cpp
     src/SyriusCore/Context/OpenGL/GlViewport.cpp
@@ -135,7 +138,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
     src/SyriusCore/Context/OpenGL/GlFrameBuffer.cpp
     src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp
-    )
+    src/SyriusCore/Context/OpenGL/GlCubemap.cpp src/SyriusCore/Context/OpenGL/GlCubemap.hpp)
 
 set(SYRIUSCORE_SRC
     ${SYRIUSCORE_CORE_SRC}
