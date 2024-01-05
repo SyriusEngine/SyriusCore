@@ -7,25 +7,6 @@ m_DeltaTime(0.0),
 m_LastFrameTime(0.0),
 m_Camera(0.1f, 0.02f, context),
 m_Projection(context, window->getWidth(), window->getHeight()){
-
-}
-
-AppLayer::~AppLayer() {
-
-}
-
-void AppLayer::onUpdate() {
-    updateTime();
-    render();
-    renderImGui();
-}
-
-void AppLayer::onEvent(const Event &event) {
-    m_Camera.update(event, m_DeltaTime);
-
-}
-
-void AppLayer::onAttach() {
     m_Window->createImGuiContext();
 
     auto mesh = createCube();
@@ -46,11 +27,21 @@ void AppLayer::onAttach() {
     cbDesc.name = "ModelData";
     cbDesc.data = &model;
     m_ModelDataBuffer = m_Context->createConstantBuffer(cbDesc);
-
 }
 
-void AppLayer::onDetach() {
+AppLayer::~AppLayer() {
     m_Window->destroyImGuiContext();
+}
+
+void AppLayer::onUpdate() {
+    updateTime();
+    render();
+    renderImGui();
+}
+
+void AppLayer::onEvent(const Event &event) {
+    m_Camera.update(event, m_DeltaTime);
+
 }
 
 void AppLayer::updateTime() {

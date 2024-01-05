@@ -6,7 +6,6 @@ namespace Syrius{
 
     struct SR_CORE_API ShaderModuleDesc{
         std::string code;     // can be actual code in a string or a file path
-        uint32 codeLength             = 0;
         SR_SHADER_TYPE shaderType           = SR_SHADER_VERTEX;
         std::string entryPoint        = "main";
         SR_LOAD_TYPE loadType         = SR_LOAD_FROM_FILE;

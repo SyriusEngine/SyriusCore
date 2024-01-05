@@ -14,10 +14,6 @@ public:
 
     void onEvent(const Event &event) override;
 
-    void onAttach() override;
-
-    void onDetach() override;
-
 private:
 
     void updateTime();

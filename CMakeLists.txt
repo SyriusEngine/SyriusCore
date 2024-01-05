@@ -202,7 +202,7 @@ set(SYRIUSCOREDEV_SRC
 add_executable(SyriusCoreDev main.cpp AppLayer.cpp ${SYRIUSCOREDEV_SRC})
 
 set(SYRIUS_TEST_LAYERS_SRC
-    TestLayers/BasicLayer.cpp)
+    TestLayers/BasicLayer.cpp TestLayers/TestContext.cpp TestLayers/TestContext.hpp TestLayers/TestImGui.cpp TestLayers/TestImGui.hpp TestLayers/TestVertexBuffer.cpp TestLayers/TestVertexBuffer.hpp)
 
 add_executable(SyriusTest TestMain.cpp ${SYRIUS_TEST_LAYERS_SRC} ${SYRIUSCOREDEV_SRC})
 

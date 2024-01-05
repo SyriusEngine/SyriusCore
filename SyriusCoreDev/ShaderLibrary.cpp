@@ -48,7 +48,6 @@ ShaderProgram ShaderLibrary::loadShader(const std::string& vertexShader, const s
     vsDesc.code = apiPath + vertexShader + "_vs" + extension;
     vsDesc.loadType = SR_LOAD_FROM_FILE;
     vsDesc.entryPoint = "main";
-    vsDesc.codeLength = 0;
     program.vertexShader = m_Context->createShaderModule(vsDesc);
 
     ShaderModuleDesc fsDesc;
@@ -57,7 +56,6 @@ ShaderProgram ShaderLibrary::loadShader(const std::string& vertexShader, const s
     fsDesc.code = apiPath + fragmentShader + "_fs" + extension;
     fsDesc.loadType = SR_LOAD_FROM_FILE;
     fsDesc.entryPoint = "main";
-    fsDesc.codeLength = 0;
     program.fragmentShader = m_Context->createShaderModule(fsDesc);
 
     ShaderDesc sDesc;

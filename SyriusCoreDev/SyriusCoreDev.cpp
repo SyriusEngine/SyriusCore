@@ -19,16 +19,10 @@ m_Config(iniFile){
     if (vsync){
         m_Context->setVerticalSynchronisation(true);
     }
-
-    if (m_Config["Context"]["PrintContextInfo"].getOrDefault<bool>(true)){
-        printContextInfo(m_Context);
-    }
 }
 
 SyriusCoreDev::~SyriusCoreDev() {
-    for (auto& layer: m_Layers){
-        layer->onDetach();
-    }
+    m_Layers.clear();
     m_Config.save();
 }
 
