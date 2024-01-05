@@ -197,13 +197,19 @@ set(SYRIUSCOREDEV_SRC
     SyriusCoreDev/Camera.cpp
     SyriusCoreDev/Layer.cpp
     TestLayers/BasicLayer.cpp
-    AppLayer.cpp
-    SyriusCoreDev/Projection.cpp SyriusCoreDev/Projection.hpp)
+    SyriusCoreDev/Projection.cpp)
 
-add_executable(SyriusCoreDev main.cpp ${SYRIUSCOREDEV_SRC})
+add_executable(SyriusCoreDev main.cpp AppLayer.cpp ${SYRIUSCOREDEV_SRC})
+
+set(SYRIUS_TEST_LAYERS_SRC
+    TestLayers/BasicLayer.cpp)
+
+add_executable(SyriusTest TestMain.cpp ${SYRIUS_TEST_LAYERS_SRC} ${SYRIUSCOREDEV_SRC})
 
 if (MSVC)
     target_link_libraries(SyriusCoreDev SyriusCore)
+    target_link_libraries(SyriusTest SyriusCore)
 else()
     target_link_libraries(SyriusCoreDev -lSyriusCore)
+    target_link_libraries(SyriusTest -lSyriusCore)
 endif()

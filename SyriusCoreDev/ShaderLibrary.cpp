@@ -13,6 +13,9 @@ ShaderLibrary::~ShaderLibrary() {
 }
 
 ShaderProgram ShaderLibrary::loadShader(const std::string& vertexShader, const std::string& fragmentShader) {
+    if (vertexShader.empty()){
+        throw std::runtime_error("ShaderLibrary::loadShader: Vertex shader name is empty");
+    }
     if (fragmentShader.empty()){
         return loadShader(vertexShader, vertexShader);
     }
