@@ -11,7 +11,7 @@ namespace Syrius{
             case SR_SHADER_TESSELATION_EVALUATION:  return GL_TESS_EVALUATION_SHADER;
             case SR_SHADER_COMPUTE:                 return GL_COMPUTE_SHADER;
             default: {
-                SR_CORE_WARNING("Invalid usage given to converter, return default: GL_VERTEX_SHADER");
+                SR_CORE_WARNING("Invalid shader type given to converter, return default: GL_VERTEX_SHADER");
                 return GL_VERTEX_SHADER;
             }
         }

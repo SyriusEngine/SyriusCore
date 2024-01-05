@@ -52,25 +52,6 @@ m_DeltaTime(0.0),
 m_LastFrameTime(0.0),
 m_Camera(0.1f, 0.02f, context),
 m_Projection(context, window->getWidth(), window->getHeight()){
-
-}
-
-AppLayer::~AppLayer() {
-
-}
-
-void AppLayer::onUpdate() {
-    updateTime();
-    render();
-    renderImGui();
-}
-
-void AppLayer::onEvent(const Event &event) {
-    m_Camera.update(event, m_DeltaTime);
-
-}
-
-void AppLayer::onAttach() {
     m_Window->createImGuiContext();
 
     auto mesh = createCube();
@@ -138,11 +119,21 @@ void AppLayer::onAttach() {
     sbVaoDesc.vertexBuffer = sbVbo;
     sbVaoDesc.vertexShader = m_SbShader.vertexShader;
     m_SbVAO = m_Context->createVertexArray(sbVaoDesc);
-
 }
 
-void AppLayer::onDetach() {
+AppLayer::~AppLayer() {
     m_Window->destroyImGuiContext();
+}
+
+void AppLayer::onUpdate() {
+    updateTime();
+    render();
+    renderImGui();
+}
+
+void AppLayer::onEvent(const Event &event) {
+    m_Camera.update(event, m_DeltaTime);
+
 }
 
 void AppLayer::updateTime() {
