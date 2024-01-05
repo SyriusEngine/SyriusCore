@@ -117,7 +117,7 @@ void printEventInfo(const Event& event){
             std::cout << "Window resized event: " << event.windowWidth << "x" << event.windowHeight << std::endl;
             break;
         case SR_EVENT_WINDOW_MOVED:
-            std::cout << "Window moved event: " << event.windowPosX << "x" << event.windowPosY << std::endl;
+            std::cout << "Window moved event: x: " << event.windowPosX << " y:" << event.windowPosY << std::endl;
             break;
         case SR_EVENT_WINDOW_GAINED_FOCUS:
             std::cout << "Window focus gained event" << std::endl;
@@ -135,10 +135,10 @@ void printEventInfo(const Event& event){
             std::cout << "Window mouse left event" << std::endl;
             break;
         case SR_EVENT_MOUSE_MOVED:
-            std::cout << "Window mouse moved event: " << event.mousePosX << "x" << event.mousePosY << std::endl;
+            std::cout << "Window mouse moved event: x: " << event.mousePosX << " y:" << event.mousePosY << std::endl;
             break;
         case SR_EVENT_MOUSE_SCROLLED:
-            std::cout << "Window mouse scrolled event: " << event.mouseScrollX << "x" << event.mouseScrollY << std::endl;
+            std::cout << "Window mouse scrolled event: X: " << event.mouseScrollX << " y:" << event.mouseScrollY << std::endl;
             break;
         case SR_EVENT_MOUSE_BUTTON_PRESSED:
             std::cout << "Window mouse button pressed event: " << event.mouseButton << std::endl;
@@ -154,6 +154,15 @@ void printEventInfo(const Event& event){
             break;
         case SR_EVENT_KEYBOARD_KEY_TYPED:
             std::cout << "Window keyboard key typed event: " << event.keyCode << std::endl;
+            break;
+        case SR_EVENT_RAW_MOUSE_MOVED:
+            std::cout << "Window raw mouse moved event: x: " << event.mousePosX << " y:" << event.mousePosY << std::endl;
+            break;
+        case SR_EVENT_RAW_KEYBOARD_KEY_PRESSED:
+            std::cout << "Window raw keyboard key pressed event: " << event.keyCode << std::endl;
+            break;
+        case SR_EVENT_RAW_KEYBOARD_KEY_RELEASED:
+            std::cout << "Window raw keyboard key released event: " << event.keyCode << std::endl;
             break;
         default:
             std::cout << "Unknown event" << std::endl;

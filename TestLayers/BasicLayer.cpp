@@ -3,10 +3,24 @@
 BasicLayer::BasicLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config):
 Layer(context, window, config) {
 
+    m_Window->createImGuiContext();
+
+    auto rectangle = createRectangle();
+    m_ShaderProgram = m_ShaderLibrary.loadShader("Basic");
+    m_VertexArray = loadMesh(rectangle, m_ShaderProgram);
+
+    SamplerDesc samplerDesc;
+    m_Sampler = m_Context->createSampler(samplerDesc);
+    ImageFileDesc imgDesc;
+    imgDesc.fileName = "./Resources/Textures/awesomeface.png";
+    auto image = createImage(imgDesc);
+    Texture2DImageDesc t2dDesc(image);
+    m_Texture = m_Context->createTexture2D(t2dDesc);
+
 }
 
 BasicLayer::~BasicLayer() {
-
+    m_Window->destroyImGuiContext();
 }
 
 void BasicLayer::onUpdate() {
@@ -32,25 +46,4 @@ void BasicLayer::onUpdate() {
 
 void BasicLayer::onEvent(const Event &event) {
 
-}
-
-void BasicLayer::onAttach() {
-    m_Window->createImGuiContext();
-
-    auto rectangle = createRectangle();
-    m_ShaderProgram = m_ShaderLibrary.loadShader("Basic");
-    m_VertexArray = loadMesh(rectangle, m_ShaderProgram);
-
-    SamplerDesc samplerDesc;
-    m_Sampler = m_Context->createSampler(samplerDesc);
-    ImageFileDesc imgDesc;
-    imgDesc.fileName = "./Resources/Textures/awesomeface.png";
-    auto image = createImage(imgDesc);
-    Texture2DImageDesc t2dDesc(image);
-    m_Texture = m_Context->createTexture2D(t2dDesc);
-
-}
-
-void BasicLayer::onDetach() {
-    m_Window->destroyImGuiContext();
 }

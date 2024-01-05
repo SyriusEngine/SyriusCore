@@ -9,10 +9,6 @@ public:
 
     virtual ~Layer();
 
-    virtual void onAttach() = 0;
-
-    virtual void onDetach() = 0;
-
     virtual void onUpdate() = 0;
 
     virtual void onEvent(const Event& event) = 0;

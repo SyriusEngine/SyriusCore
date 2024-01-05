@@ -49,6 +49,9 @@ namespace Syrius{
     }
 
     void GlxContext::setVerticalSynchronisation(bool enable) {
+        SR_CORE_PRECONDITION(m_Context, "Context is not initialized");
+        SR_CORE_PRECONDITION(glXSwapIntervalEXT, "glXSwapIntervalEXT extension is not available");
+
         if(enable){
             glXSwapIntervalEXT(m_Display, m_Window, 1);
         }else{

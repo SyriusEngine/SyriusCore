@@ -1,6 +1,5 @@
 #include "SyriusCoreDev/SyriusCoreDev.hpp"
 #include "AppLayer.hpp"
-#include "TestLayers/BasicLayer.hpp"
 
 int main(int argc, char** argv) {
     try {

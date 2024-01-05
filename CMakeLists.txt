@@ -138,7 +138,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
     src/SyriusCore/Context/OpenGL/GlFrameBuffer.cpp
     src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp
-    src/SyriusCore/Context/OpenGL/GlCubemap.cpp src/SyriusCore/Context/OpenGL/GlCubemap.hpp)
+    src/SyriusCore/Context/OpenGL/GlCubemap.cpp )
 
 set(SYRIUSCORE_SRC
     ${SYRIUSCORE_CORE_SRC}
@@ -200,13 +200,19 @@ set(SYRIUSCOREDEV_SRC
     SyriusCoreDev/Camera.cpp
     SyriusCoreDev/Layer.cpp
     TestLayers/BasicLayer.cpp
-    AppLayer.cpp
-    SyriusCoreDev/Projection.cpp SyriusCoreDev/Projection.hpp)
+    SyriusCoreDev/Projection.cpp)
 
-add_executable(SyriusCoreDev main.cpp ${SYRIUSCOREDEV_SRC})
+add_executable(SyriusCoreDev main.cpp AppLayer.cpp ${SYRIUSCOREDEV_SRC})
+
+set(SYRIUS_TEST_LAYERS_SRC
+    TestLayers/BasicLayer.cpp TestLayers/TestContext.cpp TestLayers/TestContext.hpp TestLayers/TestImGui.cpp TestLayers/TestImGui.hpp TestLayers/TestVertexBuffer.cpp TestLayers/TestVertexBuffer.hpp)
+
+add_executable(SyriusTest TestMain.cpp ${SYRIUS_TEST_LAYERS_SRC} ${SYRIUSCOREDEV_SRC})
 
 if (MSVC)
     target_link_libraries(SyriusCoreDev SyriusCore)
+    target_link_libraries(SyriusTest SyriusCore)
 else()
     target_link_libraries(SyriusCoreDev -lSyriusCore)
+    target_link_libraries(SyriusTest -lSyriusCore)
 endif()

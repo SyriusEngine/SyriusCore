@@ -3,6 +3,8 @@
 ShaderLibrary::ShaderLibrary(const std::string &libraryPath, const ResourceView<Context> &context):
 m_Context(context),
 m_LibraryPath(libraryPath) {
+    // remove \r from path
+    m_LibraryPath.erase(std::remove(m_LibraryPath.begin(), m_LibraryPath.end(), '\r'), m_LibraryPath.end());
 
 }
 
@@ -11,6 +13,9 @@ ShaderLibrary::~ShaderLibrary() {
 }
 
 ShaderProgram ShaderLibrary::loadShader(const std::string& vertexShader, const std::string& fragmentShader) {
+    if (vertexShader.empty()){
+        throw std::runtime_error("ShaderLibrary::loadShader: Vertex shader name is empty");
+    }
     if (fragmentShader.empty()){
         return loadShader(vertexShader, vertexShader);
     }
@@ -43,7 +48,6 @@ ShaderProgram ShaderLibrary::loadShader(const std::string& vertexShader, const s
     vsDesc.code = apiPath + vertexShader + "_vs" + extension;
     vsDesc.loadType = SR_LOAD_FROM_FILE;
     vsDesc.entryPoint = "main";
-    vsDesc.codeLength = 0;
     program.vertexShader = m_Context->createShaderModule(vsDesc);
 
     ShaderModuleDesc fsDesc;
@@ -52,7 +56,6 @@ ShaderProgram ShaderLibrary::loadShader(const std::string& vertexShader, const s
     fsDesc.code = apiPath + fragmentShader + "_fs" + extension;
     fsDesc.loadType = SR_LOAD_FROM_FILE;
     fsDesc.entryPoint = "main";
-    fsDesc.codeLength = 0;
     program.fragmentShader = m_Context->createShaderModule(fsDesc);
 
     ShaderDesc sDesc;

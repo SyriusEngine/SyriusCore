@@ -12,10 +12,6 @@ public:
 
     void onEvent(const Event &event) override;
 
-    void onAttach() override;
-
-    void onDetach() override;
-
 private:
     ResourceView<Texture2D> m_Texture;
     ResourceView<Sampler> m_Sampler;
