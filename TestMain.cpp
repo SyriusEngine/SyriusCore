@@ -3,6 +3,7 @@
 #include "TestLayers/TestImGui.hpp"
 #include "TestLayers/TestVertexBuffer.hpp"
 #include "TestLayers/TestIndexBuffer.hpp"
+#include "TestLayers/TestTexture.hpp"
 
 template<typename T>
 void runTest(const std::string& iniFile){
@@ -22,6 +23,7 @@ void runAllTests(const std::string& iniFile){
     runTest<TestImGui>(iniFile);
     runTest<TestVertexBuffer>(iniFile);
     runTest<TestIndexBuffer>(iniFile);
+    runTest<TestTexture>(iniFile);
 }
 
 int main(int argc, char** argv) {
@@ -43,6 +45,8 @@ int main(int argc, char** argv) {
                 runTest<TestVertexBuffer>(argv[1]);
             } else if (arg == "IndexBuffer") {
                 runTest<TestIndexBuffer>(argv[1]);
+            } else if (arg == "Texture") {
+                runTest<TestTexture>(argv[1]);
             } else {
                 std::cerr << "Unknown test: " << arg << std::endl;
             }

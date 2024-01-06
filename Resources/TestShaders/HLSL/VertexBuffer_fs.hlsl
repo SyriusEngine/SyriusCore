@@ -1,6 +1,6 @@
 struct FSin{
     float4 position: SV_Position;
-    float3 color: Color;
+    float4 color: Color;
 };
 
 struct FSout{
@@ -9,6 +9,6 @@ struct FSout{
 
 FSout main(FSin input){
     FSout output;
-    output.color = float4(input.color, 1.0f);
+    output.color = input.color;
     return output;
 }

@@ -199,14 +199,19 @@ set(SYRIUSCOREDEV_SRC
     SyriusCoreDev/Utils.cpp
     SyriusCoreDev/Camera.cpp
     SyriusCoreDev/Layer.cpp
-    TestLayers/BasicLayer.cpp
     SyriusCoreDev/Projection.cpp)
 
 add_executable(SyriusCoreDev main.cpp AppLayer.cpp ${SYRIUSCOREDEV_SRC})
 add_dependencies(SyriusCoreDev SyriusCore)
 
 set(SYRIUS_TEST_LAYERS_SRC
-    TestLayers/BasicLayer.cpp TestLayers/TestContext.cpp TestLayers/TestContext.hpp TestLayers/TestImGui.cpp TestLayers/TestImGui.hpp TestLayers/TestVertexBuffer.cpp TestLayers/TestVertexBuffer.hpp TestLayers/TestIndexBuffer.cpp TestLayers/TestIndexBuffer.hpp)
+    TestLayers/TestContext.cpp
+    TestLayers/TestImGui.cpp
+    TestLayers/TestImGui.hpp
+    TestLayers/TestVertexBuffer.cpp
+    TestLayers/TestIndexBuffer.cpp
+    TestLayers/TestTexture.cpp
+    )
 
 add_executable(SyriusTest TestMain.cpp ${SYRIUS_TEST_LAYERS_SRC} ${SYRIUSCOREDEV_SRC})
 add_dependencies(SyriusTest SyriusCore)

@@ -5,8 +5,10 @@ layout (location = 1) in vec3 lColor;
 layout (location = 2) in vec2 lTexCoord;
 
 layout (location = 16) out vec4 fColor;
+layout (location = 17) out vec2 fTexCoord;
 
 void main(){
     gl_Position = vec4(lPosition, 1.0);
     fColor = vec4(lColor, 1.0);
+    fTexCoord = lTexCoord;
 }
