@@ -1,8 +1,8 @@
 #include "TestVertexBuffer.hpp"
 
 TestVertexBuffer::TestVertexBuffer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
-                                   EasyIni::Configuration &config) : Layer(context, window, config), m_CShaderLibrary("./Resources/TestShaders", context) {
-    m_ShaderProgram = m_CShaderLibrary.loadShader("VertexBuffer");
+                                   EasyIni::Configuration &config) : Layer(context, window, config), m_TestShaderLibrary("./Resources/TestShaders", context) {
+    m_ShaderProgram = m_TestShaderLibrary.loadShader("VertexBuffer");
 
     m_VertexLayout = m_Context->createVertexDescription();
     m_VertexLayout->addAttribute("Position", SR_FLOAT32_3);

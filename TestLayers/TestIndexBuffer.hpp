@@ -3,11 +3,11 @@
 #include "../SyriusCoreDev/Layer.hpp"
 #include "../SyriusCoreDev/Utils.hpp"
 
-class TestVertexBuffer: public Layer{
+class TestIndexBuffer: public Layer{
 public:
-    TestVertexBuffer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    TestIndexBuffer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
 
-    ~TestVertexBuffer() override;
+    ~TestIndexBuffer() override;
 
     void onUpdate() override;
 
@@ -18,6 +18,7 @@ private:
 
     ResourceView<VertexLayout> m_VertexLayout;
     ResourceView<VertexBuffer> m_VertexBuffer;
+    ResourceView<IndexBuffer> m_IndexBuffer;
     ResourceView<VertexArray> m_VertexArray;
     ShaderProgram m_ShaderProgram;
 };
