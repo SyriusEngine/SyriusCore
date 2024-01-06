@@ -30,8 +30,14 @@ namespace Syrius{
 
 }
 
+// Normal New and Delete operators
 void* operator new(size_t size);
 
-void operator delete(void* memory, size_t size);
+void operator delete(void* memory, size_t size) noexcept;
+
+// Array New and Delete operators
+void* operator new[](size_t size);
+
+void operator delete[](void* memory, size_t size) noexcept;
 
 #endif

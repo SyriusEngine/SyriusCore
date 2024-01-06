@@ -3,8 +3,9 @@
 #include "Include.hpp"
 
 struct Vertex{
-    float m_Position[3];
-    float m_TexCoords[2];
+    glm::vec3 position;
+    glm::vec3 color;
+    glm::vec2 texCoord;
 };
 
 struct Mesh{

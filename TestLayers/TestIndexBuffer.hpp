@@ -16,9 +16,6 @@ public:
 private:
     ShaderLibrary m_TestShaderLibrary;
 
-    ResourceView<VertexLayout> m_VertexLayout;
-    ResourceView<VertexBuffer> m_VertexBuffer;
-    ResourceView<IndexBuffer> m_IndexBuffer;
     ResourceView<VertexArray> m_VertexArray;
     ShaderProgram m_ShaderProgram;
 };

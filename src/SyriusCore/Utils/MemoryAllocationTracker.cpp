@@ -37,9 +37,23 @@ void* operator new(size_t size){
     return malloc(size);
 }
 
-void operator delete(void* memory, size_t size) {
-    Syrius::MemoryAllocationTracker::deallocate(size);
-    free(memory);
+void operator delete(void* memory, size_t size) noexcept {
+    if (memory != nullptr) {
+        Syrius::MemoryAllocationTracker::deallocate(size);
+        free(memory);
+    }
+}
+
+void* operator new[](size_t size){
+    Syrius::MemoryAllocationTracker::allocate(size);
+    return malloc(size);
+}
+
+void operator delete[](void* memory, size_t size) noexcept{
+    if (memory != nullptr) {
+        Syrius::MemoryAllocationTracker::deallocate(size);
+        free(memory);
+    }
 }
 
 #endif

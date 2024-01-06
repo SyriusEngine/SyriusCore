@@ -1,6 +1,7 @@
 struct VSin{
     float3 lPosition: Position;
     float3 lColor: Color;
+    float2 lTexCoord: TexCoord;
 };
 
 struct VSOut{
