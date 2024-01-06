@@ -53,7 +53,7 @@ void TestConstantBuffer::onUpdate() {
     m_Texture->bind(0);
     m_Sampler->bind(0);
     m_TransformBuffer->bind(0);
-    m_LerpBuffer->bind(1);
+    m_LerpBuffer->bind(4);
     m_Context->draw(m_VertexArray);
 
     m_Window->onImGuiBegin();

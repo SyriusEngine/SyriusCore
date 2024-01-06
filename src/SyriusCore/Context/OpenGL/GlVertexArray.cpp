@@ -32,6 +32,11 @@ namespace Syrius{
     }
 
     void GlVertexArray::bind() {
+        /*
+         * Thanks to DSA we don't need to bind the vertex buffer.
+         * But we explicitly bind it anyway, because RenderDoc gives us a bunch of warnings that are obviously false.
+         */
+        m_VertexBuffer->bind();
         glBindVertexArray(m_ArrayID);
     }
 
@@ -93,6 +98,13 @@ namespace Syrius{
     }
 
     void GlVertexArrayIndexed::bind() {
+        /*
+         * Thanks to DSA we don't need to bind the vertex buffer.
+         * But we explicitly bind it anyway, because RenderDoc gives us a bunch of warnings that are obviously false.
+         * Same goes for the index buffer.
+         */
+        m_VertexBuffer->bind();
+        m_IndexBuffer->bind();
         glBindVertexArray(m_ArrayID);
     }
 

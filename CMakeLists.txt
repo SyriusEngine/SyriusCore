@@ -211,7 +211,7 @@ set(SYRIUS_TEST_LAYERS_SRC
     TestLayers/TestVertexBuffer.cpp
     TestLayers/TestIndexBuffer.cpp
     TestLayers/TestTexture.cpp
-    TestLayers/TestConstantBuffer.cpp TestLayers/TestConstantBuffer.hpp)
+    TestLayers/TestConstantBuffer.cpp TestLayers/TestConstantBuffer.hpp TestLayers/TestDepthTest.cpp TestLayers/TestDepthTest.hpp)
 
 add_executable(SyriusTest TestMain.cpp ${SYRIUS_TEST_LAYERS_SRC} ${SYRIUSCOREDEV_SRC})
 add_dependencies(SyriusTest SyriusCore)

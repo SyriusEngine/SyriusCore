@@ -149,8 +149,8 @@ void AppLayer::render() {
     m_Context->beginRenderPass();
 
     m_Sampler->bind(0);
-    m_Camera.bind();
-    m_Projection.bind();
+    m_Camera.bind(1);
+    m_Projection.bind(0);
 
     m_SbShader.shaderProgram->bind();
     m_Cubemap->bind(0);

@@ -12,7 +12,7 @@ Texture2D tex: register(t0);
 
 SamplerState splr: register(s0);
 
-cbuffer LerpData: register(b1){
+cbuffer LerpData: register(b4){
     float4 lerpFactor;
 };
 

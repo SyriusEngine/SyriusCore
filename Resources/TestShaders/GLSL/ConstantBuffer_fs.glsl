@@ -7,7 +7,7 @@ layout (location = 0) out vec4 fragColor;
 
 uniform sampler2D tex;
 
-layout(std140, binding = 1) uniform LerpData {
+layout(std140, binding = 4) uniform LerpData {
     vec4 lerpFactor;
 };
 

@@ -13,7 +13,7 @@ public:
 
     ~Projection();
 
-    void bind();
+    void bind(uint32 slot);
 
     void onResize(uint32 width, uint32 height);
 

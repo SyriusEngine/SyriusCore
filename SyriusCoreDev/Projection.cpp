@@ -19,7 +19,7 @@ Projection::~Projection() {
 
 }
 
-void Projection::bind() {
-    m_Resource->bind(0);
+void Projection::bind(uint32 slot) {
+    m_Resource->bind(slot);
 }
 
