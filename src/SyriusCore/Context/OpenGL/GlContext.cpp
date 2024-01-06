@@ -12,26 +12,20 @@ namespace Syrius{
         m_ActiveContextID = m_ID;
     }
 
-    template<typename T>
-    inline void clearVec(std::vector<T>& vec){
-        for (auto& item : vec){
-            item.destroy();
-        }
-    }
-
     GlContext::~GlContext() {
-        // every GL object should be destroyed/released before the context is terminated
-        clearVec(m_ShaderModules);
-        clearVec(m_Shaders);
-        clearVec(m_VertexBuffers);
-        clearVec(m_IndexBuffers);
-        clearVec(m_VertexDescriptions);
-        clearVec(m_Textures2D);
-        clearVec(m_Samplers);
-        clearVec(m_ConstantBuffers);
-        clearVec(m_VertexArrays);
-        clearVec(m_FrameBuffers);
-        clearVec(m_FrameBufferDescriptions);
+        // every GL object should be destroyed/released before GL functions are unloaded
+        m_ShaderModules.clear();
+        m_Shaders.clear();
+        m_VertexBuffers.clear();
+        m_IndexBuffers.clear();
+        m_VertexDescriptions.clear();
+        m_Textures2D.clear();
+        m_Samplers.clear();
+        m_ConstantBuffers.clear();
+        m_VertexArrays.clear();
+        m_FrameBuffers.clear();
+        m_FrameBufferDescriptions.clear();
+        m_Cubemaps.clear();
 
         terminateGlad();
     }

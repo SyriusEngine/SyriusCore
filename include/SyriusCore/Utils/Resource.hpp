@@ -141,6 +141,8 @@ namespace Syrius{
             return *this;
         }
 
+
+
         ~Resource(){
             for (auto& [id, view] : m_Views){
                 view->m_Resource = nullptr;
