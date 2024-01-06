@@ -97,14 +97,14 @@ namespace Syrius{
         return m_BufferID;
     }
 
-    GlDefaultDepthStencilAttachment::GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, uint32 framebufferID):
+    GlDefaultDepthStencilAttachment::GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc):
     DepthStencilAttachment(desc),
     m_GlDepthFunc(getGlComparisonFunc(desc.depthFunc)),
     m_GlStencilFunc(getGlComparisonFunc(desc.stencilFunc)),
     m_GlStencilFail(getGlStencilFunc(desc.stencilFail)),
     m_GlStencilPass(getGlStencilFunc(desc.stencilPass)),
     m_GlStencilPassDepthFail(getGlStencilFunc(desc.stencilPassDepthFail)),
-    m_FrameBufferID(framebufferID){
+    m_FrameBufferID(0){
 
     }
 
@@ -137,7 +137,7 @@ namespace Syrius{
     }
 
     void GlDefaultDepthStencilAttachment::bindShaderResource(uint32 slot) {
-
+        SR_CORE_WARNING("Binding default depth stencil attachment as shader resource is not supported");
     }
 
     void GlDefaultDepthStencilAttachment::clear() {
@@ -154,7 +154,8 @@ namespace Syrius{
     }
 
     Resource<Image> GlDefaultDepthStencilAttachment::getData() {
-        return Resource<Image>();
+        SR_CORE_WARNING("Read operation requested on default depth stencil attachment which is not supported");
+        return {};
     }
 
     uint64 GlDefaultDepthStencilAttachment::getIdentifier() const {

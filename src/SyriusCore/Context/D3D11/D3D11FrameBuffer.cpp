@@ -31,6 +31,17 @@ namespace Syrius{
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(attachment);
             m_DepthStencilView = attachment->getDepthStencilView();
         }
+        else{
+            // we create the attachment anyway, but we make it such that both depth testing and stencil testing are disabled
+            DepthStencilAttachmentDesc dummyDesc;
+            dummyDesc.width = desc->getViewportDesc().begin()->width; // just use the first viewport's dimensions
+            dummyDesc.height = desc->getViewportDesc().begin()->height;
+            dummyDesc.enableDepthTest = false;
+            dummyDesc.enableStencilTest = false;
+            auto attachment = new D3D11DepthStencilAttachment(dummyDesc, m_Device, m_DeviceContext);
+            m_DepthStencilAttachment = Resource<DepthStencilAttachment>(attachment);
+            m_DepthStencilView = attachment->getDepthStencilView();
+        }
     }
 
     D3D11FrameBuffer::~D3D11FrameBuffer() {
@@ -44,13 +55,8 @@ namespace Syrius{
         for (const auto& viewport: m_Viewports){
             viewport->bind();
         }
-        if (m_DepthStencilAttachment.isValid()){
-            m_DepthStencilAttachment->bind();
-            m_DeviceContext->OMSetRenderTargets(m_RenderTargetViews.size(), &m_RenderTargetViews[0], m_DepthStencilView);
-        }
-        else{
-            m_DeviceContext->OMSetRenderTargets(m_RenderTargetViews.size(), &m_RenderTargetViews[0], nullptr);
-        }
+        m_DepthStencilAttachment->bind();
+        m_DeviceContext->OMSetRenderTargets(m_RenderTargetViews.size(), &m_RenderTargetViews[0], m_DepthStencilView);
     }
 
     void D3D11FrameBuffer::unbind() {
@@ -97,6 +103,17 @@ namespace Syrius{
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(attachment);
             m_DepthStencilView = attachment->getDepthStencilView();
         }
+        else{
+            // we create the attachment anyway, but we make it such that both depth testing and stencil testing are disabled
+            DepthStencilAttachmentDesc dummyDesc;
+            dummyDesc.width = desc->getViewportDesc().begin()->width; // just use the first viewport's dimensions
+            dummyDesc.height = desc->getViewportDesc().begin()->height;
+            dummyDesc.enableDepthTest = false;
+            dummyDesc.enableStencilTest = false;
+            auto attachment = new D3D11DepthStencilAttachment(dummyDesc, m_Device, m_DeviceContext);
+            m_DepthStencilAttachment = Resource<DepthStencilAttachment>(attachment);
+            m_DepthStencilView = attachment->getDepthStencilView();
+        }
 
     }
 
@@ -109,14 +126,8 @@ namespace Syrius{
             viewport->bind();
         }
 
-        if (m_DepthStencilAttachment.isValid()){
-            m_DepthStencilAttachment->bind();
-            m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
-        }
-        else{
-            m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, nullptr);
-        }
-
+        m_DepthStencilAttachment->bind();
+        m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
     }
 
     void D3D11DefaultFrameBuffer::unbind() {

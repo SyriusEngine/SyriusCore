@@ -3,7 +3,8 @@
 
 namespace Syrius{
 
-    FrameBuffer::FrameBuffer(const ResourceView<FrameBufferDescription> &desc) {
+    FrameBuffer::FrameBuffer(const ResourceView<FrameBufferDescription> &desc):
+    m_DepthStencilAttachment(nullptr){
         SR_CORE_PRECONDITION(desc.isValid(), "Invalid framebuffer description");
         SR_CORE_PRECONDITION(desc->getViewportDesc().size() > 0, "No viewport description was added to the framebuffer description");
         SR_CORE_PRECONDITION(!desc->getColorAttachmentDesc().empty() or
@@ -27,9 +28,7 @@ namespace Syrius{
         for (const auto &attachment: m_ColorAttachments){
             attachment->clear();
         }
-        if (m_DepthStencilAttachment.isValid()){
-            m_DepthStencilAttachment->clear();
-        }
+        m_DepthStencilAttachment->clear();
     }
 
     void FrameBuffer::onResize(uint32 width, uint32 height) {
@@ -39,9 +38,7 @@ namespace Syrius{
         for (auto& colorAttachment : m_ColorAttachments){
             colorAttachment->onResize(width, height);
         }
-        if (m_DepthStencilAttachment.isValid()){
-            m_DepthStencilAttachment->setSize(width, height);
-        }
+        m_DepthStencilAttachment->setSize(width, height);
     }
 
     ResourceView<Viewport> FrameBuffer::getViewport(uint32 index) {

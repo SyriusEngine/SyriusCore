@@ -50,7 +50,17 @@ namespace Syrius{
             auto attachment = new GlDepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back(), m_FrameBufferID);
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(attachment);
             glNamedFramebufferRenderbuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, attachment->getIdentifier());
-
+        }
+        else{
+            // create a dummy depth stencil attachment such that the object exists but does nothing
+            DepthStencilAttachmentDesc dummyDesc;
+            dummyDesc.width = desc->getViewportDesc().back().width;
+            dummyDesc.height = desc->getViewportDesc().back().height;
+            dummyDesc.enableDepthTest = false;
+            dummyDesc.enableStencilTest = false;
+            auto df = new GlDepthStencilAttachment(dummyDesc, 0);
+            m_DepthStencilAttachment = Resource<DepthStencilAttachment>(df);
+            glNamedFramebufferRenderbuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, df->getIdentifier());
         }
 
         SR_CORE_POSTCONDITION(checkFramebuffer(m_FrameBufferID) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer creation failed!");
@@ -68,17 +78,13 @@ namespace Syrius{
         for (const auto& viewport: m_Viewports){
             viewport->bind();
         }
-        if (m_DepthStencilAttachment.isValid()){
-            m_DepthStencilAttachment->bind();
-        }
+        m_DepthStencilAttachment->bind();
 
     }
 
     void GlFrameBuffer::unbind() {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        if (m_DepthStencilAttachment.isValid()){
-            m_DepthStencilAttachment->unbind();
-        }
+        m_DepthStencilAttachment->unbind();
     }
 
     GlDefaultFrameBuffer::GlDefaultFrameBuffer(const ResourceView<FrameBufferDescription> &desc) :
@@ -90,9 +96,21 @@ namespace Syrius{
         m_ColorAttachments.emplace_back(attachment);
 
         if (!desc->getDepthStencilAttachmentDesc().empty()){
-            auto df = new GlDepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back(), 0);
+            if (desc->getDepthStencilAttachmentDesc().size() > 1){
+                SR_CORE_MESSAGE("The default framebuffer cannot have more than one depth stencil attachment, only the last one will be used");
+            }
+            auto df = new GlDefaultDepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back());
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(df);
-
+        }
+        else{
+            // create a dummy depth stencil attachment such that the object exists but does nothing
+            DepthStencilAttachmentDesc dummyDesc;
+            dummyDesc.width = desc->getViewportDesc().back().width;
+            dummyDesc.height = desc->getViewportDesc().back().height;
+            dummyDesc.enableDepthTest = false;
+            dummyDesc.enableStencilTest = false;
+            auto df = new GlDefaultDepthStencilAttachment(dummyDesc);
+            m_DepthStencilAttachment = Resource<DepthStencilAttachment>(df);
         }
 
     }
@@ -106,17 +124,11 @@ namespace Syrius{
         for (const auto& viewport: m_Viewports){
             viewport->bind();
         }
-
-        if (m_DepthStencilAttachment.isValid()){
-            m_DepthStencilAttachment->bind();
-        }
+        m_DepthStencilAttachment->bind();
     }
 
     void GlDefaultFrameBuffer::unbind() {
-        // impossible to unbind the default framebuffer
-        if (m_DepthStencilAttachment.isValid()){
-            m_DepthStencilAttachment->unbind();
-        }
+        m_DepthStencilAttachment->unbind();
     }
 
 }

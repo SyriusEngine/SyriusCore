@@ -8,7 +8,7 @@ m_DeltaTime(0.0),
 m_LastFrameTime(0.0),
 m_Lerp(0.5f),
 m_Translation(0.0f),
-m_DepthTest(true),
+m_DepthTest(false),
 m_Camera(0.1f, 0.02f, context),
 m_Projection(context, window->getWidth(), window->getHeight()){
     m_Window->createImGuiContext();

@@ -41,7 +41,7 @@ namespace Syrius{
 
     class GlDefaultDepthStencilAttachment : public DepthStencilAttachment{
     public:
-        explicit GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc& desc, uint32 framebufferID);
+        explicit GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc& desc);
 
         ~GlDefaultDepthStencilAttachment() override;
 
