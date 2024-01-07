@@ -106,7 +106,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
 
     m_SbShader = m_ShaderLibrary.loadShader("Skybox", "Skybox");
 
-    auto skyboxLayout = m_Context->createVertexDescription();
+    auto skyboxLayout = m_Context->createVertexLayout();
     skyboxLayout->addAttribute("Position", SR_FLOAT32_3);
 
     VertexBufferDesc sbVboDesc;

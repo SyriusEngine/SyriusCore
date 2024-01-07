@@ -4,7 +4,7 @@ TestVertexBuffer::TestVertexBuffer(ResourceView<Context> &context, const Resourc
                                    EasyIni::Configuration &config) : Layer(context, window, config), m_TestShaderLibrary("./Resources/TestShaders", context) {
     m_ShaderProgram = m_TestShaderLibrary.loadShader("VertexBuffer");
 
-    m_VertexLayout = m_Context->createVertexDescription();
+    m_VertexLayout = m_Context->createVertexLayout();
     m_VertexLayout->addAttribute("Position", SR_FLOAT32_3);
     m_VertexLayout->addAttribute("Color", SR_FLOAT32_3);
 
