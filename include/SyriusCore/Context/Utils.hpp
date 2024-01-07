@@ -51,6 +51,11 @@ typedef enum SR_COMPARISON_FUNC {
     SR_COMPARISON_FUNC_NOT_EQUAL     = 0x08
 } SR_COMPARISON_FUNC;
 
+typedef enum SR_DEPTH_MASK {
+    SR_DEPTH_MASK_DISABLED  = 0x00,
+    SR_DEPTH_MASK_ENABLED   = 0x01
+} SR_DEPTH_MASK;
+
 // stencil operations
 typedef enum SR_STENCIL_FUNC{
     SR_STENCIL_FUNC_KEEP             = 0x01,

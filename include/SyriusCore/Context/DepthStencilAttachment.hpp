@@ -9,12 +9,13 @@ namespace Syrius{
         uint32 height              = SR_DEFAULT_HEIGHT;
         SR_TEXTURE_FORMAT format   = SR_TEXTURE_DEPTH_24_STENCIL_8;
 
-        bool enableShaderRead = true; // enables sampling from this attachment in shaders
+        bool enableShaderAccess = true; // enables sampling from this attachment in shaders
         bool enableAutoResize           = true; // whenever the window is resized, this attachment will be resized as well
 
         bool enableDepthTest            = false;
         SR_COMPARISON_FUNC depthFunc    = SR_COMPARISON_FUNC_LESS;
         float clearDepth                = 1.0f;
+        SR_DEPTH_MASK depthMask         = SR_DEPTH_MASK_ENABLED;
 
         bool enableStencilTest                  = false;
         SR_COMPARISON_FUNC stencilFunc          = SR_COMPARISON_FUNC_ALWAYS;
@@ -40,6 +41,8 @@ namespace Syrius{
         virtual void clear() = 0;
 
         virtual void setSize(uint32 width, uint32 height) = 0;
+
+        virtual void enableDepthTest(bool enable) = 0;
 
         [[nodiscard]] virtual Resource<Image> getData() = 0;
 
@@ -77,11 +80,12 @@ namespace Syrius{
         uint32 m_Width;
         uint32 m_Height;
         SR_TEXTURE_FORMAT m_Format;
-        bool m_EnableShaderRead;
+        const bool m_EnableShaderAccess;
 
         bool m_EnableDepthTest;
         SR_COMPARISON_FUNC m_DepthFunc;
         float m_ClearDepth;
+        SR_DEPTH_MASK m_DepthMask;
 
         bool m_EnableStencilTest;
         SR_COMPARISON_FUNC m_StencilFunc;

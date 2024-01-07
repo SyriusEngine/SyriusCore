@@ -26,15 +26,6 @@ namespace Syrius{
     m_DepthStencilState(nullptr),
     m_DepthStencilView(nullptr),
     m_D3DFormat(getD3d11DepthStencilBufferFormat(desc.format)){
-        uint32 flags = 0;
-        if (m_EnableDepthTest){
-            flags |= D3D11_CLEAR_DEPTH;
-        }
-        if (m_EnableStencilTest){
-            flags |= D3D11_CLEAR_STENCIL;
-        }
-        m_ClearFlag = static_cast<D3D11_CLEAR_FLAG>(flags);
-
         D3D11_TEXTURE2D_DESC bufferDesc;
         bufferDesc.Width = m_Width;
         bufferDesc.Height = m_Height;
@@ -49,26 +40,8 @@ namespace Syrius{
         bufferDesc.MiscFlags = 0;
         SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&bufferDesc, nullptr, &m_DepthStencilBuffer));
 
-        D3D11_DEPTH_STENCIL_DESC stateDesc = { 0 };
-        // Depth test parameters
-        stateDesc.DepthEnable = desc.enableDepthTest;
-        stateDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-        stateDesc.DepthFunc = getD3d11ComparisonFunc(desc.depthFunc);
-        // Stencil test parameters
-        stateDesc.StencilEnable = desc.enableStencilTest;
-        stateDesc.StencilReadMask = desc.stencilMask;
-        stateDesc.StencilWriteMask = desc.stencilMask;
-        // Stencil operations if pixel is front-facing
-        stateDesc.FrontFace.StencilFailOp = getD3d11StencilFunc(desc.stencilFail);
-        stateDesc.FrontFace.StencilDepthFailOp = getD3d11StencilFunc(desc.stencilPassDepthFail);
-        stateDesc.FrontFace.StencilPassOp = getD3d11StencilFunc(desc.stencilPass);
-        stateDesc.FrontFace.StencilFunc = getD3d11ComparisonFunc(desc.stencilFunc);
-        // Stencil operations if pixel is back-facing
-        stateDesc.BackFace.StencilFailOp = getD3d11StencilFunc(desc.stencilFail);;
-        stateDesc.BackFace.StencilDepthFailOp = getD3d11StencilFunc(desc.stencilPassDepthFail);;
-        stateDesc.BackFace.StencilPassOp = getD3d11StencilFunc(desc.stencilPass);;
-        stateDesc.BackFace.StencilFunc = getD3d11ComparisonFunc(desc.stencilFunc);
-        SR_CORE_D3D11_CALL(m_Device->CreateDepthStencilState(&stateDesc, &m_DepthStencilState));
+        setClearFlag();
+        createDepthStencilState();
 
         D3D11_DEPTH_STENCIL_VIEW_DESC viewDesc;
         viewDesc.Format = m_D3DFormat;
@@ -159,6 +132,50 @@ namespace Syrius{
 
     ID3D11DepthStencilState *D3D11DepthStencilAttachment::getDepthStencilState() const {
         return m_DepthStencilState;
+    }
+
+    void D3D11DepthStencilAttachment::enableDepthTest(bool enable) {
+        m_EnableDepthTest = enable;
+        setClearFlag();
+        createDepthStencilState();
+    }
+
+    void D3D11DepthStencilAttachment::setClearFlag() {
+        uint32 flags = 0;
+        if (m_EnableDepthTest){
+            flags |= D3D11_CLEAR_DEPTH;
+        }
+        if (m_EnableStencilTest){
+            flags |= D3D11_CLEAR_STENCIL;
+        }
+        m_ClearFlag = static_cast<D3D11_CLEAR_FLAG>(flags);
+    }
+
+    void D3D11DepthStencilAttachment::createDepthStencilState() {
+        if (m_DepthStencilState){
+            m_DepthStencilState->Release();
+        }
+
+        D3D11_DEPTH_STENCIL_DESC stateDesc = { 0 };
+        // Depth test parameters
+        stateDesc.DepthEnable = m_EnableDepthTest;
+        stateDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+        stateDesc.DepthFunc = getD3d11ComparisonFunc(m_DepthFunc);
+        // Stencil test parameters
+        stateDesc.StencilEnable = m_EnableStencilTest;
+        stateDesc.StencilReadMask = m_StencilMask;
+        stateDesc.StencilWriteMask = m_StencilMask;
+        // Stencil operations if pixel is front-facing
+        stateDesc.FrontFace.StencilFailOp = getD3d11StencilFunc(m_StencilFail);
+        stateDesc.FrontFace.StencilDepthFailOp = getD3d11StencilFunc(m_StencilPassDepthFail);
+        stateDesc.FrontFace.StencilPassOp = getD3d11StencilFunc(m_StencilPass);
+        stateDesc.FrontFace.StencilFunc = getD3d11ComparisonFunc(m_StencilFunc);
+        // Stencil operations if pixel is back-facing
+        stateDesc.BackFace.StencilFailOp = getD3d11StencilFunc(m_StencilFail);
+        stateDesc.BackFace.StencilDepthFailOp = getD3d11StencilFunc(m_StencilPassDepthFail);
+        stateDesc.BackFace.StencilPassOp = getD3d11StencilFunc(m_StencilPass);
+        stateDesc.BackFace.StencilFunc = getD3d11ComparisonFunc(m_StencilFunc);
+        SR_CORE_D3D11_CALL(m_Device->CreateDepthStencilState(&stateDesc, &m_DepthStencilState));
     }
 
 

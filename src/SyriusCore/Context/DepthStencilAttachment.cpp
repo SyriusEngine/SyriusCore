@@ -7,11 +7,12 @@ namespace Syrius{
     m_Width(desc.width),
     m_Height(desc.height),
     m_Format(desc.format),
-    m_EnableShaderRead(desc.enableShaderRead),
+    m_EnableShaderAccess(desc.enableShaderAccess),
 
     m_EnableDepthTest(desc.enableDepthTest),
     m_DepthFunc(desc.depthFunc),
     m_ClearDepth(desc.clearDepth),
+    m_DepthMask(desc.depthMask),
 
     m_EnableStencilTest(desc.enableStencilTest),
     m_StencilFunc(desc.stencilFunc),
@@ -49,7 +50,7 @@ namespace Syrius{
     }
 
     bool DepthStencilAttachment::shaderReadEnabled() const {
-        return m_EnableShaderRead;
+        return m_EnableShaderAccess;
     }
 
     bool DepthStencilAttachment::depthTestEnabled() const {

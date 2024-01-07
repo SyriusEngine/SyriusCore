@@ -21,6 +21,8 @@ namespace Syrius{
 
         void setSize(uint32 width, uint32 height) override;
 
+        void enableDepthTest(bool enable) override;
+
         [[nodiscard]] Resource<Image> getData() override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
@@ -54,6 +56,8 @@ namespace Syrius{
         void clear() override;
 
         void setSize(uint32 width, uint32 height) override;
+
+        void enableDepthTest(bool enable) override;
 
         [[nodiscard]] Resource<Image> getData() override;
 

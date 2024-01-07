@@ -22,6 +22,8 @@ namespace Syrius{
 
         virtual void onResize(uint32 width, uint32 height);
 
+        void enableDepthTest(bool enable);
+
         ResourceView<Viewport> getViewport(uint32 index = 0);
 
         [[nodiscard]] ResourceView<ColorAttachment> getColorAttachment(uint32 index);

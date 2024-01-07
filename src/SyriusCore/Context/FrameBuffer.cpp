@@ -41,6 +41,10 @@ namespace Syrius{
         m_DepthStencilAttachment->setSize(width, height);
     }
 
+    void FrameBuffer::enableDepthTest(bool enable) {
+        m_DepthStencilAttachment->enableDepthTest(enable);
+    }
+
     ResourceView<Viewport> FrameBuffer::getViewport(uint32 index) {
         SR_CORE_PRECONDITION(m_Viewports.size() > 0, "No viewport was added to the framebuffer");
         SR_CORE_PRECONDITION(index < m_Viewports.size(), "Index: %i is out of bounds for viewport", index);
@@ -58,5 +62,6 @@ namespace Syrius{
     ResourceView<DepthStencilAttachment> FrameBuffer::getDepthStencilAttachment() {
         return m_DepthStencilAttachment.createView();
     }
+
 
 }

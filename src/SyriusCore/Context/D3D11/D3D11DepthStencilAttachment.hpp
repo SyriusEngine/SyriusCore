@@ -23,6 +23,8 @@ namespace Syrius{
 
         void setSize(uint32 width, uint32 height) override;
 
+        void enableDepthTest(bool enable) override;
+
         [[nodiscard]] Resource<Image> getData() override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
@@ -30,6 +32,12 @@ namespace Syrius{
         [[nodiscard]] ID3D11DepthStencilView* getDepthStencilView() const;
 
         [[nodiscard]] ID3D11DepthStencilState* getDepthStencilState() const;
+
+    private:
+
+        void setClearFlag();
+
+        void createDepthStencilState();
 
     private:
         ID3D11Device* m_Device;

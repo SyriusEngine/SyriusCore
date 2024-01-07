@@ -67,7 +67,7 @@ namespace Syrius{
     }
 
     void GlDepthStencilAttachment::bindShaderResource(uint32 slot) {
-        SR_CORE_WARNING("Read operation requested on depth stencil attachment with creation flag: enableShaderRead = false");
+        SR_CORE_WARNING("Read operation requested on depth stencil attachment with creation flag: enableShaderAccess = false");
 
     }
 
@@ -95,6 +95,10 @@ namespace Syrius{
 
     uint64 GlDepthStencilAttachment::getIdentifier() const {
         return m_BufferID;
+    }
+
+    void GlDepthStencilAttachment::enableDepthTest(bool enable) {
+        m_EnableDepthTest = enable;
     }
 
     GlDefaultDepthStencilAttachment::GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc):
@@ -151,6 +155,10 @@ namespace Syrius{
 
     void GlDefaultDepthStencilAttachment::setSize(uint32 width, uint32 height) {
 
+    }
+
+    void GlDefaultDepthStencilAttachment::enableDepthTest(bool enable) {
+        m_EnableDepthTest = enable;
     }
 
     Resource<Image> GlDefaultDepthStencilAttachment::getData() {

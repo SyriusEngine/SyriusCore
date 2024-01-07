@@ -102,7 +102,7 @@ void TestDepthTest::renderImGui() {
         m_LerpBuffer->setData(&lerp);
     }
     if (ImGui::Checkbox("Depth test", &m_DepthTest)){
-
+        m_Context->getDefaultFrameBuffer()->enableDepthTest(m_DepthTest);
     }
     ImGui::End();
 
