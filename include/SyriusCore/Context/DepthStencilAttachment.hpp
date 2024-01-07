@@ -9,7 +9,7 @@ namespace Syrius{
         uint32 height              = SR_DEFAULT_HEIGHT;
         SR_TEXTURE_FORMAT format   = SR_TEXTURE_DEPTH_24_STENCIL_8;
 
-        bool enableShaderAccess = true; // enables sampling from this attachment in shaders
+        bool enableShaderAccess = false; // enables sampling from this attachment in shaders
 
         bool enableDepthTest            = false;
         SR_COMPARISON_FUNC depthFunc    = SR_COMPARISON_FUNC_LESS;

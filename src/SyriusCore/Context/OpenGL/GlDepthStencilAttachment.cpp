@@ -2,7 +2,7 @@
 
 namespace Syrius{
 
-    GLenum getGlDepthStencilFormat(SR_TEXTURE_FORMAT format){
+    GLenum getGlRenderBufferFormat(SR_TEXTURE_FORMAT format){
         switch(format){
             case SR_TEXTURE_DEPTH_16: return GL_DEPTH_COMPONENT16;
             case SR_TEXTURE_DEPTH_24: return GL_DEPTH_COMPONENT24;
@@ -10,11 +10,26 @@ namespace Syrius{
             case SR_TEXTURE_DEPTH_24_STENCIL_8: return GL_DEPTH24_STENCIL8;
             case SR_TEXTURE_DEPTH_32_STENCIL_8: return GL_DEPTH32F_STENCIL8;
             default: {
-                SR_CORE_WARNING("Invalid depth stencil format, defaulting to depth 24 stencil 8");
+                SR_CORE_WARNING("Invalid depth stencil format (%i), defaulting to depth 24 stencil 8", format);
                 return GL_DEPTH24_STENCIL8;
             }
         }
     }
+
+    GLenum getGlTextureBufferFormat(SR_TEXTURE_FORMAT format){
+        switch(format){
+            case SR_TEXTURE_DEPTH_16: return GL_DEPTH;
+            case SR_TEXTURE_DEPTH_24: return GL_DEPTH;
+            case SR_TEXTURE_DEPTH_32: return GL_DEPTH;
+            case SR_TEXTURE_DEPTH_24_STENCIL_8: return GL_DEPTH_STENCIL;
+            case SR_TEXTURE_DEPTH_32_STENCIL_8: return GL_DEPTH_STENCIL;
+            default: {
+                SR_CORE_WARNING("Invalid depth stencil format (%i), defaulting to depth 24 stencil 8", format);
+                return GL_DEPTH_STENCIL;
+            }
+        }
+    }
+
 
     GlDepthStencilAttachment::GlDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, uint32 framebufferID):
     DepthStencilAttachment(desc),
@@ -23,19 +38,53 @@ namespace Syrius{
     m_GlStencilFail(getGlStencilFunc(desc.stencilFail)),
     m_GlStencilPass(getGlStencilFunc(desc.stencilPass)),
     m_GlStencilPassDepthFail(getGlStencilFunc(desc.stencilPassDepthFail)),
-    m_GlFormat(getGlDepthStencilFormat(desc.format)),
     m_FrameBufferID(framebufferID){
-        glCreateRenderbuffers(1, &m_BufferID);
-        glNamedRenderbufferStorage(m_BufferID, m_GlFormat, m_Width, m_Height);
+        if (m_EnableShaderAccess){
+            m_GlFormat = getGlTextureDataType(desc.format);
+
+            glCreateTextures(GL_TEXTURE_2D, 1, &m_BufferID);
+            glBindTexture(GL_TEXTURE_2D, m_BufferID);
+
+            GLint supportedFormat = GL_FALSE;
+            glGetInternalformativ(GL_TEXTURE_2D, m_BufferID, GL_INTERNALFORMAT_SUPPORTED, 1, &supportedFormat);
+            if (supportedFormat == GL_TRUE){
+                SR_CORE_OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, m_GlFormat, m_Width, m_Height, 0, m_GlFormat, GL_FLOAT, nullptr));
+                glTextureParameteri(m_BufferID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTextureParameteri(m_BufferID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            }
+            else{
+                SR_CORE_EXCEPTION("OpenGL does not support a color attachment of usage: %i", desc.format);
+            }
+        }
+        else{
+            /*
+             * Renderbuffers are supposed to be faster if you don't need to sample them in shaders
+             * https://www.khronos.org/opengl/wiki/Renderbuffer_Object
+             * https://www.khronos.org/opengl/wiki/Framebuffer_Object
+             *
+             */
+            m_GlFormat = getGlRenderBufferFormat(desc.format);
+            glCreateRenderbuffers(1, &m_BufferID);
+            glNamedRenderbufferStorage(m_BufferID, m_GlFormat, m_Width, m_Height);
+        }
     }
 
     GlDepthStencilAttachment::~GlDepthStencilAttachment() {
-        glDeleteRenderbuffers(1, &m_BufferID);
-
+        if (m_EnableShaderAccess){
+            glDeleteTextures(1, &m_BufferID);
+        }
+        else{
+            glDeleteRenderbuffers(1, &m_BufferID);
+        }
     }
 
     void GlDepthStencilAttachment::bind() {
-        glBindRenderbuffer(GL_RENDERBUFFER, m_BufferID);
+        if (m_EnableShaderAccess){
+            glBindTexture(GL_TEXTURE_2D, m_BufferID);
+        }
+        else{
+            glBindRenderbuffer(GL_RENDERBUFFER, m_BufferID);
+        }
 
         if (m_EnableDepthTest){
             glEnable(GL_DEPTH_TEST);
@@ -68,8 +117,9 @@ namespace Syrius{
     }
 
     void GlDepthStencilAttachment::bindShaderResource(uint32 slot) {
-        SR_CORE_WARNING("Read operation requested on depth stencil attachment with creation flag: enableShaderAccess = false");
+        SR_CORE_PRECONDITION(m_EnableShaderAccess, "Shader access is not enabled for this depth stencil attachment (enableShaderAccess = %i)", m_EnableShaderAccess);
 
+        glBindTextureUnit(slot, m_BufferID);
     }
 
     void GlDepthStencilAttachment::clear() {
@@ -86,7 +136,13 @@ namespace Syrius{
     void GlDepthStencilAttachment::onResize(uint32 width, uint32 height) {
         m_Width = width;
         m_Height = height;
-        glNamedRenderbufferStorage(m_BufferID, m_GlFormat, m_Width, m_Height);
+        if (m_EnableDepthTest){
+            glBindTexture(GL_TEXTURE_2D, m_BufferID);
+            glTexImage2D(GL_TEXTURE_2D, 0, m_GlFormat, m_Width, m_Height, 0, m_GlFormat, GL_FLOAT, nullptr);
+        }
+        else{
+            glNamedRenderbufferStorage(m_BufferID, m_GlFormat, m_Width, m_Height);
+        }
     }
 
     Resource<Image> GlDepthStencilAttachment::getData() {

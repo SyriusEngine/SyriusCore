@@ -18,6 +18,20 @@ namespace Syrius{
         }
     }
 
+    DXGI_FORMAT getD3d11DepthStencilViewFormat(SR_TEXTURE_FORMAT format){
+        switch (format){
+            case SR_TEXTURE_DEPTH_16: return DXGI_FORMAT_R16_UNORM;
+            case SR_TEXTURE_DEPTH_24: return DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+            case SR_TEXTURE_DEPTH_32: return DXGI_FORMAT_R32_FLOAT;
+            case SR_TEXTURE_DEPTH_24_STENCIL_8: return DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+            case SR_TEXTURE_DEPTH_32_STENCIL_8: return DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
+            default: {
+                SR_CORE_WARNING("Invalid depth stencil view format, defaulting to depth 24 stencil 8");
+                return DXGI_FORMAT_D24_UNORM_S8_UINT;
+            }
+        }
+    }
+
     D3D11DepthStencilAttachment::D3D11DepthStencilAttachment(const DepthStencilAttachmentDesc &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext):
     DepthStencilAttachment(desc),
     m_Device(device),
@@ -50,6 +64,15 @@ namespace Syrius{
         viewDesc.Flags = 0;
         SR_CORE_D3D11_CALL(m_Device->CreateDepthStencilView(m_DepthStencilBuffer, &viewDesc, &m_DepthStencilView));
 
+        if (m_EnableShaderAccess){
+            D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+            srvDesc.Format = getD3d11DepthStencilViewFormat(desc.format);
+            srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+            srvDesc.Texture2D.MipLevels = 1;
+            srvDesc.Texture2D.MostDetailedMip = 0;
+            SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_DepthStencilBuffer, &srvDesc, &m_BufferView));
+        }
+
     }
 
     D3D11DepthStencilAttachment::~D3D11DepthStencilAttachment() {
@@ -62,6 +85,9 @@ namespace Syrius{
         if (m_DepthStencilView){
             m_DepthStencilView->Release();
         }
+        if (m_BufferView){
+            m_BufferView->Release();
+        }
     }
 
     void D3D11DepthStencilAttachment::bind() {
@@ -73,7 +99,9 @@ namespace Syrius{
     }
 
     void D3D11DepthStencilAttachment::bindShaderResource(uint32 slot) {
+        SR_CORE_PRECONDITION(m_EnableShaderAccess, "Shader access is not enabled for this depth stencil attachment");
 
+        m_Context->PSSetShaderResources(slot, 1, &m_BufferView);
     }
 
     void D3D11DepthStencilAttachment::clear() {

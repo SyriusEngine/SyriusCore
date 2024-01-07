@@ -50,6 +50,7 @@ namespace Syrius{
         ID3D11Texture2D* m_DepthStencilBuffer;
         ID3D11DepthStencilState* m_DepthStencilState;
         ID3D11DepthStencilView* m_DepthStencilView;
+        ID3D11ShaderResourceView* m_BufferView;
 
         D3D11_CLEAR_FLAG m_ClearFlag;
 
