@@ -17,7 +17,7 @@ namespace Syrius{
 
         void clear() override;
 
-        void setSize(uint32 width, uint32 height) override;
+        void onResize(uint32 width, uint32 height) override;
 
         [[nodiscard]] Resource<Image> getData() override;
 
@@ -47,7 +47,7 @@ namespace Syrius{
 
         void clear() override;
 
-        void setSize(uint32 width, uint32 height) override;
+        void onResize(uint32 width, uint32 height) override;
 
         [[nodiscard]] Resource<Image> getData() override;
 

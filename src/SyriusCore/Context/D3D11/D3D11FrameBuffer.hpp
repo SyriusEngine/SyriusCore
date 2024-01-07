@@ -30,7 +30,9 @@ namespace Syrius{
         std::vector<ID3D11RenderTargetView*> m_RenderTargetViews;
         std::vector<ID3D11RenderTargetView*> m_NullableRenderTargetViews;
         std::vector<ID3D11ShaderResourceView*> m_NullableShaderResourceViews;
+
         ID3D11DepthStencilView* m_DepthStencilView;
+        D3D11DepthStencilAttachment* m_D3D11DepthStencilAttachment;
     };
 
     class D3D11DefaultFrameBuffer : public FrameBuffer{
@@ -43,12 +45,15 @@ namespace Syrius{
 
         void unbind() override;
 
+        void onResize(uint32 width, uint32 height) override;
+
     private:
         ID3D11Device* m_Device;
         ID3D11DeviceContext* m_DeviceContext;
         IDXGISwapChain* m_SwapChain;
 
         ID3D11DepthStencilView* m_DepthStencilView;
+        D3D11DepthStencilAttachment* m_D3D11DepthStencilAttachment;
 
         D3D11DefaultColorAttachment* m_ColorAttachment;
         ID3D11RenderTargetView* m_RenderTargetView;

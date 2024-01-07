@@ -19,7 +19,7 @@ namespace Syrius{
 
         void clear() override;
 
-        void setSize(uint32 width, uint32 height) override;
+        void onResize(uint32 width, uint32 height) override;
 
         void enableDepthTest(bool enable) override;
 
@@ -59,7 +59,7 @@ namespace Syrius{
 
         void clear() override;
 
-        void setSize(uint32 width, uint32 height) override;
+        void onResize(uint32 width, uint32 height) override;
 
         void enableDepthTest(bool enable) override;
 

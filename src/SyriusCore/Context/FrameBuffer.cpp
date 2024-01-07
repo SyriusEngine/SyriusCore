@@ -38,7 +38,7 @@ namespace Syrius{
         for (auto& colorAttachment : m_ColorAttachments){
             colorAttachment->onResize(width, height);
         }
-        m_DepthStencilAttachment->setSize(width, height);
+        m_DepthStencilAttachment->onResize(width, height);
     }
 
     void FrameBuffer::enableDepthTest(bool enable) {

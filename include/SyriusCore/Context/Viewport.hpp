@@ -12,7 +12,6 @@ namespace Syrius{
         uint32 yPos           = 0;
         float minDepth        = 0.0f;
         float maxDepth        = 1.0f;
-        bool enableAutoResize = true; // whenever the window is resized, this attachment will be resized as well
     };
 
     class SR_CORE_API Viewport{
@@ -23,7 +22,7 @@ namespace Syrius{
 
         virtual void bind() = 0;
 
-        void setSize(uint32 width, uint32 height);
+        void onResize(uint32 width, uint32 height);
 
         void setPos(uint32 x, uint32 y);
 
@@ -41,13 +40,6 @@ namespace Syrius{
 
         [[nodiscard]] float getMaxDepth() const;
 
-    private:
-
-        friend class FrameBuffer;
-        friend class D3D11FrameBuffer;
-
-        void onResize(uint32 width, uint32 height); // called by the framebuffer when its owning window is resized
-
     protected:
         uint32 m_Width;
         uint32 m_Height;
@@ -55,8 +47,6 @@ namespace Syrius{
         uint32 m_YPos;
         float m_MinDepth;
         float m_MaxDepth;
-
-        bool m_EnableAutoResize;
     };
 
 }

@@ -24,6 +24,12 @@ private:
 
     ResourceView<ConstantBuffer> m_Resource;
 
+    float m_Fov;
+    float m_Near;
+    float m_Far;
+    float m_Width;
+    float m_Height;
+
 
 
 };

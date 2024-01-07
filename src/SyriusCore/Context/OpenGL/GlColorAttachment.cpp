@@ -45,7 +45,7 @@ namespace Syrius{
         glClearNamedFramebufferfv(m_FrameBufferID, GL_COLOR, m_AttachmentID, &m_ClearColor[0]);
     }
 
-    void GlColorAttachment::setSize(uint32 width, uint32 height) {
+    void GlColorAttachment::onResize(uint32 width, uint32 height) {
         m_Width = width;
         m_Height = height;
         /*
@@ -93,8 +93,9 @@ namespace Syrius{
        glClearNamedFramebufferfv(0, GL_COLOR, 0, m_ClearColor);
     }
 
-    void GlDefaultColorAttachment::setSize(uint32 width, uint32 height) {
-
+    void GlDefaultColorAttachment::onResize(uint32 width, uint32 height) {
+        m_Width = width;
+        m_Height = height;
     }
 
     Resource<Image> GlDefaultColorAttachment::getData() {

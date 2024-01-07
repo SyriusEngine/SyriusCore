@@ -8,8 +8,7 @@ namespace Syrius{
     m_Height(desc.height),
     m_Format(desc.format),
     m_ClearColor{desc.clearColor[0], desc.clearColor[1], desc.clearColor[2], desc.clearColor[3]},
-    m_EnableShaderRead(desc.enableShaderRead),
-    m_EnableAutoResize(desc.enableAutoResize){
+    m_EnableShaderRead(desc.enableShaderRead){
         SR_CORE_PRECONDITION(desc.format != SR_TEXTURE_DEPTH_16 and
                              desc.format != SR_TEXTURE_DEPTH_24 and
                              desc.format != SR_TEXTURE_DEPTH_32 and
@@ -48,11 +47,5 @@ namespace Syrius{
 
     bool ColorAttachment::shaderReadEnabled() const {
         return m_EnableShaderRead;
-    }
-
-    void ColorAttachment::onResize(uint32 width, uint32 height) {
-        if(m_EnableAutoResize){
-            setSize(width, height);
-        }
     }
 }

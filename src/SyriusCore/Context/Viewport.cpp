@@ -9,8 +9,7 @@ namespace Syrius{
     m_XPos(desc.xPos),
     m_YPos(desc.yPos),
     m_MinDepth(desc.minDepth),
-    m_MaxDepth(desc.maxDepth),
-    m_EnableAutoResize(desc.enableAutoResize){
+    m_MaxDepth(desc.maxDepth){
         SR_CORE_PRECONDITION(m_Width > 0, "Viewport width must be greater than 0");
         SR_CORE_PRECONDITION(m_Height > 0, "Viewport height must be greater than 0");
         SR_CORE_PRECONDITION(m_MinDepth >= 0.0f && m_MinDepth <= 1.0f, "Viewport min depth must be between 0.0f and 1.0f");
@@ -23,7 +22,7 @@ namespace Syrius{
 
     }
 
-    void Viewport::setSize(uint32 width, uint32 height) {
+    void Viewport::onResize(uint32 width, uint32 height) {
         m_Width = width;
         m_Height = height;
         bind();
@@ -63,12 +62,6 @@ namespace Syrius{
 
     float Viewport::getMaxDepth() const {
         return m_MaxDepth;
-    }
-
-    void Viewport::onResize(uint32 width, uint32 height) {
-        if(m_EnableAutoResize){
-            setSize(width, height);
-        }
     }
 
 }

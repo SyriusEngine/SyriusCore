@@ -80,7 +80,7 @@ namespace Syrius{
         m_Context->ClearDepthStencilView(m_DepthStencilView, m_ClearFlag, m_ClearDepth, m_ClearStencil);
     }
 
-    void D3D11DepthStencilAttachment::setSize(uint32 width, uint32 height) {
+    void D3D11DepthStencilAttachment::onResize(uint32 width, uint32 height) {
         m_DepthStencilView->Release();
         m_DepthStencilBuffer->Release();
 

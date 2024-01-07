@@ -69,6 +69,12 @@ void TestDepthTest::onUpdate() {
 
 void TestDepthTest::onEvent(const Event &event) {
     m_Camera.update(event, m_DeltaTime);
+    if (event.type == SR_EVENT_WINDOW_RESIZED){
+        auto width = event.windowWidth;
+        auto height = event.windowHeight;
+        m_Projection.onResize(width, height);
+        m_Context->onResize(width, height);
+    }
 }
 
 void TestDepthTest::render() {

@@ -30,7 +30,7 @@ namespace Syrius {
         m_Context->ClearRenderTargetView(m_RenderTargetView, m_ClearColor);
     }
 
-    void D3D11ColorAttachment::setSize(uint32 width, uint32 height) {
+    void D3D11ColorAttachment::onResize(uint32 width, uint32 height) {
         destroyResources();
         m_Width = width;
         m_Height = height;
@@ -177,7 +177,7 @@ namespace Syrius {
         m_Context->ClearRenderTargetView(m_RenderTargetView, m_ClearColor);
     }
 
-    void D3D11DefaultColorAttachment::setSize(uint32 width, uint32 height) {
+    void D3D11DefaultColorAttachment::onResize(uint32 width, uint32 height) {
         m_Context->OMSetRenderTargets(0, nullptr, nullptr);
         if (m_RenderTargetView) {
             m_RenderTargetView->Release();

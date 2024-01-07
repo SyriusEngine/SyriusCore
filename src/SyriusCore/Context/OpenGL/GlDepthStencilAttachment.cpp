@@ -83,11 +83,10 @@ namespace Syrius{
         }
     }
 
-    void GlDepthStencilAttachment::setSize(uint32 width, uint32 height) {
+    void GlDepthStencilAttachment::onResize(uint32 width, uint32 height) {
         m_Width = width;
         m_Height = height;
         glNamedRenderbufferStorage(m_BufferID, m_GlFormat, m_Width, m_Height);
-
     }
 
     Resource<Image> GlDepthStencilAttachment::getData() {
@@ -164,8 +163,11 @@ namespace Syrius{
         }
     }
 
-    void GlDefaultDepthStencilAttachment::setSize(uint32 width, uint32 height) {
+    void GlDefaultDepthStencilAttachment::onResize(uint32 width, uint32 height) {
+        m_Width = width;
+        m_Height = height;
 
+        // this is handled by the swapchain
     }
 
     void GlDefaultDepthStencilAttachment::enableDepthTest(bool enable) {

@@ -20,8 +20,7 @@ namespace Syrius{
     m_StencilMask(desc.stencilMask),
     m_StencilFail(desc.stencilFail),
     m_StencilPass(desc.stencilPass),
-    m_StencilPassDepthFail(desc.stencilPassDepthFail),
-    m_EnableAutoResize(desc.enableAutoResize){
+    m_StencilPassDepthFail(desc.stencilPassDepthFail){
         SR_CORE_PRECONDITION(m_Width > 0, "DepthStencilAttachment width must be greater than 0");
         SR_CORE_PRECONDITION(m_Height > 0, "DepthStencilAttachment height must be greater than 0");
         SR_CORE_PRECONDITION(desc.format == SR_TEXTURE_DEPTH_16 or
@@ -91,12 +90,6 @@ namespace Syrius{
 
     SR_STENCIL_FUNC DepthStencilAttachment::getStencilPassDepthFail() const {
         return m_StencilPassDepthFail;
-    }
-
-    void DepthStencilAttachment::onResize(uint32 width, uint32 height) {
-        if(m_EnableAutoResize){
-            setSize(width, height);
-        }
     }
 
     void DepthStencilAttachment::setClearDepth(float depth) {
