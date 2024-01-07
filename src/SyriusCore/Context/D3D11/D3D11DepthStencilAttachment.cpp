@@ -39,6 +39,7 @@ namespace Syrius{
     m_DepthStencilBuffer(nullptr),
     m_DepthStencilState(nullptr),
     m_DepthStencilView(nullptr),
+    m_BufferView(nullptr),
     m_D3DFormat(getD3d11DepthStencilBufferFormat(desc.format)){
         D3D11_TEXTURE2D_DESC bufferDesc;
         bufferDesc.Width = m_Width;
@@ -50,6 +51,9 @@ namespace Syrius{
         bufferDesc.SampleDesc.Quality = 0;
         bufferDesc.Usage = D3D11_USAGE_DEFAULT;
         bufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+        if (m_EnableShaderAccess){
+            bufferDesc.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
+        }
         bufferDesc.CPUAccessFlags = 0;
         bufferDesc.MiscFlags = 0;
         SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&bufferDesc, nullptr, &m_DepthStencilBuffer));

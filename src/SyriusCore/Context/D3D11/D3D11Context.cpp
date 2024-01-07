@@ -299,11 +299,11 @@ namespace Syrius{
     }
 
     ResourceView<Cubemap> D3D11Context::createCubemap(const CubemapDesc &desc) {
-        return ResourceView<Cubemap>();
+        return{};
     }
 
     ResourceView<Cubemap> D3D11Context::createCubemap(const CubemapImageDesc &desc) {
-        return ResourceView<Cubemap>();
+        return {};
     }
 
 }

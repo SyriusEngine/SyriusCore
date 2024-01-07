@@ -188,7 +188,7 @@ namespace Syrius{
             m_DxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, message, reinterpret_cast<SIZE_T *>(&messageLength));
 
             Message msgStruct;
-            msgStruct.usage = SR_CORE_MESSAGE_DXGI;
+            msgStruct.messageType = SR_CORE_MESSAGE_DXGI;
             msgStruct.severity = getSrMessageSeverity(message->Severity);
             msgStruct.message = "Code = " + std::to_string(message->ID) + ", Category = " + getDxgiCategoryAsString(message->Category) + ",\n message = " + std::string(message->pDescription);;
             msgStruct.function = "DXGI_DEBUG_ALL";

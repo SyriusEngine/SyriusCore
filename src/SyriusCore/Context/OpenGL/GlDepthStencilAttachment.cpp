@@ -133,8 +133,6 @@ namespace Syrius{
         glGetInternalformativ(GL_TEXTURE_2D, m_BufferID, GL_INTERNALFORMAT_SUPPORTED, 1, &supportedFormat);
         if (supportedFormat == GL_TRUE){
             SR_CORE_OPENGL_CALL(glTextureStorage2D(m_BufferID, 1, m_GlFormat, m_Width, m_Height));
-            glTextureParameteri(m_BufferID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTextureParameteri(m_BufferID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         }
         else{
             SR_CORE_EXCEPTION("OpenGL does not support a color attachment of usage: %i", desc.format);
@@ -164,8 +162,7 @@ namespace Syrius{
     void GlDepthStencilAttachmentTexture::onResize(uint32 width, uint32 height) {
         m_Width = width;
         m_Height = height;
-        glBindTexture(GL_TEXTURE_2D, m_BufferID);
-        glTexImage2D(GL_TEXTURE_2D, 0, m_GlFormat, m_Width, m_Height, 0, m_GlFormat, GL_FLOAT, nullptr);
+        SR_CORE_OPENGL_CALL(glTextureStorage2D(m_BufferID, 1, m_GlFormat, m_Width, m_Height));
     }
 
     GlDefaultDepthStencilAttachment::GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc):
