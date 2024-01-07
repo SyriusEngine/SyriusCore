@@ -15,11 +15,7 @@ namespace Syrius{
 
         void unbind() override;
 
-        void bindShaderResource(uint32 slot) override;
-
         void clear() override;
-
-        void onResize(uint32 width, uint32 height) override;
 
         void enableDepthTest(bool enable) override;
 
@@ -31,7 +27,7 @@ namespace Syrius{
 
         [[nodiscard]] uint64 getIdentifier() const override;
 
-    private:
+    protected:
         uint32 m_BufferID;
         uint32 m_FrameBufferID;
         GLenum m_GlFormat;
@@ -42,14 +38,13 @@ namespace Syrius{
         GLenum m_GlStencilFail;
         GLenum m_GlStencilPassDepthFail;
         GLenum m_GlStencilPass;
-
     };
 
-    class GlDefaultDepthStencilAttachment : public DepthStencilAttachment{
+    class GlDepthStencilAttachmentRenderBuffer : public GlDepthStencilAttachment{
     public:
-        explicit GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc& desc);
+        GlDepthStencilAttachmentRenderBuffer(const DepthStencilAttachmentDesc& desc, uint32 framebufferID);
 
-        ~GlDefaultDepthStencilAttachment() override;
+        ~GlDepthStencilAttachmentRenderBuffer() override;
 
         void bind() override;
 
@@ -57,29 +52,36 @@ namespace Syrius{
 
         void bindShaderResource(uint32 slot) override;
 
-        void clear() override;
+        void onResize(uint32 width, uint32 height) override;
+    };
+
+    class GlDepthStencilAttachmentTexture : public GlDepthStencilAttachment{
+    public:
+        GlDepthStencilAttachmentTexture(const DepthStencilAttachmentDesc& desc, uint32 framebufferID);
+
+        ~GlDepthStencilAttachmentTexture() override;
+
+        void bind() override;
+
+        void unbind() override;
+
+        void bindShaderResource(uint32 slot) override;
 
         void onResize(uint32 width, uint32 height) override;
+    };
 
-        void enableDepthTest(bool enable) override;
+    class GlDefaultDepthStencilAttachment : public GlDepthStencilAttachment{
+    public:
+        explicit GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc& desc);
 
-        void setDepthFunc(SR_COMPARISON_FUNC func) override;
+        ~GlDefaultDepthStencilAttachment() override;
 
-        void setDepthMask(SR_DEPTH_MASK mask) override;
+        void bindShaderResource(uint32 slot) override;
+
+        void onResize(uint32 width, uint32 height) override;
 
         [[nodiscard]] Resource<Image> getData() override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
-
-    private:
-        uint32 m_FrameBufferID;
-
-        GLenum m_GlDepthFunc;
-
-        GLenum m_GlStencilFunc;
-        GLenum m_GlStencilFail;
-        GLenum m_GlStencilPassDepthFail;
-        GLenum m_GlStencilPass;
-
     };
 }

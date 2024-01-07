@@ -47,9 +47,17 @@ namespace Syrius{
         glNamedFramebufferDrawBuffers(m_FrameBufferID, drawBuffers.size(), &drawBuffers[0]);
 
         if (!desc->getDepthStencilAttachmentDesc().empty()){
-            auto attachment = new GlDepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back(), m_FrameBufferID);
+            auto dsaDesc = desc->getDepthStencilAttachmentDesc().back();
+            GlDepthStencilAttachment* attachment;
+            if (dsaDesc.enableShaderAccess){
+                attachment = new GlDepthStencilAttachmentTexture(dsaDesc, m_FrameBufferID);
+                glNamedFramebufferTexture(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT,  attachment->getIdentifier(), 0);
+            }
+            else{
+                attachment = new GlDepthStencilAttachmentRenderBuffer(dsaDesc, m_FrameBufferID);
+                glNamedFramebufferRenderbuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, attachment->getIdentifier());
+            }
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(attachment);
-            glNamedFramebufferRenderbuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, attachment->getIdentifier());
         }
         else{
             // create a dummy depth stencil attachment such that the object exists but does nothing
@@ -58,7 +66,8 @@ namespace Syrius{
             dummyDesc.height = desc->getViewportDesc().back().height;
             dummyDesc.enableDepthTest = false;
             dummyDesc.enableStencilTest = false;
-            auto df = new GlDepthStencilAttachment(dummyDesc, 0);
+            dummyDesc.enableShaderAccess = false;
+            auto df = new GlDepthStencilAttachmentRenderBuffer(dummyDesc, 0);
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(df);
             glNamedFramebufferRenderbuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, df->getIdentifier());
         }
