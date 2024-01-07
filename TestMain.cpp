@@ -6,6 +6,7 @@
 #include "TestLayers/TestTexture.hpp"
 #include "TestLayers/TestConstantBuffer.hpp"
 #include "TestLayers/TestDepthTest.hpp"
+#include "TestLayers/TestFrameBuffer.hpp"
 
 template<typename T>
 void runTest(const std::string& iniFile){
@@ -28,6 +29,7 @@ void runAllTests(const std::string& iniFile){
     runTest<TestTexture>(iniFile);
     runTest<TestConstantBuffer>(iniFile);
     runTest<TestDepthTest>(iniFile);
+    runTest<TestFrameBuffer>(iniFile);
 }
 
 int main(int argc, char** argv) {
@@ -55,6 +57,8 @@ int main(int argc, char** argv) {
                 runTest<TestConstantBuffer>(argv[1]);
             } else if (arg == "DepthTest") {
                 runTest<TestDepthTest>(argv[1]);
+            } else if (arg == "FrameBuffer") {
+                runTest<TestFrameBuffer>(argv[1]);
             } else if (arg == "All") {
                 runAllTests(argv[1]);
             } else {

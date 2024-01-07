@@ -157,7 +157,7 @@ void AppLayer::render() {
     m_Context->draw(m_SbVAO);
 
 //    m_Texture->bind(0);
-//    m_ShaderProgram.shaderProgram->bind();
+//    m_GeometryProgram.shaderProgram->bind();
 //    m_ModelDataBuffer->bind(2);
 //    m_Context->draw(m_VertexArray);
 
