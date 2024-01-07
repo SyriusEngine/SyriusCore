@@ -5,6 +5,7 @@
 #include "../../Dependencies/imgui/imgui_impl_win32.h"
 #include "../../Dependencies/imgui/imgui_impl_dx11.h"
 
+#include "D3D11DeviceLimits.hpp"
 #include "D3D11ShaderModule.hpp"
 #include "D3D11Shader.hpp"
 #include "D3D11Viewport.hpp"
@@ -33,28 +34,6 @@ namespace Syrius{
         void setVerticalSynchronisation(bool enable) override;
 
         FramebufferSize getFramebufferSize() override;
-
-        std::string getAPIVersion() override;
-
-        std::string getDeviceName() override;
-
-        std::string getDeviceVendor() override;
-
-        std::string getShadingLanguageVersion() override;
-
-        int32 getMaxFramebufferWidth() override;
-
-        int32 getMaxFramebufferHeight() override;
-
-        int32 getMaxFramebufferTextureAttachments() override;
-
-        int32 getMaxTextureSlots() override;
-
-        int32 getMaxTexture2DSize() override;
-
-        int32 getMaxConstantBufferSize() override;
-
-        int32 getMaxDepthBufferBits() override;
 
         ResourceView<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) override;
 

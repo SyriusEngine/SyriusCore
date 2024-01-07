@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../../include/SyriusCore/Context/Context.hpp"
+#include "GlDeviceLimits.hpp"
 #include "GlShaderModule.hpp"
 #include "GlShader.hpp"
 #include "GlViewport.hpp"
@@ -29,28 +30,6 @@ namespace Syrius{
                 m_ActiveContextID = m_ID;
             }
         }
-
-        std::string getAPIVersion() override;
-
-        std::string getDeviceName() override;
-
-        std::string getDeviceVendor() override;
-
-        std::string getShadingLanguageVersion() override;
-
-        int32 getMaxFramebufferWidth() override;
-
-        int32 getMaxFramebufferHeight() override;
-
-        int32 getMaxFramebufferTextureAttachments() override;
-
-        int32 getMaxTextureSlots() override;
-
-        int32 getMaxTexture2DSize() override;
-
-        int32 getMaxConstantBufferSize() override;
-
-        int32 getMaxDepthBufferBits() override;
 
         ResourceView<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) override;
 

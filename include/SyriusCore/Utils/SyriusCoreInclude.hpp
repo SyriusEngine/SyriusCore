@@ -6,6 +6,7 @@
 #include <string>
 #include <deque>
 #include <cstdint>
+#include <memory>
 
 #define SR_DEFAULT_WIDTH 1280
 #define SR_DEFAULT_HEIGHT 720

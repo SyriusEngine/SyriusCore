@@ -68,6 +68,8 @@ namespace Syrius{
         auto ptr = new D3D11DefaultFrameBuffer(defaultFbDesc, m_Device, m_DeviceContext, m_SwapChain);
         m_FrameBuffers.emplace_back(ptr);
 
+        m_DeviceLimits = std::make_unique<D3D11DeviceLimits>(m_Device, m_DeviceContext, m_D3DVersion);
+
         D3D11_RASTERIZER_DESC rasterizerDesc = {};
         rasterizerDesc.FillMode = D3D11_FILL_SOLID;
         rasterizerDesc.CullMode = D3D11_CULL_NONE;
@@ -82,6 +84,12 @@ namespace Syrius{
 
         SR_CORE_D3D11_CALL(m_Device->CreateRasterizerState(&rasterizerDesc, &m_RasterizerState));
         m_DeviceContext->RSSetState(m_RasterizerState);
+
+        SR_CORE_POSTCONDITION(m_Device != nullptr, "DeviceLimits is null");
+        SR_CORE_POSTCONDITION(m_DeviceContext != nullptr, "DeviceContext is null");
+        SR_CORE_POSTCONDITION(m_SwapChain != nullptr, "SwapChain is null");
+        SR_CORE_POSTCONDITION(m_DeviceLimits.get() != nullptr, "DeviceLimits is null");
+        SR_CORE_POSTCONDITION(m_FrameBuffers.size() > 0, "Default framebuffer not present");
     }
 
     D3D11Context::~D3D11Context() {
@@ -164,61 +172,6 @@ namespace Syrius{
         size.m_Width = area.right;
         size.m_Height = area.bottom;
         return size;
-    }
-
-    std::string D3D11Context::getAPIVersion() {
-        switch (m_D3DVersion) {
-            case D3D_FEATURE_LEVEL_9_1:         return "D3D_FEATURE_LEVEL_9_1";
-            case D3D_FEATURE_LEVEL_9_2:         return "D3D_FEATURE_LEVEL_9_2";
-            case D3D_FEATURE_LEVEL_9_3:         return "D3D_FEATURE_LEVEL_9_3";
-            case D3D_FEATURE_LEVEL_10_0:        return "D3D_FEATURE_LEVEL_10_0";
-            case D3D_FEATURE_LEVEL_10_1:        return "D3D_FEATURE_LEVEL_10_1";
-            case D3D_FEATURE_LEVEL_11_0:        return "D3D_FEATURE_LEVEL_11_0";
-            case D3D_FEATURE_LEVEL_11_1:        return "D3D_FEATURE_LEVEL_11_1";
-            case D3D_FEATURE_LEVEL_12_0:        return "D3D_FEATURE_LEVEL_12_0";
-            case D3D_FEATURE_LEVEL_12_1:        return "D3D_FEATURE_LEVEL_12_1";
-            default:                            return "Unknown";
-        }
-    }
-
-    std::string D3D11Context::getDeviceName() {
-        return {};
-    }
-
-    std::string D3D11Context::getDeviceVendor() {
-        return {};
-    }
-
-    std::string D3D11Context::getShadingLanguageVersion() {
-        return "HLSL 5.0";
-    }
-
-    int32 D3D11Context::getMaxFramebufferWidth() {
-        return 16384;
-    }
-
-    int32 D3D11Context::getMaxFramebufferHeight() {
-        return 16384;
-    }
-
-    int32 D3D11Context::getMaxFramebufferTextureAttachments() {
-        return 8;
-    }
-
-    int32 D3D11Context::getMaxTextureSlots() {
-        return D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT ;
-    }
-
-    int32 D3D11Context::getMaxTexture2DSize() {
-        return D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION;
-    }
-
-    int32 D3D11Context::getMaxConstantBufferSize() {
-        return 65536;
-    }
-
-    int32 D3D11Context::getMaxDepthBufferBits() {
-        return 32;
     }
 
     ResourceView<ShaderModule> D3D11Context::createShaderModule(const ShaderModuleDesc &desc) {

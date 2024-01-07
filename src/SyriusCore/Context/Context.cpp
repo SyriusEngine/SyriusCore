@@ -50,6 +50,8 @@ namespace Syrius{
     }
 
     void Context::beginRenderPass() {
+        SR_CORE_PRECONDITION(m_FrameBuffers.size() > 0, "No framebuffers created");
+
         m_FrameBuffers[0]->bind();
         m_FrameBuffers[0]->clear();
     }
@@ -59,6 +61,8 @@ namespace Syrius{
     }
 
     void Context::endRenderPass() {
+        SR_CORE_PRECONDITION(m_FrameBuffers.size() > 0, "No framebuffers created");
+
         m_FrameBuffers[0]->unbind();
     }
 

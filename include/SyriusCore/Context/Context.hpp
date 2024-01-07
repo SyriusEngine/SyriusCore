@@ -2,6 +2,7 @@
 
 #include "../Utils/SyriusCoreInclude.hpp"
 #include "../Utils/Resource.hpp"
+#include "DeviceLimits.hpp"
 #include "ShaderModule.hpp"
 #include "Shader.hpp"
 #include "Viewport.hpp"
@@ -59,28 +60,6 @@ namespace Syrius{
         [[nodiscard]] bool isVerticalSyncEnabled() const;
 
         ResourceView<FrameBuffer> getDefaultFrameBuffer();
-
-        virtual std::string getAPIVersion() = 0;
-
-        virtual std::string getDeviceName() = 0;
-
-        virtual std::string getDeviceVendor() = 0;
-
-        virtual std::string getShadingLanguageVersion() = 0;
-
-        virtual int32 getMaxFramebufferWidth() = 0;
-
-        virtual int32 getMaxFramebufferHeight() = 0;
-
-        virtual int32 getMaxFramebufferTextureAttachments() = 0;
-
-        virtual int32 getMaxTextureSlots() = 0;
-
-        virtual int32 getMaxTexture2DSize() = 0;
-
-        virtual int32 getMaxConstantBufferSize() = 0;
-
-        virtual int32 getMaxDepthBufferBits() = 0;
 
         virtual FramebufferSize getFramebufferSize() = 0;
 
@@ -157,6 +136,10 @@ namespace Syrius{
             vertexArray->drawBuffersInstanced(instanceCount);
         }
 
+        inline const std::unique_ptr<DeviceLimits>& getDeviceLimits() const{
+            return m_DeviceLimits;
+        }
+
         [[nodiscard]] uint32 getWidth() const;
 
         [[nodiscard]] uint32 getHeight() const;
@@ -182,6 +165,8 @@ namespace Syrius{
         uint32 m_Height;
 
         bool m_VerticalSync;
+
+        std::unique_ptr<DeviceLimits> m_DeviceLimits;
 
         /*
          * The reason why the context must own all resources at all times is that the objects always depend on some

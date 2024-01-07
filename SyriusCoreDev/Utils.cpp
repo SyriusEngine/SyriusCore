@@ -171,17 +171,28 @@ void printEventInfo(const Event& event){
 }
 
 void printContextInfo(const ResourceView<Context>& context){
-    std::string deviceInfo = "\n";
-    deviceInfo += "Device name                          : " + context->getDeviceName() + "\n";
-    deviceInfo += "API Version                          : " + context->getAPIVersion() + "\n";
-    deviceInfo += "Shading language version             : " + context->getShadingLanguageVersion() + "\n";
-    deviceInfo += "Max Framebuffer width                : " + std::to_string(context->getMaxFramebufferWidth()) + "\n";
-    deviceInfo += "Max Framebuffer width                : " + std::to_string(context->getMaxFramebufferHeight()) + "\n";
-    deviceInfo += "Max framebuffer texture attachments  : " + std::to_string(context->getMaxFramebufferTextureAttachments()) + "\n";
-    deviceInfo += "Max Texture Slots                    : " + std::to_string(context->getMaxTextureSlots()) + " slots\n";
-    deviceInfo += "Max Texture2D Size                   : " + std::to_string(context->getMaxTexture2DSize()) + " bytes\n";
-    deviceInfo += "Max constant buffer size             : " + std::to_string(context->getMaxConstantBufferSize()) + " bytes\n";
-    deviceInfo += "Depth buffer depth                   : " + std::to_string(context->getMaxDepthBufferBits()) + " bits\n";
+    const auto& deviceLimits = context->getDeviceLimits();
+    std::string deviceInfo = "==============Device Info======================\n";
+    deviceInfo += "API Version                      : " + deviceLimits->getAPIVersion() + "\n";
+    deviceInfo += "Device name                      : " + deviceLimits->getDeviceName() + "\n";
+    deviceInfo += "Device Vendor                    : " + deviceLimits->getDeviceVendor() + "\n";
+    deviceInfo += "Shading Language Version         : " + deviceLimits->getShadingLanguageVersion() + "\n";
+    deviceInfo += "Max FrameBuffer Width            : " + std::to_string(deviceLimits->getMaxFramebufferWidth()) + "\n";
+    deviceInfo += "Max FrameBuffer Height           : " + std::to_string(deviceLimits->getMaxFramebufferHeight()) + "\n";
+    deviceInfo += "Max FrameBuffer Color Attachments: " + std::to_string(deviceLimits->getMaxFramebufferColorAttachments()) + "\n";
+    deviceInfo += "Max Viewport Width               : " + std::to_string(deviceLimits->getMaxViewportWidth()) + "\n";
+    deviceInfo += "Max Viewport Height              : " + std::to_string(deviceLimits->getMaxViewportHeight()) + "\n";
+    deviceInfo += "Max Texture Slots                : " + std::to_string(deviceLimits->getMaxTextureSlots()) + "\n";
+    deviceInfo += "Max Texture Size                 : " + std::to_string(deviceLimits->getMaxTextureSize()) + "\n";
+    deviceInfo += "Max SSBO Slots                   : " + std::to_string(deviceLimits->getMaxSSSBOSlots()) + "\n";
+    deviceInfo += "Max Constant Buffer Slots        : " + std::to_string(deviceLimits->getMaxConstantBufferSlots()) + "\n";
+    deviceInfo += "Max Constant Buffer Size         : " + std::to_string(deviceLimits->getMaxConstantBufferSize()) + "\n";
+    deviceInfo += "Max Depth Buffer Bits            : " + std::to_string(deviceLimits->getMaxDepthBufferBits()) + "\n";
+    deviceInfo += "Max Vertex Attributes            : " + std::to_string(deviceLimits->getMaxVertexAttributes()) + "\n";
+    deviceInfo += "Max Vertex Count                 : " + std::to_string(deviceLimits->getMaxVertices()) + "\n";
+    deviceInfo += "Max Index Count                  : " + std::to_string(deviceLimits->getMaxIndices()) + "\n";
+    deviceInfo += "Largest Possible Index           : " + std::to_string(deviceLimits->getMaxIndex()) + "\n";
+    deviceInfo += "Is Double Buffered               : " + std::to_string(deviceLimits->isDoubleBuffered()) + "\n";
 
     std::cout << deviceInfo << std::endl;
 }

@@ -30,87 +30,6 @@ namespace Syrius{
         terminateGlad();
     }
 
-    std::string GlContext::getAPIVersion() {
-        ensureCurrentContext();
-        const unsigned char* version = glGetString(GL_VERSION);
-        char* temp = (char*) version;
-        std::string retVal = temp;
-        return retVal;
-    }
-
-    std::string GlContext::getDeviceName() {
-        ensureCurrentContext();
-        const unsigned char* version = glGetString(GL_RENDERER);
-        char* temp = (char*) version;
-        std::string retVal = temp;
-        return retVal;
-    }
-
-    std::string GlContext::getDeviceVendor() {
-        const unsigned char* version = glGetString(GL_VENDOR);
-        char* temp = (char*) version;
-        std::string retVal = temp;
-        return retVal;
-    }
-
-
-    std::string GlContext::getShadingLanguageVersion() {
-        ensureCurrentContext();
-        const unsigned char* version = glGetString(GL_SHADING_LANGUAGE_VERSION);
-        char* temp = (char*) version;
-        std::string retVal = temp;
-        return retVal;
-    }
-
-    int32 GlContext::getMaxFramebufferWidth() {
-        ensureCurrentContext();
-        int32 maxFramebufferWidth;
-        glGetIntegerv(GL_MAX_FRAMEBUFFER_WIDTH, &maxFramebufferWidth);
-        return maxFramebufferWidth;
-    }
-
-    int32 GlContext::getMaxFramebufferHeight() {
-        ensureCurrentContext();
-        int32 maxFramebufferHeight;
-        glGetIntegerv(GL_MAX_FRAMEBUFFER_HEIGHT, &maxFramebufferHeight);
-        return maxFramebufferHeight;
-    }
-
-    int32 GlContext::getMaxFramebufferTextureAttachments() {
-        ensureCurrentContext();
-        int32 maxAttach;
-        glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &maxAttach);
-        return maxAttach;
-    }
-
-    int32 GlContext::getMaxTextureSlots() {
-        ensureCurrentContext();
-        int32 maxTextureSlotCount;
-        glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureSlotCount);
-        return maxTextureSlotCount;
-    }
-
-    int32 GlContext::getMaxTexture2DSize() {
-        ensureCurrentContext();
-        int32 maxTextureSize;
-        glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
-        return maxTextureSize;
-    }
-
-    int32 GlContext::getMaxConstantBufferSize() {
-        ensureCurrentContext();
-        int32 maxCbufferSize;
-        glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &maxCbufferSize);
-        return maxCbufferSize;
-    }
-
-    int32 GlContext::getMaxDepthBufferBits() {
-        ensureCurrentContext();
-        int32 depthBufferBits;
-        glGetIntegerv(GL_DEPTH_BITS, &depthBufferBits);
-        return depthBufferBits;
-    }
-
     ResourceView<ShaderModule> GlContext::createShaderModule(const ShaderModuleDesc &desc) {
         auto ptr = new GlShaderModule(desc);
         m_ShaderModules.emplace_back(ptr);
@@ -148,16 +67,12 @@ namespace Syrius{
     }
 
     ResourceView<ConstantBuffer> GlContext::createConstantBuffer(const ConstantBufferDesc &desc) {
-        SR_CORE_PRECONDITION(desc.size <= getMaxConstantBufferSize(), "Constant buffer size (%llu) exceeds maximum allowed size (%llu)", desc.size, getMaxConstantBufferSize());
-
         auto ptr = new GlConstantBuffer(desc);
         m_ConstantBuffers.emplace_back(ptr);
         return m_ConstantBuffers.back().createView();
     }
 
     ResourceView<Texture2D> GlContext::createTexture2D(const Texture2DDesc& desc) {
-        SR_CORE_PRECONDITION(desc.width * desc.height * getTextureFormatChannelCount(desc.format) <= getMaxTexture2DSize(), "Texture size (%llu) exceeds maximum allowed size (%llu)", desc.width * desc.height * getTextureFormatChannelCount(desc.format), getMaxTexture2DSize());
-
         auto ptr = new GlTexture2D(desc);
         m_Textures2D.emplace_back(ptr);
 
@@ -220,6 +135,10 @@ namespace Syrius{
 
         auto ptr = new GlDefaultFrameBuffer(defaultFbDesc);
         m_FrameBuffers.emplace_back(ptr);
+
+        m_DeviceLimits = std::make_unique<GlDeviceLimits>();
+
+        SR_CORE_PRECONDITION(m_FrameBuffers.size() > 0, "Default framebuffer not created");
     }
 
     void GlContext::terminateGl() {

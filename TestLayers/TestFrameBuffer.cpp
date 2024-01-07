@@ -77,6 +77,8 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     Mesh rectangle = createRectangle();
     m_ScreenVertexArray = loadMesh(rectangle, m_ScreenProgram);
 
+    printContextInfo(m_Context);
+
 }
 
 TestFrameBuffer::~TestFrameBuffer() {
