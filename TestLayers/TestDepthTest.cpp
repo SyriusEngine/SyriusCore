@@ -9,6 +9,7 @@ m_LastFrameTime(0.0),
 m_Lerp(0.5f),
 m_Translation(0.0f),
 m_DepthTest(false),
+m_DepthMask(true),
 m_Camera(0.1f, 0.02f, context),
 m_Projection(context, window->getWidth(), window->getHeight()){
     m_Window->createImGuiContext();
@@ -103,6 +104,9 @@ void TestDepthTest::renderImGui() {
     }
     if (ImGui::Checkbox("Depth test", &m_DepthTest)){
         m_Context->getDefaultFrameBuffer()->enableDepthTest(m_DepthTest);
+    }
+    if (ImGui::Checkbox("Depth Mash", &m_DepthMask)){
+        m_Context->getDefaultFrameBuffer()->setDepthMask(static_cast<SR_DEPTH_MASK>(m_DepthMask));
     }
     ImGui::End();
 

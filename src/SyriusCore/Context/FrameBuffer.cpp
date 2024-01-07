@@ -63,5 +63,13 @@ namespace Syrius{
         return m_DepthStencilAttachment.createView();
     }
 
+    void FrameBuffer::setDepthFunc(SR_COMPARISON_FUNC func) {
+        m_DepthStencilAttachment->setDepthFunc(func);
+    }
+
+    void FrameBuffer::setDepthMask(SR_DEPTH_MASK mask) {
+        m_DepthStencilAttachment->setDepthMask(mask);
+    }
+
 
 }

@@ -42,5 +42,6 @@ private:
 
     // depth test params
     bool m_DepthTest;
+    bool m_DepthMask;
 
 };

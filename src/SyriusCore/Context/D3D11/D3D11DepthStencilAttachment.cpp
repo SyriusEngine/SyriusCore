@@ -126,18 +126,28 @@ namespace Syrius{
         return reinterpret_cast<uint64>(m_DepthStencilState);
     }
 
+    void D3D11DepthStencilAttachment::enableDepthTest(bool enable) {
+        m_EnableDepthTest = enable;
+        setClearFlag();
+        createDepthStencilState();
+    }
+
+    void D3D11DepthStencilAttachment::setDepthFunc(SR_COMPARISON_FUNC func) {
+        m_DepthFunc = func;
+        createDepthStencilState();
+    }
+
+    void D3D11DepthStencilAttachment::setDepthMask(SR_DEPTH_MASK mask) {
+        m_DepthMask = mask;
+        createDepthStencilState();
+    }
+
     ID3D11DepthStencilView *D3D11DepthStencilAttachment::getDepthStencilView() const {
         return m_DepthStencilView;
     }
 
     ID3D11DepthStencilState *D3D11DepthStencilAttachment::getDepthStencilState() const {
         return m_DepthStencilState;
-    }
-
-    void D3D11DepthStencilAttachment::enableDepthTest(bool enable) {
-        m_EnableDepthTest = enable;
-        setClearFlag();
-        createDepthStencilState();
     }
 
     void D3D11DepthStencilAttachment::setClearFlag() {
@@ -177,7 +187,6 @@ namespace Syrius{
         stateDesc.BackFace.StencilFunc = getD3d11ComparisonFunc(m_StencilFunc);
         SR_CORE_D3D11_CALL(m_Device->CreateDepthStencilState(&stateDesc, &m_DepthStencilState));
     }
-
 
 }
 

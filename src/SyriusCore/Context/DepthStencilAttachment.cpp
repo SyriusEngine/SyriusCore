@@ -98,4 +98,8 @@ namespace Syrius{
             setSize(width, height);
         }
     }
+
+    void DepthStencilAttachment::setClearDepth(float depth) {
+        m_ClearDepth = depth;
+    }
 }

@@ -40,6 +40,7 @@ namespace Syrius{
         if (m_EnableDepthTest){
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(m_GlDepthFunc);
+            glDepthMask(m_DepthMask);
         }
         else{
             glDisable(GL_DEPTH_TEST);
@@ -101,6 +102,15 @@ namespace Syrius{
         m_EnableDepthTest = enable;
     }
 
+    void GlDepthStencilAttachment::setDepthFunc(SR_COMPARISON_FUNC func) {
+        m_DepthFunc = func;
+        m_GlDepthFunc = getGlComparisonFunc(func);
+    }
+
+    void GlDepthStencilAttachment::setDepthMask(SR_DEPTH_MASK mask) {
+        m_DepthMask = mask;
+    }
+
     GlDefaultDepthStencilAttachment::GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc):
     DepthStencilAttachment(desc),
     m_GlDepthFunc(getGlComparisonFunc(desc.depthFunc)),
@@ -120,6 +130,7 @@ namespace Syrius{
         if (m_EnableDepthTest){
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(m_GlDepthFunc);
+            glDepthMask(m_DepthMask);
         }
         else{
             glDisable(GL_DEPTH_TEST);
@@ -161,6 +172,15 @@ namespace Syrius{
         m_EnableDepthTest = enable;
     }
 
+    void GlDefaultDepthStencilAttachment::setDepthFunc(SR_COMPARISON_FUNC func) {
+        m_DepthFunc = func;
+        m_GlDepthFunc = getGlComparisonFunc(func);
+    }
+
+    void GlDefaultDepthStencilAttachment::setDepthMask(SR_DEPTH_MASK mask) {
+        m_DepthMask = mask;
+    }
+
     Resource<Image> GlDefaultDepthStencilAttachment::getData() {
         SR_CORE_WARNING("Read operation requested on default depth stencil attachment which is not supported");
         return {};
@@ -169,5 +189,6 @@ namespace Syrius{
     uint64 GlDefaultDepthStencilAttachment::getIdentifier() const {
         return 0;
     }
+
 
 }

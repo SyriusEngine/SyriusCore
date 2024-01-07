@@ -24,6 +24,10 @@ namespace Syrius{
 
         void enableDepthTest(bool enable);
 
+        void setDepthFunc(SR_COMPARISON_FUNC func);
+
+        void setDepthMask(SR_DEPTH_MASK mask);
+
         ResourceView<Viewport> getViewport(uint32 index = 0);
 
         [[nodiscard]] ResourceView<ColorAttachment> getColorAttachment(uint32 index);

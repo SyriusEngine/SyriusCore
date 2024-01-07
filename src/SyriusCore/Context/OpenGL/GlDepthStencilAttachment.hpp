@@ -23,6 +23,10 @@ namespace Syrius{
 
         void enableDepthTest(bool enable) override;
 
+        void setDepthFunc(SR_COMPARISON_FUNC func) override;
+
+        void setDepthMask(SR_DEPTH_MASK mask) override;
+
         [[nodiscard]] Resource<Image> getData() override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
@@ -58,6 +62,10 @@ namespace Syrius{
         void setSize(uint32 width, uint32 height) override;
 
         void enableDepthTest(bool enable) override;
+
+        void setDepthFunc(SR_COMPARISON_FUNC func) override;
+
+        void setDepthMask(SR_DEPTH_MASK mask) override;
 
         [[nodiscard]] Resource<Image> getData() override;
 

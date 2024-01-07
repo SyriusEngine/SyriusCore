@@ -44,6 +44,12 @@ namespace Syrius{
 
         virtual void enableDepthTest(bool enable) = 0;
 
+        virtual void setDepthFunc(SR_COMPARISON_FUNC func) = 0;
+
+        virtual void setDepthMask(SR_DEPTH_MASK mask) = 0;
+
+        void setClearDepth(float depth);
+
         [[nodiscard]] virtual Resource<Image> getData() = 0;
 
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
