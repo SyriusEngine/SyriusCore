@@ -61,18 +61,8 @@ namespace Syrius{
     }
 
     D3D11DepthStencilAttachment::~D3D11DepthStencilAttachment() {
-        if (m_Buffer){
-            m_Buffer->Release();
-        }
-        if (m_State){
-            m_State->Release();
-        }
-        if (m_View){
-            m_View->Release();
-        }
-        if (m_ShaderResourceView){
-            m_ShaderResourceView->Release();
-        }
+        destroyBufferAndView();
+        destroyState();
     }
 
     void D3D11DepthStencilAttachment::bind() {
@@ -94,15 +84,7 @@ namespace Syrius{
     }
 
     void D3D11DepthStencilAttachment::onResize(uint32 width, uint32 height) {
-        if (m_View){
-            m_View->Release();
-        }
-        if (m_Buffer){
-            m_Buffer->Release();
-        }
-        if (m_ShaderResourceView){
-            m_ShaderResourceView->Release();
-        }
+        destroyBufferAndView();
 
         m_Width = width;
         m_Height = height;
@@ -216,6 +198,27 @@ namespace Syrius{
         }
     }
 
+    void D3D11DepthStencilAttachment::destroyState() {
+        if (m_State){
+            m_State->Release();
+            m_State = nullptr;
+        }
+    }
+
+    void D3D11DepthStencilAttachment::destroyBufferAndView() {
+        if (m_View) {
+            m_View->Release();
+            m_View = nullptr;
+        }
+        if (m_Buffer) {
+            m_Buffer->Release();
+            m_Buffer = nullptr;
+        }
+        if (m_ShaderResourceView) {
+            m_ShaderResourceView->Release();
+            m_ShaderResourceView = nullptr;
+        }
+    }
 }
 
 #endif

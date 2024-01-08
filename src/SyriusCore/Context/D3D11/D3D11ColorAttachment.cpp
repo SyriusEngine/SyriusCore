@@ -11,7 +11,7 @@ namespace Syrius {
     m_ColorBuffer(nullptr),
     m_RenderTargetView(nullptr),
     m_BufferView(nullptr) {
-        createResources(desc.width, desc.height);
+        createResources();
     }
 
     D3D11ColorAttachment::~D3D11ColorAttachment() {
@@ -34,7 +34,7 @@ namespace Syrius {
         destroyResources();
         m_Width = width;
         m_Height = height;
-        createResources(width, height);
+        createResources();
     }
 
     Resource<Image> D3D11ColorAttachment::getData() {
@@ -90,13 +90,13 @@ namespace Syrius {
         }
     }
 
-    void  D3D11ColorAttachment::createResources(uint32 width, uint32 height){
+    void  D3D11ColorAttachment::createResources(){
         SR_CHANNEL_FORMAT sF = getTextureFormat(m_Format);
         auto channelCount = getTextureChannelCount(sF);
 
         D3D11_TEXTURE2D_DESC textureDesc = {0};
-        textureDesc.Width = width;
-        textureDesc.Height = height;
+        textureDesc.Width = m_Width;
+        textureDesc.Height = m_Height;
         textureDesc.MipLevels = 1;
         textureDesc.ArraySize = 1;
         textureDesc.Format = getFormat(channelCount);

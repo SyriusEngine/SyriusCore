@@ -29,7 +29,7 @@ namespace Syrius{
 
     private:
 
-        void createResources(uint32 width, uint32 height);
+        void createResources();
 
         void destroyResources();
 
