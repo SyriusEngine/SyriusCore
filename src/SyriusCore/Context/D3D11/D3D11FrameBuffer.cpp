@@ -107,8 +107,8 @@ namespace Syrius{
         else{
             // we create the attachment anyway, but we make it such that both depth testing and stencil testing are disabled
             DepthStencilAttachmentDesc dummyDesc;
-            dummyDesc.width = desc->getViewportDesc().begin()->width; // just use the first viewport's dimensions
-            dummyDesc.height = desc->getViewportDesc().begin()->height;
+            dummyDesc.width = m_ColorAttachment->getWidth(); // use the dimensions of the color attachment, which is created by the swap chain and my differ from the window/context dimensions
+            dummyDesc.height = m_ColorAttachment->getHeight();
             dummyDesc.enableDepthTest = false;
             dummyDesc.enableStencilTest = false;
             m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(dummyDesc, m_Device, m_DeviceContext);

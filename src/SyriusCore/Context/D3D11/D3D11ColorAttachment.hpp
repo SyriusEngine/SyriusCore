@@ -67,6 +67,10 @@ namespace Syrius{
         [[nodiscard]] ID3D11RenderTargetView *getRenderTargetView() const;
 
     private:
+
+        void createResources();
+
+    private:
         ID3D11Device* m_Device;
         ID3D11DeviceContext* m_Context;
         IDXGISwapChain* m_SwapChain;

@@ -146,16 +146,7 @@ namespace Syrius {
             m_Context(deviceContext),
             m_SwapChain(swapChain),
             m_RenderTargetView(nullptr) {
-        ID3D11Texture2D *backBuffer = nullptr;
-        SR_CORE_D3D11_CALL(
-                m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void **>(&backBuffer)));
-        if (backBuffer) {
-            SR_CORE_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_RenderTargetView));
-            backBuffer->Release();
-
-        } else {
-            SR_CORE_EXCEPTION("Failed to get back buffer from swap chain");
-        }
+        createResources();
 
     }
 
@@ -186,16 +177,7 @@ namespace Syrius {
 
         SR_CORE_D3D11_CALL(m_SwapChain->ResizeBuffers(2, 0, 0, DXGI_FORMAT_UNKNOWN, 0));
 
-        ID3D11Texture2D *backBuffer = nullptr;
-        SR_CORE_D3D11_CALL(
-                m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void **>(&backBuffer)));
-        if (backBuffer) {
-            SR_CORE_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_RenderTargetView));
-            backBuffer->Release();
-
-        } else {
-            SR_CORE_EXCEPTION("Failed to get back buffer from swap chain");
-        }
+        createResources();
     }
 
     Resource<Image> D3D11DefaultColorAttachment::getData() {
@@ -208,6 +190,26 @@ namespace Syrius {
 
     ID3D11RenderTargetView *D3D11DefaultColorAttachment::getRenderTargetView() const {
         return m_RenderTargetView;
+    }
+
+    void D3D11DefaultColorAttachment::createResources() {
+        ID3D11Texture2D *backBuffer = nullptr;
+        SR_CORE_D3D11_CALL(
+                m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void **>(&backBuffer)));
+        if (backBuffer) {
+            SR_CORE_D3D11_CALL(m_Device->CreateRenderTargetView(backBuffer, nullptr, &m_RenderTargetView));
+
+            // as the buffer is maintained by the swap chain, get the creation desc from the swap chain
+            D3D11_TEXTURE2D_DESC t2dDesc;
+            backBuffer->GetDesc(&t2dDesc);
+            m_Width = t2dDesc.Width;
+            m_Height = t2dDesc.Height;
+
+            backBuffer->Release();
+
+        } else {
+            SR_CORE_EXCEPTION("Failed to get back buffer from swap chain");
+        }
     }
 }
 
