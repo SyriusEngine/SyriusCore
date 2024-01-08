@@ -152,9 +152,9 @@ namespace Syrius{
             if (version > 0){
                 int32 major = GLAD_VERSION_MAJOR(version);
                 int32 minor = GLAD_VERSION_MINOR(version);
-                SR_CORE_MESSAGE("OpenGL initialized with version: %i.%i", major, minor)
+                SR_CORE_MESSAGE("Glad Initialized for OpenGL %i.%i", major, minor)
                 if (major < 4 || (major == 4 && minor < 5)){
-                    SR_CORE_WARNING("Supported OpenGL version is 4.5. Some features may not be available with version  %i.%i", major, minor)
+                    SR_CORE_WARNING("SyriusCore is designed around OpenGL version is 4.5. Some features may not be available with version  %i.%i", major, minor)
                 }
                 glEnable(GL_DEBUG_OUTPUT);
                 glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);

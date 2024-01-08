@@ -298,7 +298,7 @@ namespace Syrius{
             default:
                 SR_CORE_WARNING("cannot create context: %i", desc.api);
         }
-        return m_Context.createView();
+        return createResourceView(m_Context);
     }
 
     XVisualInfo *SyriusWindowX11Impl::selectBestVisual() {
