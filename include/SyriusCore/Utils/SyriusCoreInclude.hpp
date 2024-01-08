@@ -1,12 +1,12 @@
 #pragma once
 
 #include "PlatformDetection.hpp"
+#include "Resource.hpp"
 
 #include <vector>
 #include <string>
 #include <deque>
 #include <cstdint>
-#include <memory>
 
 #define SR_DEFAULT_WIDTH 1280
 #define SR_DEFAULT_HEIGHT 720

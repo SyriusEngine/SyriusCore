@@ -24,18 +24,18 @@ namespace Syrius{
     }
 
     ResourceView<FrameBuffer> Context::getDefaultFrameBuffer() {
-        return m_FrameBuffers[0].createView();
+        return createResourceView(m_FrameBuffers[0]);
     }
 
     ResourceView<VertexLayout> Context::createVertexLayout() {
         m_VertexDescriptions.emplace_back(new VertexLayout());
-        return m_VertexDescriptions.back().createView();
+        return createResourceView(m_VertexDescriptions.back());
     }
 
     ResourceView<FrameBufferDescription> Context::createFrameBufferDescription() {
         auto ptr = new FrameBufferDescription();
         m_FrameBufferDescriptions.emplace_back(ptr);
-        return m_FrameBufferDescriptions.back().createView();
+        return createResourceView(m_FrameBufferDescriptions.back());
     }
 
     void Context::onResize(uint32 width, uint32 height) {

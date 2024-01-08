@@ -68,7 +68,7 @@ namespace Syrius{
     m_GlDrawMode(getGlDrawType(desc.drawMode)),
     m_IndexDataType(getGlDataType(desc.indexBuffer->getDataType())),
     m_ArrayID(0){
-        SR_CORE_PRECONDITION(desc.indexBuffer.isValid(), "IndexBuffer is nullptr");
+        SR_CORE_PRECONDITION(desc.indexBuffer != nullptr, "IndexBuffer is nullptr");
 
         glCreateVertexArrays(1, &m_ArrayID);
 

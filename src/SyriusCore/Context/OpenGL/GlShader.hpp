@@ -18,7 +18,6 @@ namespace Syrius{
 
     private:
         uint32 m_ShaderID;
-        std::unordered_map<std::string, int32> m_Uniforms;
 
     };
 

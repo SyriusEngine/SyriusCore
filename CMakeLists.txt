@@ -144,7 +144,7 @@ set(SYRIUSCORE_SRC
     ${SYRIUSCORE_CORE_SRC}
     ${SYRIUSCORE_WINDOW_SRC}
     ${SYRIUSCORE_GRAPHICS_API_SRC}
-    src/SyriusCore/SyriusCore.cpp )
+    src/SyriusCore/SyriusCore.cpp include/SyriusCore/Utils/Resource.hpp)
 
 add_library(SyriusCore SHARED ${SYRIUSCORE_SRC})
 

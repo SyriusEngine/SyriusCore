@@ -322,7 +322,7 @@ namespace Syrius{
             default:
                 SR_CORE_WARNING("cannot create context: unsupported API")
         }
-        return m_Context.createView();
+        return createResourceView(m_Context);
 
     }
 
@@ -383,9 +383,6 @@ namespace Syrius{
                     m_Height = newHeight;
                     WindowResizedEvent event(newWidth, newHeight);
                     dispatchEvent(event);
-                    if (m_Context.isValid()){
-                        m_Context->onResize(newWidth, newHeight);
-                    }
                 }
                 break;
             }

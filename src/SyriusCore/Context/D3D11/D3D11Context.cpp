@@ -177,37 +177,37 @@ namespace Syrius{
     ResourceView<ShaderModule> D3D11Context::createShaderModule(const ShaderModuleDesc &desc) {
         auto ptr = new D3D11ShaderModule(desc, m_Device, m_DeviceContext);
         m_ShaderModules.emplace_back(ptr);
-        return m_ShaderModules.back().createView();
+        return createResourceView(m_ShaderModules.back());
     }
 
     ResourceView<Shader> D3D11Context::createShader(const ShaderDesc &desc) {
         auto ptr = new D3D11Shader(desc, m_Device, m_DeviceContext);
         m_Shaders.emplace_back(ptr);
-        return m_Shaders.back().createView();
+        return createResourceView(m_Shaders.back());
     }
 
     ResourceView<VertexBuffer> D3D11Context::createVertexBuffer(const VertexBufferDesc &desc) {
         auto ptr = new D3D11VertexBuffer(desc, m_Device, m_DeviceContext);
         m_VertexBuffers.emplace_back(ptr);
-        return m_VertexBuffers.back().createView();
+        return createResourceView(m_VertexBuffers.back());
     }
 
     ResourceView<IndexBuffer> D3D11Context::createIndexBuffer(const IndexBufferDesc &desc) {
         auto ptr = new D3D11IndexBuffer(desc, m_Device, m_DeviceContext);
         m_IndexBuffers.emplace_back(ptr);
-        return m_IndexBuffers.back().createView();
+        return createResourceView(m_IndexBuffers.back());
     }
 
     ResourceView<VertexArray> D3D11Context::createVertexArray(const VertexArrayDesc &desc) {
         VertexArray* ptr;
-        if (desc.indexBuffer.isValid()) {
+        if (desc.indexBuffer != nullptr) {
             ptr = new D3D11VertexArrayIndexed(desc, m_Device, m_DeviceContext);
         }
         else {
             ptr =  new D3D11VertexArray(desc, m_Device, m_DeviceContext);
         }
         m_VertexArrays.emplace_back(ptr);
-        return m_VertexArrays.back().createView();
+        return createResourceView(m_VertexArrays.back());
     }
 
     ResourceView<ConstantBuffer> D3D11Context::createConstantBuffer(const ConstantBufferDesc &desc) {
@@ -223,32 +223,32 @@ namespace Syrius{
             }
         }
         m_ConstantBuffers.emplace_back(ptr);
-        return m_ConstantBuffers.back().createView();
+        return createResourceView(m_ConstantBuffers.back());
     }
 
     ResourceView<Texture2D> D3D11Context::createTexture2D(const Texture2DDesc& desc) {
         auto ptr = new D3D11Texture2D(desc, m_Device, m_DeviceContext);
         m_Textures2D.emplace_back(ptr);
 
-        return m_Textures2D.back().createView();
+        return createResourceView(m_Textures2D.back());
     }
 
     ResourceView<Texture2D> D3D11Context::createTexture2D(const Texture2DImageDesc &desc) {
         auto ptr = new D3D11Texture2D(desc, m_Device, m_DeviceContext);
         m_Textures2D.emplace_back(ptr);
-        return m_Textures2D.back().createView();
+        return createResourceView(m_Textures2D.back());
     }
 
     ResourceView<Sampler> D3D11Context::createSampler(const SamplerDesc &desc) {
         auto ptr = new D3D11Sampler(desc, m_Device, m_DeviceContext);
         m_Samplers.emplace_back(ptr);
-        return m_Samplers.back().createView();
+        return createResourceView(m_Samplers.back());
     }
 
     ResourceView<FrameBuffer> D3D11Context::createFrameBuffer(const ResourceView<FrameBufferDescription> &desc) {
         auto ptr = new D3D11FrameBuffer(desc, m_Device, m_DeviceContext);
         m_FrameBuffers.emplace_back(ptr);
-        return m_FrameBuffers.back().createView();
+        return createResourceView(m_FrameBuffers.back());
     }
 
     ResourceView<Cubemap> D3D11Context::createCubemap(const CubemapDesc &desc) {

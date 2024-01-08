@@ -33,80 +33,80 @@ namespace Syrius{
     ResourceView<ShaderModule> GlContext::createShaderModule(const ShaderModuleDesc &desc) {
         auto ptr = new GlShaderModule(desc);
         m_ShaderModules.emplace_back(ptr);
-        return m_ShaderModules.back().createView();
+        return createResourceView(m_ShaderModules.back());
     }
 
     ResourceView<Shader> GlContext::createShader(const ShaderDesc &desc) {
         auto ptr = new GlShader(desc);
         m_Shaders.emplace_back(ptr);
-        return m_Shaders.back().createView();
+        return createResourceView(m_Shaders.back());
     }
 
     ResourceView<VertexBuffer> GlContext::createVertexBuffer(const VertexBufferDesc &desc) {
         auto ptr = new GlVertexBuffer(desc);
         m_VertexBuffers.emplace_back(ptr);
-        return m_VertexBuffers.back().createView();
+        return createResourceView(m_VertexBuffers.back());
     }
 
     ResourceView<IndexBuffer> GlContext::createIndexBuffer(const IndexBufferDesc &desc) {
         auto ptr = new GlIndexBuffer(desc);
         m_IndexBuffers.emplace_back(ptr);
-        return m_IndexBuffers.back().createView();
+        return createResourceView(m_IndexBuffers.back());
     }
 
     ResourceView<VertexArray> GlContext::createVertexArray(const VertexArrayDesc &desc) {
         VertexArray* ptr;
-        if (desc.indexBuffer.isValid()) {
+        if (desc.indexBuffer != nullptr) {
             ptr =  new GlVertexArrayIndexed(desc);
         }
         else {
             ptr =  new GlVertexArray(desc);
         }
         m_VertexArrays.emplace_back(ptr);
-        return m_VertexArrays.back().createView();
+        return createResourceView(m_VertexArrays.back());
     }
 
     ResourceView<ConstantBuffer> GlContext::createConstantBuffer(const ConstantBufferDesc &desc) {
         auto ptr = new GlConstantBuffer(desc);
         m_ConstantBuffers.emplace_back(ptr);
-        return m_ConstantBuffers.back().createView();
+        return createResourceView(m_ConstantBuffers.back());
     }
 
     ResourceView<Texture2D> GlContext::createTexture2D(const Texture2DDesc& desc) {
         auto ptr = new GlTexture2D(desc);
         m_Textures2D.emplace_back(ptr);
 
-        return m_Textures2D.back().createView();
+        return createResourceView(m_Textures2D.back());
     }
 
     ResourceView<Texture2D> GlContext::createTexture2D(const Texture2DImageDesc &desc) {
         auto ptr = new GlTexture2D(desc);
         m_Textures2D.emplace_back(ptr);
-        return m_Textures2D.back().createView();
+        return createResourceView(m_Textures2D.back());
     }
 
     ResourceView<Sampler> GlContext::createSampler(const SamplerDesc &desc) {
         auto ptr = new GlSampler(desc);
         m_Samplers.emplace_back(ptr);
-        return m_Samplers.back().createView();
+        return createResourceView(m_Samplers.back());
     }
 
     ResourceView<FrameBuffer> GlContext::createFrameBuffer(const ResourceView<FrameBufferDescription> &desc) {
         auto ptr = new GlFrameBuffer(desc);
         m_FrameBuffers.emplace_back(ptr);
-        return m_FrameBuffers.back().createView();
+        return createResourceView(m_FrameBuffers.back());
     }
 
     ResourceView<Cubemap> GlContext::createCubemap(const CubemapDesc &desc) {
         auto ptr = new GlCubemap(desc);
         m_Cubemaps.emplace_back(ptr);
-        return m_Cubemaps.back().createView();
+        return createResourceView(m_Cubemaps.back());
     }
 
     ResourceView<Cubemap> GlContext::createCubemap(const CubemapImageDesc &desc) {
         auto ptr = new GlCubemap(desc);
         m_Cubemaps.emplace_back(ptr);
-        return m_Cubemaps.back().createView();
+        return createResourceView(m_Cubemaps.back());
     }
 
     void GlContext::initGl(const ContextDesc& desc) {

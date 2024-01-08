@@ -3,6 +3,7 @@
 #include "../../../../include/SyriusCore/Context/Shader.hpp"
 #include "D3D11Utils.hpp"
 #include "D3D11ShaderModule.hpp"
+#include <unordered_map>
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 
