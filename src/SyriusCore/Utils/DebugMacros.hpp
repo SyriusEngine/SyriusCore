@@ -60,7 +60,7 @@
         HRESULT _hr = x;\
         if (FAILED(_hr)){                       \
             if (_hr == DXGI_ERROR_DEVICE_REMOVED){ \
-                 DebugMessageHandler::d3d11DeviceRemovedHandler(device->GetDeviceRemovedReason(), #x, SR_CORE_FILE, SR_CORE_LINE);                                    \
+                 DebugMessageHandler::d3d11DeviceRemovedHandler((device)->GetDeviceRemovedReason(), #x, SR_CORE_FILE, SR_CORE_LINE);                                    \
             }                                     \
             else{                                \
                   DebugMessageHandler::formatHresultMessage(_hr, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE);                                   \

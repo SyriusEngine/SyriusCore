@@ -167,6 +167,20 @@ void TestFrameBuffer::renderImGui() {
         m_Context->getDefaultFrameBuffer()->setDepthMask(static_cast<SR_DEPTH_MASK>(m_DepthMask));
     }
     ImGui::Checkbox("Sample from color attachment", &m_SampleFromColorAttachment);
+
+    // memory allocation tracker
+    ImGui::Columns(2, "Memory Allocation Tracker");
+    ImGui::Separator();
+    ImGui::Text("Total Allocated"); ImGui::NextColumn();
+    ImGui::Text("%d bytes", getAllocatedMemory()); ImGui::NextColumn();
+    ImGui::Separator();
+    ImGui::Text("Total Freed"); ImGui::NextColumn();
+    ImGui::Text("%d bytes", getFreedMemory()); ImGui::NextColumn();
+    ImGui::Separator();
+    ImGui::Text("Usage"); ImGui::NextColumn();
+    ImGui::Text("%d bytes", getMemoryUsage()); ImGui::NextColumn();
+    ImGui::Separator();
+    ImGui::Columns(1);
     ImGui::End();
 
     m_Window->onImGuiEnd();
