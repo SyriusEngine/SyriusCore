@@ -69,7 +69,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     depthDesc.width = window->getWidth();
     depthDesc.height = window->getHeight();
     depthDesc.enableDepthTest = m_DepthTest;
-    depthDesc.enableShaderAccess = false;
+    depthDesc.enableShaderAccess = true;
     fbDesc->addDepthStencilAttachmentDesc(depthDesc);
     m_FrameBuffer = m_Context->createFrameBuffer(fbDesc);
 

@@ -41,20 +41,20 @@ namespace Syrius{
 
         void setClearFlag();
 
-        void createDepthStencilState();
+        void createState();
+
+        void createBufferAndView();
 
     private:
         ID3D11Device* m_Device;
         ID3D11DeviceContext* m_Context;
 
-        ID3D11Texture2D* m_DepthStencilBuffer;
-        ID3D11DepthStencilState* m_DepthStencilState;
-        ID3D11DepthStencilView* m_DepthStencilView;
-        ID3D11ShaderResourceView* m_BufferView;
+        ID3D11Texture2D* m_Buffer;
+        ID3D11DepthStencilState* m_State;
+        ID3D11DepthStencilView* m_View;
+        ID3D11ShaderResourceView* m_ShaderResourceView;
 
         D3D11_CLEAR_FLAG m_ClearFlag;
-
-        DXGI_FORMAT m_D3DFormat;
     };
 
 }
