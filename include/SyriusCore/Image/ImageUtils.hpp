@@ -32,6 +32,13 @@ namespace Syrius{
         SR_TEXTURE_FORMAT format= SR_TEXTURE_RGBA_UI8;
     };
 
+    struct SR_CORE_API ImageUI16Desc{
+        const uint16* data      = nullptr;
+        int32 width             = 0;
+        int32 height            = 0;
+        SR_TEXTURE_FORMAT format= SR_TEXTURE_RGBA_UI16;
+    };
+
     struct SR_CORE_API ImageF32Desc{
         const float* data       = nullptr;
         int32 width             = 0;

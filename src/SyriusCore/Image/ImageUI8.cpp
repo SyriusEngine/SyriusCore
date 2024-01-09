@@ -32,6 +32,9 @@ namespace Syrius{
         }
 
         stbi_image_free(pData);
+
+        SR_CORE_POSTCONDITION(m_Width > 0, "[ImageUI8]: Image: %s has a width of 0", desc.fileName.c_str());
+        SR_CORE_POSTCONDITION(m_Height > 0, "[ImageUI8]: Image: %s has a height of 0", desc.fileName.c_str());
     }
 
     ImageUI8::ImageUI8(const ImageUI8Desc &desc):
@@ -99,21 +102,8 @@ namespace Syrius{
     void ImageUI8::extendAlpha() {
         uint32 channelCount = getTextureFormatChannelCount(m_Format);
         if (channelCount == 3){
-            size_t numPixels = m_Data.size() / 3;
-
-            // Create a vector to store RGBA data
             std::vector<ubyte> rgbaData;
-            rgbaData.reserve(numPixels * 4);
-
-            // Loop through each pixel
-            for (size_t i = 0; i < numPixels; ++i) {
-                // Copy RGB channels
-                rgbaData.push_back(m_Data[i * 3]);     // Red
-                rgbaData.push_back(m_Data[i * 3 + 1]); // Green
-                rgbaData.push_back(m_Data[i * 3 + 2]); // Blue
-                // Set alpha channel to 255 (fully opaque)
-                rgbaData.push_back(255);
-            }
+            addAlpha<ubyte>(m_Data, rgbaData, m_Width, m_Height, channelCount);
             m_Data = rgbaData;
             m_Format = SR_TEXTURE_RGBA_UI8;
         }

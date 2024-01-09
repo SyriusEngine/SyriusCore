@@ -77,14 +77,9 @@ namespace Syrius{
     void ImageF32::extendAlpha() {
         uint32 channelCount = getTextureFormatChannelCount(m_Format);
         if (channelCount == 3){
-            std::vector<float> extendedData(m_Width * m_Height * 4);
-            for (uint32 i = 0; i < m_Width * m_Height; i += 3){
-                extendedData[i] = m_Data[i];
-                extendedData[i + 1] = m_Data[i + 1];
-                extendedData[i + 2] = m_Data[i + 2];
-                extendedData[i + 3] = 1.0f;
-            }
-            m_Data = extendedData;
+            std::vector<float> rgbaData;
+            addAlpha<float>(m_Data, rgbaData, m_Width, m_Height, channelCount);
+            m_Data = rgbaData;
             m_Format = SR_TEXTURE_RGBA_F32;
         }
     }

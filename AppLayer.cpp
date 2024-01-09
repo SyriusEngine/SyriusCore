@@ -96,13 +96,6 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     auto bottomImg = createImage(bottom);
     auto frontImg = createImage(front);
     auto backImg = createImage(back);
-    cmiDesc.right = rightImg.createView();
-    cmiDesc.left = leftImg.createView();
-    cmiDesc.top = topImg.createView();
-    cmiDesc.bottom = bottomImg.createView();
-    cmiDesc.front = frontImg.createView();
-    cmiDesc.back = backImg.createView();
-    m_Cubemap = m_Context->createCubemap(cmiDesc);
 
     m_SbShader = m_ShaderLibrary.loadShader("Skybox", "Skybox");
 

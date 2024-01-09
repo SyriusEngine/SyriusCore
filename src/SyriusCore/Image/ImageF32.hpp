@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../include/SyriusCore/Image/Image.hpp"
+#include "InternalUtils.hpp"
 
 namespace Syrius{
 
