@@ -14,6 +14,7 @@ layout(std140, binding = 1) uniform CameraData {
 };
 
 void main() {
-    gl_Position = perspective * view * vec4(position, 1.0);
+    mat4 augmentedView = mat4(mat3(view));
+    gl_Position = perspective * augmentedView * vec4(position, 1.0);
     fTexCoord = position;
 }

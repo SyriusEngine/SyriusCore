@@ -5,6 +5,7 @@ m_Context(context),
 m_Window(window),
 m_Config(config),
 m_ShaderLibrary(config["Context"]["ShaderLibraryPath"].getOrDefault("./Resources/Shaders"), context){
+    printContextInfo(m_Context);
 
 }
 
