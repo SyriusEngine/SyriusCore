@@ -34,8 +34,8 @@ namespace Syrius{
 
     ImageF32::ImageF32(const ImageF32Desc &desc):
     Image(desc.width, desc.height, desc.format),
-    m_Data(desc.width * desc.height * getTextureFormatChannelCount(desc.format)){
-        memcpy(&m_Data[0], desc.data, desc.width * desc.height * getTextureFormatChannelCount(desc.format));
+    m_Data(desc.width * desc.height * getTextureChannelCount(desc.format)){
+        memcpy(&m_Data[0], desc.data, desc.width * desc.height * getTextureChannelCount(desc.format));
     }
 
     ImageF32::~ImageF32() {
@@ -46,7 +46,7 @@ namespace Syrius{
         stbi_flip_vertically_on_write(desc.flipOnAccess);
         auto width = static_cast<int32>(m_Width);
         auto height = static_cast<int32>(m_Height);
-        int32 channelCount = getTextureFormatChannelCount(m_Format);
+        int32 channelCount = getTextureChannelCount(m_Format);
         switch (desc.imgType){
             case SR_IMAGE_HDR: {
                 if (!stbi_write_hdr(desc.fileName.c_str(), width, height, channelCount, &m_Data[0])){
@@ -62,7 +62,7 @@ namespace Syrius{
     }
 
     void ImageF32::resize(uint32 width, uint32 height) {
-        int32 channelCount = getTextureFormatChannelCount(m_Format);
+        int32 channelCount = getTextureChannelCount(m_Format);
         std::vector<float> resizedData(width * height * channelCount);
 
         if (!stbir_resize_float(&m_Data[0], m_Width, m_Height, 0, &resizedData[0], width, height, 0, channelCount)){
@@ -75,7 +75,7 @@ namespace Syrius{
     }
 
     void ImageF32::extendAlpha() {
-        uint32 channelCount = getTextureFormatChannelCount(m_Format);
+        uint32 channelCount = getTextureChannelCount(m_Format);
         if (channelCount == 3){
             std::vector<float> rgbaData;
             addAlpha<float>(m_Data, rgbaData, m_Width, m_Height, channelCount);

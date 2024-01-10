@@ -91,8 +91,8 @@ namespace Syrius {
     }
 
     void  D3D11ColorAttachment::createResources(){
-        SR_CHANNEL_FORMAT sF = getTextureFormat(m_Format);
-        auto channelCount = getTextureChannelCount(sF);
+        SR_CHANNEL_FORMAT sF = getTextureChannelFormat(m_Format);
+        auto channelCount = getChannelFormatCount(sF);
 
         D3D11_TEXTURE2D_DESC textureDesc = {0};
         textureDesc.Width = m_Width;

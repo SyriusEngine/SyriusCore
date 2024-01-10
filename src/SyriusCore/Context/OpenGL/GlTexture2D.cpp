@@ -57,7 +57,7 @@ namespace Syrius{
     }
 
     Resource<Image> GlTexture2D::getData() {
-        auto channelCount = getTextureFormatChannelCount(m_Format);
+        auto channelCount = getTextureChannelCount(m_Format);
         auto size = m_Width * m_Height * channelCount;
         auto data = Resource<uint8>(new uint8[size]);
         glGetTextureImage(m_TextureID, 0, m_GlFormat, m_GlDataType, size, data.get());
@@ -74,7 +74,7 @@ namespace Syrius{
     }
 
     void GlTexture2D::setGlFormats() {
-        auto channelCount = getTextureFormatChannelCount(m_Format);
+        auto channelCount = getTextureChannelCount(m_Format);
         switch (channelCount){
             case 4:
                 m_GlFormat = GL_RGBA;

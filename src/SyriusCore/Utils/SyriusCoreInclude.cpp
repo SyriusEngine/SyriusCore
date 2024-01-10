@@ -59,13 +59,13 @@ namespace Syrius{
         return static_cast<SR_TYPE>((type >> 4) << 4);
     }
 
-    SR_CHANNEL_FORMAT getTextureFormat(SR_TEXTURE_FORMAT format){
+    SR_CHANNEL_FORMAT getTextureChannelFormat(SR_TEXTURE_FORMAT format){
         auto temp = (format >> 4);
         SR_CORE_ASSERT(temp < 5, "Invalid texture format");
         return static_cast<SR_CHANNEL_FORMAT>((format >> 4) << 4);
     }
 
-    uint8 getTextureChannelCount(SR_CHANNEL_FORMAT format){
+    uint8 getChannelFormatCount(SR_CHANNEL_FORMAT format){
         switch (format) {
             case SR_CHANNEL_R:
                 return 1;
@@ -86,7 +86,7 @@ namespace Syrius{
         }
     }
 
-    uint8 getTextureFormatChannelCount(SR_TEXTURE_FORMAT format){
+    uint8 getTextureChannelCount(SR_TEXTURE_FORMAT format){
         return format >> 4;
     }
 

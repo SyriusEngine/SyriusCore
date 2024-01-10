@@ -18,6 +18,12 @@ namespace Syrius{
         [[nodiscard]] uint64 getIdentifier() const override;
 
     private:
+
+        static bool checkFormatSupported(GLint toCheck);
+
+        void determineFormats();
+
+    private:
         uint32 m_TextureID;
 
         GLenum m_GlFormat;

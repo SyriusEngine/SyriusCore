@@ -12,7 +12,7 @@ namespace Syrius{
     m_TextureView(nullptr){
         SR_CORE_PRECONDITION(desc.data != nullptr, "Texture data must not be null");
 
-        auto channelCount = getTextureFormatChannelCount(desc.format);
+        auto channelCount = getTextureChannelCount(desc.format);
         if (channelCount == 3){
             SR_CORE_EXCEPTION("D3D11 does not support 3 channel textures, please supply data in format with 1, 2 or 4 channels");
         }
@@ -109,7 +109,7 @@ namespace Syrius{
         SR_CORE_PRECONDITION(y + height <= m_Height, "y + height is out of range");
 
         // TODO: Test this code because dont know if it works
-        auto channelCount = getTextureFormatChannelCount(m_Format);
+        auto channelCount = getTextureChannelCount(m_Format);
         D3D11_BOX box = { 0 };
         box.left = x;
         box.right = x + width;

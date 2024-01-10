@@ -5,7 +5,7 @@ namespace Syrius{
 
     ImageImpl::ImageImpl(const ImageDesc &desc):
     Image(desc.width, desc.height, desc.format){
-        auto channels = getTextureFormatChannelCount(desc.format);
+        auto channels = getTextureChannelCount(desc.format);
         auto dataType = getTextureDataType(desc.format);
         auto typeSize = getTypeSize(dataType);
 

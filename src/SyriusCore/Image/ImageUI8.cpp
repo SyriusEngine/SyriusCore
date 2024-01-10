@@ -39,8 +39,8 @@ namespace Syrius{
 
     ImageUI8::ImageUI8(const ImageUI8Desc &desc):
     Image(desc.width, desc.height, desc.format),
-    m_Data(desc.width * desc.height * getTextureFormatChannelCount(desc.format)){
-        memcpy(&m_Data[0], desc.data, desc.width * desc.height * getTextureFormatChannelCount(desc.format));
+    m_Data(desc.width * desc.height * getTextureChannelCount(desc.format)){
+        memcpy(&m_Data[0], desc.data, desc.width * desc.height * getTextureChannelCount(desc.format));
     }
 
     ImageUI8::~ImageUI8() {
@@ -51,7 +51,7 @@ namespace Syrius{
         stbi_flip_vertically_on_write(desc.flipOnAccess);
         auto width = static_cast<int32>(m_Width);
         auto height = static_cast<int32>(m_Height);
-        int32 channelCount = getTextureFormatChannelCount(m_Format);
+        int32 channelCount = getTextureChannelCount(m_Format);
 
         switch (desc.imgType) {
             case SR_IMAGE_PNG: {
@@ -87,7 +87,7 @@ namespace Syrius{
     }
 
     void ImageUI8::resize(uint32 width, uint32 height) {
-        int32 channelCount = getTextureFormatChannelCount(m_Format);
+        int32 channelCount = getTextureChannelCount(m_Format);
         std::vector<ubyte> resizedData(width * height * channelCount);
 
         if (!stbir_resize_uint8(&m_Data[0], m_Width, m_Height, 0, &resizedData[0], width, height, 0, channelCount)){
@@ -100,7 +100,7 @@ namespace Syrius{
     }
 
     void ImageUI8::extendAlpha() {
-        uint32 channelCount = getTextureFormatChannelCount(m_Format);
+        uint32 channelCount = getTextureChannelCount(m_Format);
         if (channelCount == 3){
             std::vector<ubyte> rgbaData;
             addAlpha<ubyte>(m_Data, rgbaData, m_Width, m_Height, channelCount);

@@ -10,9 +10,9 @@ namespace Syrius{
     m_TextureID(0),
     m_ChannelCount(0),
     m_GlDataType(getGlDataType(getTextureDataType(desc.format))){
-        SR_CHANNEL_FORMAT baseFormat = getTextureFormat(desc.format);
-        m_GlFormat = getGlTextureType(baseFormat);
-        m_ChannelCount = getTextureChannelCount(baseFormat);
+        SR_CHANNEL_FORMAT baseFormat = getTextureChannelFormat(desc.format);
+        m_GlFormat = getGlChannelType(baseFormat);
+        m_ChannelCount = getChannelFormatCount(baseFormat);
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
         glBindTexture(GL_TEXTURE_2D, m_TextureID);

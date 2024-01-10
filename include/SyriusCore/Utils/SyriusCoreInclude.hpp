@@ -241,11 +241,11 @@ namespace Syrius {
 
     SR_TYPE SR_CORE_API getScalarType(SR_SCALAR_TYPE type);
 
-    SR_CHANNEL_FORMAT SR_CORE_API getTextureFormat(SR_TEXTURE_FORMAT format);
+    SR_CHANNEL_FORMAT SR_CORE_API getTextureChannelFormat(SR_TEXTURE_FORMAT format);
 
-    uint8 SR_CORE_API getTextureChannelCount(SR_CHANNEL_FORMAT format);
+    uint8 SR_CORE_API getChannelFormatCount(SR_CHANNEL_FORMAT format);
 
-    uint8 SR_CORE_API getTextureFormatChannelCount(SR_TEXTURE_FORMAT format);
+    uint8 SR_CORE_API getTextureChannelCount(SR_TEXTURE_FORMAT format);
 
     SR_TYPE SR_CORE_API getTextureDataType(SR_TEXTURE_FORMAT format);
 

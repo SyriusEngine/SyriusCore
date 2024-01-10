@@ -11,7 +11,7 @@ namespace Syrius{
             case SR_SHADER_TESSELATION_EVALUATION:  return GL_TESS_EVALUATION_SHADER;
             case SR_SHADER_COMPUTE:                 return GL_COMPUTE_SHADER;
             default: {
-                SR_CORE_WARNING("Invalid shader type given to converter, return default: GL_VERTEX_SHADER");
+                SR_CORE_WARNING("[GLUtils]: Invalid shader type (%i) given to converter, return default: GL_VERTEX_SHADER", type);
                 return GL_VERTEX_SHADER;
             }
         }
@@ -25,7 +25,7 @@ namespace Syrius{
             case SR_DRAW_TRIANGLES:         return GL_TRIANGLES;
             case SR_DRAW_TRIANGLE_STRIP:    return GL_TRIANGLE_STRIP;
             default: {
-                SR_CORE_WARNING("Invalid usage given to converter, return default: GL_TRIANGLES");
+                SR_CORE_WARNING("[GLUtils]: Invalid draw type (%i) given to converter, return default: GL_TRIANGLES", type);
                 return GL_TRIANGLES;
             }
         }
@@ -45,7 +45,7 @@ namespace Syrius{
             case SR_FLOAT32:    return GL_FLOAT;
             case SR_FLOAT64:    return GL_DOUBLE;
             default: {
-                SR_CORE_WARNING("Invalid usage given to converter, return default: GL_FLOAT");
+                SR_CORE_WARNING("[GLUtils]: Invalid data type (%i) given to converter, return default: GL_FLOAT", type);
                 return GL_FLOAT;
             }
         }
@@ -57,13 +57,13 @@ namespace Syrius{
             case SR_BUFFER_USAGE_DYNAMIC: return GL_DYNAMIC_DRAW;
             case SR_BUFFER_USAGE_STATIC:  return GL_STATIC_DRAW;
             default: {
-                SR_CORE_WARNING("Invalid usage given to converter, return default: GL_STATIC_DRAW");
+                SR_CORE_WARNING("[GLUtils]: Invalid usage (%i) given to converter, return default: GL_STATIC_DRAW", type);
                 return GL_STATIC_DRAW;
             }
         }
     }
 
-    GLenum getGlTextureType(SR_CHANNEL_FORMAT type){
+    GLenum getGlChannelType(SR_CHANNEL_FORMAT type){
         switch (type) {
             case SR_CHANNEL_R:       return GL_RED;
             case SR_CHANNEL_RG:      return GL_RG;
@@ -72,7 +72,7 @@ namespace Syrius{
             case SR_CHANNEL_BGR:     return GL_BGR;
             case SR_CHANNEL_BGRA:    return GL_BGRA;
             default: {
-                SR_CORE_WARNING("Invalid usage given to converter, return default: GL_RGBA");
+                SR_CORE_WARNING("[GLUtils]: Invalid channel type (%i) given to converter, return default: GL_RGBA", type);
                 return GL_RGBA;
             }
         }
@@ -118,8 +118,74 @@ namespace Syrius{
             case SR_TEXTURE_DEPTH_24_STENCIL_8: return GL_DEPTH24_STENCIL8;
             case SR_TEXTURE_DEPTH_32_STENCIL_8: return GL_DEPTH32F_STENCIL8;
             default: {
-                SR_CORE_WARNING("Invalid usage given to converter, return default: GL_RGBA8");
+                SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, return default: GL_RGBA8", format);
                 return GL_RGBA8UI;
+            }
+        }
+    }
+
+    GLint getGlTextureFormat(SR_TEXTURE_FORMAT format){
+        auto dataType = getTextureDataType(format);
+        auto size = getTypeSize(dataType);
+        auto channelFormat = getTextureChannelFormat(format);
+        if (size == 1){
+            switch (channelFormat) {
+                case SR_CHANNEL_R:       return GL_R8;
+                case SR_CHANNEL_RG:      return GL_RG8;
+                case SR_CHANNEL_RGB:     return GL_RGB8;
+                case SR_CHANNEL_RGBA:    return GL_RGBA8;
+                default: {
+                    SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_RGBA8", format);
+                    return GL_RGBA8;
+                }
+            }
+        }
+        else if (size == 2){
+            switch (channelFormat) {
+                case SR_CHANNEL_R:       return GL_R16;
+                case SR_CHANNEL_RG:      return GL_RG16;
+                case SR_CHANNEL_RGB:     return GL_RGB16;
+                case SR_CHANNEL_RGBA:    return GL_RGBA16;
+                default: {
+                    SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_RGBA16", format);
+                    return GL_RGBA16;
+                }
+            }
+        }
+        else if (size == 4){
+            switch (channelFormat) {
+                case SR_CHANNEL_R:       return GL_R32F;
+                case SR_CHANNEL_RG:      return GL_RG32F;
+                case SR_CHANNEL_RGB:     return GL_RGB32F;
+                case SR_CHANNEL_RGBA:    return GL_RGBA32F;
+                default: {
+                    SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_RGBA32F", format);
+                    return GL_RGBA32F;
+                }
+            }
+        }
+        else {
+            SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_RGBA8", format);
+            return GL_RGBA8;
+        }
+
+    }
+
+    GLenum getGlTextureDataType(SR_TEXTURE_FORMAT format){
+        auto data = format & 0x0F;
+        data <<= 4;
+        switch (data) {
+            case SR_UINT8:      return GL_UNSIGNED_BYTE;
+            case SR_INT8:       return GL_BYTE;
+            case SR_UINT16:     return GL_UNSIGNED_SHORT;
+            case SR_INT16:      return GL_SHORT;
+            case SR_UINT32:     return GL_UNSIGNED_INT;
+            case SR_INT32:      return GL_INT;
+            case SR_FLOAT16:    return GL_HALF_FLOAT;
+            case SR_FLOAT32:    return GL_FLOAT;
+            default: {
+                SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_UNSIGNED_BYTE", format);
+                return GL_UNSIGNED_BYTE;
             }
         }
     }
@@ -135,7 +201,7 @@ namespace Syrius{
             case SR_COMPARISON_FUNC_GREATER_EQUAL:   return GL_GEQUAL;
             case SR_COMPARISON_FUNC_ALWAYS:          return GL_ALWAYS;
             default: {
-                SR_CORE_WARNING("Invalid depth func given to converter, defaulting to GL_LESS");
+                SR_CORE_WARNING("[GLUtils]: Invalid depth func (%i) given to converter, defaulting to GL_LESS", func);
                 return GL_LESS;
             }
         }
@@ -146,7 +212,7 @@ namespace Syrius{
             case SR_TEXTURE_FILTER_LINEAR:  return GL_LINEAR;
             case SR_TEXTURE_FILTER_POINT:   return GL_NEAREST;
             default: {
-                SR_CORE_WARNING("Invalid texture filter given to converter, defaulting to GL_LINEAR");
+                SR_CORE_WARNING("[GLUtils]: Invalid texture filter (%i) given to converter, defaulting to GL_LINEAR", filter);
                 return GL_LINEAR;
             }
         }
@@ -159,7 +225,7 @@ namespace Syrius{
             case SR_TEXTURE_WRAP_CLAMP_EDGE:    return GL_CLAMP_TO_EDGE;
             case SR_TEXTURE_WRAP_CLAMP_BORDER:  return GL_CLAMP_TO_BORDER;
             default: {
-                SR_CORE_WARNING("Invalid texture wrap given to converter, defaulting to GL_REPEAT");
+                SR_CORE_WARNING("[GLUtils]: Invalid texture wrap (%i) given to converter, defaulting to GL_REPEAT", wrap);
                 return GL_REPEAT;
             }
         }
@@ -176,30 +242,10 @@ namespace Syrius{
             case SR_STENCIL_FUNC_DECR_WRAP: return GL_DECR_WRAP;
             case SR_STENCIL_FUNC_INVERT:    return GL_INVERT;
             default: {
-                SR_CORE_WARNING("Invalid texture wrap given to converter, defaulting to GL_KEEP");
+                SR_CORE_WARNING("[GLUtils]: Invalid stencil function (%i) given to converter, defaulting to GL_KEEP", func);
                 return GL_KEEP;
             }
-                
         }
     }
 
-    GLenum getGlTextureDataType(SR_TEXTURE_FORMAT format){
-        auto data = format & 0x0F;
-        data <<= 4;
-        switch (data) {
-            case SR_UINT8:      return GL_UNSIGNED_BYTE;
-            case SR_INT8:       return GL_BYTE;
-            case SR_UINT16:     return GL_UNSIGNED_SHORT;
-            case SR_INT16:      return GL_SHORT;
-            case SR_UINT32:     return GL_UNSIGNED_INT;
-            case SR_INT32:      return GL_INT;
-            case SR_FLOAT16:    return GL_HALF_FLOAT;
-            case SR_FLOAT32:    return GL_FLOAT;
-            default: {
-                SR_CORE_WARNING("Invalid texture data format given to converter, defaulting to GL_UNSIGNED_BYTE");
-                return GL_UNSIGNED_BYTE;
-            }
-        }
-
-    }
 }

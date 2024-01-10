@@ -38,8 +38,8 @@ namespace Syrius{
 
     ImageUI16::ImageUI16(const ImageUI16Desc &desc):
     Image(desc.width, desc.height, desc.format),
-    m_Data(desc.width * desc.height * getTextureFormatChannelCount(desc.format)){
-        memcpy(&m_Data[0], desc.data, desc.width * desc.height * getTextureFormatChannelCount(desc.format));
+    m_Data(desc.width * desc.height * getTextureChannelCount(desc.format)){
+        memcpy(&m_Data[0], desc.data, desc.width * desc.height * getTextureChannelCount(desc.format));
     }
 
     ImageUI16::~ImageUI16() {
@@ -51,7 +51,7 @@ namespace Syrius{
     }
 
     void ImageUI16::resize(uint32 width, uint32 height) {
-        int32 channelCount = getTextureFormatChannelCount(m_Format);
+        int32 channelCount = getTextureChannelCount(m_Format);
         std::vector<uint16> resizedData(width * height * channelCount);
 
         if (!stbir_resize_uint16_generic(&m_Data[0], m_Width, m_Height, 0,
@@ -69,7 +69,7 @@ namespace Syrius{
     }
 
     void ImageUI16::extendAlpha() {
-        uint32 channelCount = getTextureFormatChannelCount(m_Format);
+        uint32 channelCount = getTextureChannelCount(m_Format);
         if (channelCount == 3){
             std::vector<uint16> rgbaData;
             addAlpha<uint16>(m_Data, rgbaData, m_Width, m_Height, channelCount);

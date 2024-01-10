@@ -13,7 +13,7 @@ namespace Syrius{
     }
 
     uint32 Image::getChannelCount() const {
-        return getTextureFormatChannelCount(m_Format);
+        return getTextureChannelCount(m_Format);
     }
 
     SR_TEXTURE_FORMAT Image::getFormat() const {

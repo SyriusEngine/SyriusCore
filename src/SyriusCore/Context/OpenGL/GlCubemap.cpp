@@ -4,9 +4,7 @@ namespace Syrius{
 
     GlCubemap::GlCubemap(const CubemapDesc &desc) :
     Cubemap(desc), m_TextureID(0) {
-        m_GlDataType = getGlTextureDataType(m_Format);
-        m_GlInternalFormat = getGlTextureInternalFormat(m_Format);
-        m_GlFormat = getGlTextureType(getTextureFormat(m_Format));
+        determineFormats();
 
         CubemapFaceDesc faces[] = {
                 desc.right,
@@ -27,9 +25,7 @@ namespace Syrius{
 
     GlCubemap::GlCubemap(const CubemapImageDesc &desc) :
     Cubemap(desc), m_TextureID(0) {
-        m_GlDataType = getGlTextureDataType(m_Format);
-        m_GlInternalFormat = getGlTextureInternalFormat(m_Format);
-        m_GlFormat = getGlTextureType(getTextureFormat(m_Format));
+       determineFormats();
 
         CubemapFaceDesc faces[] = {
                 {desc.right->getWidth(), desc.right->getHeight(), desc.right->getFormat(), desc.right->getData()},
@@ -57,5 +53,21 @@ namespace Syrius{
 
     uint64 GlCubemap::getIdentifier() const {
         return m_TextureID;
+    }
+
+    bool GlCubemap::checkFormatSupported(GLint toCheck) {
+        GLint isSupported = GL_FALSE;
+        glGetInternalformativ(GL_TEXTURE_CUBE_MAP, toCheck, GL_INTERNALFORMAT_SUPPORTED, 1, &isSupported);
+
+        return isSupported == GL_TRUE;
+    }
+
+    void GlCubemap::determineFormats() {
+        m_GlDataType = getGlTextureDataType(m_Format);
+        m_GlInternalFormat = getGlTextureFormat(m_Format);
+        m_GlFormat = getGlChannelType(getTextureChannelFormat(m_Format));
+
+        SR_CORE_POSTCONDITION(checkFormatSupported(m_GlInternalFormat), "Internal format (%i) not supported", m_GlInternalFormat);
+        SR_CORE_POSTCONDITION(checkFormatSupported(m_GlFormat), "Format (%i) not supported", m_GlFormat);
     }
 }
