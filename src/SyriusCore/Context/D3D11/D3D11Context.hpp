@@ -18,6 +18,7 @@
 #include "D3D11FrameBuffer.hpp"
 #include "D3D11ColorAttachment.hpp"
 #include "D3D11DepthStencilAttachment.hpp"
+#include "D3D11Cubemap.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 

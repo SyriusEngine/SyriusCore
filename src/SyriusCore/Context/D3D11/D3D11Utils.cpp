@@ -10,7 +10,7 @@ namespace Syrius{
             case SR_BUFFER_USAGE_DYNAMIC:     return D3D11_USAGE_DYNAMIC;
             case SR_BUFFER_USAGE_STATIC:      return D3D11_USAGE_IMMUTABLE;
             default: {
-                SR_CORE_WARNING("Invalid usage given to converter, return D3D11_USAGE_DEFAULT");
+                SR_CORE_WARNING("[D3D11Utils]: Invalid usage (%i) given to converter, return D3D11_USAGE_DEFAULT", type);
                 return D3D11_USAGE_DEFAULT;
             }
         }
@@ -27,7 +27,7 @@ namespace Syrius{
             case SR_FLOAT16:    return DXGI_FORMAT_R16_FLOAT;
             case SR_FLOAT32:    return DXGI_FORMAT_R32_FLOAT;;
             default: {
-                SR_CORE_WARNING("Invalid usage given to converter, return DXGI_FORMAT_R32_FLOAT");
+                SR_CORE_WARNING("[D3D11Utils]: Invalid data type (%i) given to converter, return DXGI_FORMAT_R32_FLOAT", dataType);
                 return DXGI_FORMAT_R32_FLOAT;
             }
         }
@@ -102,7 +102,48 @@ namespace Syrius{
 //            case SR_FLOAT64_3X3:    break;
 //            case SR_FLOAT64_4X4:    break;
             default:{
-                SR_CORE_WARNING("Invalid usage given to converter, note that D3D11 does not support most 3-component vectors or 64bit types");
+                SR_CORE_WARNING("[D3D11Utils]: Invalid scalar type (%i) given to converter, note that D3D11 does not support most 3-component vectors or 64bit types", scalarType);
+                return DXGI_FORMAT_UNKNOWN;
+            }
+        }
+    }
+
+    DXGI_FORMAT getD3d11TextureFormat(SR_TEXTURE_FORMAT format){
+        switch(format){
+            case SR_TEXTURE_R_UI8:        return DXGI_FORMAT_R8_UNORM;
+            case SR_TEXTURE_RG_UI8:       return DXGI_FORMAT_R8G8_UNORM;
+//            case SR_TEXTURE_RGB_UI8:      return DXGI_FORMAT_R8G8B8_UNORM;
+            case SR_TEXTURE_RGBA_UI8:     return DXGI_FORMAT_R8G8B8A8_UNORM;
+            case SR_TEXTURE_R_I8:         return DXGI_FORMAT_R8_SNORM;
+            case SR_TEXTURE_RG_I8:        return DXGI_FORMAT_R8G8_SNORM;
+//            case SR_TEXTURE_RGB_I8:       return DXGI_FORMAT_R8G8B8_SNORM;
+            case SR_TEXTURE_RGBA_I8:      return DXGI_FORMAT_R8G8B8A8_SNORM;
+            case SR_TEXTURE_R_UI16:       return DXGI_FORMAT_R16_UNORM;
+            case SR_TEXTURE_RG_UI16:      return DXGI_FORMAT_R16G16_UNORM;
+//            case SR_TEXTURE_RGB_UI16:     return DXGI_FORMAT_R16G16B16_UNORM;
+            case SR_TEXTURE_RGBA_UI16:    return DXGI_FORMAT_R16G16B16A16_UNORM;
+            case SR_TEXTURE_R_I16:        return DXGI_FORMAT_R16_SNORM;
+            case SR_TEXTURE_RG_I16:       return DXGI_FORMAT_R16G16_SNORM;
+//            case SR_TEXTURE_RGB_I16:      return DXGI_FORMAT_R16G16B16_SNORM;
+            case SR_TEXTURE_RGBA_I16:     return DXGI_FORMAT_R16G16B16A16_SNORM;
+            case SR_TEXTURE_R_F16:        return DXGI_FORMAT_R16_FLOAT;
+            case SR_TEXTURE_RG_F16:       return DXGI_FORMAT_R16G16_FLOAT;
+//            case SR_TEXTURE_RGB_F16:      return DXGI_FORMAT_R16G16B16_FLOAT;
+            case SR_TEXTURE_RGBA_F16:     return DXGI_FORMAT_R16G16B16A16_FLOAT;
+            case SR_TEXTURE_R_F32:        return DXGI_FORMAT_R32_FLOAT;
+            case SR_TEXTURE_RG_F32:       return DXGI_FORMAT_R32G32_FLOAT;
+            case SR_TEXTURE_RGB_F32:      return DXGI_FORMAT_R32G32B32_FLOAT;
+            case SR_TEXTURE_RGBA_F32:     return DXGI_FORMAT_R32G32B32A32_FLOAT;
+            case SR_TEXTURE_R_I32:        return DXGI_FORMAT_R32_SINT;
+            case SR_TEXTURE_RG_I32:       return DXGI_FORMAT_R32G32_SINT;
+            case SR_TEXTURE_RGB_I32:      return DXGI_FORMAT_R32G32B32_SINT;
+            case SR_TEXTURE_RGBA_I32:     return DXGI_FORMAT_R32G32B32A32_SINT;
+            case SR_TEXTURE_R_UI32:       return DXGI_FORMAT_R32_UINT;
+            case SR_TEXTURE_RG_UI32:      return DXGI_FORMAT_R32G32_UINT;
+            case SR_TEXTURE_RGB_UI32:     return DXGI_FORMAT_R32G32B32_UINT;
+            case SR_TEXTURE_RGBA_UI32:    return DXGI_FORMAT_R32G32B32A32_UINT;
+            default:{
+                SR_CORE_WARNING("[D3D11Utils]: Invalid texture format (%i) given to converter, return DXGI_FORMAT_UNKNOWN", format);
                 return DXGI_FORMAT_UNKNOWN;
             }
         }
@@ -116,7 +157,7 @@ namespace Syrius{
             case SR_DRAW_TRIANGLES:         return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
             case SR_DRAW_TRIANGLE_STRIP:    return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
             default: {
-                SR_CORE_WARNING("Invalid usage given to converter, return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST");
+                SR_CORE_WARNING("[D3D11Utils]: Invalid draw mode (%i) given to converter, return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST", drawMode);
                 return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
             }
         }
@@ -129,7 +170,7 @@ namespace Syrius{
             case SR_TEXTURE_WRAP_CLAMP_EDGE:            return D3D11_TEXTURE_ADDRESS_CLAMP;
             case SR_TEXTURE_WRAP_CLAMP_BORDER:          return D3D11_TEXTURE_ADDRESS_BORDER;
             default: {
-                SR_CORE_WARNING("Invalid usage given to converter, return D3D11_TEXTURE_ADDRESS_WRAP");
+                SR_CORE_WARNING("[D3D11Utils]: Invalid texture wrap mode (%i) given to converter, return D3D11_TEXTURE_ADDRESS_WRAP", addressMode);
                 return D3D11_TEXTURE_ADDRESS_WRAP;
             }
         }
@@ -149,7 +190,7 @@ namespace Syrius{
             return D3D11_FILTER_MIN_MAG_MIP_POINT;
         }
         else {
-            SR_CORE_WARNING("Invalid usage given to converter, return D3D11_FILTER_MIN_MAG_MIP_LINEAR");
+            SR_CORE_WARNING("[D3D11Utils]: Invalid texture filter (min: %i, mag: %i) given to converter, return D3D11_FILTER_MIN_MAG_MIP_LINEAR", minFilter, magFilter);
             return D3D11_FILTER_MIN_MAG_MIP_LINEAR;
         }
     }
@@ -165,7 +206,7 @@ namespace Syrius{
             case SR_COMPARISON_FUNC_GREATER_EQUAL:   return D3D11_COMPARISON_GREATER_EQUAL;
             case SR_COMPARISON_FUNC_NOT_EQUAL:       return D3D11_COMPARISON_NOT_EQUAL;
             default: {
-                SR_CORE_WARNING("Invalid usage given to converter, return D3D11_COMPARISON_LESS");
+                SR_CORE_WARNING("[D3D11Utils]: Invalid comparison function (%i) given to converter, return D3D11_COMPARISON_LESS", func);
                 return D3D11_COMPARISON_LESS;
             }
         }
@@ -182,7 +223,7 @@ namespace Syrius{
             case SR_STENCIL_FUNC_DECR_WRAP:     return D3D11_STENCIL_OP_DECR_SAT;
             case SR_STENCIL_FUNC_INVERT:        return D3D11_STENCIL_OP_INVERT;
             default: {
-                SR_CORE_WARNING("Invalid usage given to converter, return D3D11_STENCIL_OP_KEEP");
+                SR_CORE_WARNING("[D3D11Utils]: Invalid stencil function (%i) given to converter, return D3D11_STENCIL_OP_KEEP", func);
                 return D3D11_STENCIL_OP_KEEP;
             }
         }

@@ -179,14 +179,6 @@ void TestCubemap::onEvent(const Event &event) {
 void TestCubemap::render() {
     m_Sampler->bind(0);
 
-    m_Context->getDefaultFrameBuffer()->setDepthMask(SR_DEPTH_MASK_DISABLED);
-    m_CubemapProgram.shaderProgram->bind();
-    m_Cubemap->bind(0);
-    m_Context->draw(m_CubemapVertexArray);
-    m_Context->getDefaultFrameBuffer()->setDepthMask(SR_DEPTH_MASK_ENABLED);
-
-
-
     m_Texture->bind(0);
 
     m_ModelDataBuffer->bind(2);
@@ -195,6 +187,12 @@ void TestCubemap::render() {
     m_LerpBuffer->bind(4);
     m_ShaderProgram.shaderProgram->bind();
     m_Context->draw(m_VertexArray);
+
+    m_Context->getDefaultFrameBuffer()->setDepthFunc(SR_COMPARISON_FUNC_LESS_EQUAL);
+    m_CubemapProgram.shaderProgram->bind();
+    m_Cubemap->bind(0);
+    m_Context->draw(m_CubemapVertexArray);
+    m_Context->getDefaultFrameBuffer()->setDepthFunc(SR_COMPARISON_FUNC_LESS);
 }
 
 void TestCubemap::renderImGui() {

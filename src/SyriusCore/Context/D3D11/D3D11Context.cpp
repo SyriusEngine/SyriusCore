@@ -252,11 +252,15 @@ namespace Syrius{
     }
 
     ResourceView<Cubemap> D3D11Context::createCubemap(const CubemapDesc &desc) {
-        return{};
+        auto ptr = new D3D11Cubemap(desc, m_Device, m_DeviceContext);
+        m_Cubemaps.emplace_back(ptr);
+        return createResourceView(m_Cubemaps.back());
     }
 
     ResourceView<Cubemap> D3D11Context::createCubemap(const CubemapImageDesc &desc) {
-        return {};
+        auto ptr = new D3D11Cubemap(desc, m_Device, m_DeviceContext);
+        m_Cubemaps.emplace_back(ptr);
+        return createResourceView(m_Cubemaps.back());
     }
 
 }

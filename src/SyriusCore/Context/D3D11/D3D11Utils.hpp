@@ -14,6 +14,8 @@ namespace Syrius{
 
     DXGI_FORMAT getD3d11ScalarType(SR_SCALAR_TYPE scalarType);
 
+    DXGI_FORMAT getD3d11TextureFormat(SR_TEXTURE_FORMAT format);
+
     D3D11_PRIMITIVE_TOPOLOGY getD3d11DrawMode(SR_DRAW_TYPE drawMode);
 
     D3D11_TEXTURE_ADDRESS_MODE getD3d11TextureAddressMode(SR_TEXTURE_ADDRESS_WRAP addressMode);
