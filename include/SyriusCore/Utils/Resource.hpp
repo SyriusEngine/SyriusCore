@@ -14,8 +14,6 @@ namespace Syrius{
 
         explicit ResourceView(Resource<T>& resource): m_ResourcePtr(resource.get()){}
 
-        explicit ResourceView(T* resource): m_ResourcePtr(resource){}
-
         ResourceView(const ResourceView<T>& other): m_ResourcePtr(other.m_ResourcePtr){}
 
         ResourceView(ResourceView<T>&& other) noexcept: m_ResourcePtr(other.m_ResourcePtr){}
