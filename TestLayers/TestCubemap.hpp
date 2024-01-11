@@ -21,8 +21,6 @@ private:
 
     void renderImGui();
 
-    void loadCubemap(const std::string& path);
-
 private:
     ShaderLibrary m_TestShaderLibrary;
 
