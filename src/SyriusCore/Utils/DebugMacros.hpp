@@ -13,7 +13,12 @@
     DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
 
 #define SR_CORE_OPENGL_CLEAR_ERROR() \
-    while (glGetError() != GL_NO_ERROR){}
+    {                                \
+        GLenum _err;                      \
+        while ((_err = glGetError()) != GL_NO_ERROR) { \
+            DebugMessageHandler::pushOpenGlError(_err, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE); \
+        }   \
+    }\
 
 
 #if defined(SR_CORE_DEBUG)

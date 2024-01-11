@@ -13,8 +13,8 @@ namespace Syrius{
         std::vector<CubemapFaceDesc> faces = {
                 desc.right,
                 desc.left,
-                desc.bottom,
                 desc.top,
+                desc.bottom,
                 desc.front,
                 desc.back
         };
@@ -31,8 +31,8 @@ namespace Syrius{
         std::vector<CubemapFaceDesc> faces = {
                 {desc.right->getWidth(), desc.right->getHeight(), desc.right->getFormat(), desc.right->getData()},
                 {desc.left->getWidth(), desc.left->getHeight(), desc.left->getFormat(), desc.left->getData()},
-                {desc.bottom->getWidth(), desc.bottom->getHeight(), desc.bottom->getFormat(), desc.bottom->getData()},
                 {desc.top->getWidth(), desc.top->getHeight(), desc.top->getFormat(), desc.top->getData()},
+                {desc.bottom->getWidth(), desc.bottom->getHeight(), desc.bottom->getFormat(), desc.bottom->getData()},
                 {desc.front->getWidth(), desc.front->getHeight(), desc.front->getFormat(), desc.front->getData()},
                 {desc.back->getWidth(), desc.back->getHeight(), desc.back->getFormat(), desc.back->getData()}
         };

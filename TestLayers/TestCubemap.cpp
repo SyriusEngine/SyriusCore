@@ -114,26 +114,32 @@ m_Projection(context, window->getWidth(), window->getHeight()){
 
     ImageFileDesc backDesc;
     backDesc.fileName = "./Resources/Textures/Skybox1/back.jpg";
+    backDesc.flipOnAccess = false;
     auto back = createImage(backDesc);
     back->extendAlpha();
     ImageFileDesc frontDesc;
     frontDesc.fileName = "./Resources/Textures/Skybox1/front.jpg";
+    frontDesc.flipOnAccess = false;
     auto front = createImage(frontDesc);
     front->extendAlpha();
     ImageFileDesc topDesc;
     topDesc.fileName = "./Resources/Textures/Skybox1/top.jpg";
+    topDesc.flipOnAccess = false;
     auto top = createImage(topDesc);
     top->extendAlpha();
     ImageFileDesc bottomDesc;
     bottomDesc.fileName = "./Resources/Textures/Skybox1/bottom.jpg";
+    bottomDesc.flipOnAccess = false;
     auto bottom = createImage(bottomDesc);
     bottom->extendAlpha();
     ImageFileDesc leftDesc;
     leftDesc.fileName = "./Resources/Textures/Skybox1/left.jpg";
+    leftDesc.flipOnAccess = false;
     auto left = createImage(leftDesc);
     left->extendAlpha();
     ImageFileDesc rightDesc;
     rightDesc.fileName = "./Resources/Textures/Skybox1/right.jpg";
+    rightDesc.flipOnAccess = false;
     auto right = createImage(rightDesc);
     right->extendAlpha();
 
