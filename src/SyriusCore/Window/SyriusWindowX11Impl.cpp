@@ -45,6 +45,11 @@ namespace Syrius{
     SyriusWindowX11Impl::~SyriusWindowX11Impl() {
         GlxContext::terminateGLX();
         XDestroyWindow(m_Display, m_Window);
+
+        // destroy the context (if any) before the display is terminated
+        if (m_Context){
+            m_Context.reset();
+        }
         terminateDisplay();
     }
 
