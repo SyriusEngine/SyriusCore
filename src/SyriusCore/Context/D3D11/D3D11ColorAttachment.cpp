@@ -73,23 +73,6 @@ namespace Syrius {
         return m_RenderTargetView;
     }
 
-    DXGI_FORMAT D3D11ColorAttachment::getFormat(uint32 channelCount) {
-        switch (channelCount) {
-            case 1:
-                return DXGI_FORMAT_R32_FLOAT;
-            case 2:
-                return DXGI_FORMAT_R32G32_FLOAT;
-            case 3:
-                return DXGI_FORMAT_R32G32B32_FLOAT;
-            case 4:
-                return DXGI_FORMAT_R32G32B32A32_FLOAT;
-            default: {
-                SR_CORE_WARNING("Unknown channel count: " + std::to_string(channelCount));
-                return DXGI_FORMAT_R8G8B8A8_UNORM;
-            }
-        }
-    }
-
     void  D3D11ColorAttachment::createResources(){
         SR_CHANNEL_FORMAT sF = getTextureChannelFormat(m_Format);
         auto channelCount = getChannelFormatCount(sF);
@@ -99,7 +82,7 @@ namespace Syrius {
         textureDesc.Height = m_Height;
         textureDesc.MipLevels = 1;
         textureDesc.ArraySize = 1;
-        textureDesc.Format = getFormat(channelCount);
+        textureDesc.Format = getD3d11TextureFormat(m_Format);
         textureDesc.SampleDesc.Quality = 0;
         textureDesc.SampleDesc.Count = 1;
         textureDesc.Usage = D3D11_USAGE_DEFAULT;

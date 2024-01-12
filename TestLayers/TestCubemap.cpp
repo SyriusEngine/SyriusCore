@@ -90,7 +90,8 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     imgDesc.fileName = "./Resources/Textures/awesomeface.png";
     imgDesc.flipOnAccess = true;
     auto img = createImage(imgDesc);
-    Texture2DImageDesc texDesc(img);
+    Texture2DImageDesc texDesc;
+    texDesc.image = createResourceView(img);
     m_Texture = m_Context->createTexture2D(texDesc);
 
     // skybox
@@ -144,12 +145,12 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     right->extendAlpha();
 
     CubemapImageDesc cubemapDesc;
-    cubemapDesc.back = createResourceView(back);
-    cubemapDesc.front = createResourceView(front);
-    cubemapDesc.top = createResourceView(top);
-    cubemapDesc.bottom = createResourceView(bottom);
-    cubemapDesc.left = createResourceView(left);
-    cubemapDesc.right = createResourceView(right);
+    cubemapDesc.faces[0] = createResourceView(right);
+    cubemapDesc.faces[1] = createResourceView(left);
+    cubemapDesc.faces[2] = createResourceView(top);
+    cubemapDesc.faces[3] = createResourceView(bottom);
+    cubemapDesc.faces[4] = createResourceView(front);
+    cubemapDesc.faces[5] = createResourceView(back);
     m_Cubemap = m_Context->createCubemap(cubemapDesc);
 
 }

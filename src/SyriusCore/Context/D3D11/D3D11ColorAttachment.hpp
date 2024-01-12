@@ -34,10 +34,6 @@ namespace Syrius{
         void destroyResources();
 
     private:
-
-        DXGI_FORMAT getFormat(uint32 channelCount);
-
-    private:
         ID3D11Device *m_Device;
         ID3D11DeviceContext *m_Context;
 

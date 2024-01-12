@@ -4,83 +4,26 @@
 
 namespace Syrius{
 
-    D3D11Texture2D::D3D11Texture2D(const Texture2DDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context)
-    : Texture2D(desc),
+    D3D11Texture2D::D3D11Texture2D(const Texture2DDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context):
+    Texture2D(desc),
     m_Device(device),
     m_Context(context),
     m_Texture(nullptr),
     m_TextureView(nullptr){
         SR_CORE_PRECONDITION(desc.data != nullptr, "Texture data must not be null");
 
-        auto channelCount = getTextureChannelCount(desc.format);
-        if (channelCount == 3){
-            SR_CORE_EXCEPTION("D3D11 does not support 3 channel textures, please supply data in format with 1, 2 or 4 channels");
-        }
-
-        D3D11_TEXTURE2D_DESC textureDesc = { 0 };
-        textureDesc.Width = m_Width;
-        textureDesc.Height = m_Height;
-        textureDesc.MipLevels = 1;
-        textureDesc.ArraySize = 1;
-        textureDesc.Format = getFormat(channelCount);
-        textureDesc.SampleDesc.Quality = 0;
-        textureDesc.SampleDesc.Count = 1;
-        textureDesc.Usage = D3D11_USAGE_DEFAULT;
-        textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-        textureDesc.CPUAccessFlags = 0;
-        textureDesc.MiscFlags = 0;
-
-        D3D11_SUBRESOURCE_DATA subresourceData = { 0 };
-        subresourceData.SysMemPitch = m_Width * (sizeof(ubyte) * channelCount);
-        subresourceData.pSysMem = desc.data;
-
-        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, &subresourceData, &m_Texture));
-
-        D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc = {  };
-        textureViewDesc.Format = textureDesc.Format;
-        textureViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-        textureViewDesc.Texture2D.MipLevels = 1;
-        textureViewDesc.Texture2D.MostDetailedMip = 0;
-
-        SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_Texture, &textureViewDesc, &m_TextureView));
+        createResources(desc.data);
     }
 
-    D3D11Texture2D::D3D11Texture2D(const Texture2DImageDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context)
-    : Texture2D(desc),
-      m_Device(device),
-      m_Context(context),
-      m_Texture(nullptr),
-      m_TextureView(nullptr){
-        if (desc.image->getChannelCount() == 3){
-            desc.image->extendAlpha();
-        }
+    D3D11Texture2D::D3D11Texture2D(const Texture2DImageDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context):
+    Texture2D(desc),
+    m_Device(device),
+    m_Context(context),
+    m_Texture(nullptr),
+    m_TextureView(nullptr){
+        SR_CORE_PRECONDITION(desc.image != nullptr, "Texture data must not be null");
 
-        D3D11_TEXTURE2D_DESC textureDesc = { 0 };
-        textureDesc.Width = desc.image->getWidth();
-        textureDesc.Height = desc.image->getHeight();
-        textureDesc.MipLevels = 1;
-        textureDesc.ArraySize = 1;
-        textureDesc.Format = getFormat(desc.image->getChannelCount());
-        textureDesc.SampleDesc.Quality = 0;
-        textureDesc.SampleDesc.Count = 1;
-        textureDesc.Usage = D3D11_USAGE_DEFAULT;
-        textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-        textureDesc.CPUAccessFlags = 0;
-        textureDesc.MiscFlags = 0;
-
-        D3D11_SUBRESOURCE_DATA subresourceData = { 0 };
-        subresourceData.SysMemPitch = desc.image->getWidth() * (sizeof(ubyte) * desc.image->getChannelCount());
-        subresourceData.pSysMem = desc.image->getData();
-
-        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, &subresourceData, &m_Texture));
-
-        D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc = {  };
-        textureViewDesc.Format = textureDesc.Format;
-        textureViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-        textureViewDesc.Texture2D.MipLevels = 1;
-        textureViewDesc.Texture2D.MostDetailedMip = 0;
-
-        SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_Texture, &textureViewDesc, &m_TextureView));
+        createResources(desc.image->getData());
     }
 
     D3D11Texture2D::~D3D11Texture2D() {
@@ -153,19 +96,42 @@ namespace Syrius{
         return reinterpret_cast<uint64>(m_Texture);
     }
 
-    DXGI_FORMAT D3D11Texture2D::getFormat(uint32 channelcount) const {
-        switch (channelcount) {
-            case 1:
-                return DXGI_FORMAT_R8_UNORM;
-            case 2:
-                return DXGI_FORMAT_R8G8_UNORM;
-            case 4:
-                return DXGI_FORMAT_R8G8B8A8_UNORM;
-            default: {
-                SR_CORE_WARNING("Unknown channel count: " + std::to_string(channelcount));
-                return DXGI_FORMAT_R8G8B8A8_UNORM;
-            }
+    void D3D11Texture2D::createResources(const void *data) {
+        SR_CORE_PRECONDITION(data != nullptr, "Data must not be null");
+
+        D3D11_TEXTURE2D_DESC textureDesc = { 0 };
+        textureDesc.Width = m_Width;
+        textureDesc.Height = m_Height;
+        textureDesc.MipLevels = 1;
+        textureDesc.ArraySize = 1;
+        textureDesc.Format = getD3d11TextureFormat(m_Format);
+        textureDesc.SampleDesc.Quality = 0;
+        textureDesc.SampleDesc.Count = 1;
+        textureDesc.Usage = D3D11_USAGE_DEFAULT;
+        textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+        textureDesc.CPUAccessFlags = 0;
+        textureDesc.MiscFlags = 0;
+
+        auto dataType = getTextureDataType(m_Format);
+        auto channelCount = getTextureChannelCount(m_Format);
+
+        if (channelCount == 3){
+            SR_CORE_EXCEPTION("Supplied texture format has 3 channels which is not supported by D3D11");
         }
+
+        D3D11_SUBRESOURCE_DATA subresourceData = { 0 };
+        subresourceData.SysMemPitch = m_Width * (getTypeSize(dataType) * channelCount);
+        subresourceData.pSysMem = data;
+
+        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, &subresourceData, &m_Texture));
+
+        D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc = {  };
+        textureViewDesc.Format = textureDesc.Format;
+        textureViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+        textureViewDesc.Texture2D.MipLevels = 1;
+        textureViewDesc.Texture2D.MostDetailedMip = 0;
+
+        SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_Texture, &textureViewDesc, &m_TextureView));
     }
 
 

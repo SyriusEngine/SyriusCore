@@ -27,7 +27,7 @@ namespace Syrius{
 
     private:
 
-        DXGI_FORMAT getFormat(uint32 channelCount) const;
+        void createResources(const void* data);
 
     private:
         ID3D11Device* m_Device;

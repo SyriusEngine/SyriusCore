@@ -14,7 +14,8 @@ TestTexture::TestTexture(ResourceView<Context> &context, const Resource<SyriusWi
     imgDesc.fileName = "./Resources/Textures/awesomeface.png";
     imgDesc.flipOnAccess = true;
     auto img = createImage(imgDesc);
-    Texture2DImageDesc texDesc(img);
+    Texture2DImageDesc texDesc;
+    texDesc.image = createResourceView(img);
     m_Texture = m_Context->createTexture2D(texDesc);
 }
 

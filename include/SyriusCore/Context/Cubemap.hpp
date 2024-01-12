@@ -14,21 +14,15 @@ namespace Syrius{
     };
 
     struct SR_CORE_API CubemapDesc{
-        CubemapFaceDesc right;
-        CubemapFaceDesc left;
-        CubemapFaceDesc top;
-        CubemapFaceDesc bottom;
-        CubemapFaceDesc front;
-        CubemapFaceDesc back;
+        uint32 width          = 0;
+        uint32 height         = 0;
+        SR_TEXTURE_FORMAT format = SR_TEXTURE_RGBA_UI8;
+                                        // right,   left,    top,     bottom,  front,   back
+        const void* faces[6]            = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
     };
 
     struct SR_CORE_API CubemapImageDesc{
-        ResourceView<Image> right;
-        ResourceView<Image> left;
-        ResourceView<Image> top;
-        ResourceView<Image> bottom;
-        ResourceView<Image> front;
-        ResourceView<Image> back;
+        ResourceView<Image> faces[6];
     };
 
     class SR_CORE_API Cubemap{

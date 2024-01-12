@@ -10,15 +10,14 @@ namespace Syrius{
     m_Context(context),
     m_Texture(nullptr),
     m_TextureView(nullptr){
-        std::vector<CubemapFaceDesc> faces = {
-                desc.right,
-                desc.left,
-                desc.top,
-                desc.bottom,
-                desc.front,
-                desc.back
+        const void* faces[6] = {
+                desc.faces[0],
+                desc.faces[1],
+                desc.faces[2],
+                desc.faces[3],
+                desc.faces[4],
+                desc.faces[5]
         };
-
         createResources(faces);
     }
 
@@ -28,13 +27,13 @@ namespace Syrius{
     m_Context(context),
     m_Texture(nullptr),
     m_TextureView(nullptr){
-        std::vector<CubemapFaceDesc> faces = {
-                {desc.right->getWidth(), desc.right->getHeight(), desc.right->getFormat(), desc.right->getData()},
-                {desc.left->getWidth(), desc.left->getHeight(), desc.left->getFormat(), desc.left->getData()},
-                {desc.top->getWidth(), desc.top->getHeight(), desc.top->getFormat(), desc.top->getData()},
-                {desc.bottom->getWidth(), desc.bottom->getHeight(), desc.bottom->getFormat(), desc.bottom->getData()},
-                {desc.front->getWidth(), desc.front->getHeight(), desc.front->getFormat(), desc.front->getData()},
-                {desc.back->getWidth(), desc.back->getHeight(), desc.back->getFormat(), desc.back->getData()}
+        const void* faces[6] = {
+                desc.faces[0]->getData(),
+                desc.faces[1]->getData(),
+                desc.faces[2]->getData(),
+                desc.faces[3]->getData(),
+                desc.faces[4]->getData(),
+                desc.faces[5]->getData()
         };
 
         createResources(faces);
@@ -57,9 +56,7 @@ namespace Syrius{
         return reinterpret_cast<uint64>(m_Texture);
     }
 
-    void D3D11Cubemap::createResources(const std::vector<CubemapFaceDesc> &faces) {
-        SR_CORE_PRECONDITION(faces.size() == 6, "Cubemap must have 6 faces but has %i faces", faces.size());
-
+    void D3D11Cubemap::createResources(const void* faces[6]) {
         D3D11_TEXTURE2D_DESC textureDesc;
         textureDesc.Width = m_Width;
         textureDesc.Height = m_Height;
@@ -76,8 +73,8 @@ namespace Syrius{
         uint32 typeSize = getTypeSize(getTextureDataType(m_Format)) * getTextureChannelCount(m_Format);
         D3D11_SUBRESOURCE_DATA subresources[6];
         for (uint32 i = 0; i < 6; ++i) {
-            subresources[i].pSysMem = faces[i].data;
-            subresources[i].SysMemPitch = faces[i].width * typeSize;
+            subresources[i].pSysMem = faces[i];
+            subresources[i].SysMemPitch = m_Width * typeSize;
             subresources[i].SysMemSlicePitch = 0;
         }
 

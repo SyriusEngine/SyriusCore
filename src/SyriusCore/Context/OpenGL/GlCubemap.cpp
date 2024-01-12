@@ -4,26 +4,26 @@ namespace Syrius{
 
     GlCubemap::GlCubemap(const CubemapDesc &desc) :
     Cubemap(desc), m_TextureID(0) {
-        std::vector<CubemapFaceDesc> faces = {
-                desc.right,
-                desc.left,
-                desc.top,
-                desc.bottom,
-                desc.front,
-                desc.back
+        const void* faces[6] = {
+                desc.faces[0],
+                desc.faces[1],
+                desc.faces[2],
+                desc.faces[3],
+                desc.faces[4],
+                desc.faces[5]
         };
         createCubemap(faces);
     }
 
     GlCubemap::GlCubemap(const CubemapImageDesc &desc) :
     Cubemap(desc), m_TextureID(0) {
-        std::vector<CubemapFaceDesc> faces = {
-                {desc.right->getWidth(), desc.right->getHeight(), desc.right->getFormat(), desc.right->getData()},
-                {desc.left->getWidth(), desc.left->getHeight(), desc.left->getFormat(), desc.left->getData()},
-                {desc.top->getWidth(), desc.top->getHeight(), desc.top->getFormat(), desc.top->getData()},
-                {desc.bottom->getWidth(), desc.bottom->getHeight(), desc.bottom->getFormat(), desc.bottom->getData()},
-                {desc.front->getWidth(), desc.front->getHeight(), desc.front->getFormat(), desc.front->getData()},
-                {desc.back->getWidth(), desc.back->getHeight(), desc.back->getFormat(), desc.back->getData()}
+        const void* faces[6] = {
+                desc.faces[0]->getData(),
+                desc.faces[1]->getData(),
+                desc.faces[2]->getData(),
+                desc.faces[3]->getData(),
+                desc.faces[4]->getData(),
+                desc.faces[5]->getData()
         };
 
         createCubemap(faces);
@@ -57,9 +57,7 @@ namespace Syrius{
         SR_CORE_POSTCONDITION(checkFormatSupported(m_GlFormat), "Format (%i) not supported", m_GlFormat);
     }
 
-    void GlCubemap::createCubemap(const std::vector<CubemapFaceDesc> &faces) {
-        SR_CORE_PRECONDITION(faces.size() == 6, "Cubemap must have 6 faces, faces given: %i", faces.size());
-
+    void GlCubemap::createCubemap(const void* faces[6]) {
         determineFormats();
 
         SR_CORE_OPENGL_CLEAR_ERROR();
@@ -77,7 +75,7 @@ namespace Syrius{
         glGenTextures(1, &m_TextureID);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID);
         for (uint32 i = 0; i < 6; i++){
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, m_GlInternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, faces[i].data);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, m_GlInternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, faces[i]);
         }
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

@@ -21,7 +21,7 @@ namespace Syrius{
 
     private:
 
-        void createResources(const std::vector<CubemapFaceDesc>& faces);
+        void createResources(const void* faces[6] );
 
     private:
         ID3D11Device* m_Device;

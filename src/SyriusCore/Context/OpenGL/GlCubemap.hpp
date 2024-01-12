@@ -23,7 +23,7 @@ namespace Syrius{
 
         void determineFormats();
 
-        void createCubemap(const std::vector<CubemapFaceDesc>& faces);
+        void createCubemap(const void* faces[6]);
 
     private:
         uint32 m_TextureID;
