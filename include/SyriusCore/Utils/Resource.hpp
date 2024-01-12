@@ -12,7 +12,7 @@ namespace Syrius{
     public:
         ResourceView(): m_ResourcePtr(nullptr){}
 
-        explicit ResourceView(Resource<T>& resource): m_ResourcePtr(resource.get()){}
+        explicit ResourceView(const Resource<T>& resource): m_ResourcePtr(resource.get()){}
 
         ResourceView(const ResourceView<T>& other): m_ResourcePtr(other.m_ResourcePtr){}
 
@@ -117,6 +117,11 @@ namespace Syrius{
 
     template<typename T>
     inline ResourceView<T> createResourceView(Resource<T>& resource){
+        return ResourceView<T>(resource);
+    }
+
+    template<typename T>
+    inline ResourceView<T> createResourceView(const Resource<T>& resource){
         return ResourceView<T>(resource);
     }
 }
