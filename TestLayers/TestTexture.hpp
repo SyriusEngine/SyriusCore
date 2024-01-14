@@ -14,10 +14,19 @@ public:
     void onEvent(const Event &event) override;
 
 private:
+
+    void onRender();
+
+    void onImGuiRender();
+
+private:
     ShaderLibrary m_TestShaderLibrary;
 
     ResourceView<VertexArray> m_VertexArray;
     ResourceView<Texture2D> m_Texture;
+    ResourceView<Texture2D> m_HdrTexture;
     ResourceView<Sampler> m_Sampler;
     ShaderProgram m_ShaderProgram;
+
+    bool m_UseHdrTexture;
 };

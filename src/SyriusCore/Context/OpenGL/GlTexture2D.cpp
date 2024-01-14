@@ -2,35 +2,16 @@
 
 namespace Syrius{
 
-    GlTexture2D::GlTexture2D(const Texture2DDesc& desc)
-    : Texture2D(desc),
+    GlTexture2D::GlTexture2D(const Texture2DDesc& desc):
+    Texture2D(desc),
     m_TextureID(0){
-        glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
-        m_GlDataType = getGlTextureDataType(m_Format);
-
-        setGlFormats();
-
-        glTextureStorage2D(m_TextureID, 1, m_GlInternalFormat, m_Width, m_Height);
-        // it is possible to create an empty texture. If so, skip following call
-        if (desc.data != nullptr){
-            glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlFormat, m_GlDataType, desc.data);
-        }
-        glGenerateTextureMipmap(m_TextureID);
-
+        createTexture(desc.data);
     }
 
-    GlTexture2D::GlTexture2D(const Texture2DImageDesc &desc)
-    : Texture2D(desc),
+    GlTexture2D::GlTexture2D(const Texture2DImageDesc &desc):
+    Texture2D(desc),
     m_TextureID(0){
-        glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
-        m_GlDataType = getGlTextureDataType(m_Format);
-
-        setGlFormats();
-
-        glTextureStorage2D(m_TextureID, 1, m_GlInternalFormat, m_Width, m_Height);
-        glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlFormat, m_GlDataType, desc.image->getData());
-        glGenerateTextureMipmap(m_TextureID);
-
+        createTexture(desc.image->getData());
     }
 
     GlTexture2D::~GlTexture2D() {
@@ -74,30 +55,18 @@ namespace Syrius{
     }
 
     void GlTexture2D::setGlFormats() {
-        auto channelCount = getTextureChannelCount(m_Format);
-        switch (channelCount){
-            case 4:
-                m_GlFormat = GL_RGBA;
-                m_GlInternalFormat = GL_RGBA8;
-                break;
-            case 3:
-                m_GlFormat = GL_RGB;
-                m_GlInternalFormat = GL_RGB8;
-                break;
-            case 2:
-                m_GlFormat = GL_RG;
-                m_GlInternalFormat = GL_RG8;
-                break;
-            case 1:
-                m_GlFormat = GL_RED;
-                m_GlInternalFormat = GL_R8;
-                break;
-            default: {
-                SR_CORE_WARNING("Invalid texture format, default format RGBA will be picked");
-                m_GlFormat = GL_RGBA;
-                m_GlInternalFormat = GL_RGBA8;
-                break;
-            }
+        m_GlDataType = getGlTextureDataType(m_Format);
+        auto channelFormat = getTextureChannelFormat(m_Format);
+        m_GlFormat = getGlChannelType(channelFormat);
+        m_GlInternalFormat = getGlTextureFormat(m_Format);
+    }
+
+    void GlTexture2D::createTexture(const void* data) {
+        setGlFormats();
+        glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
+        glTextureStorage2D(m_TextureID, 1, m_GlInternalFormat, m_Width, m_Height);
+        if (data != nullptr){
+            glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlFormat, m_GlDataType, data);
         }
     }
 

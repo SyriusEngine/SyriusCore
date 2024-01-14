@@ -79,7 +79,7 @@ namespace Syrius{
     }
 
     const void *ImageUI16::getData() const {
-        return reinterpret_cast<const void*>(m_Data.data());
+        return m_Data.data();
     }
 }
 

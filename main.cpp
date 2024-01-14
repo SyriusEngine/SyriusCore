@@ -3,11 +3,17 @@
 
 int main(int argc, char** argv) {
     try {
-        for (int i = 1; i < argc; ++i) {
-            SyriusCoreDev dev(argv[i]);
-            dev.pushLayer<AppLayer>();
-            dev.run();
-        }
+        ImageFileDesc imgHdrDesc;
+        imgHdrDesc.fileName = "./Resources/Textures/photo_studio_loft_hall_4k.hdr";
+        imgHdrDesc.flipOnAccess = true;
+        auto imgHdr = createImage(imgHdrDesc);
+        imgHdr->extendAlpha();
+
+        ImageFileDesc imgDesc;
+        imgDesc.fileName = "./Resources/Textures/photo_studio_loft_hall_4k-4channels.hdr";
+        imgDesc.flipOnAccess = true;
+        imgDesc.imgType = SR_IMAGE_HDR;
+        imgHdr->writeToFile(imgDesc);
 
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;

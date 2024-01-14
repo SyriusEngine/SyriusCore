@@ -1,7 +1,9 @@
 #include "TestTexture.hpp"
 
-TestTexture::TestTexture(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
-                         EasyIni::Configuration &config) : Layer(context, window, config), m_TestShaderLibrary("./Resources/TestShaders", context) {
+TestTexture::TestTexture(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config) :
+Layer(context, window, config),
+m_TestShaderLibrary("./Resources/TestShaders", context),
+m_UseHdrTexture(false){
     m_ShaderProgram = m_TestShaderLibrary.loadShader("Texture");
 
     Mesh rectangle = createRectangle();
@@ -17,23 +19,52 @@ TestTexture::TestTexture(ResourceView<Context> &context, const Resource<SyriusWi
     Texture2DImageDesc texDesc;
     texDesc.image = createResourceView(img);
     m_Texture = m_Context->createTexture2D(texDesc);
+
+    ImageFileDesc imgHdrDesc;
+    imgHdrDesc.fileName = "./Resources/Textures/photo_studio_loft_hall_4k.hdr";
+    imgHdrDesc.flipOnAccess = true;
+    auto imgHdr = createImage(imgHdrDesc);
+    imgHdr->extendAlpha();
+    Texture2DImageDesc texHdrDesc;
+    texHdrDesc.image = createResourceView(imgHdr);
+    m_HdrTexture = m_Context->createTexture2D(texHdrDesc);
+
+    m_Window->createImGuiContext();
 }
 
 TestTexture::~TestTexture() {
-
+    m_Window->destroyImGuiContext();
 }
 
 void TestTexture::onUpdate() {
+    onRender();
+    onImGuiRender();
+}
+
+void TestTexture::onEvent(const Event &event) {
+
+}
+
+void TestTexture::onRender() {
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();
-    m_Texture->bind(0);
+    if (m_UseHdrTexture) {
+        m_HdrTexture->bind(0);
+    } else {
+        m_Texture->bind(0);
+    }
     m_Sampler->bind(0);
     m_Context->draw(m_VertexArray);
 
     m_Context->endRenderPass();
 }
 
-void TestTexture::onEvent(const Event &event) {
+void TestTexture::onImGuiRender() {
+    m_Window->onImGuiBegin();
+    ImGui::Begin("Texture Controls");
+    ImGui::Checkbox("Use HDR Texture", &m_UseHdrTexture);
+    ImGui::End();
 
+    m_Window->onImGuiEnd();
 }

@@ -110,7 +110,7 @@ namespace Syrius{
     }
 
     const void *ImageUI8::getData() const {
-        return reinterpret_cast<const void*>(m_Data.data());
+        return m_Data.data();
     }
 
 }

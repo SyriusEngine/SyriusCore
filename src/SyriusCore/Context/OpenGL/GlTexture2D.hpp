@@ -25,6 +25,8 @@ namespace Syrius{
 
     private:
 
+        void createTexture(const void* data);
+
         void setGlFormats();
 
     private:

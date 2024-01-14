@@ -12,6 +12,8 @@ namespace Syrius{
     Image(),
     m_Data(){
         SR_CORE_PRECONDITION(stbi_is_hdr(desc.fileName.c_str()), "[ImageF32]: Image: %s is not a HDR image", desc.fileName.c_str());
+
+        stbi_set_flip_vertically_on_load(desc.flipOnAccess);
         int32 channelCount, width, height;
         float* pData = stbi_loadf(desc.fileName.c_str(), &width, &height, &channelCount, desc.requestedChannelCount);
         if (!pData){
@@ -85,7 +87,7 @@ namespace Syrius{
     }
 
     const void *ImageF32::getData() const {
-        return reinterpret_cast<const void*>(m_Data.data());
+        return m_Data.data();
     }
 
 }

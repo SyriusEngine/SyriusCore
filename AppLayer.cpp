@@ -63,8 +63,6 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     ImageFileDesc imgDesc;
     imgDesc.fileName = "./Resources/Textures/awesomeface.png";
     auto image = createImage(imgDesc);
-    Texture2DImageDesc t2dDesc(image);
-    m_Texture = m_Context->createTexture2D(t2dDesc);
 
     glm::mat4 model = glm::mat4(1.0f);
     ConstantBufferDesc cbDesc;

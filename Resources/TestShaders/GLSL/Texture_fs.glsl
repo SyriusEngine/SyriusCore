@@ -8,9 +8,9 @@ layout (location = 0) out vec4 fragColor;
 uniform sampler2D tex;
 
 void main(){
-    vec4 texel = texture(tex, fTexCoord * 2.0f);
+    vec4 texel = texture(tex, fTexCoord);
     if (texel.a < 0.1f) {
         discard;
     }
-    fragColor = mix(fColor, texel, 0.5f);
+    fragColor = texel;
 }
