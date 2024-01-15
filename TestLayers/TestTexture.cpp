@@ -21,7 +21,7 @@ m_UseHdrTexture(false){
     m_Texture = m_Context->createTexture2D(texDesc);
 
     ImageFileDesc imgHdrDesc;
-    imgHdrDesc.fileName = "./Resources/Textures/photo_studio_loft_hall_4k.hdr";
+    imgHdrDesc.fileName = "./Resources/Textures/HDR_029_Sky_Cloudy/HDR_029_Sky_Cloudy_Ref.hdr";
     imgHdrDesc.flipOnAccess = true;
     auto imgHdr = createImage(imgHdrDesc);
     imgHdr->extendAlpha();
