@@ -54,7 +54,7 @@ namespace Syrius{
          */
         // glTextureStorage2D(m_TextureID, 1, m_InternalFormat, width, height);
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, GL_UNSIGNED_BYTE, nullptr);
+        glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr);
     }
 
     Resource<Image> GlColorAttachment::getData() {
