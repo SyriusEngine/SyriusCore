@@ -6,12 +6,6 @@ const float s_Triangle[] = {
         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
 };
 
-const float s_Triangle2[] = {
-        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-        -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-};
-
 const float s_Rectangle[] = {
         -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
         -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.f, 0.0f,
@@ -24,7 +18,7 @@ const float s_Rectangle[] = {
 
 TestVertexBuffer::TestVertexBuffer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
                                    EasyIni::Configuration &config) : Layer(context, window, config), m_TestShaderLibrary("./Resources/TestShaders", context),
-                                   m_DrawRectangle(false){
+                                   m_DrawRectangle(true){
     m_Window->createImGuiContext();
 
     m_ShaderProgram = m_TestShaderLibrary.loadShader("VertexBuffer");
@@ -36,10 +30,10 @@ TestVertexBuffer::TestVertexBuffer(ResourceView<Context> &context, const Resourc
 
 
     VertexBufferDesc vboDesc;
-    vboDesc.usage = SR_BUFFER_USAGE_DEFAULT;
-    vboDesc.data = s_Triangle;
+    vboDesc.usage = SR_BUFFER_USAGE_DYNAMIC;
+    vboDesc.data = s_Rectangle;
     vboDesc.layout = m_VertexLayout;
-    vboDesc.count = 3;
+    vboDesc.count = 6;
     m_VertexBuffer = m_Context->createVertexBuffer(vboDesc);
 
     VertexArrayDesc vaoDesc;
@@ -64,10 +58,10 @@ void TestVertexBuffer::onUpdate() {
     ImGui::Begin("Test Vertex Buffer");
     if (ImGui::Checkbox("Draw Rectangle", &m_DrawRectangle)){
         if (!m_DrawRectangle){
-            m_VertexBuffer->setData(s_Triangle);
+            m_VertexBuffer->setData(s_Triangle, 3);
         }
         else{
-            m_VertexBuffer->setData(s_Triangle2);
+            m_VertexBuffer->setData(s_Rectangle, 6);
         }
 
     }
