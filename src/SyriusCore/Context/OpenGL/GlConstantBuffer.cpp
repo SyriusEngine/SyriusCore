@@ -14,6 +14,8 @@ namespace Syrius{
     }
 
     void GlConstantBuffer::bind(uint32 slot) {
+        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot (%i) exceeds the maximum number of constant buffer slots (%i)", slot, m_DeviceLimits->getMaxConstantBufferSlots());
+
         glBindBufferBase(GL_UNIFORM_BUFFER, slot, m_BufferID);
     }
 

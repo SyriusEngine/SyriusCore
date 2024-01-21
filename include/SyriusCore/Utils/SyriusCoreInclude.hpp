@@ -249,5 +249,7 @@ namespace Syrius {
 
     SR_TYPE SR_CORE_API getTextureDataType(SR_TEXTURE_FORMAT format);
 
+    uint8 SR_CORE_API getTextureFormatSize(SR_TEXTURE_FORMAT format);
+
 }
 

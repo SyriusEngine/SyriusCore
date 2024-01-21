@@ -9,7 +9,6 @@ namespace Syrius{
     m_Device(device),
     m_Context(context),
     m_Buffer(nullptr){
-
         D3D11_BUFFER_DESC bufferDesc;
         bufferDesc.ByteWidth = m_Size;
         bufferDesc.Usage = getD3d11BufferType(m_Type);
@@ -23,12 +22,17 @@ namespace Syrius{
         bufferDesc.MiscFlags = 0;
         bufferDesc.StructureByteStride = 0;
 
-        D3D11_SUBRESOURCE_DATA subResourceData;
-        subResourceData.pSysMem = desc.data;
-        subResourceData.SysMemPitch = 0;
-        subResourceData.SysMemSlicePitch = 0;
+        if (desc.data == nullptr){
+            SR_CORE_D3D11_CALL(m_Device->CreateBuffer(&bufferDesc, nullptr, &m_Buffer));
+        }
+        else{
+            D3D11_SUBRESOURCE_DATA subResourceData;
+            subResourceData.pSysMem = desc.data;
+            subResourceData.SysMemPitch = 0;
+            subResourceData.SysMemSlicePitch = 0;
 
-        SR_CORE_D3D11_CALL(m_Device->CreateBuffer(&bufferDesc, &subResourceData, &m_Buffer));
+            SR_CORE_D3D11_CALL(m_Device->CreateBuffer(&bufferDesc, &subResourceData, &m_Buffer));
+        }
     }
 
     D3D11ConstantBufferBase::~D3D11ConstantBufferBase() {
@@ -54,6 +58,8 @@ namespace Syrius{
     }
 
     void D3D11ConstantBufferVertex::bind(uint32 slot) {
+        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot (%i) exceeds the maximum number of constant buffer slots (%i)", slot, m_DeviceLimits->getMaxConstantBufferSlots());
+
         m_Context->VSSetConstantBuffers(slot, 1, &m_Buffer);
     }
 
@@ -63,6 +69,8 @@ namespace Syrius{
     }
 
     void D3D11ConstantBufferPixel::bind(uint32 slot) {
+        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot (%i) exceeds the maximum number of constant buffer slots (%i)", slot, m_DeviceLimits->getMaxConstantBufferSlots());
+
         m_Context->PSSetConstantBuffers(slot, 1, &m_Buffer);
     }
 
@@ -72,6 +80,8 @@ namespace Syrius{
     }
 
     void D3D11ConstantBufferGeometry::bind(uint32 slot) {
+        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot (%i) exceeds the maximum number of constant buffer slots (%i)", slot, m_DeviceLimits->getMaxConstantBufferSlots());
+
         m_Context->GSSetConstantBuffers(slot, 1, &m_Buffer);
     }
 }

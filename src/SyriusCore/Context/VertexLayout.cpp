@@ -18,7 +18,8 @@ namespace Syrius{
     }
 
 
-    VertexLayout::VertexLayout():
+    VertexLayout::VertexLayout(const Resource<DeviceLimits>& deviceLimits):
+    m_DeviceLimits(deviceLimits),
     m_Stride(0),
     m_AttributeCount(0){
 
@@ -27,6 +28,7 @@ namespace Syrius{
     VertexLayout::~VertexLayout() = default;
 
     void VertexLayout::addAttribute(const std::string &name, SR_SCALAR_TYPE dataType) {
+        SR_CORE_PRECONDITION(m_AttributeCount < m_DeviceLimits->getMaxVertexAttributes(), "Vertex attribute count cannot exceed %i", m_DeviceLimits->getMaxVertexAttributes());
         SR_CORE_PRECONDITION(!hasAttribute(name), "Vertex attribute with name %s already exists", name.c_str());
 
 

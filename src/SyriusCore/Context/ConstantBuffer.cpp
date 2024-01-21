@@ -8,6 +8,7 @@ namespace Syrius{
     m_DeviceLimits(deviceLimits),
     m_Size(desc.size),
     m_Type(desc.usage){
+        SR_CORE_PRECONDITION(m_Size <= m_DeviceLimits->getMaxConstantBufferSize(), "[ConstantBuffer]: Supplied size (%i) exceeds device limit (%i)", m_Size, m_DeviceLimits->getMaxConstantBufferSize());
 
     }
 

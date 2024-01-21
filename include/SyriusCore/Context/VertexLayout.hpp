@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Utils.hpp"
+#include "DeviceLimits.hpp"
 
 namespace Syrius{
 
@@ -15,7 +16,7 @@ namespace Syrius{
 
     class SR_CORE_API VertexLayout{
     public:
-        VertexLayout();
+        explicit VertexLayout(const Resource<DeviceLimits>& deviceLimits);
 
         ~VertexLayout();
 
@@ -38,6 +39,8 @@ namespace Syrius{
         [[nodiscard]] uint32 getAttributeCount() const;
 
     private:
+        const Resource<DeviceLimits>& m_DeviceLimits;
+
         uint32 m_Stride;
         uint32 m_AttributeCount;
         std::vector<VertexAttribute> m_Attributes;

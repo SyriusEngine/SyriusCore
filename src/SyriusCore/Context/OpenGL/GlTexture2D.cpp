@@ -19,6 +19,8 @@ namespace Syrius{
     }
 
     void GlTexture2D::bind(uint32_t slot) {
+        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
+
         glBindTextureUnit(slot, m_TextureID);
     }
 
@@ -28,7 +30,6 @@ namespace Syrius{
 
     void GlTexture2D::setData(const void *data, uint32 x, uint32 y, uint32 width, uint32 height) {
         glTextureSubImage2D(m_TextureID, 0, x, y, width, height, m_GlFormat, m_GlDataType, data);
-
     }
 
     Resource<Image> GlTexture2D::getData() {

@@ -38,6 +38,8 @@ namespace Syrius{
     }
 
     void GlColorAttachment::bindShaderResource(uint32 slot) {
+        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
+
         glBindTextureUnit(slot, m_TextureID);
     }
 
@@ -49,7 +51,7 @@ namespace Syrius{
         m_Width = width;
         m_Height = height;
         /*
-         * This underlying line wont worke for some reason?
+         * This underlying line wont work for some reason?
          * We use the old method for now (glBind spamming)
          */
         // glTextureStorage2D(m_TextureID, 1, m_InternalFormat, width, height);

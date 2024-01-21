@@ -9,6 +9,9 @@ namespace Syrius{
     m_Type(desc.usage),
     m_Size(0),
     m_Layout(desc.layout){
+        SR_CORE_PRECONDITION(desc.count <= deviceLimits->getMaxVertexCount(), "[VertexBuffer]: supplied vertex count (%i) exceeds the maximum vertex count (%i)", desc.count, deviceLimits->getMaxVertexCount());
+        SR_CORE_PRECONDITION(desc.count > 0, "[VertexBuffer]: supplied vertex count (%i) must be greater than 0", desc.count);
+        
 
         m_Size = desc.layout->getStride() * desc.count;
 

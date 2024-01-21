@@ -22,13 +22,17 @@ namespace Syrius{
         bufferDesc.MiscFlags = 0;
         bufferDesc.StructureByteStride = m_Layout->getStride();
 
-        D3D11_SUBRESOURCE_DATA subResourceData;
-        subResourceData.pSysMem = desc.data;
-        subResourceData.SysMemPitch = 0;
-        subResourceData.SysMemSlicePitch = 0;
+        if (desc.data == nullptr){
+            SR_CORE_D3D11_CALL(m_Device->CreateBuffer(&bufferDesc, nullptr, &m_Buffer));
+        }
+        else{
+            D3D11_SUBRESOURCE_DATA subResourceData;
+            subResourceData.pSysMem = desc.data;
+            subResourceData.SysMemPitch = 0;
+            subResourceData.SysMemSlicePitch = 0;
 
-        SR_CORE_D3D11_CALL(m_Device->CreateBuffer(&bufferDesc, &subResourceData, &m_Buffer));
-
+            SR_CORE_D3D11_CALL(m_Device->CreateBuffer(&bufferDesc, &subResourceData, &m_Buffer));
+        }
     }
 
     D3D11VertexBuffer::~D3D11VertexBuffer() {

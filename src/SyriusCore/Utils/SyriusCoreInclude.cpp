@@ -94,4 +94,8 @@ namespace Syrius{
         return static_cast<SR_TYPE>(format << 4);
     }
 
+    uint8 getTextureFormatSize(SR_TEXTURE_FORMAT format){
+        return getChannelFormatCount(getTextureChannelFormat(format)) * getTypeSize(getTextureDataType(format));
+    }
+
 }

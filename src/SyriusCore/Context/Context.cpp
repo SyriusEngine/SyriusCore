@@ -26,7 +26,7 @@ namespace Syrius{
     }
 
     ResourceView<VertexLayout> Context::createVertexLayout() {
-        m_VertexDescriptions.emplace_back(new VertexLayout());
+        m_VertexDescriptions.emplace_back(new VertexLayout(m_DeviceLimits));
         return createResourceView(m_VertexDescriptions.back());
     }
 

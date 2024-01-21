@@ -8,7 +8,8 @@ namespace Syrius{
     m_Count(desc.count),
     m_Type(desc.usage),
     m_DataType(desc.dataType) {
-        SR_CORE_PRECONDITION(desc.dataType <= SR_INT64, "Index buffer only supports integer data, usage %i is not supported", desc.dataType);
+        SR_CORE_PRECONDITION(desc.dataType <= SR_INT64, "[IndexBuffer]: Index buffer only supports integer data, type %i is not supported", desc.dataType);
+        SR_CORE_PRECONDITION(desc.count <= m_DeviceLimits->getMaxIndexCount(), "[IndexBuffer]: Supplied index count (%i) exceeds the maximum index count (%i)", desc.count, m_DeviceLimits->getMaxIndexCount());
 
         m_Size = m_Count * getTypeSize(m_DataType);
     }
