@@ -9,7 +9,7 @@ namespace Syrius{
 
     class D3D11IndexBuffer: public IndexBuffer{
     public:
-        D3D11IndexBuffer(const IndexBufferDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11IndexBuffer(const IndexBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
         ~D3D11IndexBuffer() override;
 

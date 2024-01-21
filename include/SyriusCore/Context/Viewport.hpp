@@ -2,6 +2,7 @@
 
 #include "../Utils/Resource.hpp"
 #include "Utils.hpp"
+#include "DeviceLimits.hpp"
 
 namespace Syrius{
 
@@ -16,7 +17,7 @@ namespace Syrius{
 
     class SR_CORE_API Viewport{
     public:
-        explicit Viewport(const ViewportDesc& desc);
+        Viewport(const ViewportDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         virtual ~Viewport();
 
@@ -41,6 +42,8 @@ namespace Syrius{
         [[nodiscard]] float getMaxDepth() const;
 
     protected:
+        const Resource<DeviceLimits>& m_DeviceLimits;
+
         uint32 m_Width;
         uint32 m_Height;
         uint32 m_XPos;

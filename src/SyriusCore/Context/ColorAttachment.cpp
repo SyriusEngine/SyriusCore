@@ -3,18 +3,13 @@
 
 namespace Syrius{
 
-    ColorAttachment::ColorAttachment(const ColorAttachmentDesc &desc):
+    ColorAttachment::ColorAttachment(const ColorAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits):
     m_Width(desc.width),
     m_Height(desc.height),
     m_Format(desc.format),
+    m_DeviceLimits(deviceLimits),
     m_ClearColor{desc.clearColor[0], desc.clearColor[1], desc.clearColor[2], desc.clearColor[3]},
     m_EnableShaderRead(desc.enableShaderRead){
-        SR_CORE_PRECONDITION(desc.format != SR_TEXTURE_DEPTH_16 and
-                             desc.format != SR_TEXTURE_DEPTH_24 and
-                             desc.format != SR_TEXTURE_DEPTH_32 and
-                             desc.format != SR_TEXTURE_DEPTH_24_STENCIL_8 and
-                             desc.format != SR_TEXTURE_DEPTH_32_STENCIL_8,
-                             "Depth/stencil format: %i is not supported for color attachment", desc.format);
 
     }
 

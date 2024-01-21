@@ -43,13 +43,13 @@ namespace Syrius{
     }
 
     ResourceView<VertexBuffer> GlContext::createVertexBuffer(const VertexBufferDesc &desc) {
-        auto ptr = new GlVertexBuffer(desc);
+        auto ptr = new GlVertexBuffer(desc, m_DeviceLimits);
         m_VertexBuffers.emplace_back(ptr);
         return createResourceView(m_VertexBuffers.back());
     }
 
     ResourceView<IndexBuffer> GlContext::createIndexBuffer(const IndexBufferDesc &desc) {
-        auto ptr = new GlIndexBuffer(desc);
+        auto ptr = new GlIndexBuffer(desc, m_DeviceLimits);
         m_IndexBuffers.emplace_back(ptr);
         return createResourceView(m_IndexBuffers.back());
     }
@@ -67,20 +67,20 @@ namespace Syrius{
     }
 
     ResourceView<ConstantBuffer> GlContext::createConstantBuffer(const ConstantBufferDesc &desc) {
-        auto ptr = new GlConstantBuffer(desc);
+        auto ptr = new GlConstantBuffer(desc, m_DeviceLimits);
         m_ConstantBuffers.emplace_back(ptr);
         return createResourceView(m_ConstantBuffers.back());
     }
 
     ResourceView<Texture2D> GlContext::createTexture2D(const Texture2DDesc& desc) {
-        auto ptr = new GlTexture2D(desc);
+        auto ptr = new GlTexture2D(desc, m_DeviceLimits);
         m_Textures2D.emplace_back(ptr);
 
         return createResourceView(m_Textures2D.back());
     }
 
     ResourceView<Texture2D> GlContext::createTexture2D(const Texture2DImageDesc &desc) {
-        auto ptr = new GlTexture2D(desc);
+        auto ptr = new GlTexture2D(desc, m_DeviceLimits);
         m_Textures2D.emplace_back(ptr);
         return createResourceView(m_Textures2D.back());
     }
@@ -92,19 +92,19 @@ namespace Syrius{
     }
 
     ResourceView<FrameBuffer> GlContext::createFrameBuffer(const ResourceView<FrameBufferDescription> &desc) {
-        auto ptr = new GlFrameBuffer(desc);
+        auto ptr = new GlFrameBuffer(desc, m_DeviceLimits);
         m_FrameBuffers.emplace_back(ptr);
         return createResourceView(m_FrameBuffers.back());
     }
 
     ResourceView<Cubemap> GlContext::createCubemap(const CubemapDesc &desc) {
-        auto ptr = new GlCubemap(desc);
+        auto ptr = new GlCubemap(desc, m_DeviceLimits);
         m_Cubemaps.emplace_back(ptr);
         return createResourceView(m_Cubemaps.back());
     }
 
     ResourceView<Cubemap> GlContext::createCubemap(const CubemapImageDesc &desc) {
-        auto ptr = new GlCubemap(desc);
+        auto ptr = new GlCubemap(desc, m_DeviceLimits);
         m_Cubemaps.emplace_back(ptr);
         return createResourceView(m_Cubemaps.back());
     }
@@ -133,12 +133,12 @@ namespace Syrius{
             defaultFbDesc->addDepthStencilAttachmentDesc(dsaDesc);
         }
 
-        auto ptr = new GlDefaultFrameBuffer(defaultFbDesc);
+        m_DeviceLimits = createResource<GlDeviceLimits>();
+
+        auto ptr = new GlDefaultFrameBuffer(defaultFbDesc, m_DeviceLimits);
         m_FrameBuffers.emplace_back(ptr);
 
-        m_DeviceLimits = std::make_unique<GlDeviceLimits>();
-
-        SR_CORE_PRECONDITION(m_FrameBuffers.size() > 0, "Default framebuffer not created");
+        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
     }
 
     void GlContext::terminateGl() {

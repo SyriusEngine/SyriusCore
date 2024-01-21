@@ -7,7 +7,7 @@ namespace Syrius{
 
     class GlVertexBuffer : public VertexBuffer{
     public:
-        explicit GlVertexBuffer(const VertexBufferDesc& desc);
+        GlVertexBuffer(const VertexBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         ~GlVertexBuffer() override;
 

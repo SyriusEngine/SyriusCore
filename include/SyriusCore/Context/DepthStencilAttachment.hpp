@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Utils.hpp"
+#include "DeviceLimits.hpp"
 
 namespace Syrius{
 
@@ -27,7 +28,7 @@ namespace Syrius{
 
     class SR_CORE_API DepthStencilAttachment{
     public:
-        explicit DepthStencilAttachment(const DepthStencilAttachmentDesc& desc);
+        DepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         virtual ~DepthStencilAttachment();
 
@@ -82,6 +83,8 @@ namespace Syrius{
         [[nodiscard]] SR_STENCIL_FUNC getStencilPassDepthFail() const;
 
     protected:
+        const Resource<DeviceLimits>& m_DeviceLimits;
+
         uint32 m_Width;
         uint32 m_Height;
         SR_TEXTURE_FORMAT m_Format;

@@ -4,8 +4,8 @@
 
 namespace Syrius{
 
-    D3D11IndexBuffer::D3D11IndexBuffer(const IndexBufferDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context)
-    : IndexBuffer(desc),
+    D3D11IndexBuffer::D3D11IndexBuffer(const IndexBufferDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
+    IndexBuffer(desc, deviceLimits),
     m_Device(device),
     m_Context(context),
     m_Buffer(nullptr),

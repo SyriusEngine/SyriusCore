@@ -3,6 +3,7 @@
 #include "Utils.hpp"
 #include "../Utils/Resource.hpp"
 #include "VertexLayout.hpp"
+#include "DeviceLimits.hpp"
 
 namespace Syrius{
 
@@ -15,7 +16,7 @@ namespace Syrius{
 
     class SR_CORE_API VertexBuffer{
     public:
-        explicit VertexBuffer(const VertexBufferDesc& desc);
+        VertexBuffer(const VertexBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         virtual ~VertexBuffer();
 
@@ -34,6 +35,8 @@ namespace Syrius{
         [[nodiscard]] const ResourceView<VertexLayout>& getLayout() const;
 
     protected:
+        const Resource<DeviceLimits>& m_DeviceLimits;
+
         uint32 m_Size;
         uint32 m_Count;
         ResourceView<VertexLayout> m_Layout;

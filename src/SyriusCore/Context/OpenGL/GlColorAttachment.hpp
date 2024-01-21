@@ -7,7 +7,7 @@ namespace Syrius{
     
     class GlColorAttachment : public ColorAttachment{
     public:
-        GlColorAttachment(uint32 framebufferID, uint32 attachmentID, const ColorAttachmentDesc& desc);
+        GlColorAttachment(const ColorAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID, uint32 attachmentID);
         
         ~GlColorAttachment() override;
 
@@ -37,7 +37,7 @@ namespace Syrius{
 
     class GlDefaultColorAttachment : public ColorAttachment{
     public:
-        GlDefaultColorAttachment(const ColorAttachmentDesc& desc);
+        GlDefaultColorAttachment(const ColorAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         ~GlDefaultColorAttachment() override;
 

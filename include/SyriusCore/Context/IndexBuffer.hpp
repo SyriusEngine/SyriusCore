@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Utils.hpp"
+#include "DeviceLimits.hpp"
 
 namespace Syrius{
 
@@ -13,7 +14,7 @@ namespace Syrius{
 
     class SR_CORE_API IndexBuffer{
     public:
-        explicit IndexBuffer(const IndexBufferDesc& desc);
+        IndexBuffer(const IndexBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         virtual ~IndexBuffer();
 
@@ -32,6 +33,8 @@ namespace Syrius{
         [[nodiscard]] SR_TYPE getDataType() const;
 
     protected:
+        const Resource<DeviceLimits>& m_DeviceLimits;
+
         uint32 m_Size;
         uint32 m_Count;
         const SR_BUFFER_USAGE m_Type;

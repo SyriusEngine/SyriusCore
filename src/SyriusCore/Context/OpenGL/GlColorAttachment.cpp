@@ -2,8 +2,8 @@
 
 namespace Syrius{
 
-    GlColorAttachment::GlColorAttachment(uint32 framebufferID, uint32 attachmentID, const ColorAttachmentDesc &desc):
-    ColorAttachment(desc),
+    GlColorAttachment::GlColorAttachment(const ColorAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID, uint32 attachmentID):
+    ColorAttachment(desc, deviceLimits),
     m_InternalFormat(getGlTextureInternalFormat(desc.format)),
     m_FrameBufferID(framebufferID),
     m_AttachmentID(attachmentID),
@@ -74,8 +74,8 @@ namespace Syrius{
     }
 
 
-    GlDefaultColorAttachment::GlDefaultColorAttachment(const ColorAttachmentDesc &desc):
-    ColorAttachment(desc){
+    GlDefaultColorAttachment::GlDefaultColorAttachment(const ColorAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    ColorAttachment(desc, deviceLimits){
 
     }
 

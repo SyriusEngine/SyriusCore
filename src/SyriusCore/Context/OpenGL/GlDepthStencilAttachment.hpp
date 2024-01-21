@@ -7,7 +7,7 @@ namespace Syrius{
 
     class GlDepthStencilAttachment : public DepthStencilAttachment{
     public:
-        explicit GlDepthStencilAttachment(const DepthStencilAttachmentDesc& desc, uint32 framebufferID);
+        GlDepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID);
 
         ~GlDepthStencilAttachment() override;
 
@@ -42,7 +42,7 @@ namespace Syrius{
 
     class GlDepthStencilAttachmentRenderBuffer : public GlDepthStencilAttachment{
     public:
-        GlDepthStencilAttachmentRenderBuffer(const DepthStencilAttachmentDesc& desc, uint32 framebufferID);
+        GlDepthStencilAttachmentRenderBuffer(const DepthStencilAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID);
 
         ~GlDepthStencilAttachmentRenderBuffer() override;
 
@@ -57,7 +57,7 @@ namespace Syrius{
 
     class GlDepthStencilAttachmentTexture : public GlDepthStencilAttachment{
     public:
-        GlDepthStencilAttachmentTexture(const DepthStencilAttachmentDesc& desc, uint32 framebufferID);
+        GlDepthStencilAttachmentTexture(const DepthStencilAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID);
 
         ~GlDepthStencilAttachmentTexture() override;
 
@@ -72,7 +72,7 @@ namespace Syrius{
 
     class GlDefaultDepthStencilAttachment : public GlDepthStencilAttachment{
     public:
-        explicit GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc& desc);
+        GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         ~GlDefaultDepthStencilAttachment() override;
 

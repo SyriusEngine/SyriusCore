@@ -3,20 +3,18 @@
 
 namespace Syrius{
 
-    Texture2D::Texture2D(const Texture2DDesc& desc):
+    Texture2D::Texture2D(const Texture2DDesc& desc, const Resource<DeviceLimits>& deviceLimits):
+    m_DeviceLimits(deviceLimits),
     m_Width(desc.width),
     m_Height(desc.height),
     m_Format(desc.format){
-        SR_CORE_PRECONDITION(m_Width > 0, "Texture width must be greater than 0");
-        SR_CORE_PRECONDITION(m_Height > 0, "Texture height must be greater than 0");
     }
 
-    Texture2D::Texture2D(const Texture2DImageDesc &desc):
+    Texture2D::Texture2D(const Texture2DImageDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    m_DeviceLimits(deviceLimits),
     m_Width(desc.image->getWidth()),
     m_Height(desc.image->getHeight()),
     m_Format(desc.image->getFormat()){
-        SR_CORE_PRECONDITION(m_Width > 0, "Texture width must be greater than 0");
-        SR_CORE_PRECONDITION(m_Height > 0, "Texture height must be greater than 0");
 
     }
 

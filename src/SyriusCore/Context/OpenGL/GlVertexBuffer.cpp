@@ -2,8 +2,8 @@
 
 namespace Syrius{
 
-    GlVertexBuffer::GlVertexBuffer(const VertexBufferDesc &desc)
-    : VertexBuffer(desc),
+    GlVertexBuffer::GlVertexBuffer(const VertexBufferDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    VertexBuffer(desc, deviceLimits),
     m_BufferID(0){
         glCreateBuffers(1, &m_BufferID);
         glNamedBufferData(m_BufferID, m_Size, desc.data, getGlBufferType(desc.usage));

@@ -9,7 +9,7 @@ namespace Syrius{
 
     class D3D11ConstantBufferBase: public ConstantBuffer{
     public:
-        D3D11ConstantBufferBase(const ConstantBufferDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11ConstantBufferBase(const ConstantBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
         ~D3D11ConstantBufferBase() override;
 
@@ -25,7 +25,7 @@ namespace Syrius{
 
     class D3D11ConstantBufferVertex: public D3D11ConstantBufferBase{
     public:
-        D3D11ConstantBufferVertex(const ConstantBufferDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11ConstantBufferVertex(const ConstantBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
         ~D3D11ConstantBufferVertex() override = default;
 
@@ -34,7 +34,7 @@ namespace Syrius{
 
     class D3D11ConstantBufferPixel: public D3D11ConstantBufferBase{
     public:
-        D3D11ConstantBufferPixel(const ConstantBufferDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11ConstantBufferPixel(const ConstantBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
         ~D3D11ConstantBufferPixel() override = default;
 
@@ -43,7 +43,7 @@ namespace Syrius{
 
     class D3D11ConstantBufferGeometry: public D3D11ConstantBufferBase{
     public:
-        D3D11ConstantBufferGeometry(const ConstantBufferDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11ConstantBufferGeometry(const ConstantBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
         ~D3D11ConstantBufferGeometry() override = default;
 

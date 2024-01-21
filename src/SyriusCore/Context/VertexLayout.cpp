@@ -48,6 +48,40 @@ namespace Syrius{
         return false;
     }
 
+    const VertexAttribute &VertexLayout::operator[](const std::string &name) const {
+        SR_CORE_PRECONDITION(hasAttribute(name), "Vertex attribute with name %s does not exist", name.c_str());
+
+        for (const auto &attribute : m_Attributes) {
+            if (attribute.name == name) {
+                return attribute;
+            }
+        }
+        return m_Attributes[0];
+    }
+
+    VertexAttribute &VertexLayout::operator[](const std::string &name) {
+        SR_CORE_PRECONDITION(hasAttribute(name), "Vertex attribute with name %s does not exist", name.c_str());
+
+        for (auto &attribute : m_Attributes) {
+            if (attribute.name == name) {
+                return attribute;
+            }
+        }
+        return m_Attributes[0];
+    }
+
+    const VertexAttribute &VertexLayout::operator[](uint32 index) const {
+        SR_CORE_PRECONDITION(index < m_AttributeCount, "Vertex attribute index %i is out of bounds", index);
+
+        return m_Attributes[index];
+    }
+
+    VertexAttribute &VertexLayout::operator[](uint32 index) {
+        SR_CORE_PRECONDITION(index < m_AttributeCount, "Vertex attribute index %i is out of bounds", index);
+
+        return m_Attributes[index];
+    }
+
     uint32 VertexLayout::getStride() const {
         return m_Stride;
     }

@@ -7,9 +7,9 @@ namespace Syrius{
 
     class GlCubemap : public Cubemap{
     public:
-        explicit GlCubemap(const CubemapDesc& desc);
+        GlCubemap(const CubemapDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
-        explicit GlCubemap(const CubemapImageDesc& desc);
+        GlCubemap(const CubemapImageDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         ~GlCubemap() override;
 

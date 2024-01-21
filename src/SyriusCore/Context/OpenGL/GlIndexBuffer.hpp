@@ -7,7 +7,7 @@ namespace Syrius{
 
     class GlIndexBuffer : public IndexBuffer{
     public:
-        explicit GlIndexBuffer(const IndexBufferDesc& desc);
+        GlIndexBuffer(const IndexBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         ~GlIndexBuffer() override;
 

@@ -5,12 +5,13 @@
 #include "Viewport.hpp"
 #include "ColorAttachment.hpp"
 #include "DepthStencilAttachment.hpp"
+#include "DeviceLimits.hpp"
 
 namespace Syrius{
 
     class SR_CORE_API FrameBuffer{
     public:
-        explicit FrameBuffer(const ResourceView<FrameBufferDescription>& desc);
+        FrameBuffer(const ResourceView<FrameBufferDescription>& desc, const Resource<DeviceLimits>& deviceLimits);
 
         virtual ~FrameBuffer();
 
@@ -35,6 +36,8 @@ namespace Syrius{
         ResourceView<DepthStencilAttachment> getDepthStencilAttachment();
 
     protected:
+        const Resource<DeviceLimits>& m_DeviceLimits;
+
         std::vector<Resource<Viewport>> m_Viewports;
         std::vector<Resource<ColorAttachment>> m_ColorAttachments;
         Resource<DepthStencilAttachment> m_DepthStencilAttachment;

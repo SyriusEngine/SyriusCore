@@ -4,6 +4,7 @@
 #include "../Utils/Resource.hpp"
 #include "Utils.hpp"
 #include "Sampler.hpp"
+#include "DeviceLimits.hpp"
 
 namespace Syrius{
 
@@ -21,9 +22,9 @@ namespace Syrius{
 
     class SR_CORE_API Texture2D{
     public:
-        explicit Texture2D(const Texture2DDesc& desc);
+        Texture2D(const Texture2DDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
-        explicit Texture2D(const Texture2DImageDesc& desc);
+        Texture2D(const Texture2DImageDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         virtual ~Texture2D();
 
@@ -49,6 +50,8 @@ namespace Syrius{
         [[nodiscard]] SR_TEXTURE_FORMAT getFormat() const;
 
     protected:
+        const Resource<DeviceLimits>& m_DeviceLimits;
+
         uint32 m_Width;
         uint32 m_Height;
         SR_TEXTURE_FORMAT m_Format;

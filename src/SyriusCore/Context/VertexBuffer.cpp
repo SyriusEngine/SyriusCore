@@ -3,13 +3,12 @@
 
 namespace Syrius{
 
-    VertexBuffer::VertexBuffer(const VertexBufferDesc &desc)
-    : m_Count(desc.count),
+    VertexBuffer::VertexBuffer(const VertexBufferDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    m_DeviceLimits(deviceLimits),
+    m_Count(desc.count),
     m_Type(desc.usage),
     m_Size(0),
     m_Layout(desc.layout){
-        SR_CORE_PRECONDITION(desc.layout != nullptr, "Vertex layout cannot be null");
-        SR_CORE_PRECONDITION(desc.count > 0, "Vertex count must be greater than 0");
 
         m_Size = desc.layout->getStride() * desc.count;
 

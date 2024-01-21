@@ -65,10 +65,10 @@ namespace Syrius{
             defaultFbDesc->addDepthStencilAttachmentDesc(dsaDesc);
         }
 
-        auto ptr = new D3D11DefaultFrameBuffer(defaultFbDesc, m_Device, m_DeviceContext, m_SwapChain);
-        m_FrameBuffers.emplace_back(ptr);
+        m_DeviceLimits = createResource<D3D11DeviceLimits>(m_Device, m_DeviceContext, m_D3DVersion);
 
-        m_DeviceLimits = std::make_unique<D3D11DeviceLimits>(m_Device, m_DeviceContext, m_D3DVersion);
+        auto ptr = new D3D11DefaultFrameBuffer(defaultFbDesc, m_DeviceLimits, m_Device, m_DeviceContext, m_SwapChain);
+        m_FrameBuffers.emplace_back(ptr);
 
         D3D11_RASTERIZER_DESC rasterizerDesc = {};
         rasterizerDesc.FillMode = D3D11_FILL_SOLID;
@@ -187,13 +187,13 @@ namespace Syrius{
     }
 
     ResourceView<VertexBuffer> D3D11Context::createVertexBuffer(const VertexBufferDesc &desc) {
-        auto ptr = new D3D11VertexBuffer(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11VertexBuffer(desc, m_DeviceLimits, m_Device, m_DeviceContext);
         m_VertexBuffers.emplace_back(ptr);
         return createResourceView(m_VertexBuffers.back());
     }
 
     ResourceView<IndexBuffer> D3D11Context::createIndexBuffer(const IndexBufferDesc &desc) {
-        auto ptr = new D3D11IndexBuffer(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11IndexBuffer(desc, m_DeviceLimits, m_Device, m_DeviceContext);
         m_IndexBuffers.emplace_back(ptr);
         return createResourceView(m_IndexBuffers.back());
     }
@@ -214,9 +214,9 @@ namespace Syrius{
         ConstantBuffer* ptr;
         auto shaderStage = desc.shaderStage;
         switch (shaderStage) {
-            case SR_SHADER_VERTEX:      ptr = new D3D11ConstantBufferVertex(desc, m_Device, m_DeviceContext); break;
-            case SR_SHADER_FRAGMENT:    ptr = new D3D11ConstantBufferPixel(desc, m_Device, m_DeviceContext); break;
-            case SR_SHADER_GEOMETRY:    ptr = new D3D11ConstantBufferGeometry(desc, m_Device, m_DeviceContext); break;
+            case SR_SHADER_VERTEX:      ptr = new D3D11ConstantBufferVertex(desc, m_DeviceLimits, m_Device, m_DeviceContext); break;
+            case SR_SHADER_FRAGMENT:    ptr = new D3D11ConstantBufferPixel(desc, m_DeviceLimits, m_Device, m_DeviceContext); break;
+            case SR_SHADER_GEOMETRY:    ptr = new D3D11ConstantBufferGeometry(desc, m_DeviceLimits, m_Device, m_DeviceContext); break;
             default: {
                 SR_CORE_EXCEPTION("Unsupported shader stage for constant buffer");
 
@@ -227,14 +227,14 @@ namespace Syrius{
     }
 
     ResourceView<Texture2D> D3D11Context::createTexture2D(const Texture2DDesc& desc) {
-        auto ptr = new D3D11Texture2D(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11Texture2D(desc, m_DeviceLimits, m_Device, m_DeviceContext);
         m_Textures2D.emplace_back(ptr);
 
         return createResourceView(m_Textures2D.back());
     }
 
     ResourceView<Texture2D> D3D11Context::createTexture2D(const Texture2DImageDesc &desc) {
-        auto ptr = new D3D11Texture2D(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11Texture2D(desc, m_DeviceLimits, m_Device, m_DeviceContext);
         m_Textures2D.emplace_back(ptr);
         return createResourceView(m_Textures2D.back());
     }
@@ -246,19 +246,19 @@ namespace Syrius{
     }
 
     ResourceView<FrameBuffer> D3D11Context::createFrameBuffer(const ResourceView<FrameBufferDescription> &desc) {
-        auto ptr = new D3D11FrameBuffer(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11FrameBuffer(desc, m_DeviceLimits, m_Device, m_DeviceContext);
         m_FrameBuffers.emplace_back(ptr);
         return createResourceView(m_FrameBuffers.back());
     }
 
     ResourceView<Cubemap> D3D11Context::createCubemap(const CubemapDesc &desc) {
-        auto ptr = new D3D11Cubemap(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11Cubemap(desc, m_DeviceLimits, m_Device, m_DeviceContext);
         m_Cubemaps.emplace_back(ptr);
         return createResourceView(m_Cubemaps.back());
     }
 
     ResourceView<Cubemap> D3D11Context::createCubemap(const CubemapImageDesc &desc) {
-        auto ptr = new D3D11Cubemap(desc, m_Device, m_DeviceContext);
+        auto ptr = new D3D11Cubemap(desc, m_DeviceLimits, m_Device, m_DeviceContext);
         m_Cubemaps.emplace_back(ptr);
         return createResourceView(m_Cubemaps.back());
     }

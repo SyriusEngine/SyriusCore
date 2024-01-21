@@ -23,11 +23,11 @@ namespace Syrius{
         return status;
     }
 
-    GlFrameBuffer::GlFrameBuffer(const ResourceView<FrameBufferDescription> &desc) :
-    FrameBuffer(desc),
+    GlFrameBuffer::GlFrameBuffer(const ResourceView<FrameBufferDescription> &desc, const Resource<DeviceLimits>& deviceLimits) :
+    FrameBuffer(desc, deviceLimits),
     m_FrameBufferID(0){
         for (const auto& viewDesc: desc->getViewportDesc()){
-            auto viewport = new GlViewport(viewDesc);
+            auto viewport = new GlViewport(viewDesc, m_DeviceLimits);
             m_Viewports.emplace_back(viewport);
         }
 
@@ -37,7 +37,7 @@ namespace Syrius{
         std::vector<GLenum> drawBuffers;
         uint32 colorAttachmentIndex = 0;
         for (const auto& attachDesc: desc->getColorAttachmentDesc()){
-            auto attachment = new GlColorAttachment(m_FrameBufferID, colorAttachmentIndex, attachDesc);
+            auto attachment = new GlColorAttachment(attachDesc, m_DeviceLimits, m_FrameBufferID, colorAttachmentIndex);
             m_ColorAttachments.emplace_back(attachment);
             drawBuffers.push_back(attachmentIndex);
             glNamedFramebufferTexture(m_FrameBufferID, attachmentIndex, attachment->getIdentifier(), 0);
@@ -50,11 +50,11 @@ namespace Syrius{
             auto dsaDesc = desc->getDepthStencilAttachmentDesc().back();
             GlDepthStencilAttachment* attachment;
             if (dsaDesc.enableShaderAccess){
-                attachment = new GlDepthStencilAttachmentTexture(dsaDesc, m_FrameBufferID);
+                attachment = new GlDepthStencilAttachmentTexture(dsaDesc, m_DeviceLimits, m_FrameBufferID);
                 glNamedFramebufferTexture(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT,  attachment->getIdentifier(), 0);
             }
             else{
-                attachment = new GlDepthStencilAttachmentRenderBuffer(dsaDesc, m_FrameBufferID);
+                attachment = new GlDepthStencilAttachmentRenderBuffer(dsaDesc, m_DeviceLimits, m_FrameBufferID);
                 glNamedFramebufferRenderbuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, attachment->getIdentifier());
             }
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(attachment);
@@ -67,7 +67,7 @@ namespace Syrius{
             dummyDesc.enableDepthTest = false;
             dummyDesc.enableStencilTest = false;
             dummyDesc.enableShaderAccess = false;
-            auto df = new GlDepthStencilAttachmentRenderBuffer(dummyDesc, 0);
+            auto df = new GlDepthStencilAttachmentRenderBuffer(dummyDesc, m_DeviceLimits, 0);
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(df);
             glNamedFramebufferRenderbuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, df->getIdentifier());
         }
@@ -96,19 +96,19 @@ namespace Syrius{
         m_DepthStencilAttachment->unbind();
     }
 
-    GlDefaultFrameBuffer::GlDefaultFrameBuffer(const ResourceView<FrameBufferDescription> &desc) :
-    FrameBuffer(desc) {
-        auto viewport = new GlViewport(desc->getViewportDesc().back());
+    GlDefaultFrameBuffer::GlDefaultFrameBuffer(const ResourceView<FrameBufferDescription> &desc, const Resource<DeviceLimits>& deviceLimits) :
+    FrameBuffer(desc, deviceLimits) {
+        auto viewport = new GlViewport(desc->getViewportDesc().back(), m_DeviceLimits);
         m_Viewports.emplace_back(viewport);
 
-        auto attachment = new GlDefaultColorAttachment(desc->getColorAttachmentDesc().back());
+        auto attachment = new GlDefaultColorAttachment(desc->getColorAttachmentDesc().back(), m_DeviceLimits);
         m_ColorAttachments.emplace_back(attachment);
 
         if (!desc->getDepthStencilAttachmentDesc().empty()){
             if (desc->getDepthStencilAttachmentDesc().size() > 1){
                 SR_CORE_MESSAGE("The default framebuffer cannot have more than one depth stencil attachment, only the last one will be used");
             }
-            auto df = new GlDefaultDepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back());
+            auto df = new GlDefaultDepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back(), m_DeviceLimits);
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(df);
         }
         else{
@@ -118,7 +118,7 @@ namespace Syrius{
             dummyDesc.height = desc->getViewportDesc().back().height;
             dummyDesc.enableDepthTest = false;
             dummyDesc.enableStencilTest = false;
-            auto df = new GlDefaultDepthStencilAttachment(dummyDesc);
+            auto df = new GlDefaultDepthStencilAttachment(dummyDesc, m_DeviceLimits);
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(df);
         }
 

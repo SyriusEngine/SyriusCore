@@ -2,8 +2,8 @@
 
 namespace Syrius{
 
-    GlViewport::GlViewport(const ViewportDesc &desc):
-    Viewport(desc) {
+    GlViewport::GlViewport(const ViewportDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    Viewport(desc, deviceLimits) {
 
     }
 

@@ -9,7 +9,7 @@ namespace Syrius{
 
     class D3D11VertexBuffer: public VertexBuffer{
     public:
-        D3D11VertexBuffer(const VertexBufferDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11VertexBuffer(const VertexBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
         ~D3D11VertexBuffer() override;
 

@@ -2,6 +2,7 @@
 
 #include "Utils.hpp"
 #include "Shader.hpp"
+#include "DeviceLimits.hpp"
 
 namespace Syrius{
 
@@ -15,7 +16,7 @@ namespace Syrius{
 
     class SR_CORE_API ConstantBuffer{
     public:
-        explicit ConstantBuffer(const ConstantBufferDesc& desc);
+        ConstantBuffer(const ConstantBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         virtual ~ConstantBuffer() = default;
 
@@ -32,10 +33,11 @@ namespace Syrius{
         [[nodiscard]] SR_BUFFER_USAGE getBufferType() const;
 
     protected:
+        const Resource<DeviceLimits>& m_DeviceLimits;
+
         uint32 m_Size;
         SR_BUFFER_USAGE m_Type;
         std::string m_BlockName;
-
     };
 
 }

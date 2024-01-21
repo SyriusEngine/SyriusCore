@@ -3,13 +3,9 @@
 
 namespace Syrius{
 
-    FrameBuffer::FrameBuffer(const ResourceView<FrameBufferDescription> &desc):
+    FrameBuffer::FrameBuffer(const ResourceView<FrameBufferDescription> &desc, const Resource<DeviceLimits>& deviceLimits):
+    m_DeviceLimits(deviceLimits),
     m_DepthStencilAttachment(nullptr){
-        SR_CORE_PRECONDITION(desc != nullptr, "Invalid framebuffer description");
-        SR_CORE_PRECONDITION(desc->getViewportDesc().size() > 0, "No viewport description was added to the framebuffer description");
-        SR_CORE_PRECONDITION(!desc->getColorAttachmentDesc().empty() or
-                             !desc->getDepthStencilAttachmentDesc().empty(),
-                             "No color attachment description was added to the framebuffer description");
 
     }
 

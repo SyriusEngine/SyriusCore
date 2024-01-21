@@ -4,25 +4,21 @@
 
 namespace Syrius{
 
-    D3D11Texture2D::D3D11Texture2D(const Texture2DDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context):
-    Texture2D(desc),
+    D3D11Texture2D::D3D11Texture2D(const Texture2DDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
+    Texture2D(desc, deviceLimits),
     m_Device(device),
     m_Context(context),
     m_Texture(nullptr),
     m_TextureView(nullptr){
-        SR_CORE_PRECONDITION(desc.data != nullptr, "Texture data must not be null");
-
         createResources(desc.data);
     }
 
-    D3D11Texture2D::D3D11Texture2D(const Texture2DImageDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context):
-    Texture2D(desc),
+    D3D11Texture2D::D3D11Texture2D(const Texture2DImageDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
+    Texture2D(desc, deviceLimits),
     m_Device(device),
     m_Context(context),
     m_Texture(nullptr),
     m_TextureView(nullptr){
-        SR_CORE_PRECONDITION(desc.image != nullptr, "Texture data must not be null");
-
         createResources(desc.image->getData());
     }
 
@@ -45,12 +41,6 @@ namespace Syrius{
     }
 
     void D3D11Texture2D::setData(const void *data, uint32 x, uint32 y, uint32 width, uint32 height) {
-        SR_CORE_PRECONDITION(data != nullptr, "Data must not be null");
-        SR_CORE_PRECONDITION(x < m_Width, "x is out of range");
-        SR_CORE_PRECONDITION(y < m_Height, "y is out of range");
-        SR_CORE_PRECONDITION(x + width <= m_Width, "x + width is out of range");
-        SR_CORE_PRECONDITION(y + height <= m_Height, "y + height is out of range");
-
         // TODO: Test this code because dont know if it works
         auto channelCount = getTextureChannelCount(m_Format);
         D3D11_BOX box = { 0 };
@@ -97,7 +87,6 @@ namespace Syrius{
     }
 
     void D3D11Texture2D::createResources(const void *data) {
-        SR_CORE_PRECONDITION(data != nullptr, "Data must not be null");
 
         D3D11_TEXTURE2D_DESC textureDesc = { 0 };
         textureDesc.Width = m_Width;

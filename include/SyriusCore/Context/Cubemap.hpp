@@ -3,6 +3,7 @@
 #include "../Image/Image.hpp"
 #include "../Utils/Resource.hpp"
 #include "Utils.hpp"
+#include "DeviceLimits.hpp"
 
 namespace Syrius{
 
@@ -27,9 +28,9 @@ namespace Syrius{
 
     class SR_CORE_API Cubemap{
     public:
-        explicit Cubemap(const CubemapDesc& desc);
+        Cubemap(const CubemapDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
-        explicit Cubemap(const CubemapImageDesc& desc);
+        Cubemap(const CubemapImageDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         virtual ~Cubemap();
 
@@ -44,6 +45,8 @@ namespace Syrius{
         [[nodiscard]] SR_TEXTURE_FORMAT getFormat() const;
 
     protected:
+        const Resource<DeviceLimits>& m_DeviceLimits;
+
         const uint32 m_Width;
         const uint32 m_Height;
         const SR_TEXTURE_FORMAT m_Format;

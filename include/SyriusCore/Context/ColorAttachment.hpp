@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Utils.hpp"
+#include "DeviceLimits.hpp"
 
 namespace Syrius{
 
@@ -14,7 +15,7 @@ namespace Syrius{
 
     class SR_CORE_API ColorAttachment{
     public:
-        explicit ColorAttachment(const ColorAttachmentDesc& desc);
+        ColorAttachment(const ColorAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         virtual ~ColorAttachment();
 
@@ -43,6 +44,8 @@ namespace Syrius{
         [[nodiscard]] bool shaderReadEnabled() const;
 
     protected:
+        const Resource<DeviceLimits>& m_DeviceLimits;
+
         uint32 m_Width;
         uint32 m_Height;
         float m_ClearColor[4];

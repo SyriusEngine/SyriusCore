@@ -4,8 +4,8 @@
 
 namespace Syrius {
 
-    D3D11ColorAttachment::D3D11ColorAttachment(const ColorAttachmentDesc &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext) :
-    ColorAttachment(desc),
+    D3D11ColorAttachment::D3D11ColorAttachment(const ColorAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext) :
+    ColorAttachment(desc, deviceLimits),
     m_Device(device),
     m_Context(deviceContext),
     m_ColorBuffer(nullptr),
@@ -121,10 +121,12 @@ namespace Syrius {
         }
     }
 
-    D3D11DefaultColorAttachment::D3D11DefaultColorAttachment(const ColorAttachmentDesc &desc, ID3D11Device *device,
+    D3D11DefaultColorAttachment::D3D11DefaultColorAttachment(const ColorAttachmentDesc &desc,
+                                                             const Resource<DeviceLimits>& deviceLimits,
+                                                             ID3D11Device *device,
                                                              ID3D11DeviceContext *deviceContext,
                                                              IDXGISwapChain *swapChain) :
-            ColorAttachment(desc),
+            ColorAttachment(desc, deviceLimits),
             m_Device(device),
             m_Context(deviceContext),
             m_SwapChain(swapChain),

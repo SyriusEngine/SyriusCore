@@ -10,7 +10,7 @@ namespace Syrius{
 
     class GlFrameBuffer : public FrameBuffer{
     public:
-        explicit GlFrameBuffer(const ResourceView<FrameBufferDescription>& desc);
+        GlFrameBuffer(const ResourceView<FrameBufferDescription>& desc, const Resource<DeviceLimits>& deviceLimits);
 
         ~GlFrameBuffer() override;
 
@@ -25,7 +25,7 @@ namespace Syrius{
 
     class GlDefaultFrameBuffer : public FrameBuffer{
     public:
-        explicit GlDefaultFrameBuffer(const ResourceView<FrameBufferDescription>& desc);
+        GlDefaultFrameBuffer(const ResourceView<FrameBufferDescription>& desc, const Resource<DeviceLimits>& deviceLimits);
 
         ~GlDefaultFrameBuffer() override;
 

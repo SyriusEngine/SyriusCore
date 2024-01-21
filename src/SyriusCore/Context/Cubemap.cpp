@@ -3,17 +3,19 @@
 
 namespace Syrius{
 
-    Cubemap::Cubemap(const CubemapDesc &desc):
+    Cubemap::Cubemap(const CubemapDesc &desc, const Resource<DeviceLimits>& deviceLimits):
     m_Width(desc.width),
     m_Height(desc.height),
-    m_Format(desc.format){
+    m_Format(desc.format),
+    m_DeviceLimits(deviceLimits){
         
     }
 
-    Cubemap::Cubemap(const CubemapImageDesc &desc):
+    Cubemap::Cubemap(const CubemapImageDesc &desc, const Resource<DeviceLimits>& deviceLimits):
     m_Width(desc.faces[0]->getWidth()),
     m_Height(desc.faces[0]->getHeight()),
-    m_Format(desc.faces[0]->getFormat()){
+    m_Format(desc.faces[0]->getFormat()),
+    m_DeviceLimits(deviceLimits){
         
         for (uint32 i = 0; i < 6; ++i) {
             SR_CORE_ASSERT(m_Width == desc.faces[i]->getWidth(), "Cubemap %p is configured to have width %u, but face %u has width %u", this, m_Width, i, desc.faces[i]->getWidth());

@@ -4,8 +4,8 @@
 
 namespace Syrius{
 
-    D3D11VertexBuffer::D3D11VertexBuffer(const VertexBufferDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context)
-    : VertexBuffer(desc),
+    D3D11VertexBuffer::D3D11VertexBuffer(const VertexBufferDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
+    VertexBuffer(desc, deviceLimits),
     m_Device(device),
     m_Context(context),
     m_Buffer(nullptr){

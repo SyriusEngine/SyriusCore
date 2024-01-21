@@ -46,8 +46,8 @@ namespace Syrius{
         }
     }
 
-    D3D11DepthStencilAttachment::D3D11DepthStencilAttachment(const DepthStencilAttachmentDesc &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext):
-    DepthStencilAttachment(desc),
+    D3D11DepthStencilAttachment::D3D11DepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext):
+    DepthStencilAttachment(desc, deviceLimits),
     m_Device(device),
     m_Context(deviceContext),
     m_Buffer(nullptr),

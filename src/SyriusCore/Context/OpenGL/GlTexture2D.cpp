@@ -2,14 +2,14 @@
 
 namespace Syrius{
 
-    GlTexture2D::GlTexture2D(const Texture2DDesc& desc):
-    Texture2D(desc),
+    GlTexture2D::GlTexture2D(const Texture2DDesc& desc, const Resource<DeviceLimits>& deviceLimits):
+    Texture2D(desc, deviceLimits),
     m_TextureID(0){
         createTexture(desc.data);
     }
 
-    GlTexture2D::GlTexture2D(const Texture2DImageDesc &desc):
-    Texture2D(desc),
+    GlTexture2D::GlTexture2D(const Texture2DImageDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    Texture2D(desc, deviceLimits),
     m_TextureID(0){
         createTexture(desc.image->getData());
     }
@@ -27,12 +27,6 @@ namespace Syrius{
     }
 
     void GlTexture2D::setData(const void *data, uint32 x, uint32 y, uint32 width, uint32 height) {
-        SR_CORE_PRECONDITION(data != nullptr, "Data must not be null");
-        SR_CORE_PRECONDITION(x < m_Width, "x is out of range");
-        SR_CORE_PRECONDITION(y < m_Height, "y is out of range");
-        SR_CORE_PRECONDITION(x + width <= m_Width, "x + width is out of range");
-        SR_CORE_PRECONDITION(y + height <= m_Height, "y + height is out of range");
-
         glTextureSubImage2D(m_TextureID, 0, x, y, width, height, m_GlFormat, m_GlDataType, data);
 
     }

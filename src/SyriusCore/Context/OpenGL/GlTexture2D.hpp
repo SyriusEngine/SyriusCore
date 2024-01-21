@@ -7,9 +7,9 @@ namespace Syrius{
 
     class GlTexture2D : public Texture2D{
     public:
-        explicit GlTexture2D(const Texture2DDesc& desc);
+        GlTexture2D(const Texture2DDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
-        explicit GlTexture2D(const Texture2DImageDesc& desc);
+        GlTexture2D(const Texture2DImageDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         ~GlTexture2D() override;
 

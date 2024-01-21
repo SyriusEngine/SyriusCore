@@ -9,9 +9,9 @@ namespace Syrius{
 
     class D3D11Cubemap : public Cubemap{
     public:
-        explicit D3D11Cubemap(const CubemapDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11Cubemap(const CubemapDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
-        explicit D3D11Cubemap(const CubemapImageDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11Cubemap(const CubemapImageDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
         ~D3D11Cubemap() override;
 

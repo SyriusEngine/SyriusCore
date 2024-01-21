@@ -23,6 +23,14 @@ namespace Syrius{
 
         bool hasAttribute(const std::string& name) const;
 
+        const VertexAttribute& operator[](const std::string& name) const;
+
+        VertexAttribute& operator[](const std::string& name);
+
+        const VertexAttribute& operator[](uint32 index) const;
+
+        VertexAttribute& operator[](uint32 index);
+
         [[nodiscard]] uint32 getStride() const;
 
         [[nodiscard]] const std::vector<VertexAttribute>& getAttributes() const;

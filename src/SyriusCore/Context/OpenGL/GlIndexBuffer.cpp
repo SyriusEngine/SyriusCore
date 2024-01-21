@@ -2,8 +2,8 @@
 
 namespace Syrius{
 
-    GlIndexBuffer::GlIndexBuffer(const IndexBufferDesc &desc)
-    : IndexBuffer(desc),
+    GlIndexBuffer::GlIndexBuffer(const IndexBufferDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    IndexBuffer(desc, deviceLimits),
     m_BufferID(0){
         glCreateBuffers(1, &m_BufferID);
         glNamedBufferData(m_BufferID, m_Size, desc.data, getGlBufferType(desc.usage));

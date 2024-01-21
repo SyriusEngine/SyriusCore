@@ -8,7 +8,7 @@ namespace Syrius{
 
     class GlConstantBuffer: public ConstantBuffer{
     public:
-        explicit GlConstantBuffer(const ConstantBufferDesc& desc);
+        GlConstantBuffer(const ConstantBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
         ~GlConstantBuffer() override;
 

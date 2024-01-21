@@ -16,8 +16,8 @@ namespace Syrius{
         }
     }
 
-    GlDepthStencilAttachment::GlDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, uint32 framebufferID):
-    DepthStencilAttachment(desc),
+    GlDepthStencilAttachment::GlDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID):
+    DepthStencilAttachment(desc, deviceLimits),
     m_GlDepthFunc(getGlComparisonFunc(desc.depthFunc)),
     m_GlStencilFunc(getGlComparisonFunc(desc.stencilFunc)),
     m_GlStencilFail(getGlStencilFunc(desc.stencilFail)),
@@ -90,8 +90,8 @@ namespace Syrius{
         m_DepthMask = mask;
     }
 
-    GlDepthStencilAttachmentRenderBuffer::GlDepthStencilAttachmentRenderBuffer(const DepthStencilAttachmentDesc &desc, uint32 framebufferID):
-    GlDepthStencilAttachment(desc, framebufferID) {
+    GlDepthStencilAttachmentRenderBuffer::GlDepthStencilAttachmentRenderBuffer(const DepthStencilAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID):
+    GlDepthStencilAttachment(desc, deviceLimits, framebufferID) {
         m_GlFormat = getGlRenderBufferFormat(desc.format);
         glCreateRenderbuffers(1, &m_BufferID);
         glNamedRenderbufferStorage(m_BufferID, m_GlFormat, m_Width, m_Height);
@@ -122,8 +122,8 @@ namespace Syrius{
         glNamedRenderbufferStorage(m_BufferID, m_GlFormat, m_Width, m_Height);
     }
 
-    GlDepthStencilAttachmentTexture::GlDepthStencilAttachmentTexture(const DepthStencilAttachmentDesc &desc, uint32 framebufferID) :
-    GlDepthStencilAttachment(desc, framebufferID) {
+    GlDepthStencilAttachmentTexture::GlDepthStencilAttachmentTexture(const DepthStencilAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID) :
+    GlDepthStencilAttachment(desc, deviceLimits, framebufferID) {
         m_GlFormat = getGlRenderBufferFormat(desc.format);
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_BufferID);
@@ -165,8 +165,8 @@ namespace Syrius{
         SR_CORE_OPENGL_CALL(glTextureStorage2D(m_BufferID, 1, m_GlFormat, m_Width, m_Height));
     }
 
-    GlDefaultDepthStencilAttachment::GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc):
-    GlDepthStencilAttachment(desc, 0){
+    GlDefaultDepthStencilAttachment::GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    GlDepthStencilAttachment(desc, deviceLimits, 0){
 
     }
 

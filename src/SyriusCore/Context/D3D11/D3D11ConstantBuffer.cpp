@@ -4,8 +4,8 @@
 
 namespace Syrius{
 
-    D3D11ConstantBufferBase::D3D11ConstantBufferBase(const ConstantBufferDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context)
-    : ConstantBuffer(desc),
+    D3D11ConstantBufferBase::D3D11ConstantBufferBase(const ConstantBufferDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
+    ConstantBuffer(desc, deviceLimits),
     m_Device(device),
     m_Context(context),
     m_Buffer(nullptr){
@@ -48,8 +48,8 @@ namespace Syrius{
         return reinterpret_cast<uint64>(m_Buffer);
     }
 
-    D3D11ConstantBufferVertex::D3D11ConstantBufferVertex(const ConstantBufferDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context)
-    : D3D11ConstantBufferBase(desc, device, context) {
+    D3D11ConstantBufferVertex::D3D11ConstantBufferVertex(const ConstantBufferDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
+    D3D11ConstantBufferBase(desc, deviceLimits, device, context) {
 
     }
 
@@ -57,8 +57,8 @@ namespace Syrius{
         m_Context->VSSetConstantBuffers(slot, 1, &m_Buffer);
     }
 
-    D3D11ConstantBufferPixel::D3D11ConstantBufferPixel(const ConstantBufferDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context)
-    : D3D11ConstantBufferBase(desc, device, context) {
+    D3D11ConstantBufferPixel::D3D11ConstantBufferPixel(const ConstantBufferDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
+    D3D11ConstantBufferBase(desc, deviceLimits, device, context) {
 
     }
 
@@ -66,8 +66,8 @@ namespace Syrius{
         m_Context->PSSetConstantBuffers(slot, 1, &m_Buffer);
     }
 
-    D3D11ConstantBufferGeometry::D3D11ConstantBufferGeometry(const ConstantBufferDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context)
-    : D3D11ConstantBufferBase(desc, device, context) {
+    D3D11ConstantBufferGeometry::D3D11ConstantBufferGeometry(const ConstantBufferDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
+    D3D11ConstantBufferBase(desc, deviceLimits, device, context) {
 
     }
 

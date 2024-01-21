@@ -4,8 +4,8 @@
 
 namespace Syrius{
 
-    D3D11Viewport::D3D11Viewport(const ViewportDesc &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext) :
-    Viewport(desc),
+    D3D11Viewport::D3D11Viewport(const ViewportDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext) :
+    Viewport(desc, deviceLimits),
     m_Device(device),
     m_DeviceContext(deviceContext) {
         m_Viewport.Width = static_cast<float>(m_Width);

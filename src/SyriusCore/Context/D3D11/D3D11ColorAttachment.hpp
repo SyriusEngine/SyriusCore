@@ -9,7 +9,7 @@ namespace Syrius{
 
     class D3D11ColorAttachment : public ColorAttachment {
     public:
-        D3D11ColorAttachment(const ColorAttachmentDesc &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext);
+        D3D11ColorAttachment(const ColorAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext);
 
         ~D3D11ColorAttachment() override;
 
@@ -44,7 +44,7 @@ namespace Syrius{
 
     class D3D11DefaultColorAttachment : public ColorAttachment {
     public:
-        D3D11DefaultColorAttachment(const ColorAttachmentDesc& desc, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* swapChain);
+        D3D11DefaultColorAttachment(const ColorAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* swapChain);
 
         ~D3D11DefaultColorAttachment() override;
 

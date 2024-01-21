@@ -4,8 +4,8 @@
 
 namespace Syrius{
 
-    D3D11FrameBuffer::D3D11FrameBuffer(const ResourceView<FrameBufferDescription> &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext):
-    FrameBuffer(desc),
+    D3D11FrameBuffer::D3D11FrameBuffer(const ResourceView<FrameBufferDescription> &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext):
+    FrameBuffer(desc, deviceLimits),
     m_Device(device),
     m_DeviceContext(deviceContext),
     m_RenderTargetViews(),
@@ -14,12 +14,12 @@ namespace Syrius{
     m_DepthStencilView(nullptr),
     m_D3D11DepthStencilAttachment(nullptr){
         for (const auto& viewDesc: desc->getViewportDesc()){
-            auto viewport = new D3D11Viewport(viewDesc, m_Device, m_DeviceContext);
+            auto viewport = new D3D11Viewport(viewDesc, m_DeviceLimits, m_Device, m_DeviceContext);
             m_Viewports.emplace_back(viewport);
         }
 
         for (auto& caDesc: desc->getColorAttachmentDesc()){
-            auto attachment = new D3D11ColorAttachment(caDesc, m_Device, m_DeviceContext);
+            auto attachment = new D3D11ColorAttachment(caDesc, m_DeviceLimits, m_Device, m_DeviceContext);
             m_ColorAttachments.emplace_back(attachment);
             m_D3D11ColorAttachments.emplace_back(attachment);
             m_RenderTargetViews.push_back(attachment->getRenderTargetView());
@@ -28,7 +28,7 @@ namespace Syrius{
         }
 
         if (!desc->getDepthStencilAttachmentDesc().empty()){
-            m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back(), m_Device, m_DeviceContext);
+            m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back(), m_DeviceLimits, m_Device, m_DeviceContext);
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(m_D3D11DepthStencilAttachment);
             m_DepthStencilView = m_D3D11DepthStencilAttachment->getDepthStencilView();
         }
@@ -39,7 +39,7 @@ namespace Syrius{
             dummyDesc.height = desc->getViewportDesc().begin()->height;
             dummyDesc.enableDepthTest = false;
             dummyDesc.enableStencilTest = false;
-            m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(dummyDesc, m_Device, m_DeviceContext);
+            m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(dummyDesc, m_DeviceLimits, m_Device, m_DeviceContext);
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(m_D3D11DepthStencilAttachment);
             m_DepthStencilView = m_D3D11DepthStencilAttachment->getDepthStencilView();
         }
@@ -82,8 +82,8 @@ namespace Syrius{
         m_DepthStencilView = m_D3D11DepthStencilAttachment->getDepthStencilView();
     }
 
-    D3D11DefaultFrameBuffer::D3D11DefaultFrameBuffer(const ResourceView<FrameBufferDescription> &desc, ID3D11Device *device, ID3D11DeviceContext *deviceContext, IDXGISwapChain *swapChain):
-    FrameBuffer(desc),
+    D3D11DefaultFrameBuffer::D3D11DefaultFrameBuffer(const ResourceView<FrameBufferDescription> &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext, IDXGISwapChain *swapChain):
+    FrameBuffer(desc, deviceLimits),
     m_Device(device),
     m_DeviceContext(deviceContext),
     m_SwapChain(swapChain),
@@ -91,16 +91,16 @@ namespace Syrius{
     m_DepthStencilView(nullptr),
     m_D3D11DepthStencilAttachment(nullptr){
         for (const auto& viewDesc: desc->getViewportDesc()){
-            auto viewport = new D3D11Viewport(viewDesc, m_Device, m_DeviceContext);
+            auto viewport = new D3D11Viewport(viewDesc, m_DeviceLimits, m_Device, m_DeviceContext);
             m_Viewports.emplace_back(viewport);
         }
 
-        m_ColorAttachment = new D3D11DefaultColorAttachment(desc->getColorAttachmentDesc().back(), m_Device, m_DeviceContext, m_SwapChain);
+        m_ColorAttachment = new D3D11DefaultColorAttachment(desc->getColorAttachmentDesc().back(), m_DeviceLimits, m_Device, m_DeviceContext, m_SwapChain);
         m_ColorAttachments.emplace_back(m_ColorAttachment);
         m_RenderTargetView = m_ColorAttachment->getRenderTargetView();
 
         if (!desc->getDepthStencilAttachmentDesc().empty()){
-            m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back(), m_Device, m_DeviceContext);
+            m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back(), m_DeviceLimits, m_Device, m_DeviceContext);
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(m_D3D11DepthStencilAttachment);
             m_DepthStencilView = m_D3D11DepthStencilAttachment->getDepthStencilView();
         }
@@ -111,7 +111,7 @@ namespace Syrius{
             dummyDesc.height = m_ColorAttachment->getHeight();
             dummyDesc.enableDepthTest = false;
             dummyDesc.enableStencilTest = false;
-            m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(dummyDesc, m_Device, m_DeviceContext);
+            m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(dummyDesc, m_DeviceLimits, m_Device, m_DeviceContext);
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(m_D3D11DepthStencilAttachment);
             m_DepthStencilView = m_D3D11DepthStencilAttachment->getDepthStencilView();
         }

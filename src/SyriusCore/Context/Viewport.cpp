@@ -3,18 +3,18 @@
 
 namespace Syrius{
 
-    Viewport::Viewport(const ViewportDesc &desc):
+    Viewport::Viewport(const ViewportDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    m_DeviceLimits(deviceLimits),
     m_Width(desc.width),
     m_Height(desc.height),
     m_XPos(desc.xPos),
     m_YPos(desc.yPos),
     m_MinDepth(desc.minDepth),
     m_MaxDepth(desc.maxDepth){
-        SR_CORE_PRECONDITION(m_Width > 0, "Viewport width must be greater than 0");
-        SR_CORE_PRECONDITION(m_Height > 0, "Viewport height must be greater than 0");
-        SR_CORE_PRECONDITION(m_MinDepth >= 0.0f && m_MinDepth <= 1.0f, "Viewport min depth must be between 0.0f and 1.0f");
-        SR_CORE_PRECONDITION(m_MaxDepth >= 0.0f && m_MaxDepth <= 1.0f, "Viewport max depth must be between 0.0f and 1.0f");
-        SR_CORE_PRECONDITION(m_MinDepth < m_MaxDepth, "Viewport min depth must be less than max depth");
+        SR_CORE_PRECONDITION(desc.width <= m_DeviceLimits->getMaxFramebufferWidth(), "Maximum viewport width is: %i, given width is: %i", m_DeviceLimits->getMaxFramebufferWidth(), desc.width);
+        SR_CORE_PRECONDITION(desc.height <= m_DeviceLimits->getMaxFramebufferHeight(), "Maximum viewport height is: %i, given height is: %i", m_DeviceLimits->getMaxFramebufferHeight(), desc.height);
+        SR_CORE_PRECONDITION(desc.width != 0, "Viewport width cannot be 0");
+        SR_CORE_PRECONDITION(desc.height != 0, "Viewport height cannot be 0");
 
     }
 
@@ -23,6 +23,11 @@ namespace Syrius{
     }
 
     void Viewport::onResize(uint32 width, uint32 height) {
+        SR_CORE_PRECONDITION(width <= m_DeviceLimits->getMaxFramebufferWidth(), "Maximum viewport width is: %i, given width is: %i", m_DeviceLimits->getMaxFramebufferWidth(), width);
+        SR_CORE_PRECONDITION(height <= m_DeviceLimits->getMaxFramebufferHeight(), "Maximum viewport height is: %i, given height is: %i", m_DeviceLimits->getMaxFramebufferHeight(), height);
+        SR_CORE_PRECONDITION(width != 0, "Viewport width cannot be 0");
+        SR_CORE_PRECONDITION(height != 0, "Viewport height cannot be 0");
+
         m_Width = width;
         m_Height = height;
         bind();

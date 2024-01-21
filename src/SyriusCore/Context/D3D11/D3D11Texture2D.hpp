@@ -9,9 +9,9 @@ namespace Syrius{
 
     class D3D11Texture2D: public Texture2D{
     public:
-        D3D11Texture2D(const Texture2DDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11Texture2D(const Texture2DDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
-        D3D11Texture2D(const Texture2DImageDesc& desc, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11Texture2D(const Texture2DImageDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
         ~D3D11Texture2D() override;
 

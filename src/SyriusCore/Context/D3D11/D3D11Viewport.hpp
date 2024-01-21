@@ -9,7 +9,7 @@ namespace Syrius{
 
     class D3D11Viewport : public Viewport{
     public:
-        D3D11Viewport(const ViewportDesc& desc, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+        D3D11Viewport(const ViewportDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
         ~D3D11Viewport() override;
 
