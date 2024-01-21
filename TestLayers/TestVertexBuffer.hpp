@@ -20,4 +20,6 @@ private:
     ResourceView<VertexBuffer> m_VertexBuffer;
     ResourceView<VertexArray> m_VertexArray;
     ShaderProgram m_ShaderProgram;
+
+    bool m_DrawRectangle;
 };
