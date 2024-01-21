@@ -20,15 +20,6 @@ m_UseHdrTexture(false){
     texDesc.image = createResourceView(img);
     m_Texture = m_Context->createTexture2D(texDesc);
 
-    ImageFileDesc imgHdrDesc;
-    imgHdrDesc.fileName = "./Resources/Textures/HDR_029_Sky_Cloudy/HDR_029_Sky_Cloudy_Ref.hdr";
-    imgHdrDesc.flipOnAccess = true;
-    auto imgHdr = createImage(imgHdrDesc);
-    imgHdr->extendAlpha();
-    Texture2DImageDesc texHdrDesc;
-    texHdrDesc.image = createResourceView(imgHdr);
-    m_HdrTexture = m_Context->createTexture2D(texHdrDesc);
-
     m_Window->createImGuiContext();
 }
 
@@ -49,11 +40,7 @@ void TestTexture::onRender() {
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();
-    if (m_UseHdrTexture) {
-        m_HdrTexture->bind(0);
-    } else {
-        m_Texture->bind(0);
-    }
+    m_Texture->bind(0);
     m_Sampler->bind(0);
     m_Context->draw(m_VertexArray);
 

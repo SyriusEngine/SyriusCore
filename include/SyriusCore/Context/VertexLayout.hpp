@@ -21,6 +21,8 @@ namespace Syrius{
 
         void addAttribute(const std::string& name, SR_SCALAR_TYPE dataType);
 
+        bool hasAttribute(const std::string& name) const;
+
         [[nodiscard]] uint32 getStride() const;
 
         [[nodiscard]] const std::vector<VertexAttribute>& getAttributes() const;

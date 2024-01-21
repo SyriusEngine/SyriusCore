@@ -112,7 +112,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
     src/SyriusCore/Context/Utils.cpp
     src/SyriusCore/Context/ShaderModule.cpp
     src/SyriusCore/Context/Shader.cpp
-    src/SyriusCore/Context/VertexDescription.cpp
+    src/SyriusCore/Context/VertexLayout.cpp
     src/SyriusCore/Context/VertexBuffer.cpp
     src/SyriusCore/Context/IndexBuffer.cpp
     src/SyriusCore/Context/VertexArray.cpp

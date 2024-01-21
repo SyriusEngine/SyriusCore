@@ -27,11 +27,11 @@ namespace Syrius{
         return m_Count;
     }
 
-    SR_BUFFER_USAGE VertexBuffer::getType() const {
+    SR_BUFFER_USAGE VertexBuffer::getUsage() const {
         return m_Type;
     }
 
-    const ResourceView<VertexLayout>& VertexBuffer::getVertexDescription() const {
+    const ResourceView<VertexLayout>& VertexBuffer::getLayout() const {
         return m_Layout;
     }
 }

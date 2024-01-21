@@ -29,15 +29,15 @@ namespace Syrius{
 
         [[nodiscard]] uint32 getCount() const;
 
-        [[nodiscard]] SR_BUFFER_USAGE getType() const;
+        [[nodiscard]] SR_BUFFER_USAGE getUsage() const;
 
-        [[nodiscard]] const ResourceView<VertexLayout>& getVertexDescription() const;
+        [[nodiscard]] const ResourceView<VertexLayout>& getLayout() const;
 
     protected:
         uint32 m_Size;
         uint32 m_Count;
         ResourceView<VertexLayout> m_Layout;
-        SR_BUFFER_USAGE m_Type;
+        const SR_BUFFER_USAGE m_Type;
 
     };
 

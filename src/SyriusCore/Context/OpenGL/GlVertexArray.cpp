@@ -12,7 +12,7 @@ namespace Syrius{
         uint32 offset = 0;
         uint32 attribPtr = 0;
 
-        for (const auto& element: m_VertexBuffer->getVertexDescription()->getAttributes()) {
+        for (const auto& element: m_VertexBuffer->getLayout()->getAttributes()) {
             glEnableVertexArrayAttrib(m_ArrayID, attribPtr);
             glVertexArrayAttribBinding(m_ArrayID, attribPtr, 0);
             SR_TYPE dataType = getScalarType(element.type);
@@ -75,7 +75,7 @@ namespace Syrius{
         uint32 offset = 0;
         uint32 attribPtr = 0;
 
-        for (const auto& element: m_VertexBuffer->getVertexDescription()->getAttributes()) {
+        for (const auto& element: m_VertexBuffer->getLayout()->getAttributes()) {
             glEnableVertexArrayAttrib(m_ArrayID, attribPtr);
             glVertexArrayAttribBinding(m_ArrayID, attribPtr, 0);
             SR_TYPE dataType = getScalarType(element.type);

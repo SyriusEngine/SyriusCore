@@ -24,7 +24,7 @@ namespace Syrius{
         return m_Count;
     }
 
-    SR_BUFFER_USAGE IndexBuffer::getType() const {
+    SR_BUFFER_USAGE IndexBuffer::getUsage() const {
         return m_Type;
     }
 

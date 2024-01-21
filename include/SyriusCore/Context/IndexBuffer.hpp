@@ -27,14 +27,14 @@ namespace Syrius{
 
         [[nodiscard]] uint32 getCount() const;
 
-        [[nodiscard]] SR_BUFFER_USAGE getType() const;
+        [[nodiscard]] SR_BUFFER_USAGE getUsage() const;
 
         [[nodiscard]] SR_TYPE getDataType() const;
 
     protected:
         uint32 m_Size;
         uint32 m_Count;
-        SR_BUFFER_USAGE m_Type;
-        SR_TYPE m_DataType;
+        const SR_BUFFER_USAGE m_Type;
+        const SR_TYPE m_DataType;
     };
 }

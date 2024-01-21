@@ -13,45 +13,45 @@ namespace Syrius{
 
         ~D3D11DeviceLimits() override = default;
 
-        std::string getAPIVersion() override;
+        std::string getAPIVersion() const override;
 
-        std::string getDeviceName() override;
+        std::string getDeviceName() const override;
 
-        std::string getDeviceVendor() override;
+        std::string getDeviceVendor() const override;
 
-        std::string getShadingLanguageVersion() override;
+        std::string getShadingLanguageVersion() const override;
 
-        uint32 getMaxFramebufferWidth() override;
+        uint32 getMaxFramebufferWidth() const override;
 
-        uint32 getMaxFramebufferHeight() override;
+        uint32 getMaxFramebufferHeight() const override;
 
-        uint32 getMaxFramebufferColorAttachments() override;
+        uint32 getMaxFramebufferColorAttachments() const override;
 
-        uint32 getMaxViewportWidth() override;
+        uint32 getMaxViewportWidth() const override;
 
-        uint32 getMaxViewportHeight() override;
+        uint32 getMaxViewportHeight() const override;
 
-        uint32 getMaxTextureSlots() override;
+        uint32 getMaxTextureSlots() const override;
 
-        uint32 getMaxTextureSize() override;
+        uint32 getMaxTextureSize() const override;
 
-        uint32 getMaxSSSBOSlots() override;
+        uint32 getMaxSSSBOSlots() const override;
 
-        uint32 getMaxConstantBufferSize() override;
+        uint32 getMaxConstantBufferSize() const override;
 
-        uint32 getMaxConstantBufferSlots() override;
+        uint32 getMaxConstantBufferSlots() const override;
 
-        uint32 getMaxDepthBufferBits() override;
+        uint32 getMaxDepthBufferBits() const override;
 
-        uint32 getMaxVertexAttributes() override;
+        uint32 getMaxVertexAttributes() const override;
 
-        uint32 getMaxVertices() override; // maximum number of vertices for a draw call
+        uint64 getMaxVertexCount() const override; // maximum number of vertices for a draw call
 
-        uint32 getMaxIndices() override; // maximum number of indices for a draw call
+        uint64 getMaxIndexCount() const override; // maximum number of indices for a draw call
 
-        uint32 getMaxIndex() override; // largest index value for a draw call
+        uint64 getMaxIndex() const override; // largest index value for a draw call
 
-        bool isDoubleBuffered() override;
+        bool isDoubleBuffered() const override;
 
     private:
         ID3D11Device* m_device;

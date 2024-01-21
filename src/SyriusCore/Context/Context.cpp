@@ -5,9 +5,7 @@ namespace Syrius{
 
     Context::Context(const ContextDesc& desc)
     : m_VerticalSync(false),
-    m_Type(desc.api),
-    m_Width(desc.backBufferWidth),
-    m_Height(desc.backBufferHeight){
+    m_Type(desc.api){
         SR_CORE_MESSAGE("Created context with backend: " + getAPIName(m_Type));
     }
 
@@ -39,8 +37,8 @@ namespace Syrius{
     }
 
     void Context::onResize(uint32 width, uint32 height) {
-        m_Width = width;
-        m_Height = height;
+        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+
         m_FrameBuffers[0]->onResize(width, height);
     }
 
@@ -50,7 +48,7 @@ namespace Syrius{
     }
 
     void Context::beginRenderPass() {
-        SR_CORE_PRECONDITION(m_FrameBuffers.size() > 0, "No framebuffers created");
+        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
 
         m_FrameBuffers[0]->bind();
         m_FrameBuffers[0]->clear();
@@ -61,16 +59,48 @@ namespace Syrius{
     }
 
     void Context::endRenderPass() {
-        SR_CORE_PRECONDITION(m_FrameBuffers.size() > 0, "No framebuffers created");
+        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
 
         m_FrameBuffers[0]->unbind();
     }
 
+    void Context::clear() {
+        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+
+        m_FrameBuffers[0]->clear();
+    }
+
+    void Context::setClearColor(float r, float g, float b, float a) {
+        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+
+        m_FrameBuffers[0]->getColorAttachment(0)->setClearColor(r, g, b, a);
+    }
+
+    float* Context::getClearColor() {
+        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+
+        return m_FrameBuffers[0]->getColorAttachment(0)->getClearColor();
+    }
+
+    void Context::draw(const ResourceView<VertexArray>& vertexArray) {
+        vertexArray->drawBuffers();
+    }
+
+    void Context::drawInstanced(const ResourceView<VertexArray> &vertexArray, uint32 instanceCount) {
+        vertexArray->drawBuffersInstanced(instanceCount);
+    }
+
+    const Resource<DeviceLimits>& Context::getDeviceLimits() const {
+        return m_DeviceLimits;
+    }
+
     uint32 Context::getWidth() const {
-        return m_Width;
+        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+
+        return m_FrameBuffers[0]->getColorAttachment(0)->getWidth();
     }
 
     uint32 Context::getHeight() const {
-        return m_Height;
+        return m_FrameBuffers[0]->getColorAttachment(0)->getHeight();;
     }
 }

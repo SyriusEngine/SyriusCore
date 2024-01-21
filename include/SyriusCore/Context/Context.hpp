@@ -101,44 +101,17 @@ namespace Syrius{
 
         virtual void endRenderPass();
 
-        /**
-         * @brief Clears the default framebuffer
-         */
-        inline void clear(){
-            m_FrameBuffers[0]->clear();
-        }
+        void clear();
 
-        /**
-         * @brief Sets the clear color of the default framebuffer
-         * @param r red component
-         * @param g green component
-         * @param b blue component
-         * @param a alpha component
-         */
-        inline void setClearColor(float r, float g, float b, float a = 1.0f){
-            m_FrameBuffers[0]->getColorAttachment(0)->setClearColor(r, g, b, a);
-        }
+        void setClearColor(float r, float g, float b, float a = 1.0f);
 
-        /**
-         * @brief returns the clear color of the default framebuffer. This default framebuffer only has one color attachment.
-         *        The returned array is of size 4 and contains the components in the following order: r, g, b, a
-         * @return float array containing the clear color
-         */
-        inline float* getClearColor(){
-            return m_FrameBuffers[0]->getColorAttachment(0)->getClearColor();
-        }
+        float* getClearColor();
 
-        inline void draw(const ResourceView<VertexArray>& vertexArray){
-            vertexArray->drawBuffers();
-        }
+        void draw(const ResourceView<VertexArray>& vertexArray);
 
-        inline void drawInstanced(const ResourceView<VertexArray>& vertexArray, uint32 instanceCount){
-            vertexArray->drawBuffersInstanced(instanceCount);
-        }
+        void drawInstanced(const ResourceView<VertexArray>& vertexArray, uint32 instanceCount);
 
-        inline const std::unique_ptr<DeviceLimits>& getDeviceLimits() const{
-            return m_DeviceLimits;
-        }
+        const Resource<DeviceLimits>& getDeviceLimits() const;
 
         [[nodiscard]] uint32 getWidth() const;
 
@@ -161,12 +134,10 @@ namespace Syrius{
         friend SyriusWindow;
 
     protected:
-        uint32 m_Width;
-        uint32 m_Height;
 
         bool m_VerticalSync;
 
-        std::unique_ptr<DeviceLimits> m_DeviceLimits;
+        Resource<DeviceLimits> m_DeviceLimits;
 
         /*
          * The reason why the context must own all resources at all times is that the objects always depend on some

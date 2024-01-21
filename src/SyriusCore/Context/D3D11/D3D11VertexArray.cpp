@@ -14,7 +14,7 @@ namespace Syrius{
 
         uint32 index = 0;
         uint32 offset = 0;
-        for (const auto& attr: m_VertexBuffer->getVertexDescription()->getAttributes()){
+        for (const auto& attr: m_VertexBuffer->getLayout()->getAttributes()){
             D3D11_INPUT_ELEMENT_DESC element;
             element.SemanticName = attr.name.c_str();
             element.SemanticIndex = 0;
@@ -88,7 +88,7 @@ namespace Syrius{
 
         uint32 index = 0;
         uint32 offset = 0;
-        for (const auto& attr: m_VertexBuffer->getVertexDescription()->getAttributes()){
+        for (const auto& attr: m_VertexBuffer->getLayout()->getAttributes()){
             D3D11_INPUT_ELEMENT_DESC element;
             element.SemanticName = attr.name.c_str();
             element.SemanticIndex = 0;

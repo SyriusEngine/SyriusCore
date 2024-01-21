@@ -189,8 +189,8 @@ void printContextInfo(const ResourceView<Context>& context){
     deviceInfo += "Max Constant Buffer Size         : " + std::to_string(deviceLimits->getMaxConstantBufferSize()) + "\n";
     deviceInfo += "Max Depth Buffer Bits            : " + std::to_string(deviceLimits->getMaxDepthBufferBits()) + "\n";
     deviceInfo += "Max Vertex Attributes            : " + std::to_string(deviceLimits->getMaxVertexAttributes()) + "\n";
-    deviceInfo += "Max Vertex Count                 : " + std::to_string(deviceLimits->getMaxVertices()) + "\n";
-    deviceInfo += "Max Index Count                  : " + std::to_string(deviceLimits->getMaxIndices()) + "\n";
+    deviceInfo += "Max Vertex Count                 : " + std::to_string(deviceLimits->getMaxVertexCount()) + "\n";
+    deviceInfo += "Max Index Count                  : " + std::to_string(deviceLimits->getMaxIndexCount()) + "\n";
     deviceInfo += "Largest Possible Index           : " + std::to_string(deviceLimits->getMaxIndex()) + "\n";
     deviceInfo += "Is Double Buffered               : " + std::to_string(deviceLimits->isDoubleBuffered()) + "\n";
 

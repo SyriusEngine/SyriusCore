@@ -18,8 +18,8 @@ namespace Syrius{
     }
 
 
-    VertexLayout::VertexLayout()
-    : m_Stride(0),
+    VertexLayout::VertexLayout():
+    m_Stride(0),
     m_AttributeCount(0){
 
     }
@@ -27,6 +27,9 @@ namespace Syrius{
     VertexLayout::~VertexLayout() = default;
 
     void VertexLayout::addAttribute(const std::string &name, SR_SCALAR_TYPE dataType) {
+        SR_CORE_PRECONDITION(!hasAttribute(name), "Vertex attribute with name %s already exists", name.c_str());
+
+
         uint8 elementCount = getScalarComponentCount(dataType);
         uint8 size = getScalarSize(dataType);
 
@@ -34,6 +37,15 @@ namespace Syrius{
         m_Stride += size;
         m_AttributeCount++;
 
+    }
+
+    bool VertexLayout::hasAttribute(const std::string &name) const {
+        for(const auto& attribute : m_Attributes){
+            if(attribute.name == name){
+                return true;
+            }
+        }
+        return false;
     }
 
     uint32 VertexLayout::getStride() const {
