@@ -23,7 +23,7 @@ namespace Syrius{
         return status;
     }
 
-    GlFrameBuffer::GlFrameBuffer(const ResourceView<FrameBufferDescription> &desc, const Resource<DeviceLimits>& deviceLimits) :
+    GlFrameBuffer::GlFrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits) :
     FrameBuffer(desc, deviceLimits),
     m_FrameBufferID(0){
         for (const auto& viewDesc: desc->getViewportDesc()){
@@ -96,7 +96,7 @@ namespace Syrius{
         m_DepthStencilAttachment->unbind();
     }
 
-    GlDefaultFrameBuffer::GlDefaultFrameBuffer(const ResourceView<FrameBufferDescription> &desc, const Resource<DeviceLimits>& deviceLimits) :
+    GlDefaultFrameBuffer::GlDefaultFrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits) :
     FrameBuffer(desc, deviceLimits) {
         auto viewport = new GlViewport(desc->getViewportDesc().back(), m_DeviceLimits);
         m_Viewports.emplace_back(viewport);

@@ -44,7 +44,7 @@ namespace Syrius{
                 ));
 
 
-        auto defaultFbDesc = createFrameBufferDescription();
+        auto defaultFbDesc = createFrameBufferLayout();
 
         ViewportDesc viewportDesc;
         viewportDesc.width = desc.backBufferWidth;
@@ -245,7 +245,7 @@ namespace Syrius{
         return createResourceView(m_Samplers.back());
     }
 
-    ResourceView<FrameBuffer> D3D11Context::createFrameBuffer(const ResourceView<FrameBufferDescription> &desc) {
+    ResourceView<FrameBuffer> D3D11Context::createFrameBuffer(const ResourceView<FrameBufferLayout> &desc) {
         auto ptr = new D3D11FrameBuffer(desc, m_DeviceLimits, m_Device, m_DeviceContext);
         m_FrameBuffers.emplace_back(ptr);
         return createResourceView(m_FrameBuffers.back());

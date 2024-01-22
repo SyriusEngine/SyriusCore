@@ -30,8 +30,8 @@ namespace Syrius{
         return createResourceView(m_VertexDescriptions.back());
     }
 
-    ResourceView<FrameBufferDescription> Context::createFrameBufferDescription() {
-        auto ptr = new FrameBufferDescription();
+    ResourceView<FrameBufferLayout> Context::createFrameBufferLayout() {
+        auto ptr = new FrameBufferLayout();
         m_FrameBufferDescriptions.emplace_back(ptr);
         return createResourceView(m_FrameBufferDescriptions.back());
     }
@@ -101,6 +101,12 @@ namespace Syrius{
     }
 
     uint32 Context::getHeight() const {
+        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
         return m_FrameBuffers[0]->getColorAttachment(0)->getHeight();;
+    }
+
+    void Context::enableDepthTest(bool enable) {
+        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+        m_FrameBuffers[0]->enableDepthTest(enable);
     }
 }

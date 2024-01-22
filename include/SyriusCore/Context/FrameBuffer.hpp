@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Utils.hpp"
-#include "FramebufferDescription.hpp"
+#include "FrameBufferLayout.hpp"
 #include "Viewport.hpp"
 #include "ColorAttachment.hpp"
 #include "DepthStencilAttachment.hpp"
@@ -11,7 +11,7 @@ namespace Syrius{
 
     class SR_CORE_API FrameBuffer{
     public:
-        FrameBuffer(const ResourceView<FrameBufferDescription>& desc, const Resource<DeviceLimits>& deviceLimits);
+        FrameBuffer(const ResourceView<FrameBufferLayout>& desc, const Resource<DeviceLimits>& deviceLimits);
 
         virtual ~FrameBuffer();
 

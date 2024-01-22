@@ -119,7 +119,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
     src/SyriusCore/Context/Texture2D.cpp
     src/SyriusCore/Context/ConstantBuffer.cpp
     src/SyriusCore/Context/Sampler.cpp
-    src/SyriusCore/Context/FramebufferDescription.cpp
+    src/SyriusCore/Context/FrameBufferLayout.cpp
     src/SyriusCore/Context/FrameBuffer.cpp
     src/SyriusCore/Context/ColorAttachment.cpp
     src/SyriusCore/Context/DepthStencilAttachment.cpp

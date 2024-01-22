@@ -1,25 +1,25 @@
-#include "../../../include/SyriusCore/Context/FramebufferDescription.hpp"
+#include "../../../include/SyriusCore/Context/FrameBufferLayout.hpp"
 #include "../Utils/DebugMacros.hpp"
 
 namespace Syrius{
 
-    FrameBufferDescription::FrameBufferDescription(){
+    FrameBufferLayout::FrameBufferLayout(){
 
     }
 
-    void FrameBufferDescription::addViewportDesc(const ViewportDesc &desc) {
+    void FrameBufferLayout::addViewportDesc(const ViewportDesc &desc) {
         m_ViewportDesc.push_back(desc);
     }
 
-    void FrameBufferDescription::addColorAttachmentDesc(const ColorAttachmentDesc& desc) {
+    void FrameBufferLayout::addColorAttachmentDesc(const ColorAttachmentDesc& desc) {
         m_ColorAttachmentDesc.push_back(desc);
     }
 
-    void FrameBufferDescription::addDepthStencilAttachmentDesc(const DepthStencilAttachmentDesc& desc) {
+    void FrameBufferLayout::addDepthStencilAttachmentDesc(const DepthStencilAttachmentDesc& desc) {
         m_DepthStencilAttachmentDesc.push_back(desc);
     }
 
-    void FrameBufferDescription::configure() {
+    void FrameBufferLayout::configure() {
         if (m_ColorAttachmentDesc.empty() && m_DepthStencilAttachmentDesc.empty()){
             SR_CORE_EXCEPTION("No color or depth stencil attachment was added to the framebuffer description");
         }
@@ -32,15 +32,15 @@ namespace Syrius{
 
     }
 
-    const std::vector<ViewportDesc> &FrameBufferDescription::getViewportDesc() const {
+    const std::vector<ViewportDesc> &FrameBufferLayout::getViewportDesc() const {
         return m_ViewportDesc;
     }
 
-    const std::vector<ColorAttachmentDesc>& FrameBufferDescription::getColorAttachmentDesc() const {
+    const std::vector<ColorAttachmentDesc>& FrameBufferLayout::getColorAttachmentDesc() const {
         return m_ColorAttachmentDesc;
     }
 
-    const std::vector<DepthStencilAttachmentDesc>& FrameBufferDescription::getDepthStencilAttachmentDesc() const {
+    const std::vector<DepthStencilAttachmentDesc>& FrameBufferLayout::getDepthStencilAttachmentDesc() const {
         return m_DepthStencilAttachmentDesc;
     }
 

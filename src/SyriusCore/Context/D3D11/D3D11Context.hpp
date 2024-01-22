@@ -54,7 +54,7 @@ namespace Syrius{
 
         ResourceView<Sampler> createSampler(const SamplerDesc& desc) override;
 
-        ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferDescription>& desc) override;
+        ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferLayout>& desc) override;
 
         ResourceView<Cubemap> createCubemap(const CubemapDesc& desc) override;
 

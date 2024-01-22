@@ -6,11 +6,11 @@
 
 namespace Syrius{
 
-    class SR_CORE_API FrameBufferDescription{
+    class SR_CORE_API FrameBufferLayout{
     public:
-        FrameBufferDescription();
+        FrameBufferLayout();
 
-        ~FrameBufferDescription() = default;
+        ~FrameBufferLayout() = default;
 
         void addViewportDesc(const ViewportDesc& desc);
 

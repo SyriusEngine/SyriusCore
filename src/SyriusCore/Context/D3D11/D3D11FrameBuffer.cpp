@@ -4,7 +4,7 @@
 
 namespace Syrius{
 
-    D3D11FrameBuffer::D3D11FrameBuffer(const ResourceView<FrameBufferDescription> &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext):
+    D3D11FrameBuffer::D3D11FrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext):
     FrameBuffer(desc, deviceLimits),
     m_Device(device),
     m_DeviceContext(deviceContext),
@@ -82,7 +82,7 @@ namespace Syrius{
         m_DepthStencilView = m_D3D11DepthStencilAttachment->getDepthStencilView();
     }
 
-    D3D11DefaultFrameBuffer::D3D11DefaultFrameBuffer(const ResourceView<FrameBufferDescription> &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext, IDXGISwapChain *swapChain):
+    D3D11DefaultFrameBuffer::D3D11DefaultFrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext, IDXGISwapChain *swapChain):
     FrameBuffer(desc, deviceLimits),
     m_Device(device),
     m_DeviceContext(deviceContext),

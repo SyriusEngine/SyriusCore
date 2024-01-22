@@ -3,7 +3,7 @@
 
 namespace Syrius{
 
-    FrameBuffer::FrameBuffer(const ResourceView<FrameBufferDescription> &desc, const Resource<DeviceLimits>& deviceLimits):
+    FrameBuffer::FrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits):
     m_DeviceLimits(deviceLimits),
     m_DepthStencilAttachment(nullptr){
         SR_CORE_PRECONDITION(desc->getColorAttachmentDesc().size() < m_DeviceLimits->getMaxFramebufferColorAttachments(),

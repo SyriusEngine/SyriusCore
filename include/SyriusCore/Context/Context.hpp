@@ -13,7 +13,7 @@
 #include "Texture2D.hpp"
 #include "ConstantBuffer.hpp"
 #include "Sampler.hpp"
-#include "FramebufferDescription.hpp"
+#include "FrameBufferLayout.hpp"
 #include "FrameBuffer.hpp"
 #include "ColorAttachment.hpp"
 #include "DepthStencilAttachment.hpp"
@@ -83,9 +83,9 @@ namespace Syrius{
 
         virtual ResourceView<Sampler> createSampler(const SamplerDesc& desc) = 0;
 
-        ResourceView<FrameBufferDescription> createFrameBufferDescription();
+        ResourceView<FrameBufferLayout> createFrameBufferLayout();
 
-        virtual ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferDescription>& desc) = 0;
+        virtual ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferLayout>& desc) = 0;
 
         virtual ResourceView<Cubemap> createCubemap(const CubemapDesc& desc) = 0;
 
@@ -111,7 +111,9 @@ namespace Syrius{
 
         void drawInstanced(const ResourceView<VertexArray>& vertexArray, uint32 instanceCount);
 
-        const Resource<DeviceLimits>& getDeviceLimits() const;
+        void enableDepthTest(bool enable);
+
+        [[nodiscard]] const Resource<DeviceLimits>& getDeviceLimits() const;
 
         [[nodiscard]] uint32 getWidth() const;
 
@@ -158,7 +160,7 @@ namespace Syrius{
         std::vector<Resource<ConstantBuffer>> m_ConstantBuffers;
         std::vector<Resource<Texture2D>> m_Textures2D;
         std::vector<Resource<Sampler>> m_Samplers;
-        std::vector<Resource<FrameBufferDescription>> m_FrameBufferDescriptions;
+        std::vector<Resource<FrameBufferLayout>> m_FrameBufferDescriptions;
         std::vector<Resource<FrameBuffer>> m_FrameBuffers; // framebuffer at location 0 is the default framebuffer
         std::vector<Resource<Cubemap>> m_Cubemaps;
 

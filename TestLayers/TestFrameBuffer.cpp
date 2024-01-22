@@ -51,7 +51,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     texDesc.image = createResourceView(img);
     m_AwesomeFaceTexture = m_Context->createTexture2D(texDesc);
 
-    auto fbDesc = m_Context->createFrameBufferDescription();
+    auto fbDesc = m_Context->createFrameBufferLayout();
     ViewportDesc vpDesc;
     vpDesc.width = window->getWidth();
     vpDesc.height = window->getHeight();

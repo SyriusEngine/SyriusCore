@@ -12,7 +12,7 @@ namespace Syrius{
 
     class D3D11FrameBuffer : public FrameBuffer{
     public:
-        D3D11FrameBuffer(const ResourceView<FrameBufferDescription>& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+        D3D11FrameBuffer(const ResourceView<FrameBufferLayout>& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
         ~D3D11FrameBuffer() override;
 
@@ -37,7 +37,7 @@ namespace Syrius{
 
     class D3D11DefaultFrameBuffer : public FrameBuffer{
     public:
-        D3D11DefaultFrameBuffer(const ResourceView<FrameBufferDescription>& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* swapChain);
+        D3D11DefaultFrameBuffer(const ResourceView<FrameBufferLayout>& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* swapChain);
 
         ~D3D11DefaultFrameBuffer() override;
 
