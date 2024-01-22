@@ -145,12 +145,12 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     right->extendAlpha();
 
     CubemapImageDesc cubemapDesc;
-    cubemapDesc.faces[0] = createResourceView(right);
-    cubemapDesc.faces[1] = createResourceView(left);
-    cubemapDesc.faces[2] = createResourceView(top);
-    cubemapDesc.faces[3] = createResourceView(bottom);
-    cubemapDesc.faces[4] = createResourceView(front);
-    cubemapDesc.faces[5] = createResourceView(back);
+    cubemapDesc.faces[SR_CUBEMAP_FACE_RIGHT] = createResourceView(right);
+    cubemapDesc.faces[SR_CUBEMAP_FACE_LEFT] = createResourceView(left);
+    cubemapDesc.faces[SR_CUBEMAP_FACE_TOP] = createResourceView(top);
+    cubemapDesc.faces[SR_CUBEMAP_FACE_BOTTOM] = createResourceView(bottom);
+    cubemapDesc.faces[SR_CUBEMAP_FACE_FRONT] = createResourceView(front);
+    cubemapDesc.faces[SR_CUBEMAP_FACE_BACK] = createResourceView(back);
     m_Cubemap = m_Context->createCubemap(cubemapDesc);
 
 }
@@ -186,20 +186,19 @@ void TestCubemap::onEvent(const Event &event) {
 void TestCubemap::render() {
     m_Sampler->bind(0);
 
-    m_Texture->bind(0);
-
     m_ModelDataBuffer->bind(2);
     m_Camera.bind(1);
     m_Projection.bind(0);
     m_LerpBuffer->bind(4);
-    m_ShaderProgram.shaderProgram->bind();
-    m_Context->draw(m_VertexArray);
 
-    m_Context->getDefaultFrameBuffer()->setDepthFunc(SR_COMPARISON_FUNC_LESS_EQUAL);
     m_CubemapProgram.shaderProgram->bind();
     m_Cubemap->bind(0);
     m_Context->draw(m_CubemapVertexArray);
-    m_Context->getDefaultFrameBuffer()->setDepthFunc(SR_COMPARISON_FUNC_LESS);
+
+    m_Texture->bind(0);
+    m_ShaderProgram.shaderProgram->bind();
+    m_Context->draw(m_VertexArray);
+
 }
 
 void TestCubemap::renderImGui() {

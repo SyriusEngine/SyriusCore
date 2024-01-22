@@ -82,6 +82,15 @@ typedef enum SR_TEXTURE_WRAP{
     SR_TEXTURE_WRAP_CLAMP_BORDER    = 0x04
 } SR_TEXTURE_ADDRESS_WRAP;
 
+typedef enum SR_CUBEMAP_FACE{
+    SR_CUBEMAP_FACE_RIGHT   = 0x00,
+    SR_CUBEMAP_FACE_LEFT    = 0x01,
+    SR_CUBEMAP_FACE_TOP     = 0x02,
+    SR_CUBEMAP_FACE_BOTTOM  = 0x03,
+    SR_CUBEMAP_FACE_FRONT    = 0x04,
+    SR_CUBEMAP_FACE_BACK   = 0x05
+} SR_CUBEMAP_FACE;
+
 namespace Syrius{
 
     std::string SR_CORE_API getShaderTypeString(SR_SHADER_TYPE type);

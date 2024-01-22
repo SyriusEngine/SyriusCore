@@ -167,6 +167,13 @@ void TestFrameBuffer::renderImGui() {
     }
     ImGui::Checkbox("Sample from color attachment", &m_SampleFromColorAttachment);
 
+    if (ImGui::Button("Save")){
+        auto img = m_FrameBuffer->getColorAttachment(0)->getData();
+        ImageFileDesc desc;
+        desc.fileName = "test.png";
+        img->writeToFile(desc);
+    }
+
     // memory allocation tracker
     ImGui::Columns(2, "Memory Allocation Tracker");
     ImGui::Separator();
