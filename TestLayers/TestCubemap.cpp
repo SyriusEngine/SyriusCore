@@ -184,7 +184,7 @@ void TestCubemap::onEvent(const Event &event) {
 }
 
 void TestCubemap::render() {
-    m_Sampler->bind(0);
+    m_Sampler->bindShaderResource(0);
 
     m_ModelDataBuffer->bind(2);
     m_Camera.bind(1);

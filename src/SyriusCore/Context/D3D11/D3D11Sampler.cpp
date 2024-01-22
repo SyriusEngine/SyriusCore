@@ -33,7 +33,7 @@ namespace Syrius{
         }
     }
 
-    void D3D11Sampler::bind(uint32 slot) {
+    void D3D11Sampler::bindShaderResource(uint32 slot) {
         m_Context->PSSetSamplers(slot, 1, &m_Sampler);
     }
 

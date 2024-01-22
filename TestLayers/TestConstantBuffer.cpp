@@ -52,7 +52,7 @@ void TestConstantBuffer::onUpdate() {
 
     m_ShaderProgram.shaderProgram->bind();
     m_Texture->bindShaderResource(0);
-    m_Sampler->bind(0);
+    m_Sampler->bindShaderResource(0);
     m_TransformBuffer->bind(0);
     m_LerpBuffer->bind(4);
     m_Context->draw(m_VertexArray);

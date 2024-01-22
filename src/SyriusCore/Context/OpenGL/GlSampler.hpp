@@ -11,7 +11,7 @@ namespace Syrius{
 
         ~GlSampler() override;
 
-        void bind(uint32 slot) override;
+        void bindShaderResource(uint32 slot) override;
 
         [[nodiscard]] uint64 getIdentifier() override;
 

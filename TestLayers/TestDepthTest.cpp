@@ -79,7 +79,7 @@ void TestDepthTest::onEvent(const Event &event) {
 }
 
 void TestDepthTest::render() {
-    m_Sampler->bind(0);
+    m_Sampler->bindShaderResource(0);
     m_Texture->bindShaderResource(0);
 
     m_ModelDataBuffer->bind(2);

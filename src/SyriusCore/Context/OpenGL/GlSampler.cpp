@@ -2,9 +2,9 @@
 
 namespace Syrius{
 
-    GlSampler::GlSampler(const SamplerDesc &desc)
-    : Sampler(desc),
-      m_SamplerID(0){
+    GlSampler::GlSampler(const SamplerDesc &desc):
+    Sampler(desc),
+    m_SamplerID(0){
         glCreateSamplers(1, &m_SamplerID);
 
         glSamplerParameteri(m_SamplerID, GL_TEXTURE_WRAP_S, getGlTextureWrap(desc.wrapU));
@@ -26,7 +26,7 @@ namespace Syrius{
         glDeleteSamplers(1, &m_SamplerID);
     }
 
-    void GlSampler::bind(uint32 slot) {
+    void GlSampler::bindShaderResource(uint32 slot) {
         glBindSampler(slot, m_SamplerID);
     }
 

@@ -23,7 +23,7 @@ namespace Syrius{
 
         virtual ~Sampler();
 
-        virtual void bind(uint32 slot) = 0;
+        virtual void bindShaderResource(uint32 slot) = 0;
 
         [[nodiscard]] virtual uint64 getIdentifier() = 0;
 

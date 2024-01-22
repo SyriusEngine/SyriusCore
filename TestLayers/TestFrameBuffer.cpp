@@ -107,7 +107,7 @@ void TestFrameBuffer::onEvent(const Event &event) {
 }
 
 void TestFrameBuffer::render() {
-    m_Sampler->bind(0);
+    m_Sampler->bindShaderResource(0);
 
     m_Context->beginRenderPass(m_FrameBuffer);
     m_AwesomeFaceTexture->bindShaderResource(0);
