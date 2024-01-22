@@ -34,7 +34,9 @@ namespace Syrius{
 
         virtual ~Cubemap();
 
-        virtual void bind(uint32 slot) = 0;
+        virtual void bind() = 0;
+
+        virtual void bindShaderResource(uint32 slot) = 0;
 
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 

@@ -15,7 +15,9 @@ namespace Syrius{
 
         ~D3D11Cubemap() override;
 
-        void bind(uint32 slot) override;
+        void bind() override;
+
+        void bindShaderResource(uint32 slot) override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
 

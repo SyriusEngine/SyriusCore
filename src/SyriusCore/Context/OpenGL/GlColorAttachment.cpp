@@ -61,14 +61,16 @@ namespace Syrius{
 
     Resource<Image> GlColorAttachment::getData() {
         uint32 size = m_Width * m_Height * m_ChannelCount;
-        auto data = Resource<uint8>(new uint8[size]);
-        glGetTextureImage(m_TextureID, 0, m_GlFormat, GL_UNSIGNED_BYTE, size, data.get());
+        auto data = new uint8[size];
+        glGetTextureImage(m_TextureID, 0, m_GlFormat, GL_UNSIGNED_BYTE, size, data);
         ImageUI8Desc imgDesc;
         imgDesc.width = m_Width;
         imgDesc.height = m_Height;
         imgDesc.format = m_Format;
-        imgDesc.data = data.get();
-        return createImageUI8(imgDesc);
+        imgDesc.data = data;
+        auto img =  createImageUI8(imgDesc);
+        delete[] data;
+        return std::move(img);
     }
 
     uint64 GlColorAttachment::getIdentifier() const {

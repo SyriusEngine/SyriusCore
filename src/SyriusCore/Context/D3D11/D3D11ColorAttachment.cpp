@@ -19,7 +19,7 @@ namespace Syrius {
     }
 
     void D3D11ColorAttachment::bind() {
-
+        // D3D11 doesn't have a bind function
     }
 
     void D3D11ColorAttachment::bindShaderResource(uint32 slot) {

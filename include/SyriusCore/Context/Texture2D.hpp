@@ -28,16 +28,13 @@ namespace Syrius{
 
         virtual ~Texture2D();
 
-        virtual void bind(uint32 slot) = 0;
+        virtual void bind() = 0;
+
+        virtual void bindShaderResource(uint32 slot) = 0;
 
         virtual void unbind() = 0;
 
         virtual void setData(const void* data, uint32 x, uint32 y, uint32 width, uint32 height) = 0;
-
-        inline void setData(Resource<Image>& img, uint32 x, uint32 y, uint32 width, uint32 height){
-            auto* data = img->getData();
-            setData(data, x, y, width, height);
-        }
 
         virtual Resource<Image> getData() = 0;
 

@@ -8,8 +8,7 @@ namespace Syrius{
     m_Height(desc.height),
     m_Format(desc.format),
     m_DeviceLimits(deviceLimits),
-    m_ClearColor{desc.clearColor[0], desc.clearColor[1], desc.clearColor[2], desc.clearColor[3]},
-    m_EnableShaderRead(desc.enableShaderRead){
+    m_ClearColor{desc.clearColor[0], desc.clearColor[1], desc.clearColor[2], desc.clearColor[3]}{
         SR_CORE_PRECONDITION(m_Width <= m_DeviceLimits->getMaxFramebufferWidth(), "[ColorAttachment]: Supplied width (%i) exceeds device limit of %i", m_Width, m_DeviceLimits->getMaxFramebufferWidth());
         SR_CORE_PRECONDITION(m_Height <= m_DeviceLimits->getMaxFramebufferHeight(), "[ColorAttachment]: Supplied height (%i) exceeds device limit of %i", m_Height, m_DeviceLimits->getMaxFramebufferHeight());
         SR_CORE_PRECONDITION(m_Width > 0, "[ColorAttachment]: Supplied width (%i) must be greater than 0", m_Width);
@@ -44,7 +43,4 @@ namespace Syrius{
         return m_ClearColor;
     }
 
-    bool ColorAttachment::shaderReadEnabled() const {
-        return m_EnableShaderRead;
-    }
 }

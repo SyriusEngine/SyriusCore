@@ -110,7 +110,7 @@ void TestFrameBuffer::render() {
     m_Sampler->bind(0);
 
     m_Context->beginRenderPass(m_FrameBuffer);
-    m_AwesomeFaceTexture->bind(0);
+    m_AwesomeFaceTexture->bindShaderResource(0);
 
     m_ModelDataBuffer->bind(2);
     m_Camera.bind(1);

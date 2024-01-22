@@ -32,7 +32,11 @@ namespace Syrius{
 
     }
 
-    void D3D11Texture2D::bind(uint32_t slot) {
+    void D3D11Texture2D::bind() {
+        // D3D11 doesn't have a bind function
+    }
+
+    void D3D11Texture2D::bindShaderResource(uint32_t slot) {
         SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
 
         m_Context->PSSetShaderResources(slot, 1, &m_TextureView);

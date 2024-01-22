@@ -15,7 +15,9 @@ namespace Syrius{
 
         ~D3D11Texture2D() override;
 
-        void bind(uint32_t slot) override;
+        void bind() override;
+
+        void bindShaderResource(uint32_t slot) override;
 
         void unbind() override;
 

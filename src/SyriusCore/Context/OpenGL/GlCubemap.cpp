@@ -35,7 +35,11 @@ namespace Syrius{
         glDeleteTextures(1, &m_TextureID);
     }
 
-    void GlCubemap::bind(uint32 slot) {
+    void GlCubemap::bind() {
+        glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID);
+    }
+
+    void GlCubemap::bindShaderResource(uint32 slot) {
         SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
 
         glBindTextureUnit(slot, m_TextureID);

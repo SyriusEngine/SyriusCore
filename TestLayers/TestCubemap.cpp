@@ -191,13 +191,13 @@ void TestCubemap::render() {
     m_Projection.bind(0);
     m_LerpBuffer->bind(4);
 
-    m_CubemapProgram.shaderProgram->bind();
-    m_Cubemap->bind(0);
-    m_Context->draw(m_CubemapVertexArray);
-
-    m_Texture->bind(0);
+    m_Texture->bindShaderResource(0);
     m_ShaderProgram.shaderProgram->bind();
     m_Context->draw(m_VertexArray);
+
+    m_CubemapProgram.shaderProgram->bind();
+    m_Cubemap->bindShaderResource(0);
+    m_Context->draw(m_CubemapVertexArray);
 
 }
 

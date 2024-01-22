@@ -10,7 +10,6 @@ namespace Syrius{
         uint32 height               = SR_DEFAULT_HEIGHT;
         float clearColor[4]         = {0.1f, 0.2f, 0.3f, 1.0f};
         SR_TEXTURE_FORMAT format    = SR_TEXTURE_RGBA_F32;
-        bool enableShaderRead       = true; // enables sampling from this attachment in shaders
     };
 
     class SR_CORE_API ColorAttachment{
@@ -41,8 +40,6 @@ namespace Syrius{
 
         [[nodiscard]] float* getClearColor();
 
-        [[nodiscard]] bool shaderReadEnabled() const;
-
     protected:
         const Resource<DeviceLimits>& m_DeviceLimits;
 
@@ -50,7 +47,6 @@ namespace Syrius{
         uint32 m_Height;
         float m_ClearColor[4];
         SR_TEXTURE_FORMAT m_Format;
-        bool m_EnableShaderRead;
     };
 
 }

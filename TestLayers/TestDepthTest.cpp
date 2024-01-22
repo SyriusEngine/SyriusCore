@@ -80,7 +80,7 @@ void TestDepthTest::onEvent(const Event &event) {
 
 void TestDepthTest::render() {
     m_Sampler->bind(0);
-    m_Texture->bind(0);
+    m_Texture->bindShaderResource(0);
 
     m_ModelDataBuffer->bind(2);
     m_Camera.bind(1);

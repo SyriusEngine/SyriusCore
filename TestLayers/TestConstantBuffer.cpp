@@ -51,7 +51,7 @@ void TestConstantBuffer::onUpdate() {
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();
-    m_Texture->bind(0);
+    m_Texture->bindShaderResource(0);
     m_Sampler->bind(0);
     m_TransformBuffer->bind(0);
     m_LerpBuffer->bind(4);

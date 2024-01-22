@@ -40,7 +40,7 @@ void TestTexture::onRender() {
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();
-    m_Texture->bind(0);
+    m_Texture->bindShaderResource(0);
     m_Sampler->bind(0);
     m_Context->draw(m_VertexArray);
 
