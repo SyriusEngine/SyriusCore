@@ -2,7 +2,6 @@
 
 #include "../../../../include/SyriusCore/Context/ConstantBuffer.hpp"
 #include "GlUtils.hpp"
-#include "GlShader.hpp"
 
 namespace Syrius{
 

@@ -65,7 +65,7 @@ namespace Syrius{
         return D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION;
     }
 
-    uint32 D3D11DeviceLimits::getMaxSSSBOSlots() const {
+    uint32 D3D11DeviceLimits::getMaxShaderStorageBufferSlots() const {
         return D3D11_PS_CS_UAV_REGISTER_COUNT;
     }
 

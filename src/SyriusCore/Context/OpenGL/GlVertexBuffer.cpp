@@ -48,7 +48,7 @@ namespace Syrius{
 
     void GlVertexBuffer::createBuffer(const void *data) {
         glCreateBuffers(1, &m_BufferID);
-        glNamedBufferData(m_BufferID, m_Size, data, getGlBufferType(m_Usage));
+        glNamedBufferData(m_BufferID, m_Size, data, getGlBufferUsage(m_Usage));
     }
 
 

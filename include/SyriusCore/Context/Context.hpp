@@ -18,6 +18,7 @@
 #include "ColorAttachment.hpp"
 #include "DepthStencilAttachment.hpp"
 #include "Cubemap.hpp"
+#include "ShaderStorageBuffer.hpp"
 
 namespace Syrius{
 
@@ -93,6 +94,8 @@ namespace Syrius{
 
         virtual ResourceView<Cubemap> createCubemap(const CubemapImageDesc& desc) = 0;
 
+        virtual ResourceView<ShaderStorageBuffer> createShaderStorageBuffer(const ShaderStorageBufferDesc& desc) = 0;
+
         void onResize(uint32 width, uint32 height);
 
         virtual void beginRenderPass(const ResourceView<FrameBuffer>& frameBuffer);
@@ -165,6 +168,7 @@ namespace Syrius{
         std::vector<Resource<FrameBufferLayout>> m_FrameBufferDescriptions;
         std::vector<Resource<FrameBuffer>> m_FrameBuffers; // framebuffer at location 0 is the default framebuffer
         std::vector<Resource<Cubemap>> m_Cubemaps;
+        std::vector<Resource<ShaderStorageBuffer>> m_ShaderStorageBuffers;
 
 
     private:

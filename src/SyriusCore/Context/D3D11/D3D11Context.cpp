@@ -269,6 +269,12 @@ namespace Syrius{
         return createResourceView(m_Cubemaps.back());
     }
 
+    ResourceView<ShaderStorageBuffer> D3D11Context::createShaderStorageBuffer(const ShaderStorageBufferDesc &desc) {
+        auto ptr = new D3D11ShaderStorageBuffer(desc, m_DeviceLimits, m_Device, m_DeviceContext);
+        m_ShaderStorageBuffers.emplace_back(ptr);
+        return createResourceView(m_ShaderStorageBuffers.back());
+    }
+
 }
 
 #endif
