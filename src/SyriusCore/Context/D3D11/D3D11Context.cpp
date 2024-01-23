@@ -264,7 +264,15 @@ namespace Syrius{
     }
 
     ResourceView<ShaderStorageBuffer> D3D11Context::createShaderStorageBuffer(const ShaderStorageBufferDesc &desc) {
-        auto ptr = new D3D11ShaderStorageBuffer(desc, m_DeviceLimits, m_Device, m_DeviceContext);
+        D3D11ShaderStorageBufferBase* ptr = nullptr;
+        switch (desc.shaderStage) {
+            case SR_SHADER_VERTEX:      ptr = new D3D11ShaderStorageBufferVertex(desc, m_DeviceLimits, m_Device, m_DeviceContext); break;
+            case SR_SHADER_FRAGMENT:    ptr = new D3D11ShaderStorageBufferPixel(desc, m_DeviceLimits, m_Device, m_DeviceContext); break;
+            default: {
+                SR_CORE_EXCEPTION("Unsupported shader stage for constant buffer");
+
+            }
+        }
         m_ShaderStorageBuffers.emplace_back(ptr);
         return createResourceView(m_ShaderStorageBuffers.back());
     }

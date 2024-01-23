@@ -29,4 +29,6 @@ private:
 
     ResourceView<ShaderStorageBuffer> m_SSBO;
 
+    bool m_UsePositionAsColor;
+
 };

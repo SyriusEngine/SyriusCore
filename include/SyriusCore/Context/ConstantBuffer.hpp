@@ -26,18 +26,18 @@ namespace Syrius{
 
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 
-        [[nodiscard]] const std::string& getBlockName() const;
+        [[nodiscard]] const std::string& getName() const;
 
         [[nodiscard]] uint32 getSize() const;
 
-        [[nodiscard]] SR_BUFFER_USAGE getBufferType() const;
+        [[nodiscard]] SR_BUFFER_USAGE getUsage() const;
 
     protected:
         const Resource<DeviceLimits>& m_DeviceLimits;
 
-        uint32 m_Size;
-        SR_BUFFER_USAGE m_Type;
-        std::string m_BlockName;
+        const uint32 m_Size;
+        const SR_BUFFER_USAGE m_Usage;
+        const std::string m_Name;
     };
 
 }

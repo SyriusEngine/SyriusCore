@@ -10,6 +10,7 @@ namespace Syrius{
         const void* data = nullptr;
         uint32 size = 0;
         SR_BUFFER_USAGE usage = SR_BUFFER_USAGE_DEFAULT;
+        SR_SHADER_TYPE shaderStage = SR_SHADER_VERTEX;
     };
 
     class SR_CORE_API ShaderStorageBuffer{
@@ -32,12 +33,17 @@ namespace Syrius{
 
         [[nodiscard]] uint32 getSize() const;
 
+        [[nodiscard]] SR_BUFFER_USAGE getUsage() const;
+
+        [[nodiscard]] SR_SHADER_TYPE getShaderStage() const;
+
     protected:
         const Resource<DeviceLimits>& m_DeviceLimits;
 
         const std::string m_Name;
         const uint32 m_Size;
         const SR_BUFFER_USAGE m_Usage;
+        const SR_SHADER_TYPE m_ShaderStage;
     };
 
 }

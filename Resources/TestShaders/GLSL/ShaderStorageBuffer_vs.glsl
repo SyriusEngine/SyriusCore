@@ -8,11 +8,17 @@ layout (location = 16) out vec4 fColor;
 
 layout(std430, binding = 0) buffer PositionData{
     vec4 positionData[3];
+    bvec4 usePositionAsColor;
 };
 
 void main(){
     gl_Position = vec4(lPosition, 1.0);
-    fColor = vec4(lColor, 1.0);
+    if (usePositionAsColor.x){
+        fColor = vec4(lPosition, 1.0);
+    }
+    else{
+        fColor = vec4(lColor, 1.0);
+    }
 
     positionData[gl_VertexID] = gl_Position;
 }

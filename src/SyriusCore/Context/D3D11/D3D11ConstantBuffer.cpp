@@ -11,9 +11,9 @@ namespace Syrius{
     m_Buffer(nullptr){
         D3D11_BUFFER_DESC bufferDesc;
         bufferDesc.ByteWidth = m_Size;
-        bufferDesc.Usage = getD3d11BufferType(m_Type);
+        bufferDesc.Usage = getD3d11BufferType(m_Usage);
         bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-        if (m_Type == SR_BUFFER_USAGE_DYNAMIC){
+        if (m_Usage == SR_BUFFER_USAGE_DYNAMIC){
             bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
         }
         else{

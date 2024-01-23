@@ -6,15 +6,15 @@ const float s_Triangle[] = {
         0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
 };
 
-const float s_ZeroPosition[] = { // default SSBO data
-        0.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f
+struct PositionData{
+    glm::vec4 positionData[3];
+    glm::bvec4 usePositionAsColor = glm::bvec4(false);
 };
 
 TestShaderStorageBuffer::TestShaderStorageBuffer(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config) :
 Layer(context, window, config),
-m_TestShaderLibrary("./Resources/TestShaders", context){
+m_TestShaderLibrary("./Resources/TestShaders", context),
+m_UsePositionAsColor(false){
     m_Window->createImGuiContext();
 
     m_ShaderProgram = m_TestShaderLibrary.loadShader("ShaderStorageBuffer");
@@ -37,9 +37,10 @@ m_TestShaderLibrary("./Resources/TestShaders", context){
     vaoDesc.vertexBuffer = m_VertexBuffer;
     m_VertexArray = m_Context->createVertexArray(vaoDesc);
 
+    PositionData s_ZeroPosition;
     ShaderStorageBufferDesc ssboDesc;
-    ssboDesc.data = s_ZeroPosition;
-    ssboDesc.size = sizeof(s_ZeroPosition);
+    ssboDesc.data = &s_ZeroPosition;
+    ssboDesc.size = sizeof(PositionData);
     ssboDesc.usage = SR_BUFFER_USAGE_DYNAMIC;
     ssboDesc.name = "PositionData";
     m_SSBO = m_Context->createShaderStorageBuffer(ssboDesc);
@@ -75,13 +76,17 @@ void TestShaderStorageBuffer::renderImGui() {
     ImGui::NewLine();
     ImGui::TextWrapped("The expected data are the vertex positions of the triangle, so 3 float3 values.");
 
-    if (ImGui::Button("Read SSBO")) {
+    if (ImGui::Button("Read Vertex shader SSBO")) {
         auto resource = m_SSBO->getData();
         auto pData = reinterpret_cast<float*>(resource.get());
         for (int i = 0; i < 9; i += 4) {
             std::cout << "Vertex " << i / 3 << ": " << pData[i] << ", " << pData[i + 1] << ", " << pData[i + 2] << std::endl;
         }
-
+    }
+    if (ImGui::Checkbox("Use position as color", &m_UsePositionAsColor)) {
+        PositionData data;
+        data.usePositionAsColor = glm::bvec4(m_UsePositionAsColor);
+        m_SSBO->setData(&data, sizeof(PositionData));
     }
 
     ImGui::End();
