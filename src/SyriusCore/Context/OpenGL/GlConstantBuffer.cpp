@@ -6,7 +6,7 @@ namespace Syrius{
     ConstantBuffer(desc, deviceLimits),
     m_BufferID(0){
         glCreateBuffers(1, &m_BufferID);
-        glNamedBufferData(m_BufferID, m_Size, desc.data, getGlBufferType(desc.usage));
+        glNamedBufferData(m_BufferID, m_Size, desc.data, getGlBufferUsage(desc.usage));
     }
 
     GlConstantBuffer::~GlConstantBuffer() {

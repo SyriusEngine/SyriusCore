@@ -39,7 +39,10 @@ if (WIN32)
         src/SyriusCore/Context/D3D11/D3D11FrameBuffer.cpp
         src/SyriusCore/Context/D3D11/D3D11ColorAttachment.cpp
         src/SyriusCore/Context/D3D11/D3D11DepthStencilAttachment.cpp
-        src/SyriusCore/Context/D3D11/D3D11DeviceLimits.cpp src/SyriusCore/Context/D3D11/D3D11Cubemap.cpp src/SyriusCore/Context/D3D11/D3D11Cubemap.hpp)
+        src/SyriusCore/Context/D3D11/D3D11DeviceLimits.cpp
+        src/SyriusCore/Context/D3D11/D3D11Cubemap.cpp
+        src/SyriusCore/Context/D3D11/D3D11ShaderStorageBuffer.cpp
+        )
 
 elseif(UNIX)
     set(GLAD_PLATFORM_SRC
@@ -124,6 +127,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
     src/SyriusCore/Context/ColorAttachment.cpp
     src/SyriusCore/Context/DepthStencilAttachment.cpp
     src/SyriusCore/Context/Cubemap.cpp
+    src/SyriusCore/Context/ShaderStorageBuffer.cpp
 
     src/SyriusCore/Context/OpenGL/GlContext.cpp
     src/SyriusCore/Context/OpenGL/GlViewport.cpp
@@ -140,7 +144,8 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
     src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlCubemap.cpp
-    src/SyriusCore/Context/OpenGL/GlDeviceLimits.cpp)
+    src/SyriusCore/Context/OpenGL/GlDeviceLimits.cpp
+    src/SyriusCore/Context/OpenGL/GlShaderStorageBuffer.cpp )
 
 set(SYRIUSCORE_SRC
     ${SYRIUSCORE_CORE_SRC}

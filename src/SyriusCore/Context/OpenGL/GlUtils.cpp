@@ -51,7 +51,7 @@ namespace Syrius{
         }
     }
 
-    GLenum getGlBufferType(SR_BUFFER_USAGE type){
+    GLenum getGlBufferUsage(SR_BUFFER_USAGE type){
         switch (type){
             case SR_BUFFER_USAGE_DEFAULT: return GL_STATIC_DRAW;
             case SR_BUFFER_USAGE_DYNAMIC: return GL_DYNAMIC_DRAW;

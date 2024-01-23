@@ -109,6 +109,12 @@ namespace Syrius{
         return createResourceView(m_Cubemaps.back());
     }
 
+    ResourceView<ShaderStorageBuffer> GlContext::createShaderStorageBuffer(const ShaderStorageBufferDesc &desc) {
+        auto ptr = new GlShaderStorageBuffer(desc, m_DeviceLimits);
+        m_ShaderStorageBuffers.emplace_back(ptr);
+        return createResourceView(m_ShaderStorageBuffers.back());
+    }
+
     void GlContext::initGl(const ContextDesc& desc) {
         initGlad();
 

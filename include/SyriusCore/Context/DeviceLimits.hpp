@@ -92,7 +92,7 @@ namespace Syrius{
          *        The supported graphics APIs by SyriusCore guarantee that this value is at least 8.
          * @return uint32 containing the maximum number of shader storage buffer slots that can be bound to a shader
          */
-        [[nodiscard]] virtual uint32 getMaxSSSBOSlots() const = 0;
+        [[nodiscard]] virtual uint32 getMaxShaderStorageBufferSlots() const = 0;
 
         /**
          * @brief Retrieves the maximum size of a constant buffer in bytes.
