@@ -8,6 +8,7 @@
 #include "TestLayers/TestDepthTest.hpp"
 #include "TestLayers/TestFrameBuffer.hpp"
 #include "TestLayers/TestCubemap.hpp"
+#include "TestLayers/TestShaderStorageBuffer.hpp"
 
 template<typename T>
 void runTest(const std::string& iniFile){
@@ -32,6 +33,7 @@ void runAllTests(const std::string& iniFile){
     runTest<TestDepthTest>(iniFile);
     runTest<TestFrameBuffer>(iniFile);
     runTest<TestCubemap>(iniFile);
+    runTest<TestShaderStorageBuffer>(iniFile);
 }
 
 int main(int argc, char** argv) {
@@ -63,6 +65,8 @@ int main(int argc, char** argv) {
                 runTest<TestFrameBuffer>(argv[1]);
             } else if (arg == "Cubemap") {
                 runTest<TestCubemap>(argv[1]);
+            } else if (arg == "ShaderStorageBuffer") {
+                runTest<TestShaderStorageBuffer>(argv[1]);
             } else if (arg == "All") {
                 runAllTests(argv[1]);
             } else {

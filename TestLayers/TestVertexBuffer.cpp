@@ -17,7 +17,8 @@ const float s_Rectangle[] = {
 };
 
 TestVertexBuffer::TestVertexBuffer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
-                                   EasyIni::Configuration &config) : Layer(context, window, config), m_TestShaderLibrary("./Resources/TestShaders", context),
+                                   EasyIni::Configuration &config) : Layer(context, window, config),
+                                   m_TestShaderLibrary("./Resources/TestShaders", context),
                                    m_DrawRectangle(true){
     m_Window->createImGuiContext();
 
