@@ -112,7 +112,7 @@ void TestDepthTest::renderImGui() {
     if (ImGui::Checkbox("Depth test", &m_DepthTest)){
         m_Context->getDefaultFrameBuffer()->enableDepthTest(m_DepthTest);
     }
-    if (ImGui::Checkbox("Depth Mash", &m_DepthMask)){
+    if (ImGui::Checkbox("Depth Mask", &m_DepthMask)){
         m_Context->getDefaultFrameBuffer()->setDepthMask(static_cast<SR_DEPTH_MASK>(m_DepthMask));
     }
     ImGui::End();

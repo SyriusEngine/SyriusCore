@@ -51,9 +51,6 @@ void SyriusCoreDev::processEvents() {
     m_Window->pollEvents();
     while (m_Window->hasEvent()){
         auto event = m_Window->getEvent();
-        if (m_Config["Window"]["PrintEventInfo"].getOrDefault<bool>(false)){
-            printEventInfo(event);
-        }
         if (event.type == SR_EVENT_WINDOW_CLOSED){
             m_Window->close();
         }
