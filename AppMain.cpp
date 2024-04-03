@@ -1,13 +1,13 @@
 #include "SyriusCoreDev/SyriusCoreDev.hpp"
-#include "TestLayers/TestContext.hpp"
-#include "TestLayers/TestImGui.hpp"
-#include "TestLayers/TestVertexBuffer.hpp"
-#include "TestLayers/TestIndexBuffer.hpp"
-#include "TestLayers/TestTexture.hpp"
-#include "TestLayers/TestConstantBuffer.hpp"
-#include "TestLayers/TestDepthTest.hpp"
-#include "TestLayers/TestFrameBuffer.hpp"
-#include "TestLayers/TestCubemap.hpp"
+#include "AppLayers/TestContext.hpp"
+#include "AppLayers/TestImGui.hpp"
+#include "AppLayers/TestVertexBuffer.hpp"
+#include "AppLayers/TestIndexBuffer.hpp"
+#include "AppLayers/TestTexture.hpp"
+#include "AppLayers/TestConstantBuffer.hpp"
+#include "AppLayers/TestDepthTest.hpp"
+#include "AppLayers/TestFrameBuffer.hpp"
+#include "AppLayers/TestCubemap.hpp"
 
 template<typename T>
 void runTest(const std::string& iniFile){

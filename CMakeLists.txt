@@ -186,13 +186,13 @@ endif()
 target_link_libraries(SyriusCore ${SYRIUS_CORE_LIBS})
 
 
-################### Development Executables ###################
+################### Syrius Core App ###################
 
 include_directories(/include/)
 include_directories(/glm/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(SYRIUSCOREDEV_SRC
+set(SYRIUS_CORE_APP_SRC
     SyriusCoreDev/SyriusCoreDev.cpp
     SyriusCoreDev/ShaderLibrary.cpp
     SyriusCoreDev/Utils.cpp
@@ -200,30 +200,26 @@ set(SYRIUSCOREDEV_SRC
     SyriusCoreDev/Layer.cpp
     SyriusCoreDev/Projection.cpp)
 
-add_executable(SyriusCoreDev main.cpp AppLayer.cpp ${SYRIUSCOREDEV_SRC})
-add_dependencies(SyriusCoreDev SyriusCore)
+set(SYRIUS_CORE_APP_LAYERS_SRC
+    ${SYRIUS_CORE_APP_SRC}
+    AppLayers/TestContext.cpp
+    AppLayers/TestImGui.cpp
+    AppLayers/TestImGui.hpp
+    AppLayers/TestVertexBuffer.cpp
+    AppLayers/TestIndexBuffer.cpp
+    AppLayers/TestTexture.cpp
+    AppLayers/TestConstantBuffer.cpp
+    AppLayers/TestDepthTest.cpp
+    AppLayers/TestFrameBuffer.cpp
+    AppLayers/TestCubemap.cpp)
 
-set(SYRIUS_TEST_LAYERS_SRC
-    TestLayers/TestContext.cpp
-    TestLayers/TestImGui.cpp
-    TestLayers/TestImGui.hpp
-    TestLayers/TestVertexBuffer.cpp
-    TestLayers/TestIndexBuffer.cpp
-    TestLayers/TestTexture.cpp
-    TestLayers/TestConstantBuffer.cpp
-    TestLayers/TestDepthTest.cpp
-    TestLayers/TestFrameBuffer.cpp
-    TestLayers/TestCubemap.cpp)
-
-add_executable(SyriusTest TestMain.cpp ${SYRIUS_TEST_LAYERS_SRC} ${SYRIUSCOREDEV_SRC})
-add_dependencies(SyriusTest SyriusCore)
+add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
+add_dependencies(SyriusCoreApp SyriusCore)
 
 if (MSVC)
-    target_link_libraries(SyriusCoreDev SyriusCore)
-    target_link_libraries(SyriusTest SyriusCore)
+    target_link_libraries(SyriusCoreApp SyriusCore)
 else()
-    target_link_libraries(SyriusCoreDev -lSyriusCore)
-    target_link_libraries(SyriusTest -lSyriusCore)
+    target_link_libraries(SyriusCoreApp -lSyriusCore)
 endif()
 
 
