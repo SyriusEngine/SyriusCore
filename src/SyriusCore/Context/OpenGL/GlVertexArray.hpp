@@ -19,7 +19,7 @@ namespace Syrius{
 
         void drawBuffersInstanced(uint32 instanceCount) override;
 
-        void setDrawMode(SR_DRAW_TYPE drawMode) override;
+        void setDrawMode(SR_DRAW_MODE drawMode) override;
 
     private:
         uint32 m_ArrayID;
@@ -41,7 +41,7 @@ namespace Syrius{
 
         void drawBuffersInstanced(uint32 instanceCount) override;
 
-        void setDrawMode(SR_DRAW_TYPE drawMode) override;
+        void setDrawMode(SR_DRAW_MODE drawMode) override;
 
     private:
         uint32 m_ArrayID;

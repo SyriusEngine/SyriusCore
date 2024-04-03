@@ -6,6 +6,7 @@
 
 // shader types
 typedef enum SR_SHADER_TYPE {
+    SR_SHADER_NONE                   = 0x00,
     SR_SHADER_VERTEX                 = 0x01,
     SR_SHADER_FRAGMENT               = 0x02,
     SR_SHADER_PIXEL                  = 0x02,
@@ -15,12 +16,12 @@ typedef enum SR_SHADER_TYPE {
     SR_SHADER_COMPUTE                = 0x06
 } SR_SHADER_TYPE;
 
-typedef enum SR_SHADER_CODE_TYPE {
-    SR_SHADER_CODE_NONE           = 0x00,
-    SR_SHADER_CODE_GLSL           = 0x01,
-    SR_SHADER_CODE_HLSL           = 0x02,
-    SR_SHADER_CODE_SPIRV          = 0x03
-} SR_SHADER_CODE_TYPE;
+typedef enum SR_SHADER_LANGUAGE_TYPE {
+    SR_SHADER_LANGUAGE_NONE           = 0x00,
+    SR_SHADER_LANGUAGE_GLSL           = 0x01,
+    SR_SHADER_LANGUAGE_HLSL           = 0x02,
+    SR_SHADER_LANGUAGE_SPRIV          = 0x03
+} SR_SHADER_LANGUAGE_TYPE;
 
 // buffer access types
 typedef enum SR_BUFFER_USAGE {
@@ -31,7 +32,7 @@ typedef enum SR_BUFFER_USAGE {
 } SR_BUFFER_USAGE;
 
 // drawing modes
-typedef enum SR_DRAW_TYPE {
+typedef enum SR_DRAW_MODE {
     SR_DRAW_POINTS          = 0x01,
     SR_DRAW_LINES           = 0x02,
     SR_DRAW_LINES_STRIP     = 0x03,

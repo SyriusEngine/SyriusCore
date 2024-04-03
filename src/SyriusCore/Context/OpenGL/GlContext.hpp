@@ -35,6 +35,8 @@ namespace Syrius{
 
         ResourceView<Shader> createShader(const ShaderDesc& desc) override;
 
+        ResourceView<ShaderModule> createShaderModule(const ShaderModuleFileDesc& desc) override;
+
         ResourceView<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) override;
 
         ResourceView<IndexBuffer> createIndexBuffer(const IndexBufferDesc& desc) override;

@@ -21,7 +21,7 @@ namespace Syrius{
 
         void drawBuffersInstanced(uint32 instanceCount) override;
 
-        void setDrawMode(SR_DRAW_TYPE drawMode) override;
+        void setDrawMode(SR_DRAW_MODE drawMode) override;
 
     private:
         ID3D11Device* m_Device;
@@ -46,7 +46,7 @@ namespace Syrius{
 
         void drawBuffersInstanced(uint32 instanceCount) override;
 
-        void setDrawMode(SR_DRAW_TYPE drawMode) override;
+        void setDrawMode(SR_DRAW_MODE drawMode) override;
 
     private:
         ID3D11Device* m_Device;

@@ -36,6 +36,12 @@ namespace Syrius{
         return createResourceView(m_ShaderModules.back());
     }
 
+    ResourceView<ShaderModule> GlContext::createShaderModule(const ShaderModuleFileDesc &desc) {
+        auto ptr = new GlShaderModule(desc);
+        m_ShaderModules.emplace_back(ptr);
+        return createResourceView(m_ShaderModules.back());
+    }
+
     ResourceView<Shader> GlContext::createShader(const ShaderDesc &desc) {
         auto ptr = new GlShader(desc);
         m_Shaders.emplace_back(ptr);
@@ -179,5 +185,6 @@ namespace Syrius{
             gladLoaderUnloadGL();
         }
     }
+
 }
 

@@ -73,7 +73,7 @@ namespace Syrius{
 
     }
 
-    void D3D11VertexArray::setDrawMode(SR_DRAW_TYPE drawMode) {
+    void D3D11VertexArray::setDrawMode(SR_DRAW_MODE drawMode) {
         m_DrawMode = drawMode;
         m_D3d11DrawMode = getD3d11DrawMode(drawMode);
     }
@@ -149,7 +149,7 @@ namespace Syrius{
         SR_CORE_DXGI_GET_MESSAGES()
     }
 
-    void D3D11VertexArrayIndexed::setDrawMode(SR_DRAW_TYPE drawMode) {
+    void D3D11VertexArrayIndexed::setDrawMode(SR_DRAW_MODE drawMode) {
         m_DrawMode = drawMode;
         m_D3d11DrawMode = getD3d11DrawMode(drawMode);
     }

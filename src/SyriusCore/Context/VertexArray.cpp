@@ -9,7 +9,7 @@ namespace Syrius{
 
     }
 
-    SR_DRAW_TYPE VertexArray::getDrawMode() const {
+    SR_DRAW_MODE VertexArray::getDrawMode() const {
         return m_DrawMode;
     }
 

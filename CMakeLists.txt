@@ -235,10 +235,14 @@ link_directories(${CMAKE_CURRENT_BINARY_DIR}/lib/)
 
 set(SR_CORE_TEST_SRC
     Tests/Utils/ConversionsTest.cpp
+    Tests/TestEnvironment.cpp
+
+    Tests/Context/VertexLayoutTest.cpp
+    Tests/Context/ShaderModuleTest.cpp
 
     Tests/Context/OpenGL/GLUtilsTest.cpp
 
-    Tests/Context/D3D11/D3D11UtilsTest.cpp Tests/Context/VertexLayoutTest.cpp Tests/Context/VertexLayoutTest.hpp Tests/TestEnvironment.cpp Tests/TestEnvironment.hpp)
+    Tests/Context/D3D11/D3D11UtilsTest.cpp)
 
 add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} MainGtest.cpp)
 target_link_libraries(SyriusCoreTest ${SYRIUS_CORE_LIBS} -lgtest)
