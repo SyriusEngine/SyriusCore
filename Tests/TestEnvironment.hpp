@@ -18,5 +18,6 @@ public:
 public:
     static Resource<SyriusWindow> m_Window;
     static ResourceView<Context> m_Context;
+    static SR_SUPPORTED_API m_API;
 };
 

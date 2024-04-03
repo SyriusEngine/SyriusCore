@@ -2,6 +2,7 @@
 
 Resource<SyriusWindow> TestEnvironment::m_Window;
 ResourceView<Context> TestEnvironment::m_Context;
+SR_SUPPORTED_API TestEnvironment::m_API = SR_API_NONE;
 
 void TestEnvironment::setup(const EnvironmentDesc &desc) {
     WindowDesc windowDesc;
@@ -13,6 +14,8 @@ void TestEnvironment::setup(const EnvironmentDesc &desc) {
     ContextDesc contextDesc;
     contextDesc.api = desc.api;
     m_Context = m_Window->createContext(contextDesc);
+
+    m_API = desc.api;
 }
 
 void TestEnvironment::teardown() {

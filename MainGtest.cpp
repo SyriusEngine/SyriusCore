@@ -65,11 +65,13 @@ int main(int argc, char** argv) {
     std::cerr << "\n\n ================ Running OpenGL Tests ================ \n" << std::endl;
     EnvironmentDesc glDesc;
     glDesc.api = SR_API_OPENGL;
+    glDesc.title = "SyriusCore GTest (OpenGL)";
     auto retVal = runTests(glDesc);
 
     std::cerr << "\n\n ================= Running D3D11 Tests ================ \n" << std::endl;
     EnvironmentDesc d3d11Desc;
     d3d11Desc.api = SR_API_D3D11;
+    d3d11Desc.title = "SyriusCore GTest (D3D11)";
     retVal += runTests(d3d11Desc);
 
     TestDebugMessageHandler::terminate();
