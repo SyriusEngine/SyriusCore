@@ -34,6 +34,16 @@ namespace Syrius{
             }
         }
 
+        template<typename... Args>
+        static void throwMessage(const std::string& function, const std::string& file, uint32 line, const std::string& message, Args... args){
+            Size formatSize = std::snprintf(nullptr, 0, message.c_str(), args...);
+            std::vector<byte> formatBuffer(formatSize + 1);
+            std::snprintf(reinterpret_cast<char*>(formatBuffer.data()), formatSize + 1, message.c_str(), args...);
+            std::string msg = std::string(reinterpret_cast<char*>(formatBuffer.data()));
+            std::string exc = "EXCEPTION THROWN -> [" + file + ":" + function + ":" + std::to_string(line) + "] " + msg;
+            throw std::runtime_error(exc);
+        }
+
 #if defined(SR_CORE_PLATFORM_WIN64)
         static void formatHresultMessage(HRESULT hr, const std::string& function, const std::string& file, uint32 line);
 

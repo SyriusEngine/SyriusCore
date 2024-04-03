@@ -9,6 +9,7 @@ public:
     }
 
     static void terminate(){
+        m_File.close();
     }
 
     static void messageCallback(const Message& msg){
@@ -50,6 +51,8 @@ std::ofstream TestDebugMessageHandler::m_File;
 int main(int argc, char** argv) {
     TestDebugMessageHandler::init("TestMessageOutput.txt");
     testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    auto retVal = RUN_ALL_TESTS();
+    TestDebugMessageHandler::terminate();
+    return retVal;
 }
 

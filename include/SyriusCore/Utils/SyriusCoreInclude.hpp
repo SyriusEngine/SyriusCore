@@ -63,77 +63,77 @@ typedef enum SR_SCALAR_TYPE: uint8 {
     SR_UINT8_2      = 0x21,
     SR_UINT8_3      = 0x22,
     SR_UINT8_4      = 0x23,
-    SR_UINT8_3X3    = 0x2B,
+    SR_UINT8_3X3    = 0x28,
     SR_UINT8_4X4    = 0x2F,
 
     SR_INT8_1       = 0x30,
     SR_INT8_2       = 0x31,
     SR_INT8_3       = 0x32,
     SR_INT8_4       = 0x33,
-    SR_INT8_3X3     = 0x3B,
+    SR_INT8_3X3     = 0x38,
     SR_INT8_4X4     = 0x3F,
 
     SR_UINT16_1     = 0x40,
     SR_UINT16_2     = 0x41,
     SR_UINT16_3     = 0x42,
     SR_UINT16_4     = 0x43,
-    SR_UINT16_3X3   = 0x4B,
+    SR_UINT16_3X3   = 0x48,
     SR_UINT16_4X4   = 0x4F,
 
     SR_INT16_1      = 0x50,
     SR_INT16_2      = 0x51,
     SR_INT16_3      = 0x52,
     SR_INT16_4      = 0x53,
-    SR_INT16_3X3    = 0x5B,
+    SR_INT16_3X3    = 0x58,
     SR_INT16_4X4    = 0x5F,
 
     SR_UINT32_1     = 0x60,
     SR_UINT32_2     = 0x61,
     SR_UINT32_3     = 0x62,
     SR_UINT32_4     = 0x63,
-    SR_UINT32_3X3   = 0x6B,
+    SR_UINT32_3X3   = 0x68,
     SR_UINT32_4X4   = 0x6F,
 
     SR_INT32_1      = 0x70,
     SR_INT32_2      = 0x71,
     SR_INT32_3      = 0x72,
     SR_INT32_4      = 0x73,
-    SR_INT32_3X3    = 0x7B,
+    SR_INT32_3X3    = 0x78,
     SR_INT32_4X4    = 0x7F,
 
     SR_UINT64_1     = 0x80,
     SR_UINT64_2     = 0x81,
     SR_UINT64_3     = 0x82,
     SR_UINT64_4     = 0x83,
-    SR_UINT64_3X3   = 0x8B,
+    SR_UINT64_3X3   = 0x88,
     SR_UINT64_4X4   = 0x8F,
 
     SR_INT64_1      = 0x90,
     SR_INT64_2      = 0x91,
     SR_INT64_3      = 0x92,
     SR_INT64_4      = 0x93,
-    SR_INT64_3X3    = 0x9B,
+    SR_INT64_3X3    = 0x98,
     SR_INT64_4X4    = 0x9F,
 
     SR_FLOAT16_1    = 0xA0,
     SR_FLOAT16_2    = 0xA1,
     SR_FLOAT16_3    = 0xA2,
     SR_FLOAT16_4    = 0xA3,
-    SR_FLOAT16_3X3  = 0xAB,
+    SR_FLOAT16_3X3  = 0xA8,
     SR_FLOAT16_4X4  = 0xAF,
 
     SR_FLOAT32_1    = 0xB0,
     SR_FLOAT32_2    = 0xB1,
     SR_FLOAT32_3    = 0xB2,
     SR_FLOAT32_4    = 0xB3,
-    SR_FLOAT32_3X3  = 0xBB,
+    SR_FLOAT32_3X3  = 0xB8,
     SR_FLOAT32_4X4  = 0xBF,
 
     SR_FLOAT64_1    = 0xC0,
     SR_FLOAT64_2    = 0xC1,
     SR_FLOAT64_3    = 0xC2,
     SR_FLOAT64_4    = 0xC3,
-    SR_FLOAT64_3X3  = 0xCB,
+    SR_FLOAT64_3X3  = 0xC8,
     SR_FLOAT64_4X4  = 0xCF,
 } SR_SCALAR_TYPE;
 
@@ -219,6 +219,7 @@ namespace Syrius {
 
     /**
      * @brief This function will return the size of a usage in bytes
+     *        An overloaded function is available for scalar types which does the same thing
      * @example SR_UINT8 -> 1 byte
      * @example SR_UINT16 -> 2 bytes
      * @example SR_UINT32 -> 4 bytes
@@ -227,7 +228,7 @@ namespace Syrius {
      * @return the number of bytes needed to store data of that usage
      */
     uint8 SR_CORE_API getTypeSize(SR_TYPE type);
-    uint8 SR_CORE_API getScalarSize(SR_SCALAR_TYPE type);
+    uint8 SR_CORE_API getTypeSize(SR_SCALAR_TYPE type);
 
     /**
      * @brief Returns the number of components in a scalar usage
@@ -239,17 +240,51 @@ namespace Syrius {
      */
     uint8 SR_CORE_API getScalarComponentCount(SR_SCALAR_TYPE type);
 
+    /**
+     * @brief Returns the base type of a scalar type
+     * @example SR_FLOAT32_1 -> SR_FLOAT32
+     * @example SR_UINT8_4 -> SR_UINT8
+     * @param type scalar type
+     * @return SR_TYPE
+     */
     SR_TYPE SR_CORE_API getScalarType(SR_SCALAR_TYPE type);
 
+    /**
+     * @brief Returns the channel format of a texture format.
+     *        This is handy when only the channel layout is needed and not the data type.
+     * @example SR_TEXTURE_RGBA_F32 -> SR_CHANNEL_RGBA
+     * @example SR_TEXTURE_RG_I32 -> SR_CHANNEL_RG
+     * @param format SR_TEXTURE_FORMAT
+     * @return SR_CHANNEL_FORMAT
+     */
     SR_CHANNEL_FORMAT SR_CORE_API getTextureChannelFormat(SR_TEXTURE_FORMAT format);
 
+    /**
+     * @brief Returns the number of channels in a channel format
+     * @example SR_CHANNEL_RGBA -> 4
+     * @example SR_CHANNEL_RG -> 2
+     * @param format SR_CHANNEL_FORMAT
+     * @return number of channels
+     */
     uint8 SR_CORE_API getChannelFormatCount(SR_CHANNEL_FORMAT format);
 
+    /**
+     * @brief Returns the number of channels in a texture format. The logic is the same as in getChannelFormatCount
+     *        but then for texture formats.
+     * @example SR_TEXTURE_RGBA_F32 -> 4
+     * @example SR_TEXTURE_RG_I32 -> 2
+     * @param format SR_TEXTURE_FORMAT
+     * @return number of channels
+     */
     uint8 SR_CORE_API getTextureChannelCount(SR_TEXTURE_FORMAT format);
 
+    /**
+     * @brief Returns the data type of a texture format
+     * @example SR_TEXTURE_RGBA_F32 -> SR_FLOAT32
+     * @example SR_TEXTURE_RG_I32 -> SR_INT32
+     * @param format SR_TEXTURE_FORMAT
+     * @return SR_TYPE
+     */
     SR_TYPE SR_CORE_API getTextureDataType(SR_TEXTURE_FORMAT format);
-
-    uint8 SR_CORE_API getTextureFormatSize(SR_TEXTURE_FORMAT format);
-
 }
 

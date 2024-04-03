@@ -30,23 +30,20 @@ namespace Syrius{
             case SR_FLOAT32:    return 4;
             case SR_FLOAT64:    return 8;
             default: {
-                SR_CORE_WARNING("Unknown usage given to converter");
+                SR_CORE_WARNING("Unknown type (%i) given to converter", type);
                 return 0;
             }
         }
     }
-    uint8 getScalarSize(SR_SCALAR_TYPE type){
+    uint8 getTypeSize(SR_SCALAR_TYPE type){
         uint8 trunc = type << 4;
-        uint8 shifted = (trunc >> 4);
-        shifted++;
-        return getTypeSize(static_cast<SR_TYPE>(static_cast<SR_TYPE>((type >> 4) << 4))) * shifted;
+        uint8 componentCount = (trunc >> 4) + 1;
+        return componentCount * getTypeSize(static_cast<SR_TYPE>((type >> 4) << 4));
     }
 
     uint8 getScalarComponentCount(SR_SCALAR_TYPE type){
         uint8 trunc = type << 4;
-        uint8 shifted = (trunc >> 4);
-        shifted++;
-        return shifted;
+        return (trunc >> 4) + 1;
     }
 
     SR_TYPE getScalarType(SR_SCALAR_TYPE type){
@@ -55,26 +52,22 @@ namespace Syrius{
 
     SR_CHANNEL_FORMAT getTextureChannelFormat(SR_TEXTURE_FORMAT format){
         auto temp = (format >> 4);
-        SR_CORE_ASSERT(temp < 5, "Invalid texture format");
+        if (temp > 4){
+            SR_CORE_THROW("Invalid texture format %i", format);
+        }
         return static_cast<SR_CHANNEL_FORMAT>((format >> 4) << 4);
     }
 
     uint8 getChannelFormatCount(SR_CHANNEL_FORMAT format){
         switch (format) {
-            case SR_CHANNEL_R:
-                return 1;
-            case SR_CHANNEL_RG:
-                return 2;
-            case SR_CHANNEL_RGB:
-                return 3;
-            case SR_CHANNEL_RGBA:
-                return 4;
-            case SR_CHANNEL_BGR:
-                return 3;
-            case SR_CHANNEL_BGRA:
-                return 4;
+            case SR_CHANNEL_R:      return 1;
+            case SR_CHANNEL_RG:     return 2;
+            case SR_CHANNEL_RGB:    return 3;
+            case SR_CHANNEL_RGBA:   return 4;
+            case SR_CHANNEL_BGR:    return 3;
+            case SR_CHANNEL_BGRA:   return 4;
             default: {
-                SR_CORE_WARNING("Unknown usage given to converter");
+                SR_CORE_WARNING("Unknown channel format given to converter (%i)", format);
                 return 0;
             }
         }
@@ -86,10 +79,6 @@ namespace Syrius{
 
     SR_TYPE getTextureDataType(SR_TEXTURE_FORMAT format){
         return static_cast<SR_TYPE>(format << 4);
-    }
-
-    uint8 getTextureFormatSize(SR_TEXTURE_FORMAT format){
-        return getChannelFormatCount(getTextureChannelFormat(format)) * getTypeSize(getTextureDataType(format));
     }
 
 }
