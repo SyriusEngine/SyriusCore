@@ -48,7 +48,7 @@ private:
 
 std::ofstream TestDebugMessageHandler::m_File;
 
-int runTests(const EnvironmentDesc& envDesc){
+int32 runTests(const EnvironmentDesc& envDesc){
     testing::internal::CaptureStdout();
     TestEnvironment::setup(envDesc);
     auto retVal = RUN_ALL_TESTS();
@@ -62,17 +62,31 @@ int main(int argc, char** argv) {
     TestDebugMessageHandler::init("TestMessageOutput.txt");
     testing::InitGoogleTest(&argc, argv);
 
-    std::cerr << "\n\n ================ Running OpenGL Tests ================ \n" << std::endl;
-    EnvironmentDesc glDesc;
-    glDesc.api = SR_API_OPENGL;
-    glDesc.title = "SyriusCore GTest (OpenGL)";
-    auto retVal = runTests(glDesc);
-
-    std::cerr << "\n\n ================= Running D3D11 Tests ================ \n" << std::endl;
-    EnvironmentDesc d3d11Desc;
-    d3d11Desc.api = SR_API_D3D11;
-    d3d11Desc.title = "SyriusCore GTest (D3D11)";
-    retVal += runTests(d3d11Desc);
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " <Option (OpenGL/D3D11)>" << std::endl;
+        return 1;
+    }
+    int32 retVal = 0;
+    for (int i = 1; i < argc; ++i) {
+        std::string arg = argv[i];
+        if (arg == "OpenGL"){
+            std::cerr << "\n\n================ Running OpenGL Tests ================\n" << std::endl;
+            EnvironmentDesc glDesc;
+            glDesc.api = SR_API_OPENGL;
+            glDesc.title = "SyriusCore GTest (OpenGL)";
+            retVal += runTests(glDesc);
+        }
+        else if (arg == "D3D11"){
+            std::cerr << "\n\n================= Running D3D11 Tests ================\n" << std::endl;
+            EnvironmentDesc d3d11Desc;
+            d3d11Desc.api = SR_API_D3D11;
+            d3d11Desc.title = "SyriusCore GTest (D3D11)";
+            retVal += runTests(d3d11Desc);
+        }
+        else{
+            std::cerr << "Unknown Arg: " << arg << std::endl;
+        }
+    }
 
     TestDebugMessageHandler::terminate();
     return retVal;
