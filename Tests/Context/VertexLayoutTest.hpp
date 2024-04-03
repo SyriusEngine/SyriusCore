@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../TestInclude.hpp"
+#include "../TestEnvironment.hpp"
 
 class VertexLayoutTest : public testing::Test {
 protected:
@@ -8,7 +8,4 @@ protected:
 
     void TearDown() override;
 
-protected:
-    Resource<SyriusWindow> m_Window;
-    ResourceView<Context> m_Context;
 };

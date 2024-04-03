@@ -1,4 +1,4 @@
-#include "Tests/TestInclude.hpp"
+#include "Tests/TestEnvironment.hpp"
 #include <fstream>
 
 class TestDebugMessageHandler{
@@ -48,10 +48,30 @@ private:
 
 std::ofstream TestDebugMessageHandler::m_File;
 
+int runTests(const EnvironmentDesc& envDesc){
+    testing::internal::CaptureStdout();
+    TestEnvironment::setup(envDesc);
+    auto retVal = RUN_ALL_TESTS();
+    TestEnvironment::teardown();
+    std::string output = testing::internal::GetCapturedStdout();
+    std::cout << output << std::endl;
+    return retVal;
+}
+
 int main(int argc, char** argv) {
     TestDebugMessageHandler::init("TestMessageOutput.txt");
     testing::InitGoogleTest(&argc, argv);
-    auto retVal = RUN_ALL_TESTS();
+
+    std::cerr << "\n\n ================ Running OpenGL Tests ================ \n" << std::endl;
+    EnvironmentDesc glDesc;
+    glDesc.api = SR_API_OPENGL;
+    auto retVal = runTests(glDesc);
+
+    std::cerr << "\n\n ================= Running D3D11 Tests ================ \n" << std::endl;
+    EnvironmentDesc d3d11Desc;
+    d3d11Desc.api = SR_API_D3D11;
+    retVal += runTests(d3d11Desc);
+
     TestDebugMessageHandler::terminate();
     return retVal;
 }
