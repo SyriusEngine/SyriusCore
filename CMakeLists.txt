@@ -39,7 +39,8 @@ if (WIN32)
         src/SyriusCore/Context/D3D11/D3D11FrameBuffer.cpp
         src/SyriusCore/Context/D3D11/D3D11ColorAttachment.cpp
         src/SyriusCore/Context/D3D11/D3D11DepthStencilAttachment.cpp
-        src/SyriusCore/Context/D3D11/D3D11DeviceLimits.cpp src/SyriusCore/Context/D3D11/D3D11Cubemap.cpp src/SyriusCore/Context/D3D11/D3D11Cubemap.hpp)
+        src/SyriusCore/Context/D3D11/D3D11DeviceLimits.cpp
+        src/SyriusCore/Context/D3D11/D3D11Cubemap.cpp)
 
 elseif(UNIX)
     set(GLAD_PLATFORM_SRC
@@ -150,13 +151,6 @@ set(SYRIUSCORE_SRC
 
 add_library(SyriusCore SHARED ${SYRIUSCORE_SRC})
 
-set_target_properties(SyriusCore PROPERTIES
-        CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-message(STATUS "CMAKE_RUNTIME_OUTPUT_DIRECTORY: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-
-
 if (WIN32)
     if (MINGW)
         set(SYRIUS_CORE_LIBS
@@ -191,6 +185,9 @@ endif()
 
 target_link_libraries(SyriusCore ${SYRIUS_CORE_LIBS})
 
+
+################### Development Executables ###################
+
 include_directories(/include/)
 include_directories(/glm/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -213,7 +210,10 @@ set(SYRIUS_TEST_LAYERS_SRC
     TestLayers/TestVertexBuffer.cpp
     TestLayers/TestIndexBuffer.cpp
     TestLayers/TestTexture.cpp
-    TestLayers/TestConstantBuffer.cpp TestLayers/TestConstantBuffer.hpp TestLayers/TestDepthTest.cpp TestLayers/TestDepthTest.hpp TestLayers/TestFrameBuffer.cpp TestLayers/TestFrameBuffer.hpp TestLayers/TestCubemap.cpp TestLayers/TestCubemap.hpp)
+    TestLayers/TestConstantBuffer.cpp
+    TestLayers/TestDepthTest.cpp
+    TestLayers/TestFrameBuffer.cpp
+    TestLayers/TestCubemap.cpp)
 
 add_executable(SyriusTest TestMain.cpp ${SYRIUS_TEST_LAYERS_SRC} ${SYRIUSCOREDEV_SRC})
 add_dependencies(SyriusTest SyriusCore)
@@ -225,3 +225,19 @@ else()
     target_link_libraries(SyriusCoreDev -lSyriusCore)
     target_link_libraries(SyriusTest -lSyriusCore)
 endif()
+
+
+
+################### Testing ###################
+add_subdirectory(./Dependencies/googletest/)
+include_directories(./Dependencies/googletest/googletest/include/)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/lib/)
+
+set(SR_CORE_TEST_SRC
+    Tests/Context/OpenGL/GLUtilsTest.cpp
+    Tests/Utils/ConversionsTest.cpp)
+
+add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} MainGtest.cpp)
+target_link_libraries(SyriusCoreTest ${SYRIUS_CORE_LIBS} -lgtest)
+
+

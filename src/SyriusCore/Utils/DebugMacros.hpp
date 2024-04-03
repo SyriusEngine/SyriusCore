@@ -3,14 +3,11 @@
 #include "DebugMessageHandler.hpp"
 #include <cassert>
 
-#define SR_CORE_MESSAGE(message, ...) \
-    DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_INFO, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
+#define SR_CORE_MESSAGE(message, ...) DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_INFO, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
 
-#define SR_CORE_WARNING(message, ...) \
-    DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_MEDIUM, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
+#define SR_CORE_WARNING(message, ...) DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_MEDIUM, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
 
-#define SR_CORE_EXCEPTION(message, ...) \
-    DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
+#define SR_CORE_EXCEPTION(message, ...) DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
 
 #define SR_CORE_OPENGL_CLEAR_ERROR() \
     {                                \
@@ -19,7 +16,6 @@
             DebugMessageHandler::pushOpenGlError(_err, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE); \
         }   \
     }\
-
 
 #if defined(SR_CORE_DEBUG)
 
