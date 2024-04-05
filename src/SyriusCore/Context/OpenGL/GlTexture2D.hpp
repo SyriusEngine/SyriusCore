@@ -17,8 +17,6 @@ namespace Syrius{
 
         void bindShaderResource(uint32_t slot) override;
 
-        void unbind() override;
-
         void setData(const void* data, uint32 x, uint32 y, uint32 width, uint32 height) override;
 
         Resource<Image> getData() override;

@@ -30,7 +30,7 @@ namespace Syrius{
     }
 
     Resource<ubyte[]> GlVertexBuffer::getData() const {
-        Resource<ubyte[]> data(new ubyte[m_Size]);
+        auto data = createResource<ubyte[]>(m_Size);
         auto pBuffer = glMapNamedBuffer(m_BufferID, GL_READ_ONLY);
         if (!pBuffer){
             SR_CORE_THROW("[GlVertexBuffer]: Failed to map buffer object (%i)", m_BufferID);

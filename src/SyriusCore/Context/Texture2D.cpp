@@ -7,7 +7,8 @@ namespace Syrius{
     m_DeviceLimits(deviceLimits),
     m_Width(desc.width),
     m_Height(desc.height),
-    m_Format(desc.format){
+    m_Format(desc.format),
+    m_Usage(desc.usage){
         SR_CORE_PRECONDITION(m_Width > 0, "[Texture2D]: Width must be greater than 0");
         SR_CORE_PRECONDITION(m_Height > 0, "[Texture2D]: Height must be greater than 0");
         SR_CORE_PRECONDITION(m_Width <= m_DeviceLimits->getMaxTextureSize(), "[Texture2D]: Supplied texture width (%i), exceeds device limit (%i)", m_Width, m_DeviceLimits->getMaxTextureSize());
@@ -18,7 +19,8 @@ namespace Syrius{
     m_DeviceLimits(deviceLimits),
     m_Width(desc.image->getWidth()),
     m_Height(desc.image->getHeight()),
-    m_Format(desc.image->getFormat()){
+    m_Format(desc.image->getFormat()),
+    m_Usage(desc.usage){
         SR_CORE_PRECONDITION(m_Width > 0, "[Texture2D]: Width must be greater than 0");
         SR_CORE_PRECONDITION(m_Height > 0, "[Texture2D]: Height must be greater than 0");
         SR_CORE_PRECONDITION(m_Width <= m_DeviceLimits->getMaxTextureSize(), "[Texture2D]: Supplied texture width (%i), exceeds device limit (%i)", m_Width, m_DeviceLimits->getMaxTextureSize());
@@ -39,5 +41,9 @@ namespace Syrius{
 
     SR_TEXTURE_FORMAT Texture2D::getFormat() const {
         return m_Format;
+    }
+
+    SR_BUFFER_USAGE Texture2D::getUsage() const {
+        return m_Usage;
     }
 }

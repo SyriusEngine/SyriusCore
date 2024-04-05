@@ -64,7 +64,7 @@ namespace Syrius{
     }
 
     Resource<ubyte[]> D3D11VertexBuffer::getData() const {
-        Resource<ubyte[]> data(new ubyte[m_Size]);
+        auto data = createResource<ubyte[]>(m_Size);;
 
         /*
          * Reading from a vertex buffer in D3D11 is not directly supported.

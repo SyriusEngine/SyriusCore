@@ -33,7 +33,7 @@ namespace Syrius{
     }
 
     Resource<ubyte[]> GlConstantBuffer::getData() const {
-        Resource<ubyte[]> data(new ubyte[m_Size]);
+        auto data = createResource<ubyte[]>(m_Size);
         auto pBuffer = glMapNamedBuffer(m_BufferID, GL_READ_ONLY);
         if (!pBuffer){
             SR_CORE_THROW("[GlConstantBuffer]: Failed to map buffer object (%i)", m_BufferID);

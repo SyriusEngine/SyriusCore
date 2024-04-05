@@ -36,3 +36,27 @@ static std::vector<uint32> s_RectangleIndices = {
     0, 1, 2,
     2, 3, 0
 };
+
+static std::vector<uint8> s_RedGreen = {
+    255, 0, 0, 255,     0, 255, 0, 255,
+    0, 255, 0, 255,     255, 0, 0, 255
+};
+
+static std::vector<uint8> s_RedBlue = {
+    255, 0, 0, 255,     0, 0, 255, 255,
+    0, 0, 255, 255,     255, 0, 0, 255
+};
+
+static std::vector<uint8> s_Magenta = {
+    255, 0, 255, 255,
+};
+
+static std::vector<uint8> s_Turquoise = {
+    0, 255, 255, 255,
+};
+
+static std::vector<uint8> s_RedGreenBlue = {
+    255, 0, 0, 255,     0, 255, 0, 255,     0, 0, 255, 255,
+    0, 255, 0, 255,     0, 0, 255, 255,     255, 0, 0, 255,
+    0, 0, 255, 255,     255, 0, 0, 255,     0, 255, 0, 255
+};
