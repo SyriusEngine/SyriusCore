@@ -61,7 +61,6 @@ namespace Syrius{
         }
         memcpy(map.pData, data, copySize);
         m_Context->Unmap(m_Buffer, 0);
-        SR_CORE_ASSERT(m_Context, "[D3D11VertexBuffer]: Failed to unmap buffer (%p)", m_Buffer);
     }
 
     Resource<ubyte[]> D3D11VertexBuffer::getData() const {

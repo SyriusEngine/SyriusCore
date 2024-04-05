@@ -11,9 +11,9 @@ namespace Syrius{
     m_Buffer(nullptr){
         D3D11_BUFFER_DESC bufferDesc;
         bufferDesc.ByteWidth = m_Size;
-        bufferDesc.Usage = getD3d11BufferType(m_Type);
+        bufferDesc.Usage = getD3d11BufferType(m_Usage);
         bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-        if (m_Type == SR_BUFFER_USAGE_DYNAMIC){
+        if (m_Usage == SR_BUFFER_USAGE_DYNAMIC){
             bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
         }
         else{
@@ -41,11 +41,51 @@ namespace Syrius{
         }
     }
 
-    void D3D11ConstantBufferBase::setData(const void *data) {
-        D3D11_MAPPED_SUBRESOURCE mappedResource;
-        SR_CORE_D3D11_CALL(m_Context->Map(m_Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
-        memcpy(mappedResource.pData, data, m_Size);
+    void D3D11ConstantBufferBase::setData(const void *data, uint64 size) {
+        SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[ConstantBuffer]: Update on buffer object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
+        SR_CORE_PRECONDITION(size <= m_Size, "[ConstantBuffer]: Update on buffer object (%p) requested, which exceeds the current buffer size (%i > %i).", this, size, m_Size);
+
+        D3D11_MAPPED_SUBRESOURCE map = { nullptr };
+        SR_CORE_D3D11_CALL(m_Context->Map(m_Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &map));
+        if (map.pData == nullptr){
+            SR_CORE_THROW("[ConstantBuffer]: Failed to map buffer (%p)", m_Buffer);
+        }
+        memcpy(map.pData, data, size);
         m_Context->Unmap(m_Buffer, 0);
+    }
+
+    Resource<ubyte[]> D3D11ConstantBufferBase::getData() const {
+        Resource<ubyte[]> data(new ubyte[m_Size]);
+
+        /*
+         * Reading from a constant buffer in D3D11 is not directly supported.
+         * The only way to read from a constant buffer is to copy the data to a staging buffer and then read from the staging buffer.
+         */
+        ID3D11Buffer* stagingBuffer = nullptr;
+        D3D11_BUFFER_DESC desc = { 0 };
+        m_Buffer->GetDesc(&desc);
+        desc.Usage = D3D11_USAGE_STAGING;
+        desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+        desc.BindFlags = 0;
+        desc.MiscFlags = 0;
+        SR_CORE_D3D11_CALL(m_Device->CreateBuffer(&desc, nullptr, &stagingBuffer));
+
+        // Copy the data from the constant buffer to the staging buffer
+        m_Context->CopyResource(stagingBuffer, m_Buffer);
+
+        // copy the data
+        D3D11_MAPPED_SUBRESOURCE map = { nullptr };
+        SR_CORE_D3D11_CALL(m_Context->Map(stagingBuffer, 0, D3D11_MAP_READ, 0, &map));
+        if (map.pData == nullptr){
+            SR_CORE_THROW("[ConstantBuffer]: Failed to map buffer (%p)", stagingBuffer);
+        }
+        memcpy(data.get(), map.pData, m_Size);
+        m_Context->Unmap(stagingBuffer, 0);
+
+        // Release the staging buffer
+        stagingBuffer->Release();
+
+        return std::move(data);
     }
 
     uint64 D3D11ConstantBufferBase::getIdentifier() const {

@@ -15,9 +15,7 @@ namespace Syrius{
         m_Size = m_Count * getTypeSize(m_DataType);
     }
 
-    IndexBuffer::~IndexBuffer() {
-
-    }
+    IndexBuffer::~IndexBuffer() = default;
 
     uint32 IndexBuffer::getSize() const {
         return m_Size;

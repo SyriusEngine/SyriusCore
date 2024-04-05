@@ -18,9 +18,7 @@ namespace Syrius{
 
     }
 
-    VertexBuffer::~VertexBuffer() {
-
-    }
+    VertexBuffer::~VertexBuffer() = default;
 
     uint32 VertexBuffer::getSize() const {
         return m_Size;
