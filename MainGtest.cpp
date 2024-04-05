@@ -49,12 +49,12 @@ private:
 std::ofstream TestDebugMessageHandler::m_File;
 
 int32 runTests(const EnvironmentDesc& envDesc){
-    testing::internal::CaptureStdout();
+    // testing::internal::CaptureStdout();
     TestEnvironment::setup(envDesc);
     auto retVal = RUN_ALL_TESTS();
     TestEnvironment::teardown();
-    std::string output = testing::internal::GetCapturedStdout();
-    std::cout << output << std::endl;
+//    std::string output = testing::internal::GetCapturedStdout();
+//    std::cout << output << std::endl;
     return retVal;
 }
 
