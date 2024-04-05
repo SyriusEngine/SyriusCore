@@ -56,8 +56,12 @@ namespace Syrius{
 
         D3D11_MAPPED_SUBRESOURCE map  = { nullptr };
         SR_CORE_D3D11_CALL(m_Context->Map(m_Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &map));
+        if (map.pData == nullptr){
+            SR_CORE_THROW("[D3D11VertexBuffer]: Failed to map buffer (%p)", m_Buffer);
+        }
         memcpy(map.pData, data, copySize);
         m_Context->Unmap(m_Buffer, 0);
+        SR_CORE_ASSERT(m_Context, "[D3D11VertexBuffer]: Failed to unmap buffer (%p)", m_Buffer);
     }
 
     Resource<ubyte[]> D3D11VertexBuffer::getData() const {
@@ -80,9 +84,11 @@ namespace Syrius{
         m_Context->CopyResource(stagingBuffer, m_Buffer);
 
         // and copy the data
-
         D3D11_MAPPED_SUBRESOURCE map = { nullptr };
         SR_CORE_D3D11_CALL(m_Context->Map(stagingBuffer, 0, D3D11_MAP_READ, 0, &map));
+        if (map.pData == nullptr){
+            SR_CORE_THROW("[D3D11VertexBuffer]: Failed to map staging buffer (%p)", stagingBuffer);
+        }
         memcpy(data.get(), map.pData, m_Size);
         m_Context->Unmap(stagingBuffer, 0);
 

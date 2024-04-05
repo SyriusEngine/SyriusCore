@@ -36,6 +36,19 @@ TEST_F(VertexBufferTest, CreateVertexBufferZeroSize){
     EXPECT_DEATH(auto vb = TestEnvironment::m_Context->createVertexBuffer(desc), "");
 }
 
+TEST_F(VertexBufferTest, CreateVertexBufferEmptyData){
+    VertexBufferDesc desc;
+    desc.data = nullptr;
+    desc.count = 3;
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
+    desc.layout = m_Layout;
+
+    auto vb = TestEnvironment::m_Context->createVertexBuffer(desc);
+
+    EXPECT_NE(vb, nullptr);
+    EXPECT_EQ(vb->getCount(), 3);
+}
+
 TEST_F(VertexBufferTest, CreateVertexBufferInvalidLayout){
     VertexBufferDesc desc;
     desc.data = s_TriangleVertices.data();

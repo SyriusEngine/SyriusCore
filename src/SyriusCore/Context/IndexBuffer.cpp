@@ -4,11 +4,12 @@
 namespace Syrius{
 
     IndexBuffer::IndexBuffer(const IndexBufferDesc &desc, const Resource<DeviceLimits>& deviceLimits):
-    m_DeviceLimits(deviceLimits),
-    m_Count(desc.count),
-    m_Type(desc.usage),
-    m_DataType(desc.dataType) {
-        SR_CORE_PRECONDITION(desc.dataType <= SR_INT64, "[IndexBuffer]: Index buffer only supports integer data, type %i is not supported", desc.dataType);
+            m_DeviceLimits(deviceLimits),
+            m_Count(desc.count),
+            m_Usage(desc.usage),
+            m_DataType(desc.dataType) {
+        SR_CORE_PRECONDITION(desc.dataType >= SR_UINT8 and desc.dataType <= SR_INT32, "[IndexBuffer]: Index buffer only supports integer data, type %i is not supported", desc.dataType);
+        SR_CORE_PRECONDITION(desc.count > 0, "[IndexBuffer]: Index buffer count must be greater than %i", 0);
         SR_CORE_PRECONDITION(desc.count <= m_DeviceLimits->getMaxIndexCount(), "[IndexBuffer]: Supplied index count (%i) exceeds the maximum index count (%i)", desc.count, m_DeviceLimits->getMaxIndexCount());
 
         m_Size = m_Count * getTypeSize(m_DataType);
@@ -27,7 +28,7 @@ namespace Syrius{
     }
 
     SR_BUFFER_USAGE IndexBuffer::getUsage() const {
-        return m_Type;
+        return m_Usage;
     }
 
     SR_TYPE IndexBuffer::getDataType() const {

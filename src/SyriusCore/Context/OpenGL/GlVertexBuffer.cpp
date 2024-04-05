@@ -32,6 +32,10 @@ namespace Syrius{
     Resource<ubyte[]> GlVertexBuffer::getData() const {
         Resource<ubyte[]> data(new ubyte[m_Size]);
         auto pBuffer = glMapNamedBuffer(m_BufferID, GL_READ_ONLY);
+        if (!pBuffer){
+            SR_CORE_THROW("[GlVertexBuffer]: Failed to map buffer object (%i)", m_BufferID);
+        }
+
         memcpy(data.get(), pBuffer, m_Size);
         auto retVal = glUnmapNamedBuffer(m_BufferID);
         SR_CORE_ASSERT(retVal, "[GlVertexBuffer]: Failed to unmap buffer object (%i)", m_BufferID);
