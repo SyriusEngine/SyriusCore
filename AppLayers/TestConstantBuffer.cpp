@@ -61,11 +61,11 @@ void TestConstantBuffer::onUpdate() {
     ImGui::Begin("Constant Buffer");
     if (ImGui::SliderFloat3("Translation", &m_Translation.x, -1.0f, 1.0f)){
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_Translation);
-        m_TransformBuffer->setData(&transform);
+        m_TransformBuffer->setData(&transform, sizeof(glm::mat4));
     }
     if (ImGui::SliderFloat("Lerp", &m_Lerp, 0.0f, 1.0f)){
-        glm::vec4 lerp = glm::vec4(m_Lerp);
-        m_LerpBuffer->setData(&lerp);
+        auto lerp = glm::vec4(m_Lerp);
+        m_LerpBuffer->setData(&lerp, sizeof(glm::vec4));
     }
     ImGui::End();
 
