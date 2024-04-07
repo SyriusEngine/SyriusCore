@@ -246,6 +246,11 @@ set(SR_CORE_TEST_SRC
 )
 
 add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} MainGtest.cpp)
-target_link_libraries(SyriusCoreTest ${SYRIUS_CORE_LIBS} -lgtest)
+add_dependencies(SyriusCoreTest gtest)
+if (MSVC)
+    target_link_libraries(SyriusCoreTest ${SYRIUS_CORE_LIBS} gtest)
+else()
+    target_link_libraries(SyriusCoreTest ${SYRIUS_CORE_LIBS} -lgtest)
+endif()
 
 

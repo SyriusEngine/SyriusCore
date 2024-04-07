@@ -105,9 +105,14 @@ namespace Syrius{
         textureDesc.Format = getD3d11TextureFormat(m_Format);
         textureDesc.SampleDesc.Quality = 0;
         textureDesc.SampleDesc.Count = 1;
-        textureDesc.Usage = getD3d11BufferType(m_Usage);
         textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-        textureDesc.CPUAccessFlags = 0;
+        textureDesc.Usage = getD3d11BufferType(m_Usage);
+        if (m_Usage == SR_BUFFER_USAGE_DYNAMIC){
+            textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        }
+        else{
+            textureDesc.CPUAccessFlags = 0;
+        }
         textureDesc.MiscFlags = 0;
 
         auto dataType = getTextureDataType(m_Format);

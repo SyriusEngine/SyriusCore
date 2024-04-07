@@ -60,7 +60,11 @@ namespace Syrius{
             if (m_MessageHandler){
                 m_MessageHandler(msg);
             }
+#if defined(SR_CORE_COMPILER_MINGW_W64)
             _assert(msg.message.c_str(), file.c_str(), line);
+#else
+            assert(msg.message.c_str());
+#endif
         }
 
 

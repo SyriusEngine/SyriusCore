@@ -30,7 +30,7 @@ TEST_F(Texture2DTest, ReadTexture2D){
     desc.height = 2;
     desc.format = SR_TEXTURE_RGBA_UI8;
     desc.data = s_RedGreen.data();
-    desc.usage = SR_BUFFER_USAGE_STATIC;
+    desc.usage = SR_BUFFER_USAGE_DYNAMIC;
 
     auto tex = TestEnvironment::m_Context->createTexture2D(desc);
 

@@ -5,7 +5,7 @@ class TestDebugMessageHandler{
 public:
     static void init(const std::string& debugOutput){
         m_File = std::ofstream(debugOutput);
-        setDebugMessageCallback(TestDebugMessageHandler::messageCallback);
+ //       setDebugMessageCallback(TestDebugMessageHandler::messageCallback);
     }
 
     static void terminate(){
