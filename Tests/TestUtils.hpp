@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TestInclude.hpp"
+#include "AwesomeFace.hpp"
 
 static std::vector<float> s_TriangleVertices = {
     // X      Y     Z     R     G       B
