@@ -66,6 +66,18 @@ TEST_F(ConstantBufferTest, CreateConstantBufferEmptyData){
     EXPECT_EQ(cb->getSize(), sizeof(CBData));
 }
 
+TEST_F(ConstantBufferTest, CreateConstantBufferInvalidAlignment){
+    float data[3] = {1.0f, 2.0f, 3.0f};
+    ConstantBufferDesc desc;
+    desc.name = "CBData";
+    desc.size = sizeof(data);
+    desc.data = data;
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
+    desc.shaderStage = SR_SHADER_VERTEX;
+
+    EXPECT_DEATH(auto cb = TestEnvironment::m_Context->createConstantBuffer(desc), "");
+}
+
 TEST_F(ConstantBufferTest, ReadConstantBuffer){
     ConstantBufferDesc desc;
     desc.name = "CBData";
