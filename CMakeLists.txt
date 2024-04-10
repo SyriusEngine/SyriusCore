@@ -224,9 +224,8 @@ endif()
 
 
 ################### Testing ###################
-add_subdirectory(./Dependencies/googletest/)
 include_directories(./Dependencies/googletest/googletest/include/)
-link_directories(${CMAKE_CURRENT_BINARY_DIR}/lib/)
+link_directories(./Dependencies/googletest/googletest/lib/)
 
 set(SR_CORE_TEST_SRC
     Tests/Utils/ConversionsTest.cpp
@@ -246,7 +245,7 @@ set(SR_CORE_TEST_SRC
 )
 
 add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} MainGtest.cpp)
-add_dependencies(SyriusCoreTest gtest)
+
 if (MSVC)
     target_link_libraries(SyriusCoreTest ${SYRIUS_CORE_LIBS} gtest)
 else()
