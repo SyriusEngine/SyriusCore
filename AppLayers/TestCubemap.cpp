@@ -214,11 +214,11 @@ void TestCubemap::renderImGui() {
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     if (ImGui::DragFloat3("Translation", &m_Translation.x, 0.1f)){
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_Translation);
-        m_ModelDataBuffer->setData(&transform);
+        m_ModelDataBuffer->setData(&transform, sizeof(glm::mat4));
     }
     if (ImGui::SliderFloat("Lerp", &m_Lerp, 0.0f, 1.0f)){
         auto lerp = glm::vec4(m_Lerp);
-        m_LerpBuffer->setData(&lerp);
+        m_LerpBuffer->setData(&lerp, sizeof(glm::vec4));
     }
     ImGui::End();
 

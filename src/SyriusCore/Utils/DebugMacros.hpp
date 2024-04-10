@@ -1,16 +1,11 @@
 #pragma once
 
 #include "DebugMessageHandler.hpp"
-#include <cassert>
 
-#define SR_CORE_MESSAGE(message, ...) \
-    DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_INFO, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
-
-#define SR_CORE_WARNING(message, ...) \
-    DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_MEDIUM, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
-
-#define SR_CORE_EXCEPTION(message, ...) \
-    DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
+#define SR_CORE_MESSAGE(message, ...) DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_INFO, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
+#define SR_CORE_WARNING(message, ...) DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_MEDIUM, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
+#define SR_CORE_EXCEPTION(message, ...) DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
+#define SR_CORE_THROW(message, ...) DebugMessageHandler::throwMessage(SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__);
 
 #define SR_CORE_OPENGL_CLEAR_ERROR() \
     {                                \
@@ -20,25 +15,11 @@
         }   \
     }\
 
-
 #if defined(SR_CORE_DEBUG)
 
-#define SR_CORE_PRECONDITION(condition, message, ...) \
-    if (!(condition)) {                          \
-        DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE_PRECONDITION, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); \
-        assert(false);                                         \
-    }   \
-
-#define SR_CORE_POSTCONDITION(condition, message, ...) \
-    if (!(condition)) {                          \
-        DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE_POSTCONDITION, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); \
-        assert(false); \
-    } \
-
-#define SR_CORE_ASSERT(condition, message, ...) \
-    if (!(condition)) {                          \
-        DebugMessageHandler::pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE_ASSERTION, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); \
-    }    \
+#define SR_CORE_PRECONDITION(condition, message, ...) if (!(condition)) { DebugMessageHandler::syriusAssert(SR_CORE_MESSAGE_PRECONDITION, #condition, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); }
+#define SR_CORE_POSTCONDITION(condition, message, ...) if (!(condition)) { DebugMessageHandler::syriusAssert(SR_CORE_MESSAGE_POSTCONDITION, #condition, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); }
+#define SR_CORE_ASSERT(condition, message, ...) if (!(condition)) { DebugMessageHandler::syriusAssert(SR_CORE_MESSAGE_ASSERTION, #condition, SR_CORE_FUNC, SR_CORE_FILE, SR_CORE_LINE, message, ##__VA_ARGS__); }
 
 
 #define SR_CORE_CHECK_CALL(x, message, ...) \

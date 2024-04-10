@@ -9,15 +9,25 @@ namespace Syrius{
 
     }
 
-    ShaderModule::~ShaderModule() {
+    ShaderModule::ShaderModule(const ShaderModuleFileDesc &desc):
+    m_ShaderType(desc.shaderType),
+    m_EntryPoint(desc.entryPoint){
 
     }
+
+    ShaderModule::~ShaderModule() = default;
 
     SR_SHADER_TYPE ShaderModule::getShaderModuleType() const {
         return m_ShaderType;
     }
 
+    const std::string &ShaderModule::getEntryPoint() const {
+        return m_EntryPoint;
+    }
+
     std::string ShaderModule::readFile(const std::string &fileName) {
+        SR_CORE_PRECONDITION(std::filesystem::exists(fileName), "File does not exist: %s", fileName.c_str());
+
         std::string code;
         std::string line;
         std::ifstream file(fileName);
@@ -32,12 +42,14 @@ namespace Syrius{
             }
         }
         else{
-            SR_CORE_WARNING("Failed to open file: " + fileName);
+            SR_CORE_WARNING("Failed to open file: %s", fileName.c_str());
         }
         return code;
     }
 
     std::string ShaderModule::readFileBinary(const std::string &fileName) {
+        SR_CORE_PRECONDITION(std::filesystem::exists(fileName), "File does not exist: %s", fileName.c_str());
+
         std::string byteCode;
         std::ifstream file(fileName, std::ios::ate | std::ios::binary);
         if (file.is_open()){
@@ -48,13 +60,10 @@ namespace Syrius{
             file.close();
         }
         else{
-            SR_CORE_WARNING("Failed to open file: " + fileName);
+            SR_CORE_WARNING("Failed to open file: %s", fileName.c_str());
         }
 
         return byteCode;
     }
 
-    const std::string &ShaderModule::getEntryPoint() const {
-        return m_EntryPoint;
-    }
 }

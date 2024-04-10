@@ -20,12 +20,26 @@ namespace Syrius{
         SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[VertexBuffer]: Update on buffer object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
         SR_CORE_PRECONDITION(count * m_Layout->getStride() <= m_Size, "[VertexBuffer]: Update on buffer object (%p) requested, which exceeds the current buffer size (%i > %i).", this, count * m_Layout->getStride(), m_Size);
 
-        uint32 newSize = count * m_Layout->getStride();
+        uint32 copySize = count * m_Layout->getStride();
         m_Count = count;
 
-        if (newSize <= m_Size) {
-            glNamedBufferSubData(m_BufferID, 0, m_Size, data);
+        auto pBuffer = glMapNamedBuffer(m_BufferID, GL_WRITE_ONLY);
+        memcpy(pBuffer, data, copySize);
+        auto retVal = glUnmapNamedBuffer(m_BufferID);
+        SR_CORE_ASSERT(retVal, "[GlVertexBuffer]: Failed to unmap buffer object (%i)", m_BufferID);
+    }
+
+    Resource<ubyte[]> GlVertexBuffer::getData() const {
+        auto data = createResource<ubyte[]>(m_Size);
+        auto pBuffer = glMapNamedBuffer(m_BufferID, GL_READ_ONLY);
+        if (!pBuffer){
+            SR_CORE_THROW("[GlVertexBuffer]: Failed to map buffer object (%i)", m_BufferID);
         }
+
+        memcpy(data.get(), pBuffer, m_Size);
+        auto retVal = glUnmapNamedBuffer(m_BufferID);
+        SR_CORE_ASSERT(retVal, "[GlVertexBuffer]: Failed to unmap buffer object (%i)", m_BufferID);
+        return std::move(data);
     }
 
     uint64 GlVertexBuffer::getIdentifier() const {

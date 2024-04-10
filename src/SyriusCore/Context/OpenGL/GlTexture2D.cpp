@@ -28,11 +28,11 @@ namespace Syrius{
         glBindTextureUnit(slot, m_TextureID);
     }
 
-    void GlTexture2D::unbind() {
-        glBindTexture(GL_TEXTURE_2D, 0);
-    }
-
     void GlTexture2D::setData(const void *data, uint32 x, uint32 y, uint32 width, uint32 height) {
+        SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[Texture2D]: Update on texture object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
+        SR_CORE_PRECONDITION(x + width <= m_Width, "[Texture2D]: Width (%i) exceeds the texture width (%i)", width, m_Width);
+        SR_CORE_PRECONDITION(y + height <= m_Height, "[Texture2D]: Height (%i) exceeds the texture height (%i)", height, m_Height);
+
         glTextureSubImage2D(m_TextureID, 0, x, y, width, height, m_GlFormat, m_GlDataType, data);
     }
 

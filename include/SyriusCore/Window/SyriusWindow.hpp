@@ -35,7 +35,7 @@ namespace Syrius{
         int32 yPos            = 200;
         uint32 width          = SR_DEFAULT_WIDTH;
         uint32 height         = SR_DEFAULT_HEIGHT;
-        std::string title;
+        std::string title     = "SyriusCore";
         SR_WINDOW_STYLE style = SR_WINDOW_STYLE_DEFAULT;
     };
 

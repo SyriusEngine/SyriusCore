@@ -63,7 +63,7 @@ void Camera::updateCameraData() {
     m_Up = glm::normalize(glm::cross(m_Right, m_Front));
 
     auto viewMat = glm::lookAt(m_Position, m_Position + m_Front, m_Up);
-    m_CameraData->setData(&viewMat);
+    m_CameraData->setData(&viewMat, sizeof(glm::mat4));
 }
 
 void Camera::mouseMoved(float mousePosX, float mousePosY) {

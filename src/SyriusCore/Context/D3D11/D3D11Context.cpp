@@ -180,6 +180,12 @@ namespace Syrius{
         return createResourceView(m_ShaderModules.back());
     }
 
+    ResourceView<ShaderModule> D3D11Context::createShaderModule(const ShaderModuleFileDesc &desc) {
+        auto ptr = new D3D11ShaderModule(desc, m_Device, m_DeviceContext);
+        m_ShaderModules.emplace_back(ptr);
+        return createResourceView(m_ShaderModules.back());
+    }
+
     ResourceView<Shader> D3D11Context::createShader(const ShaderDesc &desc) {
         auto ptr = new D3D11Shader(desc, m_Device, m_DeviceContext);
         m_Shaders.emplace_back(ptr);

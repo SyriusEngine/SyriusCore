@@ -20,7 +20,9 @@ namespace Syrius{
 
         virtual void bind() = 0;
 
-        virtual void setData(const void* data) = 0;
+        virtual void setData(const void* data, uint32 count) = 0;
+
+        [[nodiscard]] virtual Resource<ubyte[]> getData() const = 0;
 
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 
@@ -37,7 +39,7 @@ namespace Syrius{
 
         uint32 m_Size;
         uint32 m_Count;
-        const SR_BUFFER_USAGE m_Type;
+        const SR_BUFFER_USAGE m_Usage;
         const SR_TYPE m_DataType;
     };
 }

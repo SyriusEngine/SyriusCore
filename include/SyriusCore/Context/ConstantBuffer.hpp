@@ -10,7 +10,7 @@ namespace Syrius{
         std::string name;
         uint32 size                 = 0;
         const void* data            = nullptr;
-        SR_BUFFER_USAGE usage         = SR_BUFFER_USAGE_DEFAULT;
+        SR_BUFFER_USAGE usage       = SR_BUFFER_USAGE_DEFAULT;
         SR_SHADER_TYPE shaderStage  = SR_SHADER_VERTEX;
     };
 
@@ -22,7 +22,9 @@ namespace Syrius{
 
         virtual void bind(uint32 slot) = 0;
 
-        virtual void setData(const void* data) = 0;
+        virtual void setData(const void* data, uint64 size) = 0;
+
+        [[nodiscard]] virtual Resource<ubyte[]> getData() const = 0;
 
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 
@@ -35,9 +37,9 @@ namespace Syrius{
     protected:
         const Resource<DeviceLimits>& m_DeviceLimits;
 
-        const uint32 m_Size;
-        const SR_BUFFER_USAGE m_Usage;
-        const std::string m_Name;
+        uint32 m_Size;
+        SR_BUFFER_USAGE m_Usage;
+        std::string m_Name;
     };
 
 }

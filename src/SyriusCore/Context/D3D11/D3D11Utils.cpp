@@ -149,7 +149,7 @@ namespace Syrius{
         }
     }
 
-    D3D11_PRIMITIVE_TOPOLOGY getD3d11DrawMode(SR_DRAW_TYPE drawMode){
+    D3D11_PRIMITIVE_TOPOLOGY getD3d11DrawMode(SR_DRAW_MODE drawMode){
         switch (drawMode){
             case SR_DRAW_POINTS:            return D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
             case SR_DRAW_LINES:             return D3D11_PRIMITIVE_TOPOLOGY_LINELIST;

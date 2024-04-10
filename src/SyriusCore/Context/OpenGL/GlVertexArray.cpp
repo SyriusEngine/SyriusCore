@@ -57,7 +57,7 @@ namespace Syrius{
         glBindVertexArray(0);
     }
 
-    void GlVertexArray::setDrawMode(SR_DRAW_TYPE drawMode) {
+    void GlVertexArray::setDrawMode(SR_DRAW_MODE drawMode) {
         m_DrawMode = drawMode;
         m_GlDrawMode = getGlDrawType(drawMode);
     }
@@ -126,7 +126,7 @@ namespace Syrius{
         glBindVertexArray(0);
     }
 
-    void GlVertexArrayIndexed::setDrawMode(SR_DRAW_TYPE drawMode) {
+    void GlVertexArrayIndexed::setDrawMode(SR_DRAW_MODE drawMode) {
         m_DrawMode = drawMode;
         m_GlDrawMode = getGlDrawType(drawMode);
     }

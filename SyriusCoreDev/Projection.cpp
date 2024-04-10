@@ -33,6 +33,6 @@ void Projection::onResize(uint32 width, uint32 height) {
     m_Height = static_cast<float>(height);
     m_ProjectionData.m_Perspective = glm::perspective(glm::radians(m_Fov), m_Width / m_Height, m_Near, m_Far);
     m_ProjectionData.m_Orthographic = glm::ortho(0.0f, m_Width, 0.0f, m_Height, m_Near, m_Far);
-    m_Resource->setData(&m_ProjectionData);
+    m_Resource->setData(&m_ProjectionData, sizeof(ProjectionData));
 }
 

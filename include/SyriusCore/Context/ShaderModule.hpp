@@ -5,16 +5,24 @@
 namespace Syrius{
 
     struct SR_CORE_API ShaderModuleDesc{
-        std::string code;     // can be actual code in a string or a file path
-        SR_SHADER_TYPE shaderType           = SR_SHADER_VERTEX;
-        std::string entryPoint        = "main";
-        SR_LOAD_TYPE loadType         = SR_LOAD_FROM_FILE;
-        SR_SHADER_CODE_TYPE codeType  = SR_SHADER_CODE_NONE;
+        std::string code; // shader code
+        SR_SHADER_TYPE shaderType           = SR_SHADER_NONE;
+        std::string entryPoint              = "main";
+        SR_SHADER_LANGUAGE_TYPE language    = SR_SHADER_LANGUAGE_NONE;
+    };
+
+    struct SR_CORE_API ShaderModuleFileDesc{
+        std::string filePath;
+        SR_SHADER_TYPE shaderType           = SR_SHADER_NONE;
+        std::string entryPoint              = "main";
+        SR_SHADER_LANGUAGE_TYPE language    = SR_SHADER_LANGUAGE_NONE;
     };
 
     class SR_CORE_API ShaderModule{
     public:
         explicit ShaderModule(const ShaderModuleDesc& desc);
+
+        explicit ShaderModule(const ShaderModuleFileDesc& desc);
 
         virtual ~ShaderModule();
 
@@ -30,9 +38,9 @@ namespace Syrius{
 
         static std::string readFileBinary(const std::string& fileName);
 
-    private:
-        SR_SHADER_TYPE m_ShaderType;
-        std::string m_EntryPoint;
+    protected:
+        const SR_SHADER_TYPE m_ShaderType;
+        const std::string m_EntryPoint;
 
     };
 }

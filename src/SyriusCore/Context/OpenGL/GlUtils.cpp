@@ -17,7 +17,7 @@ namespace Syrius{
         }
     }
 
-    GLenum getGlDrawType(SR_DRAW_TYPE type){
+    GLenum getGlDrawType(SR_DRAW_MODE type){
         switch(type){
             case SR_DRAW_POINTS:            return GL_POINTS;
             case SR_DRAW_LINES:             return GL_LINES;

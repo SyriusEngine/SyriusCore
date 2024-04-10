@@ -42,11 +42,12 @@ namespace Syrius{
         m_Context->PSSetShaderResources(slot, 1, &m_TextureView);
     }
 
-    void D3D11Texture2D::unbind() {
-
-    }
 
     void D3D11Texture2D::setData(const void *data, uint32 x, uint32 y, uint32 width, uint32 height) {
+        SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[Texture2D]: Update on texture object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
+        SR_CORE_PRECONDITION(x + width <= m_Width, "[Texture2D]: Width (%i) exceeds the texture width (%i)", width, m_Width);
+        SR_CORE_PRECONDITION(y + height <= m_Height, "[Texture2D]: Height (%i) exceeds the texture height (%i)", height, m_Height);
+
         // TODO: Test this code because dont know if it works
         auto channelCount = getTextureChannelCount(m_Format);
         D3D11_BOX box = { 0 };
@@ -62,26 +63,28 @@ namespace Syrius{
 
     Resource<Image> D3D11Texture2D::getData() {
         // we use a staging texture to copy the data back to the CPU as a texture cannot be mapped
-        D3D11_TEXTURE2D_DESC desc;
+        ID3D11Texture2D* stagingTexture = nullptr;
+        D3D11_TEXTURE2D_DESC desc = { 0 };
         m_Texture->GetDesc(&desc);
         desc.Usage = D3D11_USAGE_STAGING;
         desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
         desc.BindFlags = 0;
         desc.MiscFlags = 0;
-        ID3D11Texture2D* stagingTexture = nullptr;
         SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&desc, nullptr, &stagingTexture));
 
         m_Context->CopyResource(stagingTexture, m_Texture);
 
-        D3D11_MAPPED_SUBRESOURCE mappedResource;
-        SR_CORE_D3D11_CALL(m_Context->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &mappedResource));
+        D3D11_MAPPED_SUBRESOURCE map = { nullptr };
+        SR_CORE_D3D11_CALL(m_Context->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &map));
+        if (map.pData == nullptr){
+            SR_CORE_THROW("[D3D11Texture2D]: Failed to map staging texture (%p)", stagingTexture);
+        }
 
-        BYTE* data = static_cast<BYTE*>(mappedResource.pData);
         ImageUI8Desc imgDesc;
         imgDesc.width = desc.Width;
         imgDesc.height = desc.Height;
         imgDesc.format = m_Format;
-        imgDesc.data = data;
+        imgDesc.data = static_cast<ubyte*>(map.pData);
         auto img = createImageUI8(imgDesc);
         m_Context->Unmap(stagingTexture, 0);
         stagingTexture->Release();
@@ -102,9 +105,14 @@ namespace Syrius{
         textureDesc.Format = getD3d11TextureFormat(m_Format);
         textureDesc.SampleDesc.Quality = 0;
         textureDesc.SampleDesc.Count = 1;
-        textureDesc.Usage = D3D11_USAGE_DEFAULT;
         textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-        textureDesc.CPUAccessFlags = 0;
+        textureDesc.Usage = getD3d11BufferType(m_Usage);
+        if (m_Usage == SR_BUFFER_USAGE_DYNAMIC){
+            textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        }
+        else{
+            textureDesc.CPUAccessFlags = 0;
+        }
         textureDesc.MiscFlags = 0;
 
         auto dataType = getTextureDataType(m_Format);
@@ -128,8 +136,6 @@ namespace Syrius{
 
         SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_Texture, &textureViewDesc, &m_TextureView));
     }
-
-
 }
 
 #endif

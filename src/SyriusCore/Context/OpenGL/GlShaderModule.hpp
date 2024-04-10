@@ -9,15 +9,17 @@ namespace Syrius {
     public:
         explicit GlShaderModule(const ShaderModuleDesc& desc);
 
+        explicit GlShaderModule(const ShaderModuleFileDesc& desc);
+
         ~GlShaderModule() override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
 
     private:
 
-        void loadSPIRV(const ShaderModuleDesc& desc);
+        void loadSPIRV(const std::string& code);
 
-        void loadGlsl(const ShaderModuleDesc& desc);
+        void loadGlsl(const std::string& code);
 
     private:
         uint32 m_ModuleID;

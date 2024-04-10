@@ -155,13 +155,6 @@ set(SYRIUSCORE_SRC
 
 add_library(SyriusCore SHARED ${SYRIUSCORE_SRC})
 
-set_target_properties(SyriusCore PROPERTIES
-        CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-message(STATUS "CMAKE_RUNTIME_OUTPUT_DIRECTORY: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-
-
 if (WIN32)
     if (MINGW)
         set(SYRIUS_CORE_LIBS
@@ -196,11 +189,14 @@ endif()
 
 target_link_libraries(SyriusCore ${SYRIUS_CORE_LIBS})
 
+
+################### Syrius Core App ###################
+
 include_directories(/include/)
 include_directories(/glm/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(SYRIUSCOREDEV_SRC
+set(SYRIUS_CORE_APP_SRC
     SyriusCoreDev/SyriusCoreDev.cpp
     SyriusCoreDev/ShaderLibrary.cpp
     SyriusCoreDev/Utils.cpp
@@ -208,25 +204,55 @@ set(SYRIUSCOREDEV_SRC
     SyriusCoreDev/Layer.cpp
     SyriusCoreDev/Projection.cpp)
 
-add_executable(SyriusCoreDev main.cpp AppLayer.cpp ${SYRIUSCOREDEV_SRC})
-add_dependencies(SyriusCoreDev SyriusCore)
+set(SYRIUS_CORE_APP_LAYERS_SRC
+    ${SYRIUS_CORE_APP_SRC}
+    AppLayers/TestContext.cpp
+    AppLayers/TestImGui.cpp
+    AppLayers/TestVertexBuffer.cpp
+    AppLayers/TestIndexBuffer.cpp
+    AppLayers/TestTexture.cpp
+    AppLayers/TestConstantBuffer.cpp
+    AppLayers/TestDepthTest.cpp
+    AppLayers/TestFrameBuffer.cpp
+    AppLayers/TestCubemap.cpp)
 
-set(SYRIUS_TEST_LAYERS_SRC
-    TestLayers/TestContext.cpp
-    TestLayers/TestImGui.cpp
-    TestLayers/TestImGui.hpp
-    TestLayers/TestVertexBuffer.cpp
-    TestLayers/TestIndexBuffer.cpp
-    TestLayers/TestTexture.cpp
-    TestLayers/TestConstantBuffer.cpp TestLayers/TestConstantBuffer.hpp TestLayers/TestDepthTest.cpp TestLayers/TestDepthTest.hpp TestLayers/TestFrameBuffer.cpp TestLayers/TestFrameBuffer.hpp TestLayers/TestCubemap.cpp TestLayers/TestCubemap.hpp TestLayers/TestShaderStorageBuffer.cpp TestLayers/TestShaderStorageBuffer.hpp)
-
-add_executable(SyriusTest TestMain.cpp ${SYRIUS_TEST_LAYERS_SRC} ${SYRIUSCOREDEV_SRC})
-add_dependencies(SyriusTest SyriusCore)
+add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
+add_dependencies(SyriusCoreApp SyriusCore)
 
 if (MSVC)
-    target_link_libraries(SyriusCoreDev SyriusCore)
-    target_link_libraries(SyriusTest SyriusCore)
+    target_link_libraries(SyriusCoreApp SyriusCore)
 else()
-    target_link_libraries(SyriusCoreDev -lSyriusCore)
-    target_link_libraries(SyriusTest -lSyriusCore)
+    target_link_libraries(SyriusCoreApp -lSyriusCore)
+endif()
+
+
+
+################### Testing ###################
+add_subdirectory(./Dependencies/googletest/)
+include_directories(./Dependencies/googletest/googletest/include/)
+link_directories(${CMAKE_CURRENT_BINARY_DIR}/lib/)
+
+set(SR_CORE_TEST_SRC
+    Tests/Utils/ConversionsTest.cpp
+    Tests/TestEnvironment.cpp
+
+    Tests/Context/VertexBufferTest.cpp
+    Tests/Context/IndexBufferTest.cpp
+    Tests/Context/ConstantBufferTest.cpp
+    Tests/Context/VertexLayoutTest.cpp
+    Tests/Context/ShaderModuleTest.cpp
+
+    Tests/Context/OpenGL/GLUtilsTest.cpp
+
+    Tests/Context/D3D11/D3D11UtilsTest.cpp
+    Tests/Context/Texture2DTest.cpp
+    Tests/Context/Texture2DTest.hpp
+)
+
+add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} MainGtest.cpp)
+add_dependencies(SyriusCoreTest gtest)
+if (MSVC)
+    target_link_libraries(SyriusCoreTest ${SYRIUS_CORE_LIBS} gtest)
+else()
+    target_link_libraries(SyriusCoreTest ${SYRIUS_CORE_LIBS} -lgtest)
 endif()

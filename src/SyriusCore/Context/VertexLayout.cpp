@@ -33,7 +33,7 @@ namespace Syrius{
 
 
         uint8 elementCount = getScalarComponentCount(dataType);
-        uint8 size = getScalarSize(dataType);
+        uint8 size = getTypeSize(dataType);
 
         m_Attributes.emplace_back(name, dataType, size, elementCount);
         m_Stride += size;

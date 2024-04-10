@@ -12,7 +12,7 @@ namespace Syrius{
         ResourceView<VertexBuffer> vertexBuffer;
         ResourceView<IndexBuffer> indexBuffer;
         ResourceView<ShaderModule> vertexShader;
-        SR_DRAW_TYPE drawMode         = SR_DRAW_TRIANGLES;
+        SR_DRAW_MODE drawMode         = SR_DRAW_TRIANGLES;
     };
 
     class SR_CORE_API VertexArray{
@@ -25,16 +25,16 @@ namespace Syrius{
 
         virtual void unbind() = 0;
 
-        virtual void setDrawMode(SR_DRAW_TYPE drawMode) = 0;
+        virtual void setDrawMode(SR_DRAW_MODE drawMode) = 0;
 
         virtual void drawBuffers() = 0;
 
         virtual void drawBuffersInstanced(uint32 instanceCount) = 0;
 
-        [[nodiscard]] SR_DRAW_TYPE getDrawMode() const;
+        [[nodiscard]] SR_DRAW_MODE getDrawMode() const;
 
     protected:
-        SR_DRAW_TYPE m_DrawMode;
+        SR_DRAW_MODE m_DrawMode;
         ResourceView<VertexBuffer> m_VertexBuffer;
     };
 

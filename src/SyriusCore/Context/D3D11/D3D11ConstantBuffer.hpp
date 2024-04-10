@@ -13,7 +13,9 @@ namespace Syrius{
 
         ~D3D11ConstantBufferBase() override;
 
-        void setData(const void* data) override;
+        void setData(const void* data, uint64 size) override;
+
+        [[nodiscard]] Resource<ubyte[]> getData() const override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
 

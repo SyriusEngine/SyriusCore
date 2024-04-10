@@ -11,15 +11,14 @@ namespace Syrius{
             m_Layout(desc.layout){
         SR_CORE_PRECONDITION(desc.count <= deviceLimits->getMaxVertexCount(), "[VertexBuffer]: supplied vertex count (%i) exceeds the maximum vertex count (%i)", desc.count, deviceLimits->getMaxVertexCount());
         SR_CORE_PRECONDITION(desc.count > 0, "[VertexBuffer]: supplied vertex count (%i) must be greater than 0", desc.count);
+        SR_CORE_PRECONDITION(desc.layout.get() != nullptr, "[VertexBuffer]: supplied vertex layout is %p", desc.layout.get());
         
 
         m_Size = desc.layout->getStride() * desc.count;
 
     }
 
-    VertexBuffer::~VertexBuffer() {
-
-    }
+    VertexBuffer::~VertexBuffer() = default;
 
     uint32 VertexBuffer::getSize() const {
         return m_Size;

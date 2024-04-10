@@ -79,7 +79,9 @@ namespace Syrius{
             UINT numFormats;
 
             BOOL result = wglChoosePixelFormatARB(m_HardwareDeviceContext, attribList, nullptr, 1, &pixelFormat, &numFormats);
-            SR_CORE_ASSERT(result, "Failed to choose pixel format");
+            if (!result){
+                SR_CORE_WARNING("Failed to choose pixel format")
+            }
             int attributes[] =
                     {
                             WGL_CONTEXT_MAJOR_VERSION_ARB,	4,

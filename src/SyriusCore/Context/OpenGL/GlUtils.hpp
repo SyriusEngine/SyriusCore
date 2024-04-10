@@ -13,7 +13,7 @@ namespace Syrius{
 
     GLenum getGlShaderType(SR_SHADER_TYPE type);
 
-    GLenum getGlDrawType(SR_DRAW_TYPE type);
+    GLenum getGlDrawType(SR_DRAW_MODE type);
 
     GLenum getGlDataType(SR_TYPE type);
 

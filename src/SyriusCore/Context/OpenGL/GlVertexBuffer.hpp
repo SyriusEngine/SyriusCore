@@ -15,6 +15,8 @@ namespace Syrius{
 
         void setData(const void* data, uint32 count) override;
 
+        [[nodiscard]] Resource<ubyte[]> getData() const override;
+
         [[nodiscard]] uint64 getIdentifier() const override;
 
     private:

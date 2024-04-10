@@ -66,6 +66,8 @@ namespace Syrius{
 
         virtual ResourceView<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) = 0;
 
+        virtual ResourceView<ShaderModule> createShaderModule(const ShaderModuleFileDesc& desc) = 0;
+
         virtual ResourceView<Shader> createShader(const ShaderDesc& desc) = 0;
 
         ResourceView<VertexLayout> createVertexLayout();
