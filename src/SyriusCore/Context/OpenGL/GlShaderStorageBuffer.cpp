@@ -12,7 +12,7 @@ namespace Syrius{
     }
 
     GlShaderStorageBuffer::~GlShaderStorageBuffer() {
-
+        glDeleteBuffers(1, &m_BufferID);
     }
 
     void GlShaderStorageBuffer::bind() {

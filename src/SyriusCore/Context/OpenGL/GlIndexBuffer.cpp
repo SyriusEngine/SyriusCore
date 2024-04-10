@@ -21,9 +21,11 @@ namespace Syrius{
         SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[IndexBuffer]: Update on buffer object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
         SR_CORE_PRECONDITION(count * getTypeSize(m_DataType) <= m_Size, "[IndexBuffer]: Update on buffer object (%p) requested, which exceeds the current buffer size (%i > %i).", this, count * getTypeSize(m_DataType), m_Size);
 
+        glMemoryBarrier(GL_ELEMENT_ARRAY_BARRIER_BIT);
 
         uint32 copySize = count * getTypeSize(m_DataType);
         m_Count = count;
+
         auto pBuffer = glMapNamedBuffer(m_BufferID, GL_WRITE_ONLY);
         if (!pBuffer){
             SR_CORE_THROW("[GlIndexBuffer]: Failed to map buffer object (%i)", m_BufferID);
@@ -34,6 +36,8 @@ namespace Syrius{
     }
 
     Resource<ubyte[]> GlIndexBuffer::getData() const {
+        glMemoryBarrier(GL_ELEMENT_ARRAY_BARRIER_BIT);
+
         auto data = createResource<ubyte[]>(m_Size);
         auto pBuffer = glMapNamedBuffer(m_BufferID, GL_READ_ONLY);
         if (!pBuffer){
