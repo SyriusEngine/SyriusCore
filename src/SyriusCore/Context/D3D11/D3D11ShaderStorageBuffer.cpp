@@ -67,8 +67,8 @@ namespace Syrius{
         m_Context->Unmap(m_Buffer, 0);
     }
 
-    Resource<byte[]> D3D11ShaderStorageBufferBase::getData() const {
-        return Syrius::Resource<byte[]>();
+    Resource<ubyte[]> D3D11ShaderStorageBufferBase::getData() const {
+        return Syrius::Resource<ubyte[]>();
     }
 
     uint64 D3D11ShaderStorageBufferBase::getIdentifier() const {

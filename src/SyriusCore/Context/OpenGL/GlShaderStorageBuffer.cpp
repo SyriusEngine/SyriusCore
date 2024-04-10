@@ -26,19 +26,32 @@ namespace Syrius{
     }
 
     void GlShaderStorageBuffer::setData(const void *data, uint32 size) {
-        SR_CORE_PRECONDITION(size <= m_Size, "[ShaderStorageBuffer]: supplied size (%i) exceeds the buffer size (%i)", size, m_Size);
+        SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[ShaderStorageBuffer]: Update on buffer object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
+        SR_CORE_PRECONDITION(size <= m_Size, "[ShaderStorageBuffer]: Update on buffer object (%p) requested, which exceeds the current buffer size (%i > %i).", this, size, m_Size);
 
-        glNamedBufferSubData(m_BufferID, 0, size, data);
+        glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+
+        auto pBuffer = glMapNamedBuffer(m_BufferID, GL_WRITE_ONLY);
+        if (!pBuffer){
+            SR_CORE_THROW("[GlShaderStorageBuffer]: Failed to map buffer object (%i)", m_BufferID);
+        }
+        memcpy(pBuffer, data, size);
+        auto retVal = glUnmapNamedBuffer(m_BufferID);
+        SR_CORE_ASSERT(retVal, "[GlShaderStorageBuffer]: Failed to unmap buffer object (%i)", m_BufferID);
     }
 
-    Resource<byte[]> GlShaderStorageBuffer::getData() const {
+    Resource<ubyte[]> GlShaderStorageBuffer::getData() const {
         glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT); // ensure that all writing operations are done before trying to read the data from this buffer
 
-        Resource<byte[]> data = createResource<byte[]>(m_Size);
+        auto data = createResource<ubyte[]>(m_Size);
+        auto pBuffer = glMapNamedBuffer(m_BufferID, GL_READ_ONLY);
+        if (!pBuffer){
+            SR_CORE_THROW("[GlShaderStorageBuffer]: Failed to map buffer object (%i)", m_BufferID);
+        }
 
-        auto ptr = glMapNamedBuffer(m_BufferID, GL_READ_ONLY);
-        memcpy(data.get(), ptr, m_Size);
-        glUnmapNamedBuffer(m_BufferID);
+        memcpy(data.get(), pBuffer, m_Size);
+        auto retVal = glUnmapNamedBuffer(m_BufferID);
+        SR_CORE_ASSERT(retVal, "[GlShaderStorageBuffer]: Failed to unmap buffer object (%i)", m_BufferID);
         return std::move(data);
     }
 
