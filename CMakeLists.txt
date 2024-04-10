@@ -224,8 +224,8 @@ endif()
 
 
 ################### Testing ###################
-include_directories(./Dependencies/googletest/include/)
-link_directories(./Dependencies/googletest/lib/)
+include_directories(./Dependencies/gtest/include/)
+link_directories(./Dependencies/gtest/lib/)
 
 set(SR_CORE_TEST_SRC
     Tests/Utils/ConversionsTest.cpp
