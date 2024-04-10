@@ -3,7 +3,7 @@
 #include <string>
 
 static std::string s_GLSLVertexShaderSource = R"(
-#version 420
+#version 460
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec2 textureCoords;
 
@@ -16,7 +16,7 @@ void main(){
 )";
 
 static std::string s_GLSLFragmentShaderSource = R"(
-#version 420
+#version 460
 
 in vec2 texCoords;
 
@@ -59,5 +59,43 @@ float4 main(float2 texCoords : TexCoord ) : SV_Target {
         discard;
     }
     return color1;
+}
+)";
+
+static std::string s_GLSLSSBOVertexShaderSource = R"(
+#version 460
+
+layout (location = 0) in vec3 lPosition;
+layout (location = 1) in vec3 lColor;
+
+out vec4 fColor;
+
+layout(std430, binding = 0) buffer PositionData{
+    vec4 positionData[3];
+    vec4 offset;
+    bvec4 readPositionFromBuffer;
+};
+
+void main(){
+    fColor = vec4(lColor, 1.0f);
+    vec4 pos = vec4(lPosition, 1.0);
+    if (readPositionFromBuffer.x){
+        pos = positionData[gl_VertexID];
+    }
+    pos += offset;
+    positionData[gl_VertexID] = pos;
+    gl_Position = pos;
+}
+)";
+
+static std::string s_GLSLSSBOFragmentShaderSource = R"(
+#version 460
+
+in vec4 fColor;
+
+layout(location = 0) out vec4 lFragColor;
+
+void main(){
+    lFragColor = fColor;
 }
 )";

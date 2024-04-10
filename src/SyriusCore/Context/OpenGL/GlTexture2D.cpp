@@ -33,10 +33,14 @@ namespace Syrius{
         SR_CORE_PRECONDITION(x + width <= m_Width, "[Texture2D]: Width (%i) exceeds the texture width (%i)", width, m_Width);
         SR_CORE_PRECONDITION(y + height <= m_Height, "[Texture2D]: Height (%i) exceeds the texture height (%i)", height, m_Height);
 
+        glMemoryBarrier(GL_TEXTURE_UPDATE_BARRIER_BIT);
+
         glTextureSubImage2D(m_TextureID, 0, x, y, width, height, m_GlFormat, m_GlDataType, data);
     }
 
     Resource<Image> GlTexture2D::getData() {
+        glMemoryBarrier(GL_TEXTURE_UPDATE_BARRIER_BIT);
+
         auto channelCount = getTextureChannelCount(m_Format);
         auto size = m_Width * m_Height * channelCount;
         auto data = Resource<uint8>(new uint8[size]);
