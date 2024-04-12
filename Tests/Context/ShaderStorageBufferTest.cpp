@@ -12,38 +12,67 @@ void ShaderStorageBufferTest::SetUp() {
     desc.layout = m_Layout;
     m_VertexBuffer = TestEnvironment::m_Context->createVertexBuffer(desc);
 
-    ShaderModuleDesc vsmDesc;
-    vsmDesc.shaderType = SR_SHADER_VERTEX;
+    // Create shaders and VAO for the VertexSSBO tests
+    ShaderModuleDesc vvsmDesc;
+    vvsmDesc.shaderType = SR_SHADER_VERTEX;
     if (TestEnvironment::m_API == SR_API_OPENGL){
-        vsmDesc.code = s_GLSLSSBOVertexShaderSource;
-        vsmDesc.language = SR_SHADER_LANGUAGE_GLSL;
+        vvsmDesc.code = s_GlslVertexShaderVertexSSBOSource;
+        vvsmDesc.language = SR_SHADER_LANGUAGE_GLSL;
     }
-    auto vsm = TestEnvironment::m_Context->createShaderModule(vsmDesc);
+    auto vvsm = TestEnvironment::m_Context->createShaderModule(vvsmDesc);
 
-    ShaderModuleDesc fsmDesc;
-    fsmDesc.shaderType = SR_SHADER_FRAGMENT;
+    ShaderModuleDesc vfsmDesc;
+    vfsmDesc.shaderType = SR_SHADER_FRAGMENT;
     if (TestEnvironment::m_API == SR_API_OPENGL){
-        fsmDesc.code = s_GLSLSSBOFragmentShaderSource;
-        fsmDesc.language = SR_SHADER_LANGUAGE_GLSL;
+        vfsmDesc.code = s_GlslFragmentShaderVertexSSBOSource;
+        vfsmDesc.language = SR_SHADER_LANGUAGE_GLSL;
     }
-    auto fsm = TestEnvironment::m_Context->createShaderModule(fsmDesc);
+    auto vfsm = TestEnvironment::m_Context->createShaderModule(vfsmDesc);
 
     ShaderDesc shaderDesc;
-    shaderDesc.vertexShader = vsm;
-    shaderDesc.fragmentShader = fsm;
-    m_Shader = TestEnvironment::m_Context->createShader(shaderDesc);
+    shaderDesc.vertexShader = vvsm;
+    shaderDesc.fragmentShader = vfsm;
+    m_VSSBOShader = TestEnvironment::m_Context->createShader(shaderDesc);
 
     VertexArrayDesc vaoDesc;
     vaoDesc.vertexBuffer = m_VertexBuffer;
-    vaoDesc.vertexShader = vsm;
-    m_VertexArray = TestEnvironment::m_Context->createVertexArray(vaoDesc);
+    vaoDesc.vertexShader = vvsm;
+    m_VSSBOVertexArray = TestEnvironment::m_Context->createVertexArray(vaoDesc);
+
+    // Create shaders and VAO for the FragmentSSBO tests
+    ShaderModuleDesc fvsmDesc;
+    fvsmDesc.shaderType = SR_SHADER_VERTEX;
+    if (TestEnvironment::m_API == SR_API_OPENGL){
+        fvsmDesc.code = s_GlslVertexShaderFragmentSSBOSource;
+        fvsmDesc.language = SR_SHADER_LANGUAGE_GLSL;
+    }
+    auto fvsm = TestEnvironment::m_Context->createShaderModule(fvsmDesc);
+
+    ShaderModuleDesc ffsmDesc;
+    ffsmDesc.shaderType = SR_SHADER_FRAGMENT;
+    if (TestEnvironment::m_API == SR_API_OPENGL){
+        ffsmDesc.code = s_GlslFragmentShaderFragmentSSBOSource;
+        ffsmDesc.language = SR_SHADER_LANGUAGE_GLSL;
+    }
+    auto ffsm = TestEnvironment::m_Context->createShaderModule(ffsmDesc);
+
+    ShaderDesc fshaderDesc;
+    fshaderDesc.vertexShader = fvsm;
+    fshaderDesc.fragmentShader = ffsm;
+    m_FSSBOShader = TestEnvironment::m_Context->createShader(fshaderDesc);
+
+    VertexArrayDesc fvaoDesc;
+    fvaoDesc.vertexBuffer = m_VertexBuffer;
+    fvaoDesc.vertexShader = fvsm;
+    m_FSSBOVertexArray = TestEnvironment::m_Context->createVertexArray(fvaoDesc);
+
 }
 
 void ShaderStorageBufferTest::TearDown() {
     Test::TearDown();
 }
 
-TEST_F(ShaderStorageBufferTest, CreateShaderStorageBuffer){
+TEST_F(ShaderStorageBufferTest, CreateVertexShaderStorageBuffer){
     SSBOPositionData data;
     data.positionData[0] = glm::vec4(0.0f);
     data.positionData[1] = glm::vec4(0.0f);
@@ -63,7 +92,7 @@ TEST_F(ShaderStorageBufferTest, CreateShaderStorageBuffer){
     EXPECT_EQ(ssbo->getName(), "PositionData");
 }
 
-TEST_F(ShaderStorageBufferTest, ReadCPUShaderStorageBuffer){
+TEST_F(ShaderStorageBufferTest, ReadCPUVertexShaderStorageBuffer){
     SSBOPositionData data;
     data.positionData[0] = glm::vec4(0.0f);
     data.positionData[1] = glm::vec4(0.0f);
@@ -80,8 +109,8 @@ TEST_F(ShaderStorageBufferTest, ReadCPUShaderStorageBuffer){
     // fill the SSBO
     TestEnvironment::m_Context->beginRenderPass();
     ssbo->bindShaderResource(0);
-    m_Shader->bind();
-    TestEnvironment::m_Context->draw(m_VertexArray);
+    m_VSSBOShader->bind();
+    TestEnvironment::m_Context->draw(m_VSSBOVertexArray);
 
     // read positionData from the filled SSBO
     auto ssboBytes = ssbo->getData();
@@ -100,7 +129,7 @@ TEST_F(ShaderStorageBufferTest, ReadCPUShaderStorageBuffer){
     EXPECT_EQ(positionData.positionData[2].z, s_TriangleVertices[14]);
 }
 
-TEST_F(ShaderStorageBufferTest, ReadGPUShaderStorageBuffer){
+TEST_F(ShaderStorageBufferTest, ReadGPUVertexShaderStorageBuffer){
     SSBOPositionData data;
     data.positionData[0] = glm::vec4(0.0f);
     data.positionData[1] = glm::vec4(0.0f);
@@ -120,8 +149,8 @@ TEST_F(ShaderStorageBufferTest, ReadGPUShaderStorageBuffer){
     // fill the SSBO
     TestEnvironment::m_Context->beginRenderPass();
     ssbo->bindShaderResource(0);
-    m_Shader->bind();
-    TestEnvironment::m_Context->draw(m_VertexArray);
+    m_VSSBOShader->bind();
+    TestEnvironment::m_Context->draw(m_VSSBOVertexArray);
 
     // read positionData from the filled SSBO
     auto ssboBytes = ssbo->getData();
@@ -140,7 +169,7 @@ TEST_F(ShaderStorageBufferTest, ReadGPUShaderStorageBuffer){
     EXPECT_EQ(positionData.positionData[2].z, s_TriangleVertices[14] + 2.0f);
 }
 
-TEST_F(ShaderStorageBufferTest, ReadCPUReadWriteGPUShaderStorageBufferTest){
+TEST_F(ShaderStorageBufferTest, ReadCPUReadWriteGPUVertexShaderStorageBuffer){
     SSBOPositionData data;
     data.positionData[0] = glm::vec4(-5.0f, -5.0f, 0.0f, 1.0f);
     data.positionData[1] = glm::vec4(5.0f, -5.0f, 0.0f, 1.0f);
@@ -161,8 +190,8 @@ TEST_F(ShaderStorageBufferTest, ReadCPUReadWriteGPUShaderStorageBufferTest){
     // fill the SSBO
     TestEnvironment::m_Context->beginRenderPass();
     ssbo->bindShaderResource(0);
-    m_Shader->bind();
-    TestEnvironment::m_Context->draw(m_VertexArray);
+    m_VSSBOShader->bind();
+    TestEnvironment::m_Context->draw(m_VSSBOVertexArray);
 
     // read positionData from the filled SSBO
     auto ssboBytes = ssbo->getData();
@@ -173,4 +202,45 @@ TEST_F(ShaderStorageBufferTest, ReadCPUReadWriteGPUShaderStorageBufferTest){
         EXPECT_EQ(positionData.positionData[i].y, data.positionData[i].y + 3.0f);
         EXPECT_EQ(positionData.positionData[i].z, data.positionData[i].z + 2.0f);
     }
+}
+
+TEST_F(ShaderStorageBufferTest, CreateFragmentShaderStorageBuffer){
+    SSBOColorData data;
+
+    ShaderStorageBufferDesc desc;
+    desc.name = "ColorData";
+    desc.size = sizeof(SSBOColorData);
+    desc.data = &data;
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
+    desc.shaderStage = SR_SHADER_FRAGMENT;
+    auto ssbo = TestEnvironment::m_Context->createShaderStorageBuffer(desc);
+
+    EXPECT_EQ(ssbo->getSize(), sizeof(SSBOColorData));
+    EXPECT_EQ(ssbo->getUsage(), SR_BUFFER_USAGE_DEFAULT);
+    EXPECT_EQ(ssbo->getShaderStage(), SR_SHADER_FRAGMENT);
+    EXPECT_EQ(ssbo->getName(), "ColorData");
+}
+
+TEST_F(ShaderStorageBufferTest, ReadCPUFragmentShaderStorageBuffer){
+    SSBOColorData data;
+
+    ShaderStorageBufferDesc desc;
+    desc.name = "ColorData";
+    desc.size = sizeof(SSBOPositionData);
+    desc.data = &data;
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
+    desc.shaderStage = SR_SHADER_FRAGMENT;
+    auto ssbo = TestEnvironment::m_Context->createShaderStorageBuffer(desc);
+
+    // fill the SSBO
+    TestEnvironment::m_Context->beginRenderPass();
+    ssbo->bindShaderResource(0);
+    m_FSSBOShader->bind();
+    TestEnvironment::m_Context->draw(m_FSSBOVertexArray);
+
+    // read increment from the filled SSBO
+    auto ssboBytes = ssbo->getData();
+    auto colorData = *reinterpret_cast<SSBOColorData*>(ssboBytes.get());
+    EXPECT_EQ(colorData.increment.x, 60000);
+
 }
