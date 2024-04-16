@@ -26,6 +26,8 @@ protected:
 
     void imGuiDebugPanel(ResourceView<Context>&);
 
+    void imGuiVertexBufferPanel(ResourceView<VertexBuffer>&);
+
 protected:
     ResourceView<Context>& m_Context;
     EasyIni::Configuration& m_Config;

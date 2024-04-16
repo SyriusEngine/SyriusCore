@@ -33,6 +33,7 @@ m_Config(iniFile){
 SyriusCoreDev::~SyriusCoreDev() {
     m_Layers.clear();
     m_Config.save();
+    m_Window->destroyContext();
 }
 
 void SyriusCoreDev::run() {

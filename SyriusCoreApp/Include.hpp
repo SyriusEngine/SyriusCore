@@ -14,7 +14,7 @@ using namespace Syrius;
 template<typename T>
 using UP = std::unique_ptr<T>;
 
-// RCP = Reference Counting Pointer => because i'm a bit lazy and do not want to usage std::shared_pointer every time
+// RCP = Reference Counting Pointer => because i'm lazy and do not want to usage std::shared_pointer every time
 template<typename T>
 using RCP = std::shared_ptr<T>;
 

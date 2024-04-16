@@ -203,7 +203,9 @@ set(SYRIUS_CORE_APP_SRC
 set(SYRIUS_CORE_APP_LAYERS_SRC
     ${SYRIUS_CORE_APP_SRC}
     SyriusCoreApp/Layers/ImGuiLayer.cpp
-    )
+    SyriusCoreApp/Layers/VertexBufferLayer.cpp
+    SyriusCoreApp/Layers/VertexBufferLayer.hpp
+)
 
 add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
 add_dependencies(SyriusCoreApp SyriusCore)

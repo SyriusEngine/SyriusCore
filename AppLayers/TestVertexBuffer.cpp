@@ -1,21 +1,5 @@
 #include "TestVertexBuffer.hpp"
 
-const float s_Triangle[] = {
-        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-        0.0f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-};
-
-const float s_Rectangle[] = {
-        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-        -0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.f, 0.0f,
-        0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-
-        -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-        0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-        0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-};
-
 TestVertexBuffer::TestVertexBuffer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
                                    EasyIni::Configuration &config) : Layer(context, window, config), m_TestShaderLibrary("./Resources/TestShaders", context),
                                    m_DrawRectangle(true){
@@ -27,7 +11,6 @@ TestVertexBuffer::TestVertexBuffer(ResourceView<Context> &context, const Resourc
     m_VertexLayout->addAttribute("Position", SR_FLOAT32_3);
     m_VertexLayout->addAttribute("Color", SR_FLOAT32_3);
     m_VertexLayout->addAttribute("TexCoord", SR_FLOAT32_2);
-
 
     VertexBufferDesc vboDesc;
     vboDesc.usage = SR_BUFFER_USAGE_DYNAMIC;

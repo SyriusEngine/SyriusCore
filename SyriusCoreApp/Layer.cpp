@@ -6,11 +6,14 @@ m_Window(window),
 m_Config(config),
 m_ShaderLibrary(config["Context"]["ShaderLibraryPath"].getOrDefault("./Resources/Shaders"), context){
     printContextInfo(m_Context);
-
+    m_Window->createImGuiContext();
+    addImGuiDrawFunction([this]{
+        imGuiDebugPanel(m_Context);
+    });
 }
 
 Layer::~Layer() {
-
+    m_Window->destroyImGuiContext();
 }
 
 ResourceView<VertexArray> Layer::loadMesh(Mesh &mesh, ShaderProgram &program) {
@@ -75,6 +78,12 @@ void Layer::imGuiDebugPanel(ResourceView<Context>& context) {
     ImGui::Text("%d bytes", getMemoryUsage()); ImGui::NextColumn();
     ImGui::Separator();
     ImGui::Columns(1);
+    ImGui::End();
+}
+
+void Layer::imGuiVertexBufferPanel(ResourceView<VertexBuffer> & vertexBuffer) {
+    ImGui::Begin("Vertex Buffer Panel");
+
     ImGui::End();
 }
 
