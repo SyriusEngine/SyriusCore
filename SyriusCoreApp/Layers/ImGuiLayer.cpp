@@ -2,11 +2,16 @@
 
 ImGuiLayer::ImGuiLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config) :
 Layer(context, window, config) {
-    addImGuiDrawFunction(Layer::imGuiDebugPanel, m_Context);
+    m_Window->createImGuiContext();
+    addImGuiDrawFunction([this]{
+        Layer::imGuiDebugPanel(m_Context);
+    });
 
 }
 
-ImGuiLayer::~ImGuiLayer() = default;
+ImGuiLayer::~ImGuiLayer(){
+    m_Window->destroyImGuiContext();
+}
 
 void ImGuiLayer::onUpdate() {
     m_Context->beginRenderPass();

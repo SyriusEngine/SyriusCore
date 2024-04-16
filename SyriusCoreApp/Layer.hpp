@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include "Utils.hpp"
 #include "ShaderLibrary.hpp"
 
@@ -23,7 +24,7 @@ protected:
 
     void addImGuiDrawFunction(DrawFunction drawFunction);
 
-    static void imGuiDebugPanel(ResourceView<Context>&);
+    void imGuiDebugPanel(ResourceView<Context>&);
 
 protected:
     ResourceView<Context>& m_Context;
