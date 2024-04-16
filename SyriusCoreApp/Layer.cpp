@@ -42,3 +42,39 @@ ResourceView<VertexArray> Layer::loadMesh(Mesh &mesh, ShaderProgram &program) {
 
     return vao;
 }
+
+void Layer::renderImGui() {
+    m_Window->onImGuiBegin();
+
+    for(auto& draw : m_ImGuiDraw){
+        draw();
+    }
+
+    m_Window->onImGuiEnd();
+}
+
+void Layer::addImGuiDrawFunction(DrawFunction drawFunction) {
+    m_ImGuiDraw.push_back(drawFunction);
+
+}
+
+void Layer::imGuiDebugPanel(ResourceView<Context>& context) {
+    ImGui::Begin("Debug Panel");
+
+    ImGui::ColorPicker3("Background Color", context->getDefaultFrameBuffer()->getColorAttachment(0)->getClearColor());
+
+    ImGui::Columns(2, "Memory Allocation Tracker");
+    ImGui::Separator();
+    ImGui::Text("Total Allocated"); ImGui::NextColumn();
+    ImGui::Text("%d bytes", getAllocatedMemory()); ImGui::NextColumn();
+    ImGui::Separator();
+    ImGui::Text("Total Freed"); ImGui::NextColumn();
+    ImGui::Text("%d bytes", getFreedMemory()); ImGui::NextColumn();
+    ImGui::Separator();
+    ImGui::Text("Usage"); ImGui::NextColumn();
+    ImGui::Text("%d bytes", getMemoryUsage()); ImGui::NextColumn();
+    ImGui::Separator();
+    ImGui::Columns(1);
+    ImGui::End();
+}
+

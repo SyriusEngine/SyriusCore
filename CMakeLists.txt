@@ -193,24 +193,17 @@ include_directories(/glm/)
 link_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(SYRIUS_CORE_APP_SRC
-    SyriusCoreDev/SyriusCoreDev.cpp
-    SyriusCoreDev/ShaderLibrary.cpp
-    SyriusCoreDev/Utils.cpp
-    SyriusCoreDev/Camera.cpp
-    SyriusCoreDev/Layer.cpp
-    SyriusCoreDev/Projection.cpp)
+    SyriusCoreApp/SyriusCoreDev.cpp
+    SyriusCoreApp/ShaderLibrary.cpp
+    SyriusCoreApp/Utils.cpp
+    SyriusCoreApp/Camera.cpp
+    SyriusCoreApp/Layer.cpp
+    SyriusCoreApp/Projection.cpp)
 
 set(SYRIUS_CORE_APP_LAYERS_SRC
     ${SYRIUS_CORE_APP_SRC}
-    AppLayers/TestContext.cpp
-    AppLayers/TestImGui.cpp
-    AppLayers/TestVertexBuffer.cpp
-    AppLayers/TestIndexBuffer.cpp
-    AppLayers/TestTexture.cpp
-    AppLayers/TestConstantBuffer.cpp
-    AppLayers/TestDepthTest.cpp
-    AppLayers/TestFrameBuffer.cpp
-    AppLayers/TestCubemap.cpp)
+    SyriusCoreApp/Layers/ImGuiLayer.cpp
+    )
 
 add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
 add_dependencies(SyriusCoreApp SyriusCore)
@@ -244,7 +237,7 @@ set(SR_CORE_TEST_SRC
     Tests/Context/Texture2DTest.hpp
 )
 
-add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} MainGtest.cpp)
+add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)
 
 if (MSVC)
     target_link_libraries(SyriusCoreTest ${SYRIUS_CORE_LIBS} gtest)
