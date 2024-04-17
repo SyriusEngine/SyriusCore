@@ -3,8 +3,7 @@
 VertexBufferLayer::VertexBufferLayer(ResourceView<Context> &context,
                                      const Resource<SyriusWindow> &window,
                                      EasyIni::Configuration &config) :
-Layer(context, window, config),
-m_DrawRectangle(true){
+Layer(context, window, config){
     m_ShaderProgram = m_ShaderLibrary.loadShader("VertexBuffer");
 
     m_VertexLayout = m_Context->createVertexLayout();
@@ -24,6 +23,10 @@ m_DrawRectangle(true){
     vaoDesc.vertexShader = m_ShaderProgram.vertexShader;
     vaoDesc.vertexBuffer = m_VertexBuffer;
     m_VertexArray = m_Context->createVertexArray(vaoDesc);
+
+    addImGuiDrawFunction([this]{
+        Layer::imGuiVertexBufferPanel(m_VertexBuffer);
+    });
 }
 
 VertexBufferLayer::~VertexBufferLayer() {

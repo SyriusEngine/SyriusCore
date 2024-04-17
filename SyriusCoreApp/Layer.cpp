@@ -84,6 +84,28 @@ void Layer::imGuiDebugPanel(ResourceView<Context>& context) {
 void Layer::imGuiVertexBufferPanel(ResourceView<VertexBuffer> & vertexBuffer) {
     ImGui::Begin("Vertex Buffer Panel");
 
+    static bool useRectangle = true;
+    if (ImGui::Checkbox("Draw Rectangle", &useRectangle)){
+        if (!useRectangle){
+            vertexBuffer->setData(s_Triangle, 3);
+        }
+        else{
+            vertexBuffer->setData(s_Rectangle, 6);
+        }
+    }
+    if (ImGui::Button("Read Data")){
+        auto pData = vertexBuffer->getData();
+        auto floatData = reinterpret_cast<float*>(pData.get());
+        for(int i = 0; i < vertexBuffer->getCount(); i++){
+            std::cout << "Vertex " << i << ": ";
+            for(int j = 0; j < vertexBuffer->getLayout()->getStride(); j++){
+                std::cout << floatData[i * vertexBuffer->getLayout()->getStride() + j] << " ";
+            }
+            std::cout << std::endl;
+        }
+
+    }
+
     ImGui::End();
 }
 
