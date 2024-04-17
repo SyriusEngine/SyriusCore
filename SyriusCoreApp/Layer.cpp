@@ -95,13 +95,12 @@ void Layer::imGuiVertexBufferPanel(ResourceView<VertexBuffer> & vertexBuffer) {
     }
     if (ImGui::Button("Read Data")){
         auto pData = vertexBuffer->getData();
-        auto floatData = reinterpret_cast<float*>(pData.get());
+        auto floatData = reinterpret_cast<Vertex*>(pData.get());
         for(int i = 0; i < vertexBuffer->getCount(); i++){
-            std::cout << "Vertex " << i << ": ";
-            for(int j = 0; j < vertexBuffer->getLayout()->getStride(); j++){
-                std::cout << floatData[i * vertexBuffer->getLayout()->getStride() + j] << " ";
-            }
-            std::cout << std::endl;
+            auto& vertex = floatData[i];
+            std::cout << "Pos: " << vertex.position.x << ", " << vertex.position.y << ", " << vertex.position.z;
+            std::cout << ", Color: " << vertex.color.x << ", " << vertex.color.y << ", " << vertex.color.z;
+            std::cout << ", TexCoord: " << vertex.texCoord.x << ", " << vertex.texCoord.y << std::endl;
         }
 
     }
