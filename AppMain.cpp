@@ -3,6 +3,8 @@
 #include "SyriusCoreApp/Layers/VertexBufferLayer.hpp"
 #include "SyriusCoreApp/Layers/IndexBufferLayer.hpp"
 #include "SyriusCoreApp/Layers/VertexArrayLayer.hpp"
+#include "SyriusCoreApp/Layers/ConstantBufferLayer.hpp"
+#include "SyriusCoreApp/Layers/SamplerLayer.hpp"
 
 template<typename T>
 void runTest(const std::string& iniFile){
@@ -22,6 +24,8 @@ void runAllTests(const std::string& iniFile){
     runTest<VertexBufferLayer>(iniFile);
     runTest<IndexBufferLayer>(iniFile);
     runTest<VertexArrayLayer>(iniFile);
+    runTest<ConstantBufferLayer>(iniFile);
+    runTest<SamplerLayer>(iniFile);
 }
 
 int main(int argc, char** argv) {
@@ -45,11 +49,14 @@ int main(int argc, char** argv) {
             else if (arg == "VertexArray") {
                 runTest<VertexArrayLayer>(argv[1]);
             }
+            else if (arg == "ConstantBuffer") {
+                runTest<ConstantBufferLayer>(argv[1]);
+            }
+            else if (arg == "Sampler") {
+                runTest<SamplerLayer>(argv[1]);
+            }
 //            else if (arg == "Texture") {
 //                runTest<TestTexture>(argv[1]);
-//            }
-//            else if (arg == "ConstantBuffer") {
-//                runTest<TestConstantBuffer>(argv[1]);
 //            }
 //            else if (arg == "DepthTest") {
 //                runTest<TestDepthTest>(argv[1]);

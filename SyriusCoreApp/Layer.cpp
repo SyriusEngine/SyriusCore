@@ -131,3 +131,13 @@ void Layer::imGuiVertexArrayPanel(ResourceView<VertexArray> & vertexArray) {
 
     ImGui::End();
 }
+
+void Layer::imGuiRenderTransformConstantBuffer(ResourceView<ConstantBuffer>&  constantBuffer) {
+    static auto translation = glm::vec3(0.0f);
+    ImGui::Begin("Transform Constant Buffer");
+    if (ImGui::SliderFloat3("Translation", &translation.x, -1.0f, 1.0f)){
+        glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation);
+        constantBuffer->setData(&transform, sizeof(glm::mat4));
+    }
+    ImGui::End();
+}

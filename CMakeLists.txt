@@ -205,7 +205,7 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
     SyriusCoreApp/Layers/ImGuiLayer.cpp
     SyriusCoreApp/Layers/VertexBufferLayer.cpp
     SyriusCoreApp/Layers/VertexBufferLayer.hpp
-    SyriusCoreApp/Layers/IndexBufferLayer.cpp SyriusCoreApp/Layers/IndexBufferLayer.hpp SyriusCoreApp/Layers/VertexArrayLayer.cpp SyriusCoreApp/Layers/VertexArrayLayer.hpp)
+    SyriusCoreApp/Layers/IndexBufferLayer.cpp SyriusCoreApp/Layers/IndexBufferLayer.hpp SyriusCoreApp/Layers/VertexArrayLayer.cpp SyriusCoreApp/Layers/VertexArrayLayer.hpp SyriusCoreApp/Layers/ConstantBufferLayer.cpp SyriusCoreApp/Layers/ConstantBufferLayer.hpp SyriusCoreApp/Layers/SamplerLayer.cpp SyriusCoreApp/Layers/SamplerLayer.hpp)
 
 add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
 add_dependencies(SyriusCoreApp SyriusCore)

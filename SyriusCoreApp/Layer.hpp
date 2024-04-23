@@ -24,11 +24,13 @@ protected:
 
     void addImGuiDrawFunction(DrawFunction drawFunction);
 
-    static void imGuiDebugPanel(ResourceView<Context>&);
+    void imGuiDebugPanel(ResourceView<Context>&);
 
-    static void imGuiIndexBufferPanel(ResourceView<IndexBuffer>&);
+    void imGuiIndexBufferPanel(ResourceView<IndexBuffer>&);
 
-    static void imGuiVertexArrayPanel(ResourceView<VertexArray>&);
+    void imGuiVertexArrayPanel(ResourceView<VertexArray>&);
+
+    void imGuiRenderTransformConstantBuffer(ResourceView<ConstantBuffer>& );
 
 protected:
     ResourceView<Context>& m_Context;
