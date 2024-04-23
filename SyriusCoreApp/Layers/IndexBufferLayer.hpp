@@ -2,23 +2,20 @@
 
 #include "../Layer.hpp"
 
-class VertexBufferLayer: public Layer{
+class IndexBufferLayer: public Layer{
 public:
-    VertexBufferLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    IndexBufferLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
 
-    ~VertexBufferLayer() override;
+    ~IndexBufferLayer() override;
 
     void onUpdate() override;
 
     void onEvent(const Event &event) override;
 
 private:
-
-    void imGuiVertexBufferPanel(ResourceView<VertexBuffer>&);
-
-private:
     ResourceView<VertexLayout> m_VertexLayout;
     ResourceView<VertexBuffer> m_VertexBuffer;
+    ResourceView<IndexBuffer> m_IndexBuffer;
     ResourceView<VertexArray> m_VertexArray;
     ShaderProgram m_ShaderProgram;
 };

@@ -1,6 +1,7 @@
 #include "SyriusCoreApp/SyriusCoreDev.hpp"
 #include "SyriusCoreApp/Layers/ImGuiLayer.hpp"
 #include "SyriusCoreApp/Layers/VertexBufferLayer.hpp"
+#include "SyriusCoreApp/Layers/IndexBufferLayer.hpp"
 
 template<typename T>
 void runTest(const std::string& iniFile){
@@ -18,6 +19,7 @@ void runTest(const std::string& iniFile){
 void runAllTests(const std::string& iniFile){
     runTest<ImGuiLayer>(iniFile);
     runTest<VertexBufferLayer>(iniFile);
+    runTest<IndexBufferLayer>(iniFile);
 }
 
 int main(int argc, char** argv) {
@@ -33,13 +35,11 @@ int main(int argc, char** argv) {
             std::string arg = argv[i];
             if (arg == "ImGui") {
                 runTest<ImGuiLayer>(argv[1]);
-            }
-            else if (arg == "VertexBuffer") {
+            } else if (arg == "VertexBuffer") {
                 runTest<VertexBufferLayer>(argv[1]);
+            } else if (arg == "IndexBuffer") {
+                runTest<IndexBufferLayer>(argv[1]);
             }
-//            else if (arg == "IndexBuffer") {
-//                runTest<TestIndexBuffer>(argv[1]);
-//            }
 //            else if (arg == "Texture") {
 //                runTest<TestTexture>(argv[1]);
 //            }

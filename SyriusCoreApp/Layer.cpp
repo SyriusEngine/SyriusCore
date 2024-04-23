@@ -81,30 +81,30 @@ void Layer::imGuiDebugPanel(ResourceView<Context>& context) {
     ImGui::End();
 }
 
-void Layer::imGuiVertexBufferPanel(ResourceView<VertexBuffer> & vertexBuffer) {
-    ImGui::Begin("Vertex Buffer Panel");
+void Layer::imGuiIndexBufferPanel(ResourceView<IndexBuffer> & indexBuffer) {
+    ImGui::Begin("Index Buffer Panel");
 
     static bool useRectangle = true;
     if (ImGui::Checkbox("Draw Rectangle", &useRectangle)){
         if (!useRectangle){
-            vertexBuffer->setData(s_Triangle, 3);
+            Mesh triangle = createTriangle();
+            indexBuffer->setData(triangle.indices.data(), triangle.indices.size());
         }
         else{
-            vertexBuffer->setData(s_Rectangle, 6);
+            Mesh rectangle = createRectangle();
+            indexBuffer->setData(rectangle.indices.data(), rectangle.indices.size());
         }
     }
     if (ImGui::Button("Read Data")){
-        auto pData = vertexBuffer->getData();
-        auto floatData = reinterpret_cast<Vertex*>(pData.get());
-        for(int i = 0; i < vertexBuffer->getCount(); i++){
-            auto& vertex = floatData[i];
-            std::cout << "Pos: " << vertex.position.x << ", " << vertex.position.y << ", " << vertex.position.z;
-            std::cout << ", Color: " << vertex.color.x << ", " << vertex.color.y << ", " << vertex.color.z;
-            std::cout << ", TexCoord: " << vertex.texCoord.x << ", " << vertex.texCoord.y << std::endl;
+        auto pData = indexBuffer->getData();
+        auto uint32Data = reinterpret_cast<uint32*>(pData.get());
+        for(int i = 0; i < indexBuffer->getCount(); i++){
+            std::cout << uint32Data[i];
+            if (i != indexBuffer->getCount() - 1){
+                std::cout << ", ";
+            }
         }
-
+        std::cout << std::endl;
     }
-
     ImGui::End();
 }
-

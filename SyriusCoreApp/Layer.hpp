@@ -24,9 +24,9 @@ protected:
 
     void addImGuiDrawFunction(DrawFunction drawFunction);
 
-    void imGuiDebugPanel(ResourceView<Context>&);
+    static void imGuiDebugPanel(ResourceView<Context>&);
 
-    void imGuiVertexBufferPanel(ResourceView<VertexBuffer>&);
+    static void imGuiIndexBufferPanel(ResourceView<IndexBuffer>&);
 
 protected:
     ResourceView<Context>& m_Context;

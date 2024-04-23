@@ -25,13 +25,11 @@ Layer(context, window, config){
     m_VertexArray = m_Context->createVertexArray(vaoDesc);
 
     addImGuiDrawFunction([this]{
-        Layer::imGuiVertexBufferPanel(m_VertexBuffer);
+        imGuiVertexBufferPanel(m_VertexBuffer);
     });
 }
 
-VertexBufferLayer::~VertexBufferLayer() {
-
-}
+VertexBufferLayer::~VertexBufferLayer() = default;
 
 void VertexBufferLayer::onUpdate() {
     m_Context->beginRenderPass();
@@ -47,4 +45,31 @@ void VertexBufferLayer::onUpdate() {
 
 void VertexBufferLayer::onEvent(const Event &event) {
 
+}
+
+void VertexBufferLayer::imGuiVertexBufferPanel(ResourceView<VertexBuffer> & vertexBuffer) {
+    ImGui::Begin("Vertex Buffer Panel");
+
+    static bool useRectangle = true;
+    if (ImGui::Checkbox("Draw Rectangle", &useRectangle)){
+        if (!useRectangle){
+            vertexBuffer->setData(s_Triangle, 3);
+        }
+        else{
+            vertexBuffer->setData(s_Rectangle, 6);
+        }
+    }
+    if (ImGui::Button("Read Data")){
+        auto pData = vertexBuffer->getData();
+        auto floatData = reinterpret_cast<Vertex*>(pData.get());
+        for(int i = 0; i < vertexBuffer->getCount(); i++){
+            auto& vertex = floatData[i];
+            std::cout << "Pos: " << vertex.position.x << ", " << vertex.position.y << ", " << vertex.position.z;
+            std::cout << ", Color: " << vertex.color.x << ", " << vertex.color.y << ", " << vertex.color.z;
+            std::cout << ", TexCoord: " << vertex.texCoord.x << ", " << vertex.texCoord.y << std::endl;
+        }
+
+    }
+
+    ImGui::End();
 }
