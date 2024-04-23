@@ -17,7 +17,7 @@ namespace Syrius{
         float LODBias = 0.0f;
     };
 
-    class Sampler{
+    class SR_CORE_API Sampler{
     public:
         explicit Sampler(const SamplerDesc& desc);
 
@@ -25,7 +25,49 @@ namespace Syrius{
 
         virtual void bindShaderResource(uint32 slot) = 0;
 
+        virtual void setFilter(SR_TEXTURE_FILTER minFilter, SR_TEXTURE_FILTER magFilter) = 0;
+
+        virtual void setWrap(SR_TEXTURE_WRAP wrapU, SR_TEXTURE_WRAP wrapV, SR_TEXTURE_WRAP wrapW) = 0;
+
+        virtual void setComparisonFunc(SR_COMPARISON_FUNC comparisonFunc) = 0;
+
+        virtual void setBorderColor(const float* borderColor) = 0;
+
+        virtual void setLOD(float minLOD, float maxLOD, float LODBias) = 0;
+
         [[nodiscard]] virtual uint64 getIdentifier() = 0;
+
+        [[nodiscard]] SR_TEXTURE_FILTER getMinFilter() const;
+
+        [[nodiscard]] SR_TEXTURE_FILTER getMagFilter() const;
+
+        [[nodiscard]] SR_TEXTURE_WRAP getWrapU() const;
+
+        [[nodiscard]] SR_TEXTURE_WRAP getWrapV() const;
+
+        [[nodiscard]] SR_TEXTURE_WRAP getWrapW() const;
+
+        [[nodiscard]] SR_COMPARISON_FUNC getComparisonFunc() const;
+
+        [[nodiscard]] float* getBorderColor();
+
+        [[nodiscard]] float getMinLOD() const;
+
+        [[nodiscard]] float getMaxLOD() const;
+
+        [[nodiscard]] float getLODBias() const;
+
+    protected:
+        SR_TEXTURE_FILTER m_MinFilter;
+        SR_TEXTURE_FILTER m_MagFilter;
+        SR_TEXTURE_WRAP m_WrapU;
+        SR_TEXTURE_WRAP m_WrapV;
+        SR_TEXTURE_WRAP m_WrapW;
+        SR_COMPARISON_FUNC m_ComparisonFunc;
+        float m_BorderColor[4];
+        float m_MinLOD;
+        float m_MaxLOD;
+        float m_LODBias;
 
     };
 

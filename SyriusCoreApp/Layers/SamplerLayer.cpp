@@ -46,6 +46,7 @@ SamplerLayer::SamplerLayer(ResourceView<Context> &context, const Resource<Syrius
     addImGuiDrawFunction([this]{
         Layer::imGuiRenderTransformConstantBuffer(m_TransformBuffer);
         imGuiRenderTextureParameters(m_TextureParametersBuffer);
+        imGuiSamplerPanel(m_Sampler);
     });
 }
 
@@ -68,6 +69,14 @@ void SamplerLayer::onUpdate() {
 }
 
 void SamplerLayer::onEvent(const Event &event) {
+    switch (event.type) {
+        case SR_EVENT_WINDOW_RESIZED: {
+            m_Context->onResize(event.windowWidth, event.windowHeight);
+            break;
+        }
+        default:
+            break;
+    }
 
 }
 

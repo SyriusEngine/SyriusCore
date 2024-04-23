@@ -5,8 +5,8 @@ layout (location = 17) in vec2 fTexCoord;
 
 layout (location = 0) out vec4 fragColor;
 
-uniform sampler2D tex1;
-uniform sampler2D tex2;
+layout(binding = 0) uniform sampler2D tex1;
+layout(binding = 1) uniform sampler2D tex2;
 
 layout(std140, binding = 4) uniform TextureParameters {
     float lerpFactor;

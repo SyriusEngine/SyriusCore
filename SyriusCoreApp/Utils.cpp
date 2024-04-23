@@ -221,3 +221,25 @@ std::string drawModeToString(SR_DRAW_MODE mode){
             return "Unknown";
     }
 }
+
+std::string filterToString(SR_TEXTURE_FILTER mode){
+    switch (mode){
+        case SR_TEXTURE_FILTER_NONE:    return "None";
+        case SR_TEXTURE_FILTER_LINEAR:  return "Linear";
+        case SR_TEXTURE_FILTER_POINT:   return "Point";
+        default:
+            return "Unknown";
+    }
+}
+
+std::string wrapModeToString(SR_TEXTURE_WRAP mode){
+    switch (mode){
+        case SR_TEXTURE_WRAP_NONE:          return "None";
+        case SR_TEXTURE_WRAP_REPEAT:        return "Repeat";
+        case SR_TEXTURE_WRAP_MIRROR_REPEAT: return "Mirror Repeat";
+        case SR_TEXTURE_WRAP_CLAMP_EDGE:    return "Clamp Edge";
+        case SR_TEXTURE_WRAP_CLAMP_BORDER:  return "Clamp Border";
+        default:
+            return "Unknown";
+    }
+}

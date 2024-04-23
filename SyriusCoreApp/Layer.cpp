@@ -141,3 +141,89 @@ void Layer::imGuiRenderTransformConstantBuffer(ResourceView<ConstantBuffer>&  co
     }
     ImGui::End();
 }
+
+void Layer::imGuiSamplerPanel(ResourceView<Sampler> & sampler) {
+    static std::vector<std::string> filterModes = {"SR_TEXTURE_FILTER_LINEAR", "SR_TEXTURE_FILTER_POINT"};
+    static int minFilterIndex = 0;
+    static int magFilterIndex = 0;
+    static std::vector<std::string> wrapModes = {"SR_TEXTURE_WRAP_REPEAT", "SR_TEXTURE_WRAP_MIRROR_REPEAT",
+                                                 "SR_TEXTURE_WRAP_CLAMP_EDGE", "SR_TEXTURE_WRAP_CLAMP_BORDER"};
+    static int wrapUModeIndex = 0;
+    static int wrapVModeIndex = 0;
+    static int wrapWModeIndex = 0;
+    ImGui::Begin("Sampler Panel");
+    ImGui::Text("Min Filter Mode: %s", filterToString(sampler->getMinFilter()).c_str());
+    ImGui::Text("Mag Filter Mode: %s", filterToString(sampler->getMagFilter()).c_str());
+    ImGui::Text("Wrap U Mode: %s", wrapModeToString(sampler->getWrapU()).c_str());
+    ImGui::Text("Wrap V Mode: %s", wrapModeToString(sampler->getWrapV()).c_str());
+    ImGui::Text("Wrap W Mode: %s", wrapModeToString(sampler->getWrapW()).c_str());
+    if (ImGui::BeginCombo("Min Filter", filterModes[minFilterIndex].c_str())){
+        for(int i = 0; i < filterModes.size(); i++){
+            bool isSelected = (minFilterIndex == i);
+            if (ImGui::Selectable(filterModes[i].c_str(), isSelected)){
+                minFilterIndex = i;
+                sampler->setFilter(static_cast<SR_TEXTURE_FILTER>(minFilterIndex + 1), sampler->getMagFilter());
+            }
+            if (isSelected){
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+    if (ImGui::BeginCombo("Mag Filter", filterModes[magFilterIndex].c_str())){
+        for(int i = 0; i < filterModes.size(); i++){
+            bool isSelected = (magFilterIndex == i);
+            if (ImGui::Selectable(filterModes[i].c_str(), isSelected)){
+                magFilterIndex = i;
+                sampler->setFilter(sampler->getMinFilter(), static_cast<SR_TEXTURE_FILTER>(magFilterIndex + 1));
+            }
+            if (isSelected){
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+    if (ImGui::BeginCombo("Wrap U", wrapModes[wrapUModeIndex].c_str())){
+        for(int i = 0; i < wrapModes.size(); i++){
+            bool isSelected = (wrapUModeIndex == i);
+            if (ImGui::Selectable(wrapModes[i].c_str(), isSelected)){
+                wrapUModeIndex = i;
+                sampler->setWrap(static_cast<SR_TEXTURE_WRAP>(wrapUModeIndex + 1), sampler->getWrapV(), sampler->getWrapW());
+            }
+            if (isSelected){
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+    if (ImGui::BeginCombo("Wrap V", wrapModes[wrapVModeIndex].c_str())){
+        for(int i = 0; i < wrapModes.size(); i++){
+            bool isSelected = (wrapVModeIndex == i);
+            if (ImGui::Selectable(wrapModes[i].c_str(), isSelected)){
+                wrapVModeIndex = i;
+                sampler->setWrap(sampler->getWrapU(), static_cast<SR_TEXTURE_WRAP>(wrapVModeIndex + 1), sampler->getWrapW());
+            }
+            if (isSelected){
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+    if (ImGui::BeginCombo("Wrap W", wrapModes[wrapWModeIndex].c_str())){
+        for(int i = 0; i < wrapModes.size(); i++){
+            bool isSelected = (wrapWModeIndex == i);
+            if (ImGui::Selectable(wrapModes[i].c_str(), isSelected)){
+                wrapWModeIndex = i;
+                sampler->setWrap(sampler->getWrapU(), sampler->getWrapV(), static_cast<SR_TEXTURE_WRAP>(wrapWModeIndex + 1));
+            }
+            if (isSelected){
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+    ImGui::ColorPicker3("Border Color", sampler->getBorderColor());
+
+
+    ImGui::End();
+}

@@ -32,6 +32,8 @@ protected:
 
     void imGuiRenderTransformConstantBuffer(ResourceView<ConstantBuffer>& );
 
+    void imGuiSamplerPanel(ResourceView<Sampler>&);
+
 protected:
     ResourceView<Context>& m_Context;
     EasyIni::Configuration& m_Config;

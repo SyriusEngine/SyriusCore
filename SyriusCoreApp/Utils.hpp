@@ -48,3 +48,7 @@ void printEventInfo(const Event& event);
 void printContextInfo(const ResourceView<Context>& context);
 
 std::string drawModeToString(SR_DRAW_MODE mode);
+
+std::string filterToString(SR_TEXTURE_FILTER mode);
+
+std::string wrapModeToString(SR_TEXTURE_WRAP mode);
