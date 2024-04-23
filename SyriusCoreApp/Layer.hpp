@@ -28,6 +28,8 @@ protected:
 
     static void imGuiIndexBufferPanel(ResourceView<IndexBuffer>&);
 
+    static void imGuiVertexArrayPanel(ResourceView<VertexArray>&);
+
 protected:
     ResourceView<Context>& m_Context;
     EasyIni::Configuration& m_Config;

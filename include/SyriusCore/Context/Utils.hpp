@@ -33,6 +33,7 @@ typedef enum SR_BUFFER_USAGE {
 
 // drawing modes
 typedef enum SR_DRAW_MODE {
+    SR_DRAW_NONE            = 0x00,
     SR_DRAW_POINTS          = 0x01,
     SR_DRAW_LINES           = 0x02,
     SR_DRAW_LINES_STRIP     = 0x03,

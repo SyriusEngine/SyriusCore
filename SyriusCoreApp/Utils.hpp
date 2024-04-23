@@ -46,3 +46,5 @@ Mesh createCube();
 void printEventInfo(const Event& event);
 
 void printContextInfo(const ResourceView<Context>& context);
+
+std::string drawModeToString(SR_DRAW_MODE mode);

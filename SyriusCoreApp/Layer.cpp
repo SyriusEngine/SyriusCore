@@ -58,7 +58,6 @@ void Layer::renderImGui() {
 
 void Layer::addImGuiDrawFunction(DrawFunction drawFunction) {
     m_ImGuiDraw.push_back(drawFunction);
-
 }
 
 void Layer::imGuiDebugPanel(ResourceView<Context>& context) {
@@ -106,5 +105,29 @@ void Layer::imGuiIndexBufferPanel(ResourceView<IndexBuffer> & indexBuffer) {
         }
         std::cout << std::endl;
     }
+    ImGui::End();
+}
+
+void Layer::imGuiVertexArrayPanel(ResourceView<VertexArray> & vertexArray) {
+    static std::vector<std::string> drawModes = {"SR_DRAW_POINTS", "SR_DRAW_LINES", "SR_DRAW_LINE_STRIP",
+                                                 "SR_DRAW_TRIANGLES", "SR_DRAW_TRIANGLE_STRIP"};
+    static int drawModeIndex = 3;
+    ImGui::Begin("Vertex Array Panel");
+    auto drawMode = vertexArray->getDrawMode();
+    ImGui::Text("Draw Mode: %s", drawModeToString(drawMode).c_str());
+    if (ImGui::BeginCombo("Draw Mode", drawModes[drawModeIndex].c_str())){
+        for(int i = 0; i < drawModes.size(); i++){
+            bool isSelected = (drawModeIndex == i);
+            if (ImGui::Selectable(drawModes[i].c_str(), isSelected)){
+                drawModeIndex = i;
+                vertexArray->setDrawMode(static_cast<SR_DRAW_MODE>(i + 1));
+            }
+            if (isSelected){
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+
     ImGui::End();
 }

@@ -3,8 +3,8 @@
 
 namespace Syrius{
 
-    VertexArray::VertexArray(const VertexArrayDesc &desc)
-    : m_VertexBuffer(desc.vertexBuffer),
+    VertexArray::VertexArray(const VertexArrayDesc &desc):
+    m_VertexBuffer(desc.vertexBuffer),
     m_DrawMode(desc.drawMode) {
 
     }
@@ -13,8 +13,8 @@ namespace Syrius{
         return m_DrawMode;
     }
 
-    VertexArrayIndexed::VertexArrayIndexed(const VertexArrayDesc &desc)
-    : VertexArray(desc),
+    VertexArrayIndexed::VertexArrayIndexed(const VertexArrayDesc &desc):
+    VertexArray(desc),
     m_IndexBuffer(desc.indexBuffer) {
 
     }

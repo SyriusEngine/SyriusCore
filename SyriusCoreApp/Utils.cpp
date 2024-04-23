@@ -209,3 +209,15 @@ void printContextInfo(const ResourceView<Context>& context){
 
     std::cout << deviceInfo << std::endl;
 }
+
+std::string drawModeToString(SR_DRAW_MODE mode){
+    switch (mode){
+        case SR_DRAW_POINTS:        return "Points";
+        case SR_DRAW_LINES:         return "Lines";
+        case SR_DRAW_LINES_STRIP:   return "Line Strip";
+        case SR_DRAW_TRIANGLES:     return "Triangles";
+        case SR_DRAW_TRIANGLE_STRIP:return "Triangle Strip";
+        default:
+            return "Unknown";
+    }
+}

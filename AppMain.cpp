@@ -2,6 +2,7 @@
 #include "SyriusCoreApp/Layers/ImGuiLayer.hpp"
 #include "SyriusCoreApp/Layers/VertexBufferLayer.hpp"
 #include "SyriusCoreApp/Layers/IndexBufferLayer.hpp"
+#include "SyriusCoreApp/Layers/VertexArrayLayer.hpp"
 
 template<typename T>
 void runTest(const std::string& iniFile){
@@ -20,6 +21,7 @@ void runAllTests(const std::string& iniFile){
     runTest<ImGuiLayer>(iniFile);
     runTest<VertexBufferLayer>(iniFile);
     runTest<IndexBufferLayer>(iniFile);
+    runTest<VertexArrayLayer>(iniFile);
 }
 
 int main(int argc, char** argv) {
@@ -40,6 +42,9 @@ int main(int argc, char** argv) {
             } else if (arg == "IndexBuffer") {
                 runTest<IndexBufferLayer>(argv[1]);
             }
+            else if (arg == "VertexArray") {
+                runTest<VertexArrayLayer>(argv[1]);
+            }
 //            else if (arg == "Texture") {
 //                runTest<TestTexture>(argv[1]);
 //            }
@@ -55,9 +60,9 @@ int main(int argc, char** argv) {
 //            else if (arg == "Cubemap") {
 //                runTest<TestCubemap>(argv[1]);
 //            }
-//            else if (arg == "All") {
-//                runAllTests(argv[1]);
-//            }
+            else if (arg == "All") {
+                runAllTests(argv[1]);
+            }
             else {
                 std::cerr << "Unknown test: " << arg << std::endl;
             }
