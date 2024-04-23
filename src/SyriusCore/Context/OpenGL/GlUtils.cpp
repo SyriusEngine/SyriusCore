@@ -53,11 +53,11 @@ namespace Syrius{
 
     GLenum getGlBufferType(SR_BUFFER_USAGE type){
         switch (type){
-            case SR_BUFFER_USAGE_DEFAULT: return GL_STATIC_DRAW;
+            case SR_BUFFER_USAGE_DEFAULT: return GL_DYNAMIC_DRAW;
             case SR_BUFFER_USAGE_DYNAMIC: return GL_DYNAMIC_DRAW;
             case SR_BUFFER_USAGE_STATIC:  return GL_STATIC_DRAW;
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid usage (%i) given to converter, return default: GL_STATIC_DRAW", type);
+                SR_CORE_WARNING("[GLUtils]: Invalid usage (%i) given to converter, return default: GL_DYNAMIC_DRAW", type);
                 return GL_STATIC_DRAW;
             }
         }

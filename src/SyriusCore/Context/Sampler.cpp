@@ -41,7 +41,7 @@ namespace Syrius{
         return m_ComparisonFunc;
     }
 
-    float* Sampler::getBorderColor() {
+    const float* Sampler::getBorderColor() const {
         return m_BorderColor;
     }
 

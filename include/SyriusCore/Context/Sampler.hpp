@@ -49,7 +49,7 @@ namespace Syrius{
 
         [[nodiscard]] SR_COMPARISON_FUNC getComparisonFunc() const;
 
-        [[nodiscard]] float* getBorderColor();
+        [[nodiscard]] const float* getBorderColor() const;
 
         [[nodiscard]] float getMinLOD() const;
 

@@ -222,7 +222,11 @@ void Layer::imGuiSamplerPanel(ResourceView<Sampler> & sampler) {
         }
         ImGui::EndCombo();
     }
-    ImGui::ColorPicker3("Border Color", sampler->getBorderColor());
+    auto borderColorPtr = sampler->getBorderColor();
+    float borderColor[4] = {borderColorPtr[0], borderColorPtr[1], borderColorPtr[2], borderColorPtr[3]};
+    if (ImGui::ColorPicker3("Border Color", borderColor)){
+        sampler->setBorderColor(borderColor);
+    }
 
 
     ImGui::End();
