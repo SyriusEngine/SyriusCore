@@ -6,6 +6,12 @@
 
 using DrawFunction = std::function<void()>;
 
+struct TextureParameters{
+    float lerpFactor = 0.5f;
+    float scale = 1.0f;
+    float padding[2] = {0.0f, 0.0f};
+};
+
 class Layer{
 public:
     Layer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
@@ -33,6 +39,10 @@ protected:
     void imGuiRenderTransformConstantBuffer(ResourceView<ConstantBuffer>& );
 
     void imGuiSamplerPanel(ResourceView<Sampler>&);
+
+    void imGuiTextureParametersPanel(ResourceView<ConstantBuffer>& constantBuffer);
+
+    void imGuiTexturePanel(ResourceView<Texture2D>& texture);
 
 protected:
     ResourceView<Context>& m_Context;

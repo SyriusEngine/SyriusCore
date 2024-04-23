@@ -1,6 +1,6 @@
-#include "SamplerLayer.hpp"
+#include "TextureLayer.hpp"
 
-SamplerLayer::SamplerLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
+TextureLayer::TextureLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
                            EasyIni::Configuration &config) : Layer(context, window, config) {
     m_ShaderProgram = m_ShaderLibrary.loadShader("Texture");
 
@@ -26,19 +26,21 @@ SamplerLayer::SamplerLayer(ResourceView<Context> &context, const Resource<Syrius
     m_TextureParametersBuffer = m_Context->createConstantBuffer(textureParamsDesc);
 
     ImageFileDesc img1Desc;
-    img1Desc.fileName = "./Resources/Textures/awesomeface.png";
+    img1Desc.fileName = "./Resources/Textures/awesomeface512.png";
     img1Desc.flipOnAccess = true;
     auto img1 = createImage(img1Desc);
     Texture2DImageDesc tex1Desc;
+    tex1Desc.usage = SR_BUFFER_USAGE_DYNAMIC;
     tex1Desc.image = createResourceView(img1);
     m_Texture1 = m_Context->createTexture2D(tex1Desc);
 
     ImageFileDesc img2Desc;
-    img2Desc.fileName = "./Resources/Textures/insta.png";
+    img2Desc.fileName = "./Resources/Textures/insta512.png";
     img2Desc.flipOnAccess = true;
     auto img2 = createImage(img2Desc);
     Texture2DImageDesc tex2Desc;
     tex2Desc.image = createResourceView(img2);
+    tex2Desc.usage = SR_BUFFER_USAGE_DYNAMIC;
     m_Texture2 = m_Context->createTexture2D(tex2Desc);
 
     SamplerDesc splrDesc;
@@ -48,12 +50,13 @@ SamplerLayer::SamplerLayer(ResourceView<Context> &context, const Resource<Syrius
         Layer::imGuiRenderTransformConstantBuffer(m_TransformBuffer);
         Layer::imGuiTextureParametersPanel(m_TextureParametersBuffer);
         Layer::imGuiSamplerPanel(m_Sampler);
+        Layer::imGuiTexturePanel(m_Texture1);
     });
 }
 
-SamplerLayer::~SamplerLayer() = default;
+TextureLayer::~TextureLayer() = default;
 
-void SamplerLayer::onUpdate() {
+void TextureLayer::onUpdate() {
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();
@@ -69,7 +72,7 @@ void SamplerLayer::onUpdate() {
     m_Context->endRenderPass();
 }
 
-void SamplerLayer::onEvent(const Event &event) {
+void TextureLayer::onEvent(const Event &event) {
     switch (event.type) {
         case SR_EVENT_WINDOW_RESIZED: {
             m_Context->onResize(event.windowWidth, event.windowHeight);

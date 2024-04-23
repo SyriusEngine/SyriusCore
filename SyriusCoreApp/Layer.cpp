@@ -231,3 +231,56 @@ void Layer::imGuiSamplerPanel(ResourceView<Sampler> & sampler) {
 
     ImGui::End();
 }
+
+void Layer::imGuiTextureParametersPanel(ResourceView<ConstantBuffer> &constantBuffer) {
+    static TextureParameters texParams;
+    ImGui::Begin("Texture Parameters");
+    if (ImGui::SliderFloat("Lerp Factor", &texParams.lerpFactor, 0.0f, 1.0f)){
+        constantBuffer->setData(&texParams, sizeof(TextureParameters));
+    }
+    if (ImGui::SliderFloat("Scale", &texParams.scale, 0.0f, 20.0f)){
+        constantBuffer->setData(&texParams, sizeof(TextureParameters));
+    }
+    ImGui::End();
+}
+
+void Layer::imGuiTexturePanel(ResourceView<Texture2D> &texture) {
+    static float checkerBoardColor[4] = {1.0f, 0.0f, 1.0f, 1.0f};
+    const uint32 checkerBoardMaxWidth = 512;
+    const uint32 checkerBoardMaxHeight = 512;
+    static uint32 checkerBoardStartX = 0;
+    static uint32 checkerBoardStartY = 0;
+    static uint32 checkerBoardWidth = 256;
+    static uint32 checkerBoardHeight = 256;
+
+    ImGui::Begin("Texture Panel");
+    ImGui::Image((void*)(intptr_t)texture->getIdentifier(), ImVec2(64, 64));
+    ImGui::ColorPicker4("Checkerboard Color", checkerBoardColor);
+    if (ImGui::SliderInt("Start X", (int*)&checkerBoardStartX, 0, checkerBoardMaxWidth)){
+        if (checkerBoardStartX + checkerBoardWidth <= checkerBoardMaxWidth){
+            auto color = createCheckerBoard(checkerBoardColor, checkerBoardWidth, checkerBoardHeight);
+            texture->setData(color.data(), checkerBoardStartX, checkerBoardStartY, checkerBoardWidth, checkerBoardHeight);
+        }
+    }
+    if (ImGui::SliderInt("Start Y", (int*)&checkerBoardStartY, 0, checkerBoardMaxHeight)){
+        if (checkerBoardStartY + checkerBoardHeight <= checkerBoardMaxHeight){
+            auto color = createCheckerBoard(checkerBoardColor, checkerBoardWidth, checkerBoardHeight);
+            texture->setData(color.data(), checkerBoardStartX, checkerBoardStartY, checkerBoardWidth, checkerBoardHeight);
+        }
+    }
+    if (ImGui::SliderInt("Width", (int*)&checkerBoardWidth, 0, checkerBoardMaxWidth)){
+        if (checkerBoardStartX + checkerBoardWidth <= checkerBoardMaxWidth){
+            auto color = createCheckerBoard(checkerBoardColor, checkerBoardWidth, checkerBoardHeight);
+            texture->setData(color.data(), checkerBoardStartX, checkerBoardStartY, checkerBoardWidth, checkerBoardHeight);
+        }
+    }
+    if (ImGui::SliderInt("Height", (int*)&checkerBoardHeight, 0, checkerBoardMaxHeight)){
+        if (checkerBoardStartY + checkerBoardHeight <= checkerBoardMaxHeight){
+            auto color = createCheckerBoard(checkerBoardColor, checkerBoardWidth, checkerBoardHeight);
+            texture->setData(color.data(), checkerBoardStartX, checkerBoardStartY, checkerBoardWidth, checkerBoardHeight);
+        }
+    }
+
+    ImGui::End();
+
+}

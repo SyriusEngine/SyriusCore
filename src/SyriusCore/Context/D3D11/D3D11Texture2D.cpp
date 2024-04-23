@@ -92,7 +92,7 @@ namespace Syrius{
     }
 
     uint64 D3D11Texture2D::getIdentifier() const {
-        return reinterpret_cast<uint64>(m_Texture);
+        return reinterpret_cast<uint64>(m_TextureView);
     }
 
     void D3D11Texture2D::createResources(const void *data) {

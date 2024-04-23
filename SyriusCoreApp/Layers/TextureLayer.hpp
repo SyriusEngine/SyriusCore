@@ -2,11 +2,11 @@
 
 #include "../Layer.hpp"
 
-class SamplerLayer: public Layer{
+class TextureLayer: public Layer{
 public:
-    SamplerLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    TextureLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
 
-    ~SamplerLayer() override;
+    ~TextureLayer() override;
 
     void onUpdate() override;
 
@@ -21,5 +21,4 @@ private:
     ResourceView<Texture2D> m_Texture1;
     ResourceView<Texture2D> m_Texture2;
     ResourceView<Sampler> m_Sampler;
-
 };

@@ -52,3 +52,5 @@ std::string drawModeToString(SR_DRAW_MODE mode);
 std::string filterToString(SR_TEXTURE_FILTER mode);
 
 std::string wrapModeToString(SR_TEXTURE_WRAP mode);
+
+std::vector<uint8> createCheckerBoard(const float* color, uint32 width, uint32 height);

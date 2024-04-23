@@ -243,3 +243,26 @@ std::string wrapModeToString(SR_TEXTURE_WRAP mode){
             return "Unknown";
     }
 }
+
+std::vector<uint8> createCheckerBoard(const float* color, uint32 width, uint32 height){
+    std::vector<uint8> data;
+    data.resize(width * height * 4);
+    for (uint32 y = 0; y < height; y++) {
+        for (uint32 x = 0; x < width; x++) {
+            uint32 pixelIndex = (y * width + x);
+            uint32 index = pixelIndex * 4;
+            if (pixelIndex % 2 == 0) {
+                data[index] = (uint8) (color[0] * 255);
+                data[index + 1] = (uint8) (color[1] * 255);
+                data[index + 2] = (uint8) (color[2] * 255);
+                data[index + 3] = 255;
+            } else {
+                data[index] = 255;
+                data[index + 1] = 255;
+                data[index + 2] = 255;
+                data[index + 3] = 255;
+            }
+        }
+    }
+    return data;
+}
