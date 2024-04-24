@@ -4,6 +4,8 @@ Layer::Layer(ResourceView<Context>& context, const Resource<SyriusWindow> &windo
 m_Context(context),
 m_Window(window),
 m_Config(config),
+m_CurrentX(0.0f),
+m_CurrentY(0.0f),
 m_ShaderLibrary(config["Context"]["ShaderLibraryPath"].getOrDefault("./Resources/Shaders"), context){
     printContextInfo(m_Context);
     m_Window->createImGuiContext();
@@ -49,6 +51,9 @@ ResourceView<VertexArray> Layer::loadMesh(Mesh &mesh, ShaderProgram &program) {
 void Layer::renderImGui() {
     m_Window->onImGuiBegin();
 
+    m_CurrentX = 0.0f;
+    m_CurrentY = 0.0f;
+    m_CurrentColumnWidth = &m_Column1Width;
     for(auto& draw : m_ImGuiDraw){
         draw();
     }
@@ -61,7 +66,7 @@ void Layer::addImGuiDrawFunction(DrawFunction drawFunction) {
 }
 
 void Layer::imGuiDebugPanel(ResourceView<Context>& context) {
-    ImGui::Begin("Debug Panel");
+    imGuiBeginPanel("Debug Panel");
 
     ImGui::ColorPicker3("Background Color", context->getDefaultFrameBuffer()->getColorAttachment(0)->getClearColor());
 
@@ -77,11 +82,11 @@ void Layer::imGuiDebugPanel(ResourceView<Context>& context) {
     ImGui::Text("%d bytes", getMemoryUsage()); ImGui::NextColumn();
     ImGui::Separator();
     ImGui::Columns(1);
-    ImGui::End();
+    imGuiEndPanel();
 }
 
 void Layer::imGuiIndexBufferPanel(ResourceView<IndexBuffer> & indexBuffer) {
-    ImGui::Begin("Index Buffer Panel");
+    imGuiBeginPanel("Index Buffer Panel");
 
     static bool useRectangle = true;
     if (ImGui::Checkbox("Draw Rectangle", &useRectangle)){
@@ -105,14 +110,14 @@ void Layer::imGuiIndexBufferPanel(ResourceView<IndexBuffer> & indexBuffer) {
         }
         std::cout << std::endl;
     }
-    ImGui::End();
+    imGuiEndPanel();
 }
 
 void Layer::imGuiVertexArrayPanel(ResourceView<VertexArray> & vertexArray) {
     static std::vector<std::string> drawModes = {"SR_DRAW_POINTS", "SR_DRAW_LINES", "SR_DRAW_LINE_STRIP",
                                                  "SR_DRAW_TRIANGLES", "SR_DRAW_TRIANGLE_STRIP"};
     static int drawModeIndex = 3;
-    ImGui::Begin("Vertex Array Panel");
+    imGuiBeginPanel("Vertex Array Panel");
     auto drawMode = vertexArray->getDrawMode();
     ImGui::Text("Draw Mode: %s", drawModeToString(drawMode).c_str());
     if (ImGui::BeginCombo("Draw Mode", drawModes[drawModeIndex].c_str())){
@@ -129,17 +134,33 @@ void Layer::imGuiVertexArrayPanel(ResourceView<VertexArray> & vertexArray) {
         ImGui::EndCombo();
     }
 
-    ImGui::End();
+    imGuiEndPanel();
 }
 
 void Layer::imGuiRenderTransformConstantBuffer(ResourceView<ConstantBuffer>&  constantBuffer) {
     static auto translation = glm::vec3(0.0f);
-    ImGui::Begin("Transform Constant Buffer");
+    static auto rotation = glm::vec3(0.0f);
+    static auto sca = glm::vec3(1.0f);
+    auto update = [&]{
+        glm::mat4 translate  = glm::translate(glm::mat4(1.0f), translation);
+        glm::mat4 rotate = glm::toMat4(glm::quat(rotate));
+        glm::mat4 scale = glm::scale(sca);
+
+        glm::mat4 transformation = translate * scale; // TODO: Add rotation (somehow it is not working rn)
+        constantBuffer->setData(&transformation, sizeof(glm::mat4));
+    };
+
+    imGuiBeginPanel("Transform Constant Buffer");
     if (ImGui::SliderFloat3("Translation", &translation.x, -1.0f, 1.0f)){
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation);
-        constantBuffer->setData(&transform, sizeof(glm::mat4));
+        update();
     }
-    ImGui::End();
+    if (ImGui::SliderFloat3("Rotation", &rotation.x, -1.0f, 1.0f)){
+        update();
+    }
+    if (ImGui::SliderFloat3("Scale", &sca.x, 0.0f, 5.0f)){
+        update();
+    }
+    imGuiEndPanel();
 }
 
 void Layer::imGuiSamplerPanel(ResourceView<Sampler> & sampler) {
@@ -151,7 +172,7 @@ void Layer::imGuiSamplerPanel(ResourceView<Sampler> & sampler) {
     static int wrapUModeIndex = 0;
     static int wrapVModeIndex = 0;
     static int wrapWModeIndex = 0;
-    ImGui::Begin("Sampler Panel");
+    imGuiBeginPanel("Sampler Panel");
     ImGui::Text("Min Filter Mode: %s", filterToString(sampler->getMinFilter()).c_str());
     ImGui::Text("Mag Filter Mode: %s", filterToString(sampler->getMagFilter()).c_str());
     ImGui::Text("Wrap U Mode: %s", wrapModeToString(sampler->getWrapU()).c_str());
@@ -229,19 +250,19 @@ void Layer::imGuiSamplerPanel(ResourceView<Sampler> & sampler) {
     }
 
 
-    ImGui::End();
+    imGuiEndPanel();
 }
 
 void Layer::imGuiTextureParametersPanel(ResourceView<ConstantBuffer> &constantBuffer) {
     static TextureParameters texParams;
-    ImGui::Begin("Texture Parameters");
+    imGuiBeginPanel("Texture Parameters");
     if (ImGui::SliderFloat("Lerp Factor", &texParams.lerpFactor, 0.0f, 1.0f)){
         constantBuffer->setData(&texParams, sizeof(TextureParameters));
     }
     if (ImGui::SliderFloat("Scale", &texParams.scale, 0.0f, 20.0f)){
         constantBuffer->setData(&texParams, sizeof(TextureParameters));
     }
-    ImGui::End();
+    imGuiEndPanel();
 }
 
 void Layer::imGuiTexturePanel(ResourceView<Texture2D> &texture) {
@@ -253,7 +274,7 @@ void Layer::imGuiTexturePanel(ResourceView<Texture2D> &texture) {
     static uint32 checkerBoardWidth = 256;
     static uint32 checkerBoardHeight = 256;
 
-    ImGui::Begin("Texture Panel");
+    imGuiBeginPanel("Texture Panel");
     ImGui::Image((void*)(intptr_t)texture->getIdentifier(), ImVec2(64, 64));
     ImGui::ColorPicker4("Checkerboard Color", checkerBoardColor);
     if (ImGui::SliderInt("Start X", (int*)&checkerBoardStartX, 0, checkerBoardMaxWidth)){
@@ -281,7 +302,7 @@ void Layer::imGuiTexturePanel(ResourceView<Texture2D> &texture) {
         }
     }
 
-    ImGui::End();
+    imGuiEndPanel();
 
 }
 
@@ -289,23 +310,42 @@ void Layer::imGuiDepthTestPanel(ResourceView<FrameBuffer> &frameBuffer) {
     static bool depthTest = false;
     static bool depthMask = true;
 
-    ImGui::Begin("Depth Test Panel");
+    imGuiBeginPanel("Depth Test Panel");
     if (ImGui::Checkbox("Depth test", &depthTest)){
         frameBuffer->enableDepthTest(depthTest);
     }
     if (ImGui::Checkbox("Depth Mask", &depthMask)){
         frameBuffer->setDepthMask(static_cast<SR_DEPTH_MASK>(depthMask));
     }
-    ImGui::End();
+    imGuiEndPanel();
 }
 
 void Layer::imGuiCameraPanel(Camera &camera) {
-    ImGui::Begin("Camera");
+    imGuiBeginPanel("Camera");
     if (camera.isEnabled()){
         ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Camera enabled");
     }
     else{
         ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Camera disabled");
     }
+    imGuiEndPanel();
+}
+
+void Layer::imGuiBeginPanel(const char *name) const {
+    ImGui::SetNextWindowPos(ImVec2(m_CurrentX, m_CurrentY));
+    ImGui::SetNextWindowSize(ImVec2(*m_CurrentColumnWidth, 0.0f));
+    ImGui::Begin(name);
+}
+
+void Layer::imGuiEndPanel() {
+    auto size = ImGui::GetWindowSize();
+    *m_CurrentColumnWidth = size.x;
     ImGui::End();
+    if (m_CurrentY + size.y > m_Window->getHeight()){
+        m_CurrentY = 0.0f;
+        m_CurrentX = m_Window->getWidth() - 200.0f;
+    }
+    else{
+        m_CurrentY += size.y;
+    }
 }

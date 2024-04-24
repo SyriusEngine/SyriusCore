@@ -56,6 +56,18 @@ protected:
     ShaderLibrary m_ShaderLibrary;
 
 private:
+
+    void imGuiBeginPanel(const char* name) const;
+
+    void imGuiEndPanel();
+
+private:
     std::vector<DrawFunction> m_ImGuiDraw;
+
+    float m_CurrentX = 0.0f;
+    float m_CurrentY = 0.0f;
+    float m_Column1Width = 200.0f;
+    float m_Column2Width = 200.0f;
+    float* m_CurrentColumnWidth = &m_Column1Width;
 
 };
