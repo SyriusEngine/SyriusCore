@@ -7,21 +7,21 @@ layout (location = 2) in vec2 lTexCoord;
 layout (location = 16) out vec4 fColor;
 layout (location = 17) out vec2 fTexCoord;
 
-layout(std140, binding = 0) uniform ProjectionData {
-    mat4 perspective;
-    mat4 orthogonal;
+layout(std140, binding = 0) uniform TransformData {
+    mat4 transform;
 };
 
 layout(std140, binding = 1) uniform CameraData {
     mat4 view;
 };
 
-layout(std140, binding = 2) uniform ModelData {
-    mat4 model;
+layout(std140, binding = 2) uniform ProjectionData {
+    mat4 perspective;
+    mat4 orthogonal;
 };
 
 void main(){
     fColor = vec4(lColor, 1.0);
     fTexCoord = lTexCoord;
-    gl_Position = perspective * view * model * vec4(position, 1.0);
+    gl_Position = perspective * view * transform * vec4(position, 1.0);
 }

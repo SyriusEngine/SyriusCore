@@ -10,22 +10,22 @@ struct VSOut{
     float2 texCoord: TexCoord;
 };
 
-cbuffer ProjectionData: register(b0){
-    matrix<float, 4, 4> perspective;
-    matrix<float, 4, 4> orthogonal;
+cbuffer TransformData: register(b0){
+    matrix<float, 4, 4> transform;
 };
 
 cbuffer CameraData: register(b1){
     matrix<float, 4, 4> view;
 };
 
-cbuffer ModelData: register(b2){
-    matrix<float, 4, 4> model;
-}
+cbuffer ProjectionData: register(b2){
+    matrix<float, 4, 4> perspective;
+    matrix<float, 4, 4> orthogonal;
+};
 
 VSOut main(VSin input){
     VSOut output;
-    output.position = mul(model, float4(input.lPosition, 1.0f));
+    output.position = mul(transform, float4(input.lPosition, 1.0f));
     output.position = mul(view, output.position);
     output.position = mul(perspective, output.position);
     output.color = float4(input.lColor, 1.0f);

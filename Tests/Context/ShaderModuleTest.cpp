@@ -38,11 +38,11 @@ TEST_F(ShaderModuleTest, CreateShaderModuleFile){
     desc.shaderType = SR_SHADER_VERTEX;
     if (TestEnvironment::m_API == SR_API_OPENGL){
         desc.language = SR_SHADER_LANGUAGE_GLSL;
-        desc.filePath = "Resources/TestShaders/GLSL/VertexBuffer_vs.glsl";
+        desc.filePath = "Resources/Shaders/GLSL/VertexBuffer_vs.glsl";
     }
     else if (TestEnvironment::m_API == SR_API_D3D11){
         desc.language = SR_SHADER_LANGUAGE_HLSL;
-        desc.filePath = "Resources/TestShaders/HLSL/VertexBuffer_vs.hlsl";
+        desc.filePath = "Resources/Shaders/HLSL/VertexBuffer_vs.hlsl";
     }
     else {
         FAIL() << "Unsupported API";

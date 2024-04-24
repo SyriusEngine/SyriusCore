@@ -3,6 +3,7 @@
 #include <functional>
 #include "Utils.hpp"
 #include "ShaderLibrary.hpp"
+#include "Camera.hpp"
 
 using DrawFunction = std::function<void()>;
 
@@ -43,6 +44,10 @@ protected:
     void imGuiTextureParametersPanel(ResourceView<ConstantBuffer>& constantBuffer);
 
     void imGuiTexturePanel(ResourceView<Texture2D>& texture);
+
+    void imGuiDepthTestPanel(ResourceView<FrameBuffer>& frameBuffer);
+
+    void imGuiCameraPanel(Camera& camera);
 
 protected:
     ResourceView<Context>& m_Context;

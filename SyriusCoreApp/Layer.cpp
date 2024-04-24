@@ -284,3 +284,28 @@ void Layer::imGuiTexturePanel(ResourceView<Texture2D> &texture) {
     ImGui::End();
 
 }
+
+void Layer::imGuiDepthTestPanel(ResourceView<FrameBuffer> &frameBuffer) {
+    static bool depthTest = false;
+    static bool depthMask = true;
+
+    ImGui::Begin("Depth Test Panel");
+    if (ImGui::Checkbox("Depth test", &depthTest)){
+        frameBuffer->enableDepthTest(depthTest);
+    }
+    if (ImGui::Checkbox("Depth Mask", &depthMask)){
+        frameBuffer->setDepthMask(static_cast<SR_DEPTH_MASK>(depthMask));
+    }
+    ImGui::End();
+}
+
+void Layer::imGuiCameraPanel(Camera &camera) {
+    ImGui::Begin("Camera");
+    if (camera.isEnabled()){
+        ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Camera enabled");
+    }
+    else{
+        ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Camera disabled");
+    }
+    ImGui::End();
+}
