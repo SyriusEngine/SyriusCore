@@ -31,6 +31,7 @@ namespace Syrius{
 
     private:
         uint32 m_TextureID;
+        uint32 m_PixelUnpackBuffer;
 
         GLenum m_GlFormat;
         GLint m_GlInternalFormat;

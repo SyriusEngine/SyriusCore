@@ -274,31 +274,35 @@ void Layer::imGuiTexturePanel(ResourceView<Texture2D> &texture) {
     static uint32 checkerBoardWidth = 256;
     static uint32 checkerBoardHeight = 256;
 
+    auto updateTexture = [&]{
+        auto color = createCheckerBoard(checkerBoardColor, checkerBoardWidth, checkerBoardHeight);
+        if (!color.empty()){
+            texture->setData(color.data(), checkerBoardStartX, checkerBoardStartY, checkerBoardWidth, checkerBoardHeight);
+        }
+    };
+
+
     imGuiBeginPanel("Texture Panel");
     ImGui::Image((void*)(intptr_t)texture->getIdentifier(), ImVec2(64, 64));
     ImGui::ColorPicker4("Checkerboard Color", checkerBoardColor);
     if (ImGui::SliderInt("Start X", (int*)&checkerBoardStartX, 0, checkerBoardMaxWidth)){
         if (checkerBoardStartX + checkerBoardWidth <= checkerBoardMaxWidth){
-            auto color = createCheckerBoard(checkerBoardColor, checkerBoardWidth, checkerBoardHeight);
-            texture->setData(color.data(), checkerBoardStartX, checkerBoardStartY, checkerBoardWidth, checkerBoardHeight);
+            updateTexture();
         }
     }
     if (ImGui::SliderInt("Start Y", (int*)&checkerBoardStartY, 0, checkerBoardMaxHeight)){
         if (checkerBoardStartY + checkerBoardHeight <= checkerBoardMaxHeight){
-            auto color = createCheckerBoard(checkerBoardColor, checkerBoardWidth, checkerBoardHeight);
-            texture->setData(color.data(), checkerBoardStartX, checkerBoardStartY, checkerBoardWidth, checkerBoardHeight);
+            updateTexture();
         }
     }
     if (ImGui::SliderInt("Width", (int*)&checkerBoardWidth, 0, checkerBoardMaxWidth)){
         if (checkerBoardStartX + checkerBoardWidth <= checkerBoardMaxWidth){
-            auto color = createCheckerBoard(checkerBoardColor, checkerBoardWidth, checkerBoardHeight);
-            texture->setData(color.data(), checkerBoardStartX, checkerBoardStartY, checkerBoardWidth, checkerBoardHeight);
+            updateTexture();
         }
     }
     if (ImGui::SliderInt("Height", (int*)&checkerBoardHeight, 0, checkerBoardMaxHeight)){
         if (checkerBoardStartY + checkerBoardHeight <= checkerBoardMaxHeight){
-            auto color = createCheckerBoard(checkerBoardColor, checkerBoardWidth, checkerBoardHeight);
-            texture->setData(color.data(), checkerBoardStartX, checkerBoardStartY, checkerBoardWidth, checkerBoardHeight);
+            updateTexture();
         }
     }
 

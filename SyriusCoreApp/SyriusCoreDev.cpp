@@ -55,10 +55,16 @@ void SyriusCoreDev::processEvents() {
         if (m_Config["Window"]["PrintEventInfo"].getOrDefault<bool>(false)){
             printEventInfo(event);
         }
-        if (event.type == SR_EVENT_WINDOW_CLOSED){
-            m_Window->close();
+        switch (event.type) {
+            case SR_EVENT_WINDOW_CLOSED:
+                m_Window->close();
+                break;
+            case SR_EVENT_WINDOW_RESIZED:
+                m_Context->onResize(event.windowWidth, event.windowHeight);
+                break;
+            default:
+                break;
         }
-
         for (const auto& layer: m_Layers) {
             layer->onEvent(event);
         }

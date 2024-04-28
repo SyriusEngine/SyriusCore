@@ -73,12 +73,5 @@ void TextureLayer::onUpdate() {
 }
 
 void TextureLayer::onEvent(const Event &event) {
-    switch (event.type) {
-        case SR_EVENT_WINDOW_RESIZED: {
-            m_Context->onResize(event.windowWidth, event.windowHeight);
-            break;
-        }
-        default:
-            break;
-    }
+
 }

@@ -210,7 +210,9 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
     SyriusCoreApp/Layers/ConstantBufferLayer.cpp
     SyriusCoreApp/Layers/SamplerLayer.cpp SyriusCoreApp/Layers/TextureLayer.cpp SyriusCoreApp/Layers/TextureLayer.hpp
     SyriusCoreApp/Layers/DepthTestLayer.cpp
-    SyriusCoreApp/Layers/DepthTestLayer.hpp)
+    SyriusCoreApp/Layers/DepthTestLayer.hpp
+    SyriusCoreApp/Layers/TextureAtlasLayer.cpp
+    SyriusCoreApp/Layers/TextureAtlasLayer.hpp)
 
 add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
 add_dependencies(SyriusCoreApp SyriusCore)

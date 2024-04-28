@@ -7,6 +7,7 @@
 #include "SyriusCoreApp/Layers/SamplerLayer.hpp"
 #include "SyriusCoreApp/Layers/TextureLayer.hpp"
 #include "SyriusCoreApp/Layers/DepthTestLayer.hpp"
+#include "SyriusCoreApp/Layers/TextureAtlasLayer.hpp"
 
 template<typename T>
 void runTest(const std::string& iniFile){
@@ -30,6 +31,7 @@ void runAllTests(const std::string& iniFile){
     runTest<SamplerLayer>(iniFile);
     runTest<TextureLayer>(iniFile);
     runTest<DepthTestLayer>(iniFile);
+    runTest<TextureAtlasLayer>(iniFile);
 }
 
 int main(int argc, char** argv) {
@@ -64,6 +66,9 @@ int main(int argc, char** argv) {
             }
             else if (arg == "DepthTest") {
                 runTest<DepthTestLayer>(argv[1]);
+            }
+            else if (arg == "TextureAtlas") {
+                runTest<TextureAtlasLayer>(argv[1]);
             }
 //            else if (arg == "FrameBuffer") {
 //                runTest<TestFrameBuffer>(argv[1]);

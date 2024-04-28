@@ -91,12 +91,4 @@ void DepthTestLayer::onUpdate() {
 
 void DepthTestLayer::onEvent(const Event &event) {
     m_Camera.update(event, m_DeltaTime);
-    switch (event.type) {
-        case SR_EVENT_WINDOW_RESIZED: {
-            m_Context->onResize(event.windowWidth, event.windowHeight);
-            break;
-        }
-        default:
-            break;
-    }
 }

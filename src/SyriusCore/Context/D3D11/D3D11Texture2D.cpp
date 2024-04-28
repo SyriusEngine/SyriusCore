@@ -122,11 +122,16 @@ namespace Syrius{
             SR_CORE_EXCEPTION("Supplied texture format has 3 channels which is not supported by D3D11");
         }
 
-        D3D11_SUBRESOURCE_DATA subresourceData = { 0 };
-        subresourceData.SysMemPitch = m_Width * (getTypeSize(dataType) * channelCount);
-        subresourceData.pSysMem = data;
+        if (data == nullptr){
+            SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_Texture));
+        }
+        else{
+            D3D11_SUBRESOURCE_DATA subresourceData = { 0 };
+            subresourceData.SysMemPitch = m_Width * (getTypeSize(dataType) * channelCount);
+            subresourceData.pSysMem = data;
 
-        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, &subresourceData, &m_Texture));
+            SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, &subresourceData, &m_Texture));
+        }
 
         D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc = {  };
         textureViewDesc.Format = textureDesc.Format;

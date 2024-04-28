@@ -8,7 +8,7 @@
 using DrawFunction = std::function<void()>;
 
 struct TextureParameters{
-    float lerpFactor = 0.5f;
+    float lerpFactor = 0.0f;
     float scale = 1.0f;
     float padding[2] = {0.0f, 0.0f};
 };

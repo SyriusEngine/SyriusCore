@@ -1,7 +1,7 @@
-#include "SamplerLayer.hpp"
+#include "TextureAtlasLayer.hpp"
 
-SamplerLayer::SamplerLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
-                           EasyIni::Configuration &config) : Layer(context, window, config) {
+TextureAtlasLayer::TextureAtlasLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
+                                     EasyIni::Configuration &config) : Layer(context, window, config) {
     m_ShaderProgram = m_ShaderLibrary.loadShader("Texture");
 
     Mesh rectangle = createRectangle();
@@ -26,19 +26,30 @@ SamplerLayer::SamplerLayer(ResourceView<Context> &context, const Resource<Syrius
     m_TextureParametersBuffer = m_Context->createConstantBuffer(textureParamsDesc);
 
     ImageFileDesc img1Desc;
-    img1Desc.fileName = "./Resources/Textures/awesomeface.png";
+    img1Desc.fileName = "./Resources/Textures/awesomeface512.png";
     img1Desc.flipOnAccess = true;
     auto img1 = createImage(img1Desc);
-    Texture2DImageDesc tex1Desc;
-    tex1Desc.image = createResourceView(img1);
-    m_Texture1 = m_Context->createTexture2D(tex1Desc);
-
     ImageFileDesc img2Desc;
-    img2Desc.fileName = "./Resources/Textures/insta.png";
+    img2Desc.fileName = "./Resources/Textures/insta512.png";
     img2Desc.flipOnAccess = true;
     auto img2 = createImage(img2Desc);
+
+    // Create a texture with a specific size
+    Texture2DDesc tex1Desc;
+    tex1Desc.usage = SR_BUFFER_USAGE_DYNAMIC;
+    tex1Desc.width = 1024;
+    tex1Desc.height = 512;
+    tex1Desc.format = SR_TEXTURE_RGBA_UI8;
+    tex1Desc.data = nullptr;
+    m_Texture1 = m_Context->createTexture2D(tex1Desc);
+
+    // now we can update the texture with the image data
+    m_Texture1->setData(img1->getData(), 0, 0, img1->getWidth(), img1->getHeight());
+    m_Texture1->setData(img2->getData(), 512, 0, img2->getWidth(), img2->getHeight());
+
     Texture2DImageDesc tex2Desc;
     tex2Desc.image = createResourceView(img2);
+    tex2Desc.usage = SR_BUFFER_USAGE_DYNAMIC;
     m_Texture2 = m_Context->createTexture2D(tex2Desc);
 
     SamplerDesc splrDesc;
@@ -48,12 +59,13 @@ SamplerLayer::SamplerLayer(ResourceView<Context> &context, const Resource<Syrius
         Layer::imGuiRenderTransformConstantBuffer(m_TransformBuffer);
         Layer::imGuiTextureParametersPanel(m_TextureParametersBuffer);
         Layer::imGuiSamplerPanel(m_Sampler);
+        Layer::imGuiTexturePanel(m_Texture1);
     });
 }
 
-SamplerLayer::~SamplerLayer() = default;
+TextureAtlasLayer::~TextureAtlasLayer() = default;
 
-void SamplerLayer::onUpdate() {
+void TextureAtlasLayer::onUpdate() {
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();
@@ -69,6 +81,6 @@ void SamplerLayer::onUpdate() {
     m_Context->endRenderPass();
 }
 
-void SamplerLayer::onEvent(const Event &event) {
+void TextureAtlasLayer::onEvent(const Event &event) {
 
 }
