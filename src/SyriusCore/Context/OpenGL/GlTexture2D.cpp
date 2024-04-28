@@ -38,6 +38,7 @@ namespace Syrius{
         SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[Texture2D]: Update on texture object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
         SR_CORE_PRECONDITION(x + width <= m_Width, "[Texture2D]: Width (%i) exceeds the texture width (%i)", width, m_Width);
         SR_CORE_PRECONDITION(y + height <= m_Height, "[Texture2D]: Height (%i) exceeds the texture height (%i)", height, m_Height);
+        SR_CORE_PRECONDITION(m_PixelUnpackBuffer != 0, "[Texture2D]: Pixel unpack buffer is not created for texture object (%p)", this);
 
         // use the pbo for more efficient data transfer
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_PixelUnpackBuffer);

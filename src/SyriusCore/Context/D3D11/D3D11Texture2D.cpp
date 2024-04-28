@@ -44,12 +44,14 @@ namespace Syrius{
 
 
     void D3D11Texture2D::setData(const void *data, uint32 x, uint32 y, uint32 width, uint32 height) {
+        SR_CORE_PRECONDITION(data != nullptr, "[Texture2D]: Data is nullptr (%p)", data)
         SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[Texture2D]: Update on texture object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
         SR_CORE_PRECONDITION(x + width <= m_Width, "[Texture2D]: Width (%i) exceeds the texture width (%i)", width, m_Width);
         SR_CORE_PRECONDITION(y + height <= m_Height, "[Texture2D]: Height (%i) exceeds the texture height (%i)", height, m_Height);
 
         // TODO: Test this code because dont know if it works
         auto channelCount = getTextureChannelCount(m_Format);
+        auto bytesPerPixel = channelCount * sizeof(ubyte);
         D3D11_BOX box = { 0 };
         box.left = x;
         box.right = x + width;
@@ -58,7 +60,7 @@ namespace Syrius{
         box.front = 0;
         box.back = 1;
 
-        m_Context->UpdateSubresource(m_Texture, 0, &box, data, width * (sizeof(ubyte) * channelCount), 0);
+        m_Context->UpdateSubresource(m_Texture, 0, &box, data, width * bytesPerPixel, 0);
     }
 
     Resource<Image> D3D11Texture2D::getData() {

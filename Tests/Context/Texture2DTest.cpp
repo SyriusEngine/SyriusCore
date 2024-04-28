@@ -64,6 +64,22 @@ TEST_F(Texture2DTest, CreateTexture2D){
     EXPECT_EQ(tex->getFormat(), SR_TEXTURE_RGBA_UI8);
 }
 
+TEST_F(Texture2DTest, CreateTexture2DNoData){
+    Texture2DDesc desc;
+    desc.width = 512;
+    desc.height = 512;
+    desc.format = SR_TEXTURE_RGBA_UI8;
+    desc.data = nullptr;
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
+    auto tex = TestEnvironment::m_Context->createTexture2D(desc);
+
+    EXPECT_NE(tex, nullptr);
+    EXPECT_EQ(tex->getWidth(), 512);
+    EXPECT_EQ(tex->getHeight(), 512);
+    EXPECT_EQ(tex->getFormat(), SR_TEXTURE_RGBA_UI8);
+
+}
+
 TEST_F(Texture2DTest, ReadTexture2D){
     std::vector<ubyte> redGreen;
     uint32 width = 4;
