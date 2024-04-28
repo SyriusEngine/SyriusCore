@@ -35,7 +35,7 @@ namespace Syrius{
 
     void GlTexture2D::setData(const void *data, uint32 x, uint32 y, uint32 width, uint32 height) {
         SR_CORE_PRECONDITION(data != nullptr, "[Texture2D]: Data is nullptr (%p)", data);
-        SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[Texture2D]: Update on texture object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[Texture2D]: Update on texture object (%p) requested, which has not been created with SR_BUFFER_USAGE_STATIC flag!", this);
         SR_CORE_PRECONDITION(x + width <= m_Width, "[Texture2D]: Width (%i) exceeds the texture width (%i)", width, m_Width);
         SR_CORE_PRECONDITION(y + height <= m_Height, "[Texture2D]: Height (%i) exceeds the texture height (%i)", height, m_Height);
         SR_CORE_PRECONDITION(m_PixelUnpackBuffer != 0, "[Texture2D]: Pixel unpack buffer is not created for texture object (%p)", this);
@@ -86,7 +86,7 @@ namespace Syrius{
             glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlFormat, m_GlDataType, data);
         }
 
-        if (m_Usage == SR_BUFFER_USAGE_DYNAMIC){
+        if (m_Usage != SR_BUFFER_USAGE_STATIC){
             glCreateBuffers(1, &m_PixelUnpackBuffer);
         }
     }
