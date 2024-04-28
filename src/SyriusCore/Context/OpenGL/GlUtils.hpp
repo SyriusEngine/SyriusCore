@@ -11,11 +11,11 @@ namespace Syrius{
         return id++;
     }
 
-    GLenum getGlShaderType(SR_SHADER_TYPE type);
-
     GLenum getGlDrawType(SR_DRAW_MODE type);
 
     GLenum getGlDataType(SR_TYPE type);
+
+    GLenum getGlShaderType(SR_SHADER_TYPE type);
 
     GLenum getGlBufferType(SR_BUFFER_USAGE type);
 

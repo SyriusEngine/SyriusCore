@@ -1,4 +1,5 @@
 #include "GLUtilsTest.hpp"
+#include "../../../src/SyriusCore/Context/OpenGL/GlUtils.hpp"
 
 void GLUtilsTest::SetUp() {
     Test::SetUp();
@@ -6,4 +7,167 @@ void GLUtilsTest::SetUp() {
 
 void GLUtilsTest::TearDown() {
     Test::TearDown();
+}
+
+using namespace Syrius;
+
+TEST_F(GLUtilsTest, GetBufferType){
+    EXPECT_EQ(getGlBufferType(SR_BUFFER_USAGE_DEFAULT), GL_DYNAMIC_DRAW);
+    EXPECT_EQ(getGlBufferType(SR_BUFFER_USAGE_STATIC), GL_STATIC_DRAW);
+    EXPECT_EQ(getGlBufferType(SR_BUFFER_USAGE_DYNAMIC), GL_DYNAMIC_DRAW);
+}
+
+TEST_F(GLUtilsTest, GetDataType){
+    EXPECT_EQ(getGlDataType(SR_UINT8), GL_UNSIGNED_BYTE);
+    EXPECT_EQ(getGlDataType(SR_INT8), GL_BYTE);
+    EXPECT_EQ(getGlDataType(SR_UINT16), GL_UNSIGNED_SHORT);
+    EXPECT_EQ(getGlDataType(SR_INT16), GL_SHORT);
+    EXPECT_EQ(getGlDataType(SR_UINT32), GL_UNSIGNED_INT);
+    EXPECT_EQ(getGlDataType(SR_INT32), GL_INT);
+    EXPECT_EQ(getGlDataType(SR_UINT64), GL_UNSIGNED_INT64_ARB);
+    EXPECT_EQ(getGlDataType(SR_INT64), GL_INT64_ARB);
+    EXPECT_EQ(getGlDataType(SR_FLOAT16), GL_HALF_FLOAT);
+    EXPECT_EQ(getGlDataType(SR_FLOAT32), GL_FLOAT);
+    EXPECT_EQ(getGlDataType(SR_FLOAT64), GL_DOUBLE);
+}
+
+TEST_F(GLUtilsTest, GetShaderType){
+    EXPECT_EQ(getGlShaderType(SR_SHADER_VERTEX), GL_VERTEX_SHADER);
+    EXPECT_EQ(getGlShaderType(SR_SHADER_FRAGMENT), GL_FRAGMENT_SHADER);
+    EXPECT_EQ(getGlShaderType(SR_SHADER_PIXEL), GL_FRAGMENT_SHADER);
+    EXPECT_EQ(getGlShaderType(SR_SHADER_GEOMETRY), GL_GEOMETRY_SHADER);
+    EXPECT_EQ(getGlShaderType(SR_SHADER_TESSELATION_CONTROL), GL_TESS_CONTROL_SHADER);
+    EXPECT_EQ(getGlShaderType(SR_SHADER_TESSELATION_EVALUATION), GL_TESS_EVALUATION_SHADER);
+    EXPECT_EQ(getGlShaderType(SR_SHADER_COMPUTE), GL_COMPUTE_SHADER);
+}
+
+TEST_F(GLUtilsTest, GetDrawMode){
+    EXPECT_EQ(getGlDrawType(SR_DRAW_POINTS), GL_POINTS);
+    EXPECT_EQ(getGlDrawType(SR_DRAW_LINES), GL_LINES);
+    EXPECT_EQ(getGlDrawType(SR_DRAW_LINES_STRIP), GL_LINE_STRIP);
+    EXPECT_EQ(getGlDrawType(SR_DRAW_TRIANGLES), GL_TRIANGLES);
+    EXPECT_EQ(getGlDrawType(SR_DRAW_TRIANGLE_STRIP), GL_TRIANGLE_STRIP);
+}
+
+TEST_F(GLUtilsTest, GetChannelType){
+    EXPECT_EQ(getGlChannelType(SR_CHANNEL_R), GL_RED);
+    EXPECT_EQ(getGlChannelType(SR_CHANNEL_RG), GL_RG);
+    EXPECT_EQ(getGlChannelType(SR_CHANNEL_RGB), GL_RGB);
+    EXPECT_EQ(getGlChannelType(SR_CHANNEL_RGBA), GL_RGBA);
+    EXPECT_EQ(getGlChannelType(SR_CHANNEL_BGR), GL_BGR);
+    EXPECT_EQ(getGlChannelType(SR_CHANNEL_BGRA), GL_BGRA);
+}
+
+TEST_F(GLUtilsTest, GetTextureInternalFormat){
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_UI8), GL_R8UI);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_I8), GL_R8I);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_UI16), GL_R16UI);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_I16), GL_R16I);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_UI32), GL_R32UI);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_I32), GL_R32I);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_F16), GL_R16F);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_F32), GL_R32F);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_UI8), GL_RG8UI);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_I8), GL_RG8I);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_UI16), GL_RG16UI);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_I16), GL_RG16I);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_UI32), GL_RG32UI);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_I32), GL_RG32I);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_F16), GL_RG16F);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_F32), GL_RG32F);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_UI8), GL_RGB8UI);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_I8), GL_RGB8I);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_UI16), GL_RGB16UI);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_I16), GL_RGB16I);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_UI32), GL_RGB32UI);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_I32), GL_RGB32I);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_F16), GL_RGB16F);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_F32), GL_RGB32F);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_UI8), GL_RGBA8UI);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_I8), GL_RGBA8I);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_UI16), GL_RGBA16UI);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_I16), GL_RGBA16I);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_UI32), GL_RGBA32UI);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_I32), GL_RGBA32I);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_F16), GL_RGBA16F);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_F32), GL_RGBA32F);
+
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_DEPTH_16), GL_DEPTH_COMPONENT16);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_DEPTH_24), GL_DEPTH_COMPONENT24);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_DEPTH_32), GL_DEPTH_COMPONENT32);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_DEPTH_24_STENCIL_8), GL_DEPTH24_STENCIL8);
+    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_DEPTH_32_STENCIL_8), GL_DEPTH32F_STENCIL8);
+}
+
+TEST_F(GLUtilsTest, GetTextureFormat){
+
+}
+
+TEST_F(GLUtilsTest, GetTextureDataType){
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_R_UI8), GL_UNSIGNED_BYTE);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_R_I8), GL_BYTE);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_R_UI16), GL_UNSIGNED_SHORT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_R_I16), GL_SHORT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_R_UI32), GL_UNSIGNED_INT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_R_I32), GL_INT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_R_F16), GL_HALF_FLOAT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_R_F32), GL_FLOAT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RG_UI8), GL_UNSIGNED_BYTE);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RG_I8), GL_BYTE);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RG_UI16), GL_UNSIGNED_SHORT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RG_I16), GL_SHORT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RG_UI32), GL_UNSIGNED_INT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RG_I32), GL_INT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RG_F16), GL_HALF_FLOAT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RG_F32), GL_FLOAT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGB_UI8), GL_UNSIGNED_BYTE);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGB_I8), GL_BYTE);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGB_UI16), GL_UNSIGNED_SHORT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGB_I16), GL_SHORT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGB_UI32), GL_UNSIGNED_INT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGB_I32), GL_INT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGB_F16), GL_HALF_FLOAT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGB_F32), GL_FLOAT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGBA_UI8), GL_UNSIGNED_BYTE);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGBA_I8), GL_BYTE);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGBA_UI16), GL_UNSIGNED_SHORT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGBA_I16), GL_SHORT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGBA_UI32), GL_UNSIGNED_INT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGBA_I32), GL_INT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGBA_F16), GL_HALF_FLOAT);
+    EXPECT_EQ(getGlTextureDataType(SR_TEXTURE_RGBA_F32), GL_FLOAT);
+}
+
+TEST_F(GLUtilsTest, GetTextureAddressMode){
+    EXPECT_EQ(getGlTextureWrap(SR_TEXTURE_WRAP_REPEAT), GL_REPEAT);
+    EXPECT_EQ(getGlTextureWrap(SR_TEXTURE_WRAP_MIRROR_REPEAT), GL_MIRRORED_REPEAT);
+    EXPECT_EQ(getGlTextureWrap(SR_TEXTURE_WRAP_CLAMP_EDGE), GL_CLAMP_TO_EDGE);
+    EXPECT_EQ(getGlTextureWrap(SR_TEXTURE_WRAP_CLAMP_BORDER), GL_CLAMP_TO_BORDER);
+}
+
+TEST_F(GLUtilsTest, GetTextureFilter){
+    EXPECT_EQ(getGlTextureFilter(SR_TEXTURE_FILTER_LINEAR), GL_LINEAR);
+    EXPECT_EQ(getGlTextureFilter(SR_TEXTURE_FILTER_POINT), GL_NEAREST);
+}
+
+TEST_F(GLUtilsTest, GetComparisonFunc){
+    EXPECT_EQ(getGlComparisonFunc(SR_COMPARISON_FUNC_ALWAYS), GL_ALWAYS);
+    EXPECT_EQ(getGlComparisonFunc(SR_COMPARISON_FUNC_NEVER), GL_NEVER);
+    EXPECT_EQ(getGlComparisonFunc(SR_COMPARISON_FUNC_LESS), GL_LESS);
+    EXPECT_EQ(getGlComparisonFunc(SR_COMPARISON_FUNC_LESS_EQUAL), GL_LEQUAL);
+    EXPECT_EQ(getGlComparisonFunc(SR_COMPARISON_FUNC_EQUAL), GL_EQUAL);
+    EXPECT_EQ(getGlComparisonFunc(SR_COMPARISON_FUNC_GREATER_EQUAL), GL_GEQUAL);
+    EXPECT_EQ(getGlComparisonFunc(SR_COMPARISON_FUNC_GREATER), GL_GREATER);
+    EXPECT_EQ(getGlComparisonFunc(SR_COMPARISON_FUNC_NOT_EQUAL), GL_NOTEQUAL);
+}
+
+TEST_F(GLUtilsTest, GetStencilFunc){
+    EXPECT_EQ(getGlStencilFunc(SR_STENCIL_FUNC_KEEP), GL_KEEP);
+    EXPECT_EQ(getGlStencilFunc(SR_STENCIL_FUNC_ZERO), GL_ZERO);
+    EXPECT_EQ(getGlStencilFunc(SR_STENCIL_FUNC_REPLACE), GL_REPLACE);
+    EXPECT_EQ(getGlStencilFunc(SR_STENCIL_FUNC_INCR), GL_INCR);
+    EXPECT_EQ(getGlStencilFunc(SR_STENCIL_FUNC_INCR_WRAP), GL_INCR_WRAP);
+    EXPECT_EQ(getGlStencilFunc(SR_STENCIL_FUNC_DECR), GL_DECR);
+    EXPECT_EQ(getGlStencilFunc(SR_STENCIL_FUNC_DECR_WRAP), GL_DECR_WRAP);
+    EXPECT_EQ(getGlStencilFunc(SR_STENCIL_FUNC_INVERT), GL_INVERT);
 }

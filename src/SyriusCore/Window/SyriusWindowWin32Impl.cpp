@@ -8,11 +8,11 @@ namespace Syrius{
     uint32 SyriusWindowWin32Impl::m_WindowCount = 0;
 
     SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc):
-            SyriusWindow(desc),
-            m_Hwnd(nullptr),
-            m_Callback(0),
-            m_Icon(nullptr),
-            m_CaptureMouseAndKeyboardEvents(true) {
+    SyriusWindow(desc),
+    m_Hwnd(nullptr),
+    m_Callback(0),
+    m_Icon(nullptr),
+    m_CaptureMouseAndKeyboardEvents(true) {
         if (m_WindowCount == 0){
             registerWindowClass();
             setProcessDPIAwareness();
@@ -63,8 +63,6 @@ namespace Syrius{
 
             SR_CORE_CHECK_CALL(RegisterRawInputDevices(&mouse, 1, sizeof(mouse)), "Failed to register raw input mouse");
             SR_CORE_CHECK_CALL(RegisterRawInputDevices(&keyboard, 1, sizeof(keyboard)), "Failed to register raw input keyboard");
-
-
         }
         else{
             SR_CORE_WARNING("Failed to create window");
