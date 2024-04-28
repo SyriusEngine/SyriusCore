@@ -4,16 +4,16 @@
 
 namespace Syrius{
 
-    D3D11Context::D3D11Context(HWND &hwnd, const ContextDesc& desc)
-    : Context(desc),
+    D3D11Context::D3D11Context(HWND &hwnd, const ContextDesc& desc):
+    Context(desc),
     m_Hwnd(hwnd),
     m_DeviceContext(nullptr),
     m_Device(nullptr),
     m_SwapChain(nullptr){
 
         DXGI_SWAP_CHAIN_DESC scDesc = { 0 };
-        scDesc.BufferDesc.Width = 0;
-        scDesc.BufferDesc.Height = 0;
+        scDesc.BufferDesc.Width = desc.backBufferWidth;
+        scDesc.BufferDesc.Height = desc.backBufferHeight;
         scDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;  // DWM uses BGRA format, this is supposed to be slightly faster than RGBA
         scDesc.BufferDesc.RefreshRate.Numerator = 0;
         scDesc.BufferDesc.RefreshRate.Denominator = 0;

@@ -45,7 +45,7 @@ namespace Syrius{
 
     void D3D11Texture2D::setData(const void *data, uint32 x, uint32 y, uint32 width, uint32 height) {
         SR_CORE_PRECONDITION(data != nullptr, "[Texture2D]: Data is nullptr (%p)", data)
-        SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[Texture2D]: Update on texture object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[Texture2D]: Update on texture object (%p) requested, which has been created with SR_BUFFER_USAGE_STATIC flag!", this);
         SR_CORE_PRECONDITION(x + width <= m_Width, "[Texture2D]: Width (%i) exceeds the texture width (%i)", width, m_Width);
         SR_CORE_PRECONDITION(y + height <= m_Height, "[Texture2D]: Height (%i) exceeds the texture height (%i)", height, m_Height);
 
@@ -109,11 +109,11 @@ namespace Syrius{
         textureDesc.SampleDesc.Count = 1;
         textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
         textureDesc.Usage = getD3d11BufferType(m_Usage);
-        if (m_Usage == SR_BUFFER_USAGE_DYNAMIC){
-            textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        if (m_Usage == SR_BUFFER_USAGE_STATIC){
+            textureDesc.CPUAccessFlags = 0;
         }
         else{
-            textureDesc.CPUAccessFlags = 0;
+            textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
         }
         textureDesc.MiscFlags = 0;
 

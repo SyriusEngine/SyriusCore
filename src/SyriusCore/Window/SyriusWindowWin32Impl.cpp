@@ -305,10 +305,11 @@ namespace Syrius{
     }
 
     ResourceView<Context> SyriusWindowWin32Impl::createContext(ContextDesc& desc) {
-        if (desc.backBufferWidth == 0 || desc.backBufferHeight == 0){
-            desc.backBufferWidth = m_Width;
-            desc.backBufferHeight = m_Height;
-        }
+        // the client space is the window size minus the window borders
+        RECT clientSpace = {0, 0, 0, 0};
+        GetClientRect(m_Hwnd, &clientSpace);
+        desc.backBufferWidth = desc.backBufferWidth == 0 ? clientSpace.right : desc.backBufferWidth;
+        desc.backBufferHeight = desc.backBufferHeight == 0 ? clientSpace.bottom : desc.backBufferHeight;
         switch (desc.api) {
             case SR_API_OPENGL:
                 m_Context = Resource<Context>(new WglContext(m_Hwnd, desc));

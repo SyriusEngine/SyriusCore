@@ -36,7 +36,6 @@ TextureAtlasLayer::TextureAtlasLayer(ResourceView<Context> &context, const Resou
 
     // Create a texture with a specific size
     Texture2DDesc tex1Desc;
-    tex1Desc.usage = SR_BUFFER_USAGE_DYNAMIC;
     tex1Desc.width = 1024;
     tex1Desc.height = 512;
     tex1Desc.format = SR_TEXTURE_RGBA_UI8;
@@ -49,7 +48,7 @@ TextureAtlasLayer::TextureAtlasLayer(ResourceView<Context> &context, const Resou
 
     Texture2DImageDesc tex2Desc;
     tex2Desc.image = createResourceView(img2);
-    tex2Desc.usage = SR_BUFFER_USAGE_DYNAMIC;
+    tex2Desc.usage = SR_BUFFER_USAGE_STATIC;
     m_Texture2 = m_Context->createTexture2D(tex2Desc);
 
     SamplerDesc splrDesc;
