@@ -353,3 +353,28 @@ void Layer::imGuiEndPanel() {
         m_CurrentY += size.y;
     }
 }
+
+void Layer::imGuiFrameBufferPanel(ResourceView<FrameBuffer> &frameBuffer, int32& selectedTexture) {
+    static bool depthTest = false;
+    static std::vector<std::string> sampleFrom = {"Normal Color", "Inverted Color", "Depth Stencil Attachment"};
+    static int sampleFromIndex  = 0;
+
+    imGuiBeginPanel("Frame Buffer Panel");
+    if (ImGui::Checkbox("Depth Test", &depthTest)){
+        frameBuffer->enableDepthTest(depthTest);
+    }
+    if (ImGui::BeginCombo("Attachment", sampleFrom[sampleFromIndex].c_str())){
+        for(int i = 0; i < sampleFrom.size(); i++){
+            bool isSelected = (sampleFromIndex == i);
+            if (ImGui::Selectable(sampleFrom[i].c_str(), isSelected)){
+                sampleFromIndex = i;
+                selectedTexture = i;
+            }
+            if (isSelected){
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+    imGuiEndPanel();
+}

@@ -9,8 +9,8 @@ namespace Syrius{
 
     SR_CORE_API Resource<Image> createImage(const ImageDesc& desc);
 
-    SR_CORE_API Resource<Image> createImageF32(const ImageF32Desc& desc);
+    SR_CORE_API Resource<Image> createImage(const ImageF32Desc& desc);
 
-    SR_CORE_API Resource<Image> createImageUI8(const ImageUI8Desc& desc);
+    SR_CORE_API Resource<Image> createImage(const ImageUI8Desc& desc);
 
 }

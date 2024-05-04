@@ -49,6 +49,8 @@ protected:
 
     void imGuiCameraPanel(Camera& camera);
 
+    void imGuiFrameBufferPanel(ResourceView<FrameBuffer>& frameBuffer, int32& selectedTexture);
+
 protected:
     ResourceView<Context>& m_Context;
     EasyIni::Configuration& m_Config;

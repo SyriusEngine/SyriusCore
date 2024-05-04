@@ -8,6 +8,7 @@
 #include "SyriusCoreApp/Layers/TextureLayer.hpp"
 #include "SyriusCoreApp/Layers/DepthTestLayer.hpp"
 #include "SyriusCoreApp/Layers/TextureAtlasLayer.hpp"
+#include "SyriusCoreApp/Layers/FrameBufferLayer.hpp"
 
 template<typename T>
 void runTest(const std::string& iniFile){
@@ -32,6 +33,7 @@ void runAllTests(const std::string& iniFile){
     runTest<TextureLayer>(iniFile);
     runTest<DepthTestLayer>(iniFile);
     runTest<TextureAtlasLayer>(iniFile);
+    runTest<FrameBufferLayer>(iniFile);
 }
 
 int main(int argc, char** argv) {
@@ -70,9 +72,9 @@ int main(int argc, char** argv) {
             else if (arg == "TextureAtlas") {
                 runTest<TextureAtlasLayer>(argv[1]);
             }
-//            else if (arg == "FrameBuffer") {
-//                runTest<TestFrameBuffer>(argv[1]);
-//            }
+            else if (arg == "FrameBuffer") {
+                runTest<FrameBufferLayer>(argv[1]);
+            }
 //            else if (arg == "Cubemap") {
 //                runTest<TestCubemap>(argv[1]);
 //            }

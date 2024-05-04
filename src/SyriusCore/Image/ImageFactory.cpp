@@ -37,12 +37,12 @@ namespace Syrius{
         return Resource<Image>(img);
     }
 
-    Resource<Image> createImageF32(const ImageF32Desc& desc){
+    Resource<Image> createImage(const ImageF32Desc& desc){
         auto img = new ImageF32(desc);
         return Resource<Image>(img);
     }
 
-    Resource<Image> createImageUI8(const ImageUI8Desc& desc){
+    Resource<Image> createImage(const ImageUI8Desc& desc){
         auto img = new ImageUI8(desc);
         return Resource<Image>(img);
     }

@@ -68,7 +68,7 @@ namespace Syrius{
         imgDesc.height = m_Height;
         imgDesc.format = m_Format;
         imgDesc.data = data;
-        auto img =  createImageUI8(imgDesc);
+        auto img =  createImage(imgDesc);
         delete[] data;
         return std::move(img);
     }

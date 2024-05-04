@@ -7,13 +7,6 @@
 
 namespace Syrius{
 
-    struct SR_CORE_API CubemapFaceDesc{
-        uint32 width          = 0;
-        uint32 height         = 0;
-        SR_TEXTURE_FORMAT format = SR_TEXTURE_RGBA_UI8;
-        const void* data            = nullptr;
-    };
-
     struct SR_CORE_API CubemapDesc{
         uint32 width          = 0;
         uint32 height         = 0;
