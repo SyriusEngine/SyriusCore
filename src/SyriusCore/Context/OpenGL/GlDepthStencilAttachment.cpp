@@ -135,7 +135,7 @@ namespace Syrius{
             SR_CORE_OPENGL_CALL(glTextureStorage2D(m_BufferID, 1, m_GlFormat, m_Width, m_Height));
         }
         else{
-            SR_CORE_EXCEPTION("OpenGL does not support a color attachment of usage: %i", desc.format);
+            SR_CORE_WARNING("OpenGL does not support a depth stencil attachment format: %i", desc.format);
         }
     }
 
