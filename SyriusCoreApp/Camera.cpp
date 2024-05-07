@@ -1,5 +1,10 @@
 #include "Camera.hpp"
 
+struct CameraData{
+    glm::mat4 view = glm::mat4(1.0f);
+    glm::vec4 position = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+};
+
 Camera::Camera(float sensitivity, float speed, const ResourceView<Context>& context):
 m_Position(glm::vec3(0.0f, 0.0f, 3.0f)),
 m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
@@ -12,20 +17,18 @@ m_Speed(speed),
 m_Sensitivity(sensitivity),
 m_Context(context),
 m_Enable(false){
-    auto mat4 = glm::mat4(1.0f);
+    CameraData data;
     ConstantBufferDesc desc;
-    desc.size = sizeof(glm::mat4);
+    desc.size = sizeof(CameraData);
     desc.usage = SR_BUFFER_USAGE_DYNAMIC;
-    desc.data = &mat4;
+    desc.data = &data;
     desc.name = "CameraData";
     desc.shaderStage = SR_SHADER_VERTEX;
     m_CameraData = m_Context->createConstantBuffer(desc);
     updateCameraData();
 }
 
-Camera::~Camera() {
-
-}
+Camera::~Camera() = default;
 
 void Camera::update(const Event &event, float deltaTime) {
     switch (event.type) {
@@ -62,8 +65,10 @@ void Camera::updateCameraData() {
     m_Right = glm::normalize(glm::cross(m_Front, m_WorldUp));
     m_Up = glm::normalize(glm::cross(m_Right, m_Front));
 
-    auto viewMat = glm::lookAt(m_Position, m_Position + m_Front, m_Up);
-    m_CameraData->setData(&viewMat, sizeof(glm::mat4));
+    CameraData data;
+    data.view = glm::lookAt(m_Position, m_Position + m_Front, m_Up);
+    data.position = glm::vec4(m_Position, 1.0f);
+    m_CameraData->setData(&data, sizeof(CameraData));
 }
 
 void Camera::mouseMoved(float mousePosX, float mousePosY) {

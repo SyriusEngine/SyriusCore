@@ -211,7 +211,9 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
     SyriusCoreApp/Layers/TextureLayer.cpp
     SyriusCoreApp/Layers/DepthTestLayer.cpp
     SyriusCoreApp/Layers/TextureAtlasLayer.cpp
-    SyriusCoreApp/Layers/FrameBufferLayer.cpp)
+    SyriusCoreApp/Layers/FrameBufferLayer.cpp
+    SyriusCoreApp/Layers/PhongLightLayer.cpp
+    SyriusCoreApp/Layers/PhongLightLayer.hpp)
 
 add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
 add_dependencies(SyriusCoreApp SyriusCore)
