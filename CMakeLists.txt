@@ -147,7 +147,7 @@ set(SYRIUSCORE_SRC
     ${SYRIUSCORE_CORE_SRC}
     ${SYRIUSCORE_WINDOW_SRC}
     ${SYRIUSCORE_GRAPHICS_API_SRC}
-    src/SyriusCore/SyriusCore.cpp include/SyriusCore/Utils/Resource.hpp)
+    src/SyriusCore/SyriusCore.cpp)
 
 add_library(SyriusCore SHARED ${SYRIUSCORE_SRC})
 
@@ -204,17 +204,14 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
     ${SYRIUS_CORE_APP_SRC}
     SyriusCoreApp/Layers/ImGuiLayer.cpp
     SyriusCoreApp/Layers/VertexBufferLayer.cpp
-    SyriusCoreApp/Layers/VertexBufferLayer.hpp
     SyriusCoreApp/Layers/IndexBufferLayer.cpp
     SyriusCoreApp/Layers/VertexArrayLayer.cpp
     SyriusCoreApp/Layers/ConstantBufferLayer.cpp
-    SyriusCoreApp/Layers/SamplerLayer.cpp SyriusCoreApp/Layers/TextureLayer.cpp SyriusCoreApp/Layers/TextureLayer.hpp
+    SyriusCoreApp/Layers/SamplerLayer.cpp
+    SyriusCoreApp/Layers/TextureLayer.cpp
     SyriusCoreApp/Layers/DepthTestLayer.cpp
-    SyriusCoreApp/Layers/DepthTestLayer.hpp
     SyriusCoreApp/Layers/TextureAtlasLayer.cpp
-    SyriusCoreApp/Layers/TextureAtlasLayer.hpp
-    SyriusCoreApp/Layers/FrameBufferLayer.cpp
-    SyriusCoreApp/Layers/FrameBufferLayer.hpp)
+    SyriusCoreApp/Layers/FrameBufferLayer.cpp)
 
 add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
 add_dependencies(SyriusCoreApp SyriusCore)
@@ -240,12 +237,12 @@ set(SR_CORE_TEST_SRC
     Tests/Context/ConstantBufferTest.cpp
     Tests/Context/VertexLayoutTest.cpp
     Tests/Context/ShaderModuleTest.cpp
+    Tests/Context/Texture2DTest.cpp
+    Tests/Context/FramebufferLayoutTest.cpp
 
     Tests/Context/OpenGL/GLUtilsTest.cpp
 
     Tests/Context/D3D11/D3D11UtilsTest.cpp
-    Tests/Context/Texture2DTest.cpp
-    Tests/Context/Texture2DTest.hpp
 )
 
 add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)

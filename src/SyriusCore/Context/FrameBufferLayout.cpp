@@ -3,9 +3,9 @@
 
 namespace Syrius{
 
-    FrameBufferLayout::FrameBufferLayout(){
+    FrameBufferLayout::FrameBufferLayout()= default;
 
-    }
+    FrameBufferLayout::~FrameBufferLayout()= default;
 
     void FrameBufferLayout::addViewportDesc(const ViewportDesc &desc) {
         m_ViewportDesc.push_back(desc);
