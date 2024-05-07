@@ -7,6 +7,8 @@ IndexBufferLayer::IndexBufferLayer(ResourceView<Context> &context, const Resourc
     m_VertexLayout = m_Context->createVertexLayout();
     m_VertexLayout->addAttribute("Position", SR_FLOAT32_3);
     m_VertexLayout->addAttribute("Color", SR_FLOAT32_3);
+    m_VertexLayout->addAttribute("Normal", SR_FLOAT32_3);
+    m_VertexLayout->addAttribute("Tangent", SR_FLOAT32_3);
     m_VertexLayout->addAttribute("TexCoord", SR_FLOAT32_2);
 
     Mesh rectangle = createRectangle();

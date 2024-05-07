@@ -1,6 +1,8 @@
 struct VSin{
     float3 lPosition: Position;
     float3 lColor: Color;
+    float3 lNormal: Normal;
+    float3 lTangent: Tangent;
     float2 lTexCoord: TexCoord;
 };
 

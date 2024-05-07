@@ -2,7 +2,9 @@
 
 layout (location = 0) in vec3 lPosition;
 layout (location = 1) in vec3 lColor;
-layout (location = 2) in vec2 lTexCoord;
+layout (location = 2) in vec3 lNormal;
+layout (location = 3) in vec3 lTangent;
+layout (location = 4) in vec2 lTexCoord;
 
 layout (location = 16) out vec4 fColor;
 layout (location = 17) out vec2 fTexCoord;

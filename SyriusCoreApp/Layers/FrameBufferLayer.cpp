@@ -63,7 +63,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     dsDesc.format = SR_TEXTURE_DEPTH_24_STENCIL_8;
     dsDesc.width = m_Context->getWidth();
     dsDesc.height = m_Context->getHeight();
-    dsDesc.enableShaderAccess = true;
+    //dsDesc.enableShaderAccess = true;
     fbLayout->addDepthStencilAttachmentDesc(dsDesc);
 
     m_FrameBuffer = m_Context->createFrameBuffer(fbLayout);

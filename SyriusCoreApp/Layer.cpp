@@ -22,6 +22,8 @@ ResourceView<VertexArray> Layer::loadMesh(Mesh &mesh, ShaderProgram &program) {
     auto layout = m_Context->createVertexLayout();
     layout->addAttribute("Position", SR_FLOAT32_3);
     layout->addAttribute("Color", SR_FLOAT32_3);
+    layout->addAttribute("Normal", SR_FLOAT32_3);
+    layout->addAttribute("Tangent", SR_FLOAT32_3);
     layout->addAttribute("TexCoord", SR_FLOAT32_2);
 
     VertexBufferDesc vboDesc;
