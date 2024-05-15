@@ -213,7 +213,7 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
     SyriusCoreApp/Layers/TextureAtlasLayer.cpp
     SyriusCoreApp/Layers/FrameBufferLayer.cpp
     SyriusCoreApp/Layers/PhongLightLayer.cpp
-    SyriusCoreApp/Layers/PhongLightLayer.hpp SyriusCoreApp/Layers/ShaderLayer.cpp SyriusCoreApp/Layers/ShaderLayer.hpp)
+    SyriusCoreApp/Layers/ShaderLayer.cpp )
 
 add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
 add_dependencies(SyriusCoreApp SyriusCore)
