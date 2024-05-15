@@ -34,7 +34,7 @@ float map(vec3 p){
     return dot(sign(p), p) / 5.0;
 }
 
-vec4 rm (vec3 ro, vec3 rd){
+vec4 rm(vec3 ro, vec3 rd){
     float t = 0.0;
     vec3 col = vec3(0.0);
     float d;

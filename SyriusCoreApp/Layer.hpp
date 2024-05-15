@@ -29,6 +29,10 @@ protected:
 
     void renderImGui();
 
+    void imGuiBeginPanel(const char* name) const;
+
+    void imGuiEndPanel();
+
     void addImGuiDrawFunction(DrawFunction drawFunction);
 
     void imGuiDebugPanel(ResourceView<Context>&);
@@ -56,12 +60,6 @@ protected:
     EasyIni::Configuration& m_Config;
     const Resource<SyriusWindow>& m_Window;
     ShaderLibrary m_ShaderLibrary;
-
-private:
-
-    void imGuiBeginPanel(const char* name) const;
-
-    void imGuiEndPanel();
 
 private:
     std::vector<DrawFunction> m_ImGuiDraw;

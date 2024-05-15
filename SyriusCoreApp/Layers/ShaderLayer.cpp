@@ -29,6 +29,7 @@ ShaderLayer::ShaderLayer(ResourceView<Context> &context, const Resource<SyriusWi
     m_ParameterBuffer = m_Context->createConstantBuffer(paramDesc);
 
     addImGuiDrawFunction([this]{
+        shaderSelectorPanel();
 
     });
 }
@@ -71,5 +72,34 @@ void ShaderLayer::onEvent(const Event &event) {
             break;
 
     }
+
+}
+
+void ShaderLayer::shaderSelectorPanel() {
+    imGuiBeginPanel("Shader Selector");
+
+    static std::vector<std::string> shaders = {
+            "FractalPyramid",
+            "Mandelbulb",
+            "Octagrams",
+            "PulsatingWaves",
+    };
+    static int selectedShader = 0;
+    if (ImGui::BeginCombo("Shaders", shaders[selectedShader].c_str())) {
+        for (int i = 0; i < shaders.size(); i++) {
+            bool isSelected = selectedShader == i;
+            if (ImGui::Selectable(shaders[i].c_str(), isSelected)) {
+                selectedShader = i;
+                auto vsShader = m_Config["ShaderLayer"]["VertexShader"].get<std::string>();
+                m_ShaderProgram = m_ShaderLibrary.loadShader(vsShader, shaders[i]);
+            }
+            if (isSelected) {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+
+    imGuiEndPanel();
 
 }

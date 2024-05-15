@@ -19,6 +19,10 @@ public:
     void onEvent(const Event &event) override;
 
 private:
+
+    void shaderSelectorPanel();
+
+private:
     ResourceView<VertexArray> m_VertexArray;
     ShaderProgram m_ShaderProgram;
 
