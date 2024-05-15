@@ -10,6 +10,7 @@
 #include "SyriusCoreApp/Layers/TextureAtlasLayer.hpp"
 #include "SyriusCoreApp/Layers/FrameBufferLayer.hpp"
 #include "SyriusCoreApp/Layers/PhongLightLayer.hpp"
+#include "SyriusCoreApp/Layers/ShaderLayer.hpp"
 
 template<typename T>
 void runTest(const std::string& iniFile){
@@ -29,6 +30,7 @@ void runAllTests(const std::string& iniFile){
     runTest<VertexBufferLayer>(iniFile);
     runTest<IndexBufferLayer>(iniFile);
     runTest<VertexArrayLayer>(iniFile);
+    runTest<ShaderLayer>(iniFile);
     runTest<ConstantBufferLayer>(iniFile);
     runTest<SamplerLayer>(iniFile);
     runTest<TextureLayer>(iniFile);
@@ -36,6 +38,7 @@ void runAllTests(const std::string& iniFile){
     runTest<TextureAtlasLayer>(iniFile);
     runTest<FrameBufferLayer>(iniFile);
     runTest<PhongLightLayer>(iniFile);
+
 }
 
 int main(int argc, char** argv) {
@@ -57,6 +60,8 @@ int main(int argc, char** argv) {
                 runTest<IndexBufferLayer>(argv[1]);
             } else if (arg == "VertexArray") {
                 runTest<VertexArrayLayer>(argv[1]);
+            } else if (arg == "Shader") {
+                runTest<ShaderLayer>(argv[1]);
             } else if (arg == "ConstantBuffer") {
                 runTest<ConstantBufferLayer>(argv[1]);
             } else if (arg == "Sampler") {

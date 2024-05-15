@@ -56,6 +56,22 @@ Mesh createRectangle(){
     return mesh;
 }
 
+Mesh createScreenRectangle(){
+    Mesh mesh;
+    mesh.vertices = {
+            {{-1.0f, -1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f},{0.0f, 0.0f}},
+            {{1.0f, -1.0f, 0.0f},  {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f},{1.0f, 0.0f}},
+            {{1.0f, 1.0f, 0.0f},   {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f},{1.0f, 1.0f}},
+            {{-1.0f, 1.0f, 0.0f},  {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f},{0.0f, 1.0f}}
+    };
+    mesh.indices = {
+            0, 3, 1,
+            3, 2, 1
+    };
+    calculateTangents(mesh);
+    return mesh;
+}
+
 #if defined(SR_COMPILER_MSVC)
 #define M_PI 3.14159265358979323846
 #define M_PI_2 1.57079632679489661923

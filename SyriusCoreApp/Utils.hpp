@@ -41,6 +41,8 @@ Mesh createTriangle();
 
 Mesh createRectangle();
 
+Mesh createScreenRectangle();
+
 Mesh createSphere(uint32 rings, uint32 sectors);
 
 Mesh createCube();
