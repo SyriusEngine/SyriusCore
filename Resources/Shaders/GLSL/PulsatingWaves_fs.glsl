@@ -13,13 +13,13 @@ layout(std140, binding = 5) uniform Parameters {
     float deltaTime;
 };
 
-vec3 palette( float t ) {
-    vec3 a = vec3(0.5, 0.5, 0.5);
-    vec3 b = vec3(0.5, 0.5, 0.5);
-    vec3 c = vec3(1.0, 1.0, 1.0);
-    vec3 d = vec3(0.263,0.416,0.557);
+vec3 palette(float t) {
+    vec3 a = vec3(0.5f, 0.5f, 0.5f);
+    vec3 b = vec3(0.5f, 0.5f, 0.5f);
+    vec3 c = vec3(1.0f, 1.0f, 1.0f);
+    vec3 d = vec3(0.263f, 0.416f, 0.557f);
 
-    return a + b*cos( 6.28318*(c*t+d) );
+    return a + b * cos(6.28318f * (c * t + d));
 }
 
 void main(){
