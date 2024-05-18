@@ -30,7 +30,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     m_TextureParametersBuffer = m_Context->createConstantBuffer(textureParamsDesc);
 
     ImageFileDesc img1Desc;
-    img1Desc.fileName = "./Resources/Textures/awesomeface512.png";
+    img1Desc.fileName = "./Resources/Textures/Logo.jpg";
     img1Desc.flipOnAccess = true;
     auto img1 = createImage(img1Desc);
     Texture2DImageDesc tex1Desc;
@@ -63,7 +63,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     dsDesc.format = SR_TEXTURE_DEPTH_24_STENCIL_8;
     dsDesc.width = m_Context->getWidth();
     dsDesc.height = m_Context->getHeight();
-    //dsDesc.enableShaderAccess = true;
+    dsDesc.enableShaderAccess = true;
     fbLayout->addDepthStencilAttachmentDesc(dsDesc);
 
     m_FrameBuffer = m_Context->createFrameBuffer(fbLayout);
