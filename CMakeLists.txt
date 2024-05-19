@@ -124,7 +124,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
     src/SyriusCore/Context/FrameBuffer.cpp
     src/SyriusCore/Context/ColorAttachment.cpp
     src/SyriusCore/Context/DepthStencilAttachment.cpp
-    src/SyriusCore/Context/Cubemap.cpp
+    src/SyriusCore/Context/CubeMap.cpp
 
     src/SyriusCore/Context/OpenGL/GlContext.cpp
     src/SyriusCore/Context/OpenGL/GlViewport.cpp
@@ -213,7 +213,9 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
     SyriusCoreApp/Layers/TextureAtlasLayer.cpp
     SyriusCoreApp/Layers/FrameBufferLayer.cpp
     SyriusCoreApp/Layers/PhongLightLayer.cpp
-    SyriusCoreApp/Layers/ShaderLayer.cpp )
+    SyriusCoreApp/Layers/ShaderLayer.cpp
+    SyriusCoreApp/Layers/CubeMapLayer.cpp
+    SyriusCoreApp/Layers/CubeMapLayer.hpp)
 
 add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
 add_dependencies(SyriusCoreApp SyriusCore)

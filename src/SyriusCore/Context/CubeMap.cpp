@@ -1,9 +1,9 @@
-#include "../../../include/SyriusCore/Context/Cubemap.hpp"
+#include "../../../include/SyriusCore/Context/CubeMap.hpp"
 #include "../Utils/DebugMacros.hpp"
 
 namespace Syrius{
 
-    Cubemap::Cubemap(const CubemapDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    CubeMap::CubeMap(const CubemapDesc &desc, const Resource<DeviceLimits>& deviceLimits):
     m_Width(desc.width),
     m_Height(desc.height),
     m_Format(desc.format),
@@ -11,7 +11,7 @@ namespace Syrius{
         
     }
 
-    Cubemap::Cubemap(const CubemapImageDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    CubeMap::CubeMap(const CubemapImageDesc &desc, const Resource<DeviceLimits>& deviceLimits):
     m_Width(desc.faces[0]->getWidth()),
     m_Height(desc.faces[0]->getHeight()),
     m_Format(desc.faces[0]->getFormat()),
@@ -24,19 +24,19 @@ namespace Syrius{
         }
     }
 
-    Cubemap::~Cubemap() {
+    CubeMap::~CubeMap() {
 
     }
 
-    uint32 Cubemap::getWidth() const {
+    uint32 CubeMap::getWidth() const {
         return m_Width;
     }
 
-    uint32 Cubemap::getHeight() const {
+    uint32 CubeMap::getHeight() const {
         return m_Height;
     }
 
-    SR_TEXTURE_FORMAT Cubemap::getFormat() const {
+    SR_TEXTURE_FORMAT CubeMap::getFormat() const {
         return m_Format;
     }
 }

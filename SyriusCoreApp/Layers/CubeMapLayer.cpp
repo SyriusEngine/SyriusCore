@@ -1,11 +1,13 @@
-#include "TextureLayer.hpp"
+#include "CubeMapLayer.hpp"
 
-TextureLayer::TextureLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
-                           EasyIni::Configuration &config) : Layer(context, window, config) {
-    m_ShaderProgram = m_ShaderLibrary.loadShader("Texture");
+CubeMapLayer::CubeMapLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config) :
+Layer(context, window, config),
+m_Camera(0.1f, 0.01f, context),
+m_Projection(context, window->getWidth(), window->getHeight()){
+    m_ShaderProgram = m_ShaderLibrary.loadShader("MVP", "Texture");
 
-    Mesh rectangle = createRectangle();
-    m_VertexArray = loadMesh(rectangle, m_ShaderProgram);
+    Mesh cube = createCube();
+    m_VertexArray = loadMesh(cube, m_ShaderProgram);
 
     glm::mat4 transform = glm::mat4(1.0f);
     ConstantBufferDesc transformDesc;
@@ -51,14 +53,18 @@ TextureLayer::TextureLayer(ResourceView<Context> &context, const Resource<Syrius
         Layer::imGuiTextureParametersPanel(m_TextureParametersBuffer);
         Layer::imGuiSamplerPanel(m_Sampler);
         Layer::imGuiTexturePanel(m_Texture1);
+        auto defaultFb = m_Context->getDefaultFrameBuffer();
+        Layer::imGuiDepthTestPanel(defaultFb);
+        Layer::imGuiCameraPanel(m_Camera);
     });
 }
 
-TextureLayer::~TextureLayer() = default;
+CubeMapLayer::~CubeMapLayer() = default;
 
-void TextureLayer::onUpdate() {
+void CubeMapLayer::onUpdate() {
     Layer::onUpdate();
 
+    // render
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();
@@ -66,6 +72,8 @@ void TextureLayer::onUpdate() {
     m_Texture2->bindShaderResource(1);
     m_Sampler->bindShaderResource(0);
     m_TransformBuffer->bind(0);
+    m_Camera.bind(1);
+    m_Projection.bind(2);
     m_TextureParametersBuffer->bind(4);
     m_Context->draw(m_VertexArray);
 
@@ -74,6 +82,6 @@ void TextureLayer::onUpdate() {
     m_Context->endRenderPass();
 }
 
-void TextureLayer::onEvent(const Event &event) {
-
+void CubeMapLayer::onEvent(const Event &event) {
+    m_Camera.update(event, m_DeltaTime);
 }

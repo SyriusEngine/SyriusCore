@@ -48,7 +48,4 @@ private:
 
     Camera m_Camera;
     Projection m_Projection;
-
-    double m_DeltaTime;
-    double m_LastFrameTime;
 };

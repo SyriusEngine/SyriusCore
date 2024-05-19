@@ -65,6 +65,8 @@ TextureAtlasLayer::TextureAtlasLayer(ResourceView<Context> &context, const Resou
 TextureAtlasLayer::~TextureAtlasLayer() = default;
 
 void TextureAtlasLayer::onUpdate() {
+    Layer::onUpdate();
+
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();

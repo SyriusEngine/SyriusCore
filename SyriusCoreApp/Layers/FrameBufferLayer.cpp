@@ -2,7 +2,6 @@
 
 FrameBufferLayer::FrameBufferLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config) :
 Layer(context, window, config),
-m_DeltaTime(0.0f), m_LastFrameTime(0.0f),
 m_Camera(0.1f, 0.01f, context),
 m_SelectedTexture(0),
 m_Projection(context, window->getWidth(), window->getHeight()){
@@ -63,7 +62,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     dsDesc.format = SR_TEXTURE_DEPTH_24_STENCIL_8;
     dsDesc.width = m_Context->getWidth();
     dsDesc.height = m_Context->getHeight();
-    dsDesc.enableShaderAccess = true;
+    //dsDesc.enableShaderAccess = true;
     fbLayout->addDepthStencilAttachmentDesc(dsDesc);
 
     m_FrameBuffer = m_Context->createFrameBuffer(fbLayout);
@@ -88,11 +87,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
 FrameBufferLayer::~FrameBufferLayer() = default;
 
 void FrameBufferLayer::onUpdate() {
-    auto currentTime = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now().time_since_epoch())
-            .count());
-    m_DeltaTime = currentTime - m_LastFrameTime;
-    m_LastFrameTime = currentTime;
+    Layer::onUpdate();
 
     // render pass 1
     m_Context->beginRenderPass(m_FrameBuffer);

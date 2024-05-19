@@ -19,9 +19,9 @@ public:
 
     virtual ~Layer();
 
-    virtual void onUpdate() = 0;
+    virtual void onUpdate();
 
-    virtual void onEvent(const Event& event) = 0;
+    virtual void onEvent(const Event& event);
 
 protected:
 
@@ -61,8 +61,12 @@ protected:
     const Resource<SyriusWindow>& m_Window;
     ShaderLibrary m_ShaderLibrary;
 
+    double m_DeltaTime;
+
 private:
     std::vector<DrawFunction> m_ImGuiDraw;
+
+    double m_LastFrameTime;
 
     float m_CurrentX = 0.0f;
     float m_CurrentY = 0.0f;

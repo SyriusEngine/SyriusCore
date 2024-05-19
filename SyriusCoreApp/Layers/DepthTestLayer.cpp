@@ -3,7 +3,6 @@
 DepthTestLayer::DepthTestLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
                                EasyIni::Configuration &config) :
 Layer(context, window, config),
-m_DeltaTime(0.0f), m_LastFrameTime(0.0f),
 m_Camera(0.1f, 0.01f, context),
 m_Projection(context, window->getWidth(), window->getHeight()){
     m_ShaderProgram = m_ShaderLibrary.loadShader("MVP", "Texture");
@@ -64,12 +63,6 @@ m_Projection(context, window->getWidth(), window->getHeight()){
 DepthTestLayer::~DepthTestLayer() = default;
 
 void DepthTestLayer::onUpdate() {
-    auto currentTime = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now().time_since_epoch())
-            .count());
-    m_DeltaTime = currentTime - m_LastFrameTime;
-    m_LastFrameTime = currentTime;
-
     // render
     m_Context->beginRenderPass();
 

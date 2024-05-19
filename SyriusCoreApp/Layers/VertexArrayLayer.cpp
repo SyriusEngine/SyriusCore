@@ -43,6 +43,8 @@ VertexArrayLayer::VertexArrayLayer(ResourceView<Context> &context, const Resourc
 VertexArrayLayer::~VertexArrayLayer() = default;
 
 void VertexArrayLayer::onUpdate() {
+    Layer::onUpdate();
+
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();

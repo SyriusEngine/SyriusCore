@@ -17,7 +17,7 @@
 #include "FrameBuffer.hpp"
 #include "ColorAttachment.hpp"
 #include "DepthStencilAttachment.hpp"
-#include "Cubemap.hpp"
+#include "CubeMap.hpp"
 
 namespace Syrius{
 
@@ -180,9 +180,9 @@ namespace Syrius{
          */
         virtual ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferLayout>& desc) = 0;
 
-        virtual ResourceView<Cubemap> createCubemap(const CubemapDesc& desc) = 0;
+        virtual ResourceView<CubeMap> createCubemap(const CubemapDesc& desc) = 0;
 
-        virtual ResourceView<Cubemap> createCubemap(const CubemapImageDesc& desc) = 0;
+        virtual ResourceView<CubeMap> createCubemap(const CubemapImageDesc& desc) = 0;
 
         void onResize(uint32 width, uint32 height);
 
@@ -291,7 +291,7 @@ namespace Syrius{
         std::vector<Resource<Sampler>> m_Samplers;
         std::vector<Resource<FrameBufferLayout>> m_FrameBufferDescriptions;
         std::vector<Resource<FrameBuffer>> m_FrameBuffers; // framebuffer at location 0 is the default framebuffer
-        std::vector<Resource<Cubemap>> m_Cubemaps;
+        std::vector<Resource<CubeMap>> m_Cubemaps;
 
 
     private:

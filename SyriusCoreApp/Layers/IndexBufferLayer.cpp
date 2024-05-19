@@ -43,6 +43,8 @@ IndexBufferLayer::IndexBufferLayer(ResourceView<Context> &context, const Resourc
 IndexBufferLayer::~IndexBufferLayer() = default;
 
 void IndexBufferLayer::onUpdate() {
+    Layer::onUpdate();
+
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();

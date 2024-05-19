@@ -19,13 +19,13 @@ namespace Syrius{
         ResourceView<Image> faces[6];
     };
 
-    class SR_CORE_API Cubemap{
+    class SR_CORE_API CubeMap{
     public:
-        Cubemap(const CubemapDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        CubeMap(const CubemapDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
-        Cubemap(const CubemapImageDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        CubeMap(const CubemapImageDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
-        virtual ~Cubemap();
+        virtual ~CubeMap();
 
         virtual void bind() = 0;
 

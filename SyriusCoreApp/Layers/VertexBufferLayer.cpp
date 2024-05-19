@@ -34,6 +34,8 @@ Layer(context, window, config){
 VertexBufferLayer::~VertexBufferLayer() = default;
 
 void VertexBufferLayer::onUpdate() {
+    Layer::onUpdate();
+
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();

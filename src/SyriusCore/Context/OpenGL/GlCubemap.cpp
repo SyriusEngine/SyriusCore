@@ -3,8 +3,8 @@
 namespace Syrius{
 
     GlCubemap::GlCubemap(const CubemapDesc &desc, const Resource<DeviceLimits>& deviceLimits) :
-    Cubemap(desc, deviceLimits),
-    m_TextureID(0) {
+            CubeMap(desc, deviceLimits),
+            m_TextureID(0) {
         const void* faces[6] = {
                 desc.faces[0],
                 desc.faces[1],
@@ -17,8 +17,8 @@ namespace Syrius{
     }
 
     GlCubemap::GlCubemap(const CubemapImageDesc &desc, const Resource<DeviceLimits>& deviceLimits) :
-    Cubemap(desc, deviceLimits),
-    m_TextureID(0) {
+            CubeMap(desc, deviceLimits),
+            m_TextureID(0) {
         const void* faces[6] = {
                 desc.faces[0]->getData(),
                 desc.faces[1]->getData(),

@@ -2,10 +2,11 @@
 
 #include "Utils.hpp"
 #include "Layer.hpp"
+#include <chrono>
 
 class SyriusCoreDev{
 public:
-    explicit SyriusCoreDev(const std::string& iniFile);
+    explicit SyriusCoreDev(const std::string& iniFile, const std::string& windowTitle = "SyriusCoreDev");
 
     ~SyriusCoreDev();
 

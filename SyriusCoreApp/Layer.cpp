@@ -1,4 +1,5 @@
 #include "Layer.hpp"
+#include <chrono>
 
 Layer::Layer(ResourceView<Context>& context, const Resource<SyriusWindow> &window, EasyIni::Configuration& config):
 m_Context(context),
@@ -6,8 +7,9 @@ m_Window(window),
 m_Config(config),
 m_CurrentX(0.0f),
 m_CurrentY(0.0f),
+m_DeltaTime(0.0f),
+m_LastFrameTime(0.0f),
 m_ShaderLibrary(config["Context"]["ShaderLibraryPath"].getOrDefault("./Resources/Shaders"), context){
-    printContextInfo(m_Context);
     m_Window->createImGuiContext();
     addImGuiDrawFunction([this]{
         imGuiDebugPanel(m_Context);
@@ -17,6 +19,19 @@ m_ShaderLibrary(config["Context"]["ShaderLibraryPath"].getOrDefault("./Resources
 Layer::~Layer() {
     m_Window->destroyImGuiContext();
 }
+
+void Layer::onUpdate() {
+    auto currentTime = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch())
+            .count());
+    m_DeltaTime = currentTime - m_LastFrameTime;
+    m_LastFrameTime = currentTime;
+}
+
+void Layer::onEvent(const Event &event) {
+
+}
+
 
 ResourceView<VertexArray> Layer::loadMesh(Mesh &mesh, ShaderProgram &program) {
     auto layout = m_Context->createVertexLayout();

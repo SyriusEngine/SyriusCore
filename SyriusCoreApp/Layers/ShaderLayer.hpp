@@ -31,7 +31,5 @@ private:
     ResourceView<Sampler> m_Sampler;
 
     Parameters m_Params;
-    double m_DeltaTime;
-    double m_LastFrameTime;
     double m_StartTime;
 };

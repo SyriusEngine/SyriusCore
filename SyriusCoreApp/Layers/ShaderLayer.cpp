@@ -34,16 +34,14 @@ ShaderLayer::ShaderLayer(ResourceView<Context> &context, const Resource<SyriusWi
     });
 }
 
-ShaderLayer::~ShaderLayer() {
-
-}
+ShaderLayer::~ShaderLayer() = default;
 
 void ShaderLayer::onUpdate() {
+    Layer::onUpdate();
+
     auto currentTime = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch())
             .count());
-    m_DeltaTime = currentTime - m_LastFrameTime;
-    m_LastFrameTime = currentTime;
 
     m_Params.deltaTime = m_DeltaTime;
     m_Params.time = static_cast<float>((currentTime - m_StartTime) / 1000.0);
