@@ -67,9 +67,6 @@ namespace Syrius{
 
     void GlCubemap::createCubemap(const void* faces[6]) {
         determineFormats();
-
-        SR_CORE_OPENGL_CLEAR_ERROR();
-
         /**
          * Note: On both Nvidia and Intel GPUs, the DSA implementation works perfectly fine, but on AMD GPUs, it doesn't work.
          * The first texture will be uploaded correctly, but the rest will be black.
