@@ -43,6 +43,18 @@ void runAllTests(const std::string& iniFile){
 
 }
 
+glm::vec3 transformNormal(glm::vec3 normal){
+    glm::vec3 t = glm::normalize(normal * 2.0f - 1.0f);
+    return t;
+}
+
+void test(){
+    glm::vec3 normal = glm::vec3(-1.0f, -1.0f, -1.0f);
+    glm::vec3 t = transformNormal(normal);
+    printf("Normal: %f %f %f\n", t.x, t.y, t.z);
+
+}
+
 int main(int argc, char** argv) {
     try {
         if (argc < 2) {

@@ -214,8 +214,7 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
     SyriusCoreApp/Layers/FrameBufferLayer.cpp
     SyriusCoreApp/Layers/PhongLightLayer.cpp
     SyriusCoreApp/Layers/ShaderLayer.cpp
-    SyriusCoreApp/Layers/CubeMapLayer.cpp
-    SyriusCoreApp/Layers/CubeMapLayer.hpp)
+    SyriusCoreApp/Layers/CubeMapLayer.cpp)
 
 add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
 add_dependencies(SyriusCoreApp SyriusCore)

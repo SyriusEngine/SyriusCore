@@ -81,6 +81,7 @@ void ShaderLayer::shaderSelectorPanel() {
             "Mandelbulb",
             "Octagrams",
             "PulsatingWaves",
+            "Apollonian",
     };
     static int selectedShader = 0;
     if (ImGui::BeginCombo("Shaders", shaders[selectedShader].c_str())) {
