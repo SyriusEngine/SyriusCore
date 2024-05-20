@@ -23,87 +23,88 @@ float Hashfv2(vec2 p);
 vec3 VaryNf(vec3 p, vec3 n, float f);
 
 vec3 ballPos, ltDir;
-float tCur, dstFar, frctAng;
+float dstFar, frctAng;
 int idObj;
-const float pi = 3.14159265359;
+const float pi = 3.14159265359f;
 
 float ObjDf(vec3 p) {
-    float dMin, d, s, f;
-    dMin = dstFar;
-    d = 0.47 - abs(p.y - 3.5);
-    if (d < dMin) { dMin = d; idObj = 1; }
-    p.xz = abs(0.5 - mod((2. / 3.) * p.xz, 1.));
-    s = 1.;
+    float dMin = dstFar;
+    float d = 0.47f - abs(p.y - 3.5f);
+    if (d < dMin) {
+        dMin = d;
+        idObj = 1;
+    }
+    p.xz = abs(0.5f - mod((2.0f / 3.0f) * p.xz, 1.0f));
+    float s = 1.0f;
     for (int j = 0; j < 9; j++) {
-        p = abs(p) - vec3(-0.02, 1.98, -0.02);
-        f = 2. / clamp(dot(p, p), 0.4, 1.);
-        p = f * p - vec3(0.5, 1., 0.4);
+        p = abs(p) - vec3(-0.02f, 1.98f, -0.02f);
+        float f = 2.0f / clamp(dot(p, p), 0.4f, 1.0f);
+        p = f * p - vec3(0.5f, 1.0f, 0.4f);
         s *= f;
         p.xz = Rot2D(p.xz, frctAng);
     }
-    d = PrRoundBoxDf(p, vec3(0.1, 5., 0.1), 0.1) / s;
-    if (d < dMin) { dMin = d; idObj = 2; }
+    d = PrRoundBoxDf(p, vec3(0.1f, 5.0f, 0.1f), 0.1f) / s;
+    if (d < dMin) {
+        dMin = d;
+        idObj = 2;
+    }
     return dMin;
 }
 
-vec3 ObjNf(vec3 p)
-{
-    vec4 v;
-    vec2 e = vec2(0.0001, -0.0001);
-    v = vec4(ObjDf(p + e.xxx), ObjDf(p + e.xyy), ObjDf(p + e.yxy), ObjDf(p + e.yyx));
-    return normalize(vec3(v.x - v.y - v.z - v.w) + 2. * v.yzw);
+vec3 ObjNf(vec3 p) {
+    vec2 e = vec2(0.0001f, -0.0001f);
+    vec4 v = vec4(ObjDf(p + e.xxx), ObjDf(p + e.xyy), ObjDf(p + e.yxy), ObjDf(p + e.yyx));
+    return normalize(vec3(v.x - v.y - v.z - v.w) + 2.0f * v.yzw);
 }
 
-float ObjAO(vec3 ro, vec3 rd)
-{
-    float ao, d;
-    ao = 0.;
-    for (float j = 1.; j < 5.; j++) {
-        d = 0.002 * j * j;
-        ao += max(0., d - ObjDf(ro + rd * d));
+float ObjAO(vec3 ro, vec3 rd) {
+    float ao = 0.0f;
+    for (float j = 1.0f; j < 5.; j++) {
+        float d = 0.002 * j * j;
+        ao += max(0.0f, d - ObjDf(ro + rd * d));
     }
-    return 0.2 + 0.8 * clamp(1. - 20. * ao, 0., 1.);
+    return 0.2f + 0.8f * clamp(1.0f - 20.0f * ao, 0.0f, 1.0f);
 }
 
-float BallHit(vec3 ro, vec3 rd)
-{
-    float bRad, b, d;
-    bRad = 0.025;
-    b = dot(rd, ro);
-    d = b * b + bRad * bRad - dot(ro, ro);
-    if (d > 0.) {
+float BallHit(vec3 ro, vec3 rd) {
+    float bRad = 0.025f;
+    float b = dot(rd, ro);
+    float d = b * b + bRad * bRad - dot(ro, ro);
+    if (d > 0.0f) {
         d = -b - sqrt(d);
-        if (d < 0.) d = dstFar;
-    } else d = dstFar;
+        if (d < 0.0f) {
+            d = dstFar;
+        }
+    }
+    else{
+        d = dstFar;
+    }
     return d;
 }
 
-float TxPattern(vec3 p)
-{
-    float t, tt, c;
-    p = abs(0.5 - fract(4. * p));
-    c = 0.;
-    t = 0.;
+float TxPattern(vec3 p) {
+    p = abs(0.5f - fract(4. * p));
+    float c = 0.0f;
+    float t = 0.0f;
     for (float j = 0.; j < 6.; j++) {
-        p = abs(p + 3.) - abs(p - 3.) - p;
-        p /= clamp(dot(p, p), 0., 1.);
-        p = 3. - 1.5 * p;
-        if (mod(j, 2.) == 0.) {
-            tt = t;
+        p = abs(p + 3.0f) - abs(p - 3.0f) - p;
+        p /= clamp(dot(p, p), 0.0f, 1.0f);
+        p = 3.0f - 1.5f * p;
+        if (mod(j, 2.0f) == 0.0f) {
+            float tt = t;
             t = length(p);
-            c += exp(-1. / abs(t - tt));
+            c += exp(-1.0f / abs(t - tt));
         }
     }
     return c;
 }
 
-vec3 ShowScene(vec3 ro, vec3 rd)
-{
+vec3 ShowScene(vec3 ro, vec3 rd) {
     vec3 vn, rg, col, bgCol, amb;
     float dstBall, dstObj, dstGlow, d, eGap, bGlow, eGlow, eFlash, eMid, eVib, rnd;
     int idObjT;
     bool isRefl;
-    frctAng = 0.18172 + pi * (2. * SmoothBump(0.25, 0.75, 0.25, mod(0.01 * tCur, 1.)) - 1.);
+    frctAng = 0.18172 + pi * (2. * SmoothBump(0.25, 0.75, 0.25, mod(0.01 * time, 1.)) - 1.);
     dstBall = BallHit(ro - ballPos, rd);
     isRefl = false;
     if (dstBall < dstFar) {
@@ -124,9 +125,9 @@ vec3 ShowScene(vec3 ro, vec3 rd)
             rnd = Hashfv2(11. + 77. * floor((ro + dstObj * rd).xz / 1.5));
             bGlow = 0.;
             eGlow = 0.;
-            eGap = mod(0.0625 * (tCur + 7. * rnd), 1.);
+            eGap = mod(0.0625 * (time + 7. * rnd), 1.);
             eMid = 3.35;
-            eVib = eMid + 0.005 * rnd * sin((64. + rnd) * tCur);
+            eVib = eMid + 0.005 * rnd * sin((64. + rnd) * time);
             for (int j = 0; j < 30; j++) {
                 rg = ro + dstGlow * rd;
                 d = ObjDf(rg);
@@ -136,7 +137,7 @@ vec3 ShowScene(vec3 ro, vec3 rd)
                 pow(max(0., 1. - 20. * min(abs(eMid - rg.y - eGap), abs(eMid - rg.y + eGap))), 4.));
                 if (d < 0.001 || dstGlow > dstFar) break;
             }
-            eFlash = 0.6 + 0.4 * sin(8. * (tCur + 7. * rnd + rg.z));
+            eFlash = 0.6 + 0.4 * sin(8. * (time + 7. * rnd + rg.z));
         }
         ro += dstObj * rd;
         idObjT = idObj;
@@ -161,119 +162,94 @@ vec3 ShowScene(vec3 ro, vec3 rd)
     return col;
 }
 
-vec3 TrackPath(float t)
-{
-    return vec3(0.75 * sin(t), 3.35 + 0.15 * sin(0.8 * t), 0.75 * cos(0.5 * t));
+vec3 TrackPath(float t) {
+    return vec3(0.75f * sin(t), 3.35f + 0.15f * sin(0.8f * t), 0.75f * cos(0.5f * t));
 }
 
-float PrRoundBoxDf(vec3 p, vec3 b, float r)
-{
-    return length(max(abs(p) - b, 0.)) - r;
+float PrRoundBoxDf(vec3 p, vec3 b, float r) {
+    return length(max(abs(p) - b, 0.0f)) - r;
 }
 
-float SmoothBump(float lo, float hi, float w, float x)
-{
-    return (1. - smoothstep(hi - w, hi + w, x)) * smoothstep(lo - w, lo + w, x);
+float SmoothBump(float lo, float hi, float w, float x) {
+    return (1.0f - smoothstep(hi - w, hi + w, x)) * smoothstep(lo - w, lo + w, x);
 }
 
-vec2 Rot2D(vec2 q, float a)
-{
-    vec2 cs;
-    cs = sin(a + vec2(0.5 * pi, 0.));
+vec2 Rot2D(vec2 q, float a) {
+    vec2 cs = sin(a + vec2(0.5f * pi, 0.));
     return vec2(dot(q, vec2(cs.x, - cs.y)), dot(q.yx, cs));
 }
 
-const float cHashM = 43758.54;
+const float cHashM = 43758.54f;
 
-float Hashfv2(vec2 p)
-{
-    return fract(sin(dot(p, vec2(37., 39.))) * cHashM);
+float Hashfv2(vec2 p) {
+    return fract(sin(dot(p, vec2(37.0f, 39.0f))) * cHashM);
 }
 
-vec2 Hashv2v2(vec2 p)
-{
-    vec2 cHashVA2 = vec2(37., 39.);
-    return fract(sin(vec2(dot(p, cHashVA2), dot(p + vec2(1., 0.), cHashVA2))) * cHashM);
+vec2 Hashv2v2(vec2 p) {
+    vec2 cHashVA2 = vec2(37.0f, 39.0f);
+    return fract(sin(vec2(dot(p, cHashVA2), dot(p + vec2(1.0f, 0.0f), cHashVA2))) * cHashM);
 }
 
-float Noisefv2(vec2 p)
-{
-    vec2 t, ip, fp;
-    ip = floor(p);
-    fp = fract(p);
-    fp = fp * fp * (3. - 2. * fp);
-    t = mix(Hashv2v2(ip), Hashv2v2(ip + vec2(0., 1.)), fp.y);
+float Noisefv2(vec2 p) {
+    vec2 ip = floor(p);
+    vec2 fp = fract(p);
+    fp = fp * fp * (3.0f - 2.0f * fp);
+    vec2 t = mix(Hashv2v2(ip), Hashv2v2(ip + vec2(0.0f, 1.0f)), fp.y);
     return mix(t.x, t.y, fp.x);
 }
 
-float Fbmn(vec3 p, vec3 n)
-{
-    vec3 s;
-    float a;
-    s = vec3(0.);
-    a = 1.;
+float Fbmn(vec3 p, vec3 n) {
+    vec3 s = vec3(0.0f);
+    float a = 1.0f;
     for (int j = 0; j < 5; j++) {
         s += a * vec3(Noisefv2(p.yz), Noisefv2(p.zx), Noisefv2(p.xy));
-        a *= 0.5;
-        p *= 2.;
+        a *= 0.5f;
+        p *= 2.0f;
     }
     return dot(s, abs(n));
 }
 
-vec3 VaryNf(vec3 p, vec3 n, float f)
-{
-    vec3 g;
-    vec2 e = vec2(0.1, 0.);
-    g = vec3(Fbmn(p + e.xyy, n), Fbmn(p + e.yxy, n), Fbmn(p + e.yyx, n)) - Fbmn(p, n);
+vec3 VaryNf(vec3 p, vec3 n, float f) {
+    vec2 e = vec2(0.1f, 0.0f);
+    vec3 g = vec3(Fbmn(p + e.xyy, n), Fbmn(p + e.yxy, n), Fbmn(p + e.yyx, n)) - Fbmn(p, n);
     return normalize(n + f * (g - n * dot(n, g)));
 }
 
-
-
 void main() {
-    mat3 vuMat;
-    vec4 mPtr, dateCur;
-    vec3 ro, rd, vd, col;
-    vec2 canvas, uv, ori, ca, sa;
-    float el, az, t;
-    canvas = resolution;
-    uv = 2. * gl_FragCoord.xy / canvas - 1.;
-    uv.x *= canvas.x / canvas.y;
-    tCur = time;
-    dateCur = vec4(0.0f);
-    mPtr = mouse;
-    mPtr.xy = mPtr.xy / canvas - 0.5;
-    tCur = mod(tCur + 30., 36000.) + floor(dateCur.w / 7200.);
-    az = 0.;
-    el = 0.02 * pi;
-    if (mPtr.z > 0.) {
-        az += 2. * pi * mPtr.x;
-        el += 0.7 * pi * mPtr.y;
+    vec2 uv = 2. * gl_FragCoord.xy / resolution - 1.0f;
+    uv.x *= resolution.x / resolution.y;
+    vec4 mPtr = mouse;
+    mPtr.xy = mPtr.xy / resolution - 0.5f;
+    float az = 0.0f;
+    float el = 0.02f * pi;
+    if (mPtr.z > 0.0f) {
+        az += 2.0f * pi * mPtr.x;
+        el += 0.7f * pi * mPtr.y;
     }
-    t = 0.1 * tCur;
-    ballPos = TrackPath(t + 0.4);
-    ro = TrackPath(t);
-    vd = normalize(ballPos - ro);
-    az += 1.1 * (0.5 * pi + atan(- vd.z, vd.x));
-    el += 0.8 * asin(vd.y);
-    el = clamp(el, -0.25 * pi, 0.25 * pi);
-    ori = vec2(el, az);
-    ca = cos(ori);
-    sa = sin(ori);
-    vuMat = mat3(ca.y, 0., - sa.y, 0., 1., 0., sa.y, 0., ca.y) *
-    mat3(1., 0., 0., 0., ca.x, - sa.x, 0., sa.x, ca.x);
-    dstFar = 5.;
-    ltDir = normalize(vec3(1., 1.5, -1.));
+    float t = 0.1f * time;
+    ballPos = TrackPath(t + 0.4f);
+    vec3 ro = TrackPath(t);
+    vec3 vd = normalize(ballPos - ro);
+    az += 1.1f * (0.5f * pi + atan(- vd.z, vd.x));
+    el += 0.8f * asin(vd.y);
+    el = clamp(el, -0.25f * pi, 0.25f * pi);
+    vec2 ori = vec2(el, az);
+    vec2 ca = cos(ori);
+    vec2 sa = sin(ori);
+    mat3 vuMat = mat3(ca.y, 0.0f, - sa.y, 0.0f, 1.0f, 0.0f, sa.y, 0.0f, ca.y) *
+    mat3(1.0f, 0.0f, 0.0f, 0.0f, ca.x, - sa.x, 0.0f, sa.x, ca.x);
+    dstFar = 5.0f;
+    ltDir = normalize(vec3(1.0f, 1.5f, -1.0f));
     #if ! AA
-    const float naa = 1.;
+    const float naa = 1.0f;
     #else
-    const float naa = 4.;
+    const float naa = 4.0f;
     #endif
-    col = vec3(0.);
-    for (float a = 0.; a < naa; a++) {
-        rd = vuMat * normalize(vec3(uv + step(1.5, naa) * Rot2D(vec2(0.71 / canvas.y, 0.),
-        0.5 * pi * (a + 0.5)), 1.2));
+    vec3 col = vec3(0.0f);
+    for (float a = 0.0f; a < naa; a++) {
+        vec3 rd = vuMat * normalize(vec3(uv + step(1.5, naa) * Rot2D(vec2(0.71f / resolution.y, 0.0f),
+        0.5 * pi * (a + 0.5f)), 1.2f));
         col += (1. / naa) * ShowScene(ro, rd);
     }
-    fragColor = vec4(pow(clamp(col, 0., 1.), vec3(0.9)), 1.);
+    fragColor = vec4(pow(clamp(col, 0.0f, 1.0f), vec3(0.9f)), 1.0f);
 }

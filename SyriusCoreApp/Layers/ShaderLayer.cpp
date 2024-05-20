@@ -73,7 +73,15 @@ void ShaderLayer::onEvent(const Event &event) {
             m_Params.resolution = glm::vec2(event.windowWidth, event.windowHeight);
             break;
         case SR_EVENT_MOUSE_MOVED:
-            m_Params.mouse = glm::vec4(event.mousePosX, event.mousePosY, event.mouseDeltaX, event.mouseDeltaY);
+            m_Params.mouse.x = event.mousePosX;
+            m_Params.mouse.y = event.mousePosY;
+            break;
+        case SR_EVENT_MOUSE_BUTTON_PRESSED:
+            m_Params.mouse.z = 1.0f;
+            break;
+        case SR_EVENT_MOUSE_BUTTON_RELEASED:
+            m_Params.mouse.z = 0.0f;
+            break;
         default:
             break;
 
@@ -100,6 +108,7 @@ void ShaderLayer::shaderSelectorPanel() {
                 selectedShader = i;
                 auto vsShader = m_Config["ShaderLayer"]["VertexShader"].get<std::string>();
                 m_ShaderProgram = m_ShaderLibrary.loadShader(vsShader, shaders[i]);
+                printf("Recompiling shader %s\n", shaders[i].c_str());
             }
             if (isSelected) {
                 ImGui::SetItemDefaultFocus();
