@@ -6,6 +6,7 @@ struct Parameters{
     glm::vec2 resolution = glm::vec2(0.0f, 0.0f);
     float time = 0.0f;
     float deltaTime = 0.0f;
+    glm::vec4 mouse = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
 };
 
 class ShaderLayer: public Layer{
@@ -32,4 +33,7 @@ private:
 
     Parameters m_Params;
     double m_StartTime;
+
+    bool m_UseTime = true;
+    float t = 0.0;
 };

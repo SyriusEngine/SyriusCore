@@ -11,6 +11,7 @@ layout (std140, binding = 5) uniform Parameters {
     vec2 resolution;
     float time;
     float deltaTime;
+    vec4 mouse;
 };
 
 #define AA  0
@@ -24,16 +25,13 @@ vec3 VaryNf(vec3 p, vec3 n, float f);
 vec3 ballPos, ltDir;
 float tCur, dstFar, frctAng;
 int idObj;
-const float pi = 3.14159;
+const float pi = 3.14159265359;
 
-#define DMIN(id) if (d < dMin) { dMin = d; idObj = id; }
-
-float ObjDf(vec3 p)
-{
+float ObjDf(vec3 p) {
     float dMin, d, s, f;
     dMin = dstFar;
     d = 0.47 - abs(p.y - 3.5);
-    DMIN(1);
+    if (d < dMin) { dMin = d; idObj = 1; }
     p.xz = abs(0.5 - mod((2. / 3.) * p.xz, 1.));
     s = 1.;
     for (int j = 0; j < 9; j++) {
@@ -44,7 +42,7 @@ float ObjDf(vec3 p)
         p.xz = Rot2D(p.xz, frctAng);
     }
     d = PrRoundBoxDf(p, vec3(0.1, 5., 0.1), 0.1) / s;
-    DMIN(2);
+    if (d < dMin) { dMin = d; idObj = 2; }
     return dMin;
 }
 
@@ -242,8 +240,8 @@ void main() {
     uv = 2. * gl_FragCoord.xy / canvas - 1.;
     uv.x *= canvas.x / canvas.y;
     tCur = time;
-    dateCur = 0.0f;
-    mPtr = iMouse;
+    dateCur = vec4(0.0f);
+    mPtr = mouse;
     mPtr.xy = mPtr.xy / canvas - 0.5;
     tCur = mod(tCur + 30., 36000.) + floor(dateCur.w / 7200.);
     az = 0.;

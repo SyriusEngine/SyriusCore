@@ -9,6 +9,7 @@ ShaderLayer::ShaderLayer(ResourceView<Context> &context, const Resource<SyriusWi
     m_Params.resolution = glm::vec2(window->getWidth(), window->getHeight());
     m_Params.time = 0.0f;
     m_Params.deltaTime = 0.0f;
+    m_Params.mouse = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
 
     SamplerDesc splrDesc;
     m_Sampler = m_Context->createSampler(splrDesc);
@@ -44,7 +45,12 @@ void ShaderLayer::onUpdate() {
             .count());
 
     m_Params.deltaTime = m_DeltaTime;
-    m_Params.time = static_cast<float>((currentTime - m_StartTime) / 1000.0);
+    if (m_UseTime){
+        m_Params.time = static_cast<float>((currentTime - m_StartTime) / 1000.0);
+    }
+    else{
+        m_Params.time = t;
+    }
     m_ParameterBuffer->setData(&m_Params, sizeof(Parameters));
 
     m_Context->beginRenderPass();
@@ -66,6 +72,8 @@ void ShaderLayer::onEvent(const Event &event) {
             m_Context->onResize(event.windowWidth, event.windowHeight);
             m_Params.resolution = glm::vec2(event.windowWidth, event.windowHeight);
             break;
+        case SR_EVENT_MOUSE_MOVED:
+            m_Params.mouse = glm::vec4(event.mousePosX, event.mousePosY, event.mouseDeltaX, event.mouseDeltaY);
         default:
             break;
 
@@ -82,6 +90,7 @@ void ShaderLayer::shaderSelectorPanel() {
             "Octagrams",
             "PulsatingWaves",
             "Apollonian",
+            "LightAndMotion",
     };
     static int selectedShader = 0;
     if (ImGui::BeginCombo("Shaders", shaders[selectedShader].c_str())) {
@@ -99,6 +108,10 @@ void ShaderLayer::shaderSelectorPanel() {
         ImGui::EndCombo();
     }
 
-    imGuiEndPanel();
+    ImGui::Checkbox("Use Time", &m_UseTime);
+    if (!m_UseTime){
+        ImGui::SliderFloat("Time", &t, 0.0f, 20.0f);
+    }
 
+    imGuiEndPanel();
 }

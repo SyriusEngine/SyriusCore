@@ -11,6 +11,7 @@ layout (std140, binding = 5) uniform Parameters {
     vec2 resolution;
     float time;
     float deltaTime;
+    vec4 mouse;
 };
 
 #if HW_PERFORMANCE==0
