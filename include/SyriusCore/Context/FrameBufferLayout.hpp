@@ -10,7 +10,7 @@ namespace Syrius{
     public:
         FrameBufferLayout();
 
-        ~FrameBufferLayout() = default;
+        ~FrameBufferLayout();
 
         void addViewportDesc(const ViewportDesc& desc);
 

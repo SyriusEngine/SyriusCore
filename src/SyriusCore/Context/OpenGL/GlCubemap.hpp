@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../../../../include/SyriusCore/Context/Cubemap.hpp"
+#include "../../../../include/SyriusCore/Context/CubeMap.hpp"
 #include "GlUtils.hpp"
 
 namespace Syrius{
 
-    class GlCubemap : public Cubemap{
+    class GlCubemap : public CubeMap{
     public:
         GlCubemap(const CubemapDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 

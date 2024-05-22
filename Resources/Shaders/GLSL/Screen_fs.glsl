@@ -5,13 +5,8 @@ layout (location = 17) in vec2 fTexCoord;
 
 layout (location = 0) out vec4 fragColor;
 
-uniform sampler2D tex;
-
-layout(std140, binding = 4) uniform LerpData {
-    vec4 lerpFactor;
-};
+layout(binding = 0) uniform sampler2D ca1;
 
 void main(){
-    vec4 texel = texture(tex, fTexCoord * lerpFactor.y);
-    fragColor = mix(fColor, texel, lerpFactor.x);
+   fragColor = texture(ca1, fTexCoord);
 }

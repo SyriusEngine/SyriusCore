@@ -19,15 +19,19 @@ public:
 
     virtual ~Layer();
 
-    virtual void onUpdate() = 0;
+    virtual void onUpdate();
 
-    virtual void onEvent(const Event& event) = 0;
+    virtual void onEvent(const Event& event);
 
 protected:
 
     ResourceView<VertexArray> loadMesh(Mesh& mesh, ShaderProgram& program);
 
     void renderImGui();
+
+    void imGuiBeginPanel(const char* name) const;
+
+    void imGuiEndPanel();
 
     void addImGuiDrawFunction(DrawFunction drawFunction);
 
@@ -49,20 +53,20 @@ protected:
 
     void imGuiCameraPanel(Camera& camera);
 
+    void imGuiFrameBufferPanel(ResourceView<FrameBuffer>& frameBuffer, int32& selectedTexture);
+
 protected:
     ResourceView<Context>& m_Context;
     EasyIni::Configuration& m_Config;
     const Resource<SyriusWindow>& m_Window;
     ShaderLibrary m_ShaderLibrary;
 
-private:
-
-    void imGuiBeginPanel(const char* name) const;
-
-    void imGuiEndPanel();
+    double m_DeltaTime;
 
 private:
     std::vector<DrawFunction> m_ImGuiDraw;
+
+    double m_LastFrameTime;
 
     float m_CurrentX = 0.0f;
     float m_CurrentY = 0.0f;

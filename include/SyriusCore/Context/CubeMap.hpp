@@ -7,13 +7,6 @@
 
 namespace Syrius{
 
-    struct SR_CORE_API CubemapFaceDesc{
-        uint32 width          = 0;
-        uint32 height         = 0;
-        SR_TEXTURE_FORMAT format = SR_TEXTURE_RGBA_UI8;
-        const void* data            = nullptr;
-    };
-
     struct SR_CORE_API CubemapDesc{
         uint32 width          = 0;
         uint32 height         = 0;
@@ -26,13 +19,13 @@ namespace Syrius{
         ResourceView<Image> faces[6];
     };
 
-    class SR_CORE_API Cubemap{
+    class SR_CORE_API CubeMap{
     public:
-        Cubemap(const CubemapDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        CubeMap(const CubemapDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
-        Cubemap(const CubemapImageDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        CubeMap(const CubemapImageDesc& desc, const Resource<DeviceLimits>& deviceLimits);
 
-        virtual ~Cubemap();
+        virtual ~CubeMap();
 
         virtual void bind() = 0;
 

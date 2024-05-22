@@ -1,16 +1,17 @@
 #include "SyriusCoreDev.hpp"
 
 
-SyriusCoreDev::SyriusCoreDev(const std::string &iniFile):
+SyriusCoreDev::SyriusCoreDev(const std::string &iniFile, const std::string& windowTitle):
 m_Config(iniFile){
     ContextDesc cDesc;
     cDesc.api = static_cast<SR_SUPPORTED_API>(m_Config["Context"]["API"].getOrDefault<uint32>(SR_API_OPENGL));
-    cDesc.enableDepthTest = m_Config["Context"]["EnableDepthTest"].getOrDefault<bool>(true);
+    cDesc.enableDepthTest = m_Config["Context"]["EnableDepthTest"].getOrDefault<bool>(false);
 
-    std::string windowName = m_Config["Window"]["Title"].getOrDefault("SyriusCoreDev");
+    std::string windowName = windowTitle;
     if (cDesc.api == SR_API_OPENGL){
         windowName += " (OpenGL)";
-    }else if (cDesc.api == SR_API_VULKAN){
+    }
+    else if (cDesc.api == SR_API_VULKAN){
         windowName += " (Vulkan)";
     }
     else if (cDesc.api == SR_API_D3D11){
@@ -28,6 +29,7 @@ m_Config(iniFile){
     if (vsync){
         m_Context->setVerticalSynchronisation(true);
     }
+    printContextInfo(m_Context);
 }
 
 SyriusCoreDev::~SyriusCoreDev() {

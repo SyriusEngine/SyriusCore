@@ -25,7 +25,7 @@ namespace Syrius{
             glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         }
         else{
-            SR_CORE_EXCEPTION("OpenGL does not support a color attachment of usage: %i", desc.format);
+            SR_CORE_EXCEPTION("OpenGL does not support a color attachment format: %i", desc.format);
         }
     }
 
@@ -68,7 +68,7 @@ namespace Syrius{
         imgDesc.height = m_Height;
         imgDesc.format = m_Format;
         imgDesc.data = data;
-        auto img =  createImageUI8(imgDesc);
+        auto img =  createImage(imgDesc);
         delete[] data;
         return std::move(img);
     }

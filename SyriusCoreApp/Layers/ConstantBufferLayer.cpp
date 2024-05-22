@@ -33,6 +33,8 @@ ConstantBufferLayer::ConstantBufferLayer(ResourceView<Context> &context, const R
 ConstantBufferLayer::~ConstantBufferLayer() = default;
 
 void ConstantBufferLayer::onUpdate() {
+    Layer::onUpdate();
+
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();

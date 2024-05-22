@@ -1,4 +1,5 @@
 #include "Layer.hpp"
+#include <chrono>
 
 Layer::Layer(ResourceView<Context>& context, const Resource<SyriusWindow> &window, EasyIni::Configuration& config):
 m_Context(context),
@@ -6,8 +7,9 @@ m_Window(window),
 m_Config(config),
 m_CurrentX(0.0f),
 m_CurrentY(0.0f),
+m_DeltaTime(0.0f),
+m_LastFrameTime(0.0f),
 m_ShaderLibrary(config["Context"]["ShaderLibraryPath"].getOrDefault("./Resources/Shaders"), context){
-    printContextInfo(m_Context);
     m_Window->createImGuiContext();
     addImGuiDrawFunction([this]{
         imGuiDebugPanel(m_Context);
@@ -18,10 +20,25 @@ Layer::~Layer() {
     m_Window->destroyImGuiContext();
 }
 
+void Layer::onUpdate() {
+    auto currentTime = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch())
+            .count());
+    m_DeltaTime = currentTime - m_LastFrameTime;
+    m_LastFrameTime = currentTime;
+}
+
+void Layer::onEvent(const Event &event) {
+
+}
+
+
 ResourceView<VertexArray> Layer::loadMesh(Mesh &mesh, ShaderProgram &program) {
     auto layout = m_Context->createVertexLayout();
     layout->addAttribute("Position", SR_FLOAT32_3);
     layout->addAttribute("Color", SR_FLOAT32_3);
+    layout->addAttribute("Normal", SR_FLOAT32_3);
+    layout->addAttribute("Tangent", SR_FLOAT32_3);
     layout->addAttribute("TexCoord", SR_FLOAT32_2);
 
     VertexBufferDesc vboDesc;
@@ -352,4 +369,29 @@ void Layer::imGuiEndPanel() {
     else{
         m_CurrentY += size.y;
     }
+}
+
+void Layer::imGuiFrameBufferPanel(ResourceView<FrameBuffer> &frameBuffer, int32& selectedTexture) {
+    static bool depthTest = false;
+    static std::vector<std::string> sampleFrom = {"Normal Color", "Inverted Color", "Depth Stencil Attachment"};
+    static int sampleFromIndex  = 0;
+
+    imGuiBeginPanel("Frame Buffer Panel");
+    if (ImGui::Checkbox("Depth Test", &depthTest)){
+        frameBuffer->enableDepthTest(depthTest);
+    }
+    if (ImGui::BeginCombo("Attachment", sampleFrom[sampleFromIndex].c_str())){
+        for(int i = 0; i < sampleFrom.size(); i++){
+            bool isSelected = (sampleFromIndex == i);
+            if (ImGui::Selectable(sampleFrom[i].c_str(), isSelected)){
+                sampleFromIndex = i;
+                selectedTexture = i;
+            }
+            if (isSelected){
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+    imGuiEndPanel();
 }

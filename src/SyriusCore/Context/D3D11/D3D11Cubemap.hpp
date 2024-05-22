@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../../../../include/SyriusCore/Context/Cubemap.hpp"
+#include "../../../../include/SyriusCore/Context/CubeMap.hpp"
 #include "D3D11Utils.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
 
-    class D3D11Cubemap : public Cubemap{
+    class D3D11Cubemap : public CubeMap{
     public:
         D3D11Cubemap(const CubemapDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 

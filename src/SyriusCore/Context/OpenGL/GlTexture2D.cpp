@@ -64,7 +64,7 @@ namespace Syrius{
         imgDesc.height = m_Height;
         imgDesc.format = m_Format;
         imgDesc.data = data.get();
-        return createImageUI8(imgDesc);
+        return createImage(imgDesc);
     }
 
     uint64 GlTexture2D::getIdentifier() const {

@@ -8,11 +8,15 @@
 #include "SyriusCoreApp/Layers/TextureLayer.hpp"
 #include "SyriusCoreApp/Layers/DepthTestLayer.hpp"
 #include "SyriusCoreApp/Layers/TextureAtlasLayer.hpp"
+#include "SyriusCoreApp/Layers/FrameBufferLayer.hpp"
+#include "SyriusCoreApp/Layers/PhongLightLayer.hpp"
+#include "SyriusCoreApp/Layers/ShaderLayer.hpp"
+#include "SyriusCoreApp/Layers/CubeMapLayer.hpp"
 
 template<typename T>
-void runTest(const std::string& iniFile){
+void runTest(const std::string& iniFile, const std::string& windowTitle){
     try {
-        SyriusCoreDev core(iniFile);
+        SyriusCoreDev core(iniFile, windowTitle);
         core.pushLayer<T>();
         core.run();
     } catch (std::exception &e) {
@@ -23,15 +27,32 @@ void runTest(const std::string& iniFile){
 }
 
 void runAllTests(const std::string& iniFile){
-    runTest<ImGuiLayer>(iniFile);
-    runTest<VertexBufferLayer>(iniFile);
-    runTest<IndexBufferLayer>(iniFile);
-    runTest<VertexArrayLayer>(iniFile);
-    runTest<ConstantBufferLayer>(iniFile);
-    runTest<SamplerLayer>(iniFile);
-    runTest<TextureLayer>(iniFile);
-    runTest<DepthTestLayer>(iniFile);
-    runTest<TextureAtlasLayer>(iniFile);
+    runTest<ImGuiLayer>(iniFile, "ImGui");
+    runTest<VertexBufferLayer>(iniFile, "VertexBuffer");
+    runTest<IndexBufferLayer>(iniFile, "IndexBuffer");
+    runTest<VertexArrayLayer>(iniFile, "VertexArray");
+    runTest<ShaderLayer>(iniFile, "Shader");
+    runTest<ConstantBufferLayer>(iniFile, "ConstantBuffer");
+    runTest<SamplerLayer>(iniFile, "Sampler");
+    runTest<TextureLayer>(iniFile, "Texture");
+    runTest<DepthTestLayer>(iniFile, "DepthTest");
+    runTest<TextureAtlasLayer>(iniFile, "TextureAtlas");
+    runTest<FrameBufferLayer>(iniFile, "FrameBuffer");
+    runTest<PhongLightLayer>(iniFile, "PhongLight");
+    runTest<CubeMapLayer>(iniFile, "CubeMap");
+
+}
+
+glm::vec3 transformNormal(glm::vec3 normal){
+    glm::vec3 t = glm::normalize(normal * 2.0f - 1.0f);
+    return t;
+}
+
+void test(){
+    glm::vec3 normal = glm::vec3(-1.0f, -1.0f, -1.0f);
+    glm::vec3 t = transformNormal(normal);
+    printf("Normal: %f %f %f\n", t.x, t.y, t.z);
+
 }
 
 int main(int argc, char** argv) {
@@ -46,40 +67,34 @@ int main(int argc, char** argv) {
         for (int i = 2; i < argc; ++i) {
             std::string arg = argv[i];
             if (arg == "ImGui") {
-                runTest<ImGuiLayer>(argv[1]);
+                runTest<ImGuiLayer>(argv[1], arg);
             } else if (arg == "VertexBuffer") {
-                runTest<VertexBufferLayer>(argv[1]);
+                runTest<VertexBufferLayer>(argv[1], arg);
             } else if (arg == "IndexBuffer") {
-                runTest<IndexBufferLayer>(argv[1]);
-            }
-            else if (arg == "VertexArray") {
-                runTest<VertexArrayLayer>(argv[1]);
-            }
-            else if (arg == "ConstantBuffer") {
-                runTest<ConstantBufferLayer>(argv[1]);
-            }
-            else if (arg == "Sampler") {
-                runTest<SamplerLayer>(argv[1]);
-            }
-            else if (arg == "Texture") {
-                runTest<TextureLayer>(argv[1]);
-            }
-            else if (arg == "DepthTest") {
-                runTest<DepthTestLayer>(argv[1]);
-            }
-            else if (arg == "TextureAtlas") {
-                runTest<TextureAtlasLayer>(argv[1]);
-            }
-//            else if (arg == "FrameBuffer") {
-//                runTest<TestFrameBuffer>(argv[1]);
-//            }
-//            else if (arg == "Cubemap") {
-//                runTest<TestCubemap>(argv[1]);
-//            }
-            else if (arg == "All") {
+                runTest<IndexBufferLayer>(argv[1], arg);
+            } else if (arg == "VertexArray") {
+                runTest<VertexArrayLayer>(argv[1], arg);
+            } else if (arg == "Shader") {
+                runTest<ShaderLayer>(argv[1], arg);
+            } else if (arg == "ConstantBuffer") {
+                runTest<ConstantBufferLayer>(argv[1], arg);
+            } else if (arg == "Sampler") {
+                runTest<SamplerLayer>(argv[1], arg);
+            } else if (arg == "Texture") {
+                runTest<TextureLayer>(argv[1], arg);
+            } else if (arg == "DepthTest") {
+                runTest<DepthTestLayer>(argv[1], arg);
+            } else if (arg == "TextureAtlas") {
+                runTest<TextureAtlasLayer>(argv[1], arg);
+            } else if (arg == "FrameBuffer") {
+                runTest<FrameBufferLayer>(argv[1], arg);
+            } else if (arg == "PhongLight") {
+                runTest<PhongLightLayer>(argv[1], arg);
+            } else if (arg == "CubeMap") {
+                runTest<CubeMapLayer>(argv[1], arg);
+            } else if (arg == "All") {
                 runAllTests(argv[1]);
-            }
-            else {
+            } else {
                 std::cerr << "Unknown test: " << arg << std::endl;
             }
         }

@@ -54,6 +54,8 @@ SamplerLayer::SamplerLayer(ResourceView<Context> &context, const Resource<Syrius
 SamplerLayer::~SamplerLayer() = default;
 
 void SamplerLayer::onUpdate() {
+    Layer::onUpdate();
+
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();

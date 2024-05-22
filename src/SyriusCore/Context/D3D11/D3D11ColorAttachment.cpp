@@ -61,7 +61,7 @@ namespace Syrius {
         imgDesc.height = desc.Height;
         imgDesc.format = m_Format;
         imgDesc.data = data;
-        auto img = createImageUI8(imgDesc);
+        auto img = createImage(imgDesc);
         m_Context->Unmap(stagingTexture, 0);
         stagingTexture->Release();
         return std::move(img);

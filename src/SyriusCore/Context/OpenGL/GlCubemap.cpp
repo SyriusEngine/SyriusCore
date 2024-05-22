@@ -3,8 +3,8 @@
 namespace Syrius{
 
     GlCubemap::GlCubemap(const CubemapDesc &desc, const Resource<DeviceLimits>& deviceLimits) :
-    Cubemap(desc, deviceLimits),
-    m_TextureID(0) {
+            CubeMap(desc, deviceLimits),
+            m_TextureID(0) {
         const void* faces[6] = {
                 desc.faces[0],
                 desc.faces[1],
@@ -17,8 +17,8 @@ namespace Syrius{
     }
 
     GlCubemap::GlCubemap(const CubemapImageDesc &desc, const Resource<DeviceLimits>& deviceLimits) :
-    Cubemap(desc, deviceLimits),
-    m_TextureID(0) {
+            CubeMap(desc, deviceLimits),
+            m_TextureID(0) {
         const void* faces[6] = {
                 desc.faces[0]->getData(),
                 desc.faces[1]->getData(),
@@ -67,9 +67,6 @@ namespace Syrius{
 
     void GlCubemap::createCubemap(const void* faces[6]) {
         determineFormats();
-
-        SR_CORE_OPENGL_CLEAR_ERROR();
-
         /**
          * Note: On both Nvidia and Intel GPUs, the DSA implementation works perfectly fine, but on AMD GPUs, it doesn't work.
          * The first texture will be uploaded correctly, but the rest will be black.

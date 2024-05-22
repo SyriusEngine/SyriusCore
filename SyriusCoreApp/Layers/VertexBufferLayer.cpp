@@ -9,6 +9,8 @@ Layer(context, window, config){
     m_VertexLayout = m_Context->createVertexLayout();
     m_VertexLayout->addAttribute("Position", SR_FLOAT32_3);
     m_VertexLayout->addAttribute("Color", SR_FLOAT32_3);
+    m_VertexLayout->addAttribute("Normal", SR_FLOAT32_3);
+    m_VertexLayout->addAttribute("Tangent", SR_FLOAT32_3);
     m_VertexLayout->addAttribute("TexCoord", SR_FLOAT32_2);
 
     VertexBufferDesc vboDesc;
@@ -32,6 +34,8 @@ Layer(context, window, config){
 VertexBufferLayer::~VertexBufferLayer() = default;
 
 void VertexBufferLayer::onUpdate() {
+    Layer::onUpdate();
+
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();
@@ -66,6 +70,8 @@ void VertexBufferLayer::imGuiVertexBufferPanel(ResourceView<VertexBuffer> & vert
             auto& vertex = floatData[i];
             std::cout << "Pos: " << vertex.position.x << ", " << vertex.position.y << ", " << vertex.position.z;
             std::cout << ", Color: " << vertex.color.x << ", " << vertex.color.y << ", " << vertex.color.z;
+            std::cout << ", Normal: " << vertex.normal.x << ", " << vertex.normal.y << ", " << vertex.normal.z;
+            std::cout << ", Tangent: " << vertex.tangent.x << ", " << vertex.tangent.y << ", " << vertex.tangent.z;
             std::cout << ", TexCoord: " << vertex.texCoord.x << ", " << vertex.texCoord.y << std::endl;
         }
 

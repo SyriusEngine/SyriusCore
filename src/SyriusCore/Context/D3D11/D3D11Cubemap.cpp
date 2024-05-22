@@ -5,11 +5,11 @@
 namespace Syrius{
 
     D3D11Cubemap::D3D11Cubemap(const CubemapDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
-    Cubemap(desc, deviceLimits),
-    m_Device(device),
-    m_Context(context),
-    m_Texture(nullptr),
-    m_TextureView(nullptr){
+            CubeMap(desc, deviceLimits),
+            m_Device(device),
+            m_Context(context),
+            m_Texture(nullptr),
+            m_TextureView(nullptr){
         const void* faces[6] = {
                 desc.faces[0],
                 desc.faces[1],
@@ -22,11 +22,11 @@ namespace Syrius{
     }
 
     D3D11Cubemap::D3D11Cubemap(const CubemapImageDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
-    Cubemap(desc, deviceLimits),
-    m_Device(device),
-    m_Context(context),
-    m_Texture(nullptr),
-    m_TextureView(nullptr){
+            CubeMap(desc, deviceLimits),
+            m_Device(device),
+            m_Context(context),
+            m_Texture(nullptr),
+            m_TextureView(nullptr){
         const void* faces[6] = {
                 desc.faces[0]->getData(),
                 desc.faces[1]->getData(),

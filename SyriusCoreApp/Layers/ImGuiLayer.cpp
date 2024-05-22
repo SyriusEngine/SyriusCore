@@ -9,6 +9,8 @@ ImGuiLayer::~ImGuiLayer(){
 }
 
 void ImGuiLayer::onUpdate() {
+    Layer::onUpdate();
+
     m_Context->beginRenderPass();
 
     renderImGui();

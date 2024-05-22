@@ -103,13 +103,13 @@ namespace Syrius{
         return createResourceView(m_FrameBuffers.back());
     }
 
-    ResourceView<Cubemap> GlContext::createCubemap(const CubemapDesc &desc) {
+    ResourceView<CubeMap> GlContext::createCubemap(const CubemapDesc &desc) {
         auto ptr = new GlCubemap(desc, m_DeviceLimits);
         m_Cubemaps.emplace_back(ptr);
         return createResourceView(m_Cubemaps.back());
     }
 
-    ResourceView<Cubemap> GlContext::createCubemap(const CubemapImageDesc &desc) {
+    ResourceView<CubeMap> GlContext::createCubemap(const CubemapImageDesc &desc) {
         auto ptr = new GlCubemap(desc, m_DeviceLimits);
         m_Cubemaps.emplace_back(ptr);
         return createResourceView(m_Cubemaps.back());

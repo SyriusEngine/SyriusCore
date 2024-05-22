@@ -57,6 +57,8 @@ TextureLayer::TextureLayer(ResourceView<Context> &context, const Resource<Syrius
 TextureLayer::~TextureLayer() = default;
 
 void TextureLayer::onUpdate() {
+    Layer::onUpdate();
+
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();

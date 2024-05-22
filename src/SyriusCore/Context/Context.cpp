@@ -3,15 +3,13 @@
 
 namespace Syrius{
 
-    Context::Context(const ContextDesc& desc)
-    : m_VerticalSync(false),
+    Context::Context(const ContextDesc& desc):
+    m_VerticalSync(false),
     m_Type(desc.api){
         SR_CORE_MESSAGE("Created context with backend: " + getAPIName(m_Type));
     }
 
-    Context::~Context() {
-
-    }
+    Context::~Context() = default;
 
     SR_SUPPORTED_API Context::getType() const {
         return m_Type;
