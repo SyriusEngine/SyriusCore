@@ -25,7 +25,7 @@ namespace Syrius{
         m_VertexArrays.clear();
         m_FrameBuffers.clear();
         m_FrameBufferDescriptions.clear();
-        m_Cubemaps.clear();
+        m_CubeMaps.clear();
 
         terminateGlad();
     }
@@ -93,8 +93,8 @@ namespace Syrius{
     }
 
     ResourceView<CubeMap> GlContext::createCubeMap(const ResourceView<Syrius::CubeMapLayout> &desc) {
-        m_Cubemaps.emplace_back(new GlCubeMap(desc, m_DeviceLimits));
-        return createResourceView(m_Cubemaps.back());
+        m_CubeMaps.emplace_back(new GlCubeMap(desc, m_DeviceLimits));
+        return createResourceView(m_CubeMaps.back());
     }
 
     void GlContext::initGl(const ContextDesc& desc) {

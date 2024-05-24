@@ -14,8 +14,6 @@ namespace Syrius{
 
         explicit ResourceView(const Resource<T>& resource): m_ResourcePtr(resource.get()){}
 
-        explicit ResourceView(T* resource): m_ResourcePtr(resource){}
-
         ResourceView(const ResourceView<T>& other): m_ResourcePtr(other.m_ResourcePtr){}
 
         ResourceView(ResourceView<T>&& other) noexcept: m_ResourcePtr(other.m_ResourcePtr){}
@@ -59,8 +57,56 @@ namespace Syrius{
             return m_ResourcePtr != nullptr;
         }
 
+        bool operator==(std::nullptr_t) const{
+            return m_ResourcePtr == nullptr;
+        }
+
+        bool operator!=(std::nullptr_t) const{
+            return m_ResourcePtr != nullptr;
+        }
+
+        bool operator<(std::nullptr_t) const{
+            return m_ResourcePtr < nullptr;
+        }
+
+        bool operator>(std::nullptr_t) const{
+            return m_ResourcePtr > nullptr;
+        }
+
+        bool operator<=(std::nullptr_t) const{
+            return m_ResourcePtr <= nullptr;
+        }
+
+        bool operator>=(std::nullptr_t) const{
+            return m_ResourcePtr >= nullptr;
+        }
+
+        bool operator==(const Resource<T>& other) const{
+            return m_ResourcePtr == other.get();
+        }
+
+        bool operator!=(const Resource<T>& other) const{
+            return m_ResourcePtr != other.get();
+        }
+
+        bool operator<(const Resource<T>& other) const{
+            return m_ResourcePtr < other.get();
+        }
+
+        bool operator>(const Resource<T>& other) const{
+            return m_ResourcePtr > other.get();
+        }
+
+        bool operator<=(const Resource<T>& other) const{
+            return m_ResourcePtr <= other.get();
+        }
+
+        bool operator>=(const Resource<T>& other) const{
+            return m_ResourcePtr >= other.get();
+        }
+
         bool operator==(const ResourceView<T>& other) const{
-            return m_ResourcePtr == other.m_ResourcePtr;
+            return m_ResourcePtr == other.get();
         }
 
         bool operator!=(const ResourceView<T>& other) const{
@@ -119,11 +165,6 @@ namespace Syrius{
 
     template<typename T>
     inline ResourceView<T> createResourceView(Resource<T>& resource){
-        return ResourceView<T>(resource);
-    }
-
-    template<typename T>
-    inline ResourceView<T> createResourceView(T* resource){
         return ResourceView<T>(resource);
     }
 

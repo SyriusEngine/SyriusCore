@@ -107,7 +107,6 @@ namespace Syrius {
         textureViewDesc.Texture2D.MostDetailedMip = 0;
 
         SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_ColorBuffer, &textureViewDesc, &m_BufferView));
-
     }
 
     void  D3D11ColorAttachment::destroyResources(){

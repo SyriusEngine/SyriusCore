@@ -31,6 +31,8 @@ m_Projection(context, window->getWidth(), window->getHeight()){
 
     m_CubeMap = m_Context->createCubeMap(cubeMapLayout);
 
+    m_Context->destroyCubeMapLayout(cubeMapLayout);
+
     addImGuiDrawFunction([this]{
         Layer::imGuiRenderTransformConstantBuffer(m_TransformBuffer);
         Layer::imGuiSamplerPanel(m_Sampler);

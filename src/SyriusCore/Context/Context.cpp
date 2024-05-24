@@ -111,4 +111,64 @@ namespace Syrius{
         SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
         m_FrameBuffers[0]->enableDepthTest(enable);
     }
+
+    template<typename T>
+    inline void removeResource(std::vector<Resource<T>>& resources, const ResourceView<T>& resource){
+        resources.erase(std::remove_if(resources.begin(), resources.end(), [&resource](const Resource<T>& res){
+            return res.get() == resource.get();
+        }), resources.end());
+    }
+
+    void Context::destroyShaderModule(const ResourceView<ShaderModule> &shaderModule) {
+        removeResource(m_ShaderModules, shaderModule);
+    }
+
+    void Context::destroyShader(const ResourceView<Syrius::Shader> &shader) {
+        removeResource(m_Shaders, shader);
+    }
+
+    void Context::destroyVertexLayout(const ResourceView<Syrius::VertexLayout> &vertexLayout) {
+        removeResource(m_VertexDescriptions, vertexLayout);
+    }
+
+    void Context::destroyVertexBuffer(const ResourceView<VertexBuffer> &vertexBuffer) {
+        removeResource(m_VertexBuffers, vertexBuffer);
+    }
+
+    void Context::destroyIndexBuffer(const ResourceView<IndexBuffer> &indexBuffer) {
+        removeResource(m_IndexBuffers, indexBuffer);
+    }
+
+    void Context::destroyVertexArray(const ResourceView<VertexArray>& vertexArray){
+        removeResource(m_VertexArrays, vertexArray);
+    }
+
+    void Context::destroyConstantBuffer(const ResourceView<ConstantBuffer>& constantBuffer){
+        removeResource(m_ConstantBuffers, constantBuffer);
+    }
+
+    void Context::destroyTexture2D(const ResourceView<Syrius::Texture2D> &texture2D) {
+        removeResource(m_Textures2D, texture2D);
+    }
+
+    void Context::destroySampler(const ResourceView<Sampler>& sampler){
+        removeResource(m_Samplers, sampler);
+    }
+
+    void Context::destroyFrameBufferLayout(const ResourceView<FrameBufferLayout>& frameBufferLayout){
+        removeResource(m_FrameBufferDescriptions, frameBufferLayout);
+    }
+
+    void Context::destroyFrameBuffer(const ResourceView<FrameBuffer>& frameBuffer){
+        removeResource(m_FrameBuffers, frameBuffer);
+    }
+
+    void Context::destroyCubeMapLayout(const ResourceView<CubeMapLayout>& cubeMapLayout){
+        removeResource(m_CubeMapLayouts, cubeMapLayout);
+    }
+
+    void Context::destroyCubeMap(const ResourceView<CubeMap>& cubeMap){
+        removeResource(m_CubeMaps, cubeMap);
+    }
+
 }

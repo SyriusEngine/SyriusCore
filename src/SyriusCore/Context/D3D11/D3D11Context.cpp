@@ -105,7 +105,7 @@ namespace Syrius{
         m_VertexArrays.clear();
         m_FrameBuffers.clear();
         m_FrameBufferDescriptions.clear();
-        m_Cubemaps.clear();
+        m_CubeMaps.clear();
 
         if (m_SwapChain) {
             m_SwapChain->Release();
@@ -247,8 +247,8 @@ namespace Syrius{
     }
 
     ResourceView<CubeMap> D3D11Context::createCubeMap(const ResourceView<Syrius::CubeMapLayout> &desc) {
-        m_Cubemaps.emplace_back(new D3D11CubeMap(desc, m_DeviceLimits, m_Device, m_DeviceContext));
-        return createResourceView(m_Cubemaps.back());
+        m_CubeMaps.emplace_back(new D3D11CubeMap(desc, m_DeviceLimits, m_Device, m_DeviceContext));
+        return createResourceView(m_CubeMaps.back());
     }
 
 }

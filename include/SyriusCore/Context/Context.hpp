@@ -266,6 +266,32 @@ namespace Syrius{
 
         [[nodiscard]] uint32 getHeight() const;
 
+        void destroyShaderModule(const ResourceView<ShaderModule>& shaderModule);
+
+        void destroyShader(const ResourceView<Shader>& shader);
+
+        void destroyVertexLayout(const ResourceView<VertexLayout>& vertexLayout);
+
+        void destroyVertexBuffer(const ResourceView<VertexBuffer>& vertexBuffer);
+
+        void destroyIndexBuffer(const ResourceView<IndexBuffer>& indexBuffer);
+
+        void destroyVertexArray(const ResourceView<VertexArray>& vertexArray);
+
+        void destroyConstantBuffer(const ResourceView<ConstantBuffer>& constantBuffer);
+
+        void destroyTexture2D(const ResourceView<Texture2D>& texture2D);
+
+        void destroySampler(const ResourceView<Sampler>& sampler);
+
+        void destroyFrameBufferLayout(const ResourceView<FrameBufferLayout>& frameBufferLayout);
+
+        void destroyFrameBuffer(const ResourceView<FrameBuffer>& frameBuffer);
+
+        void destroyCubeMapLayout(const ResourceView<CubeMapLayout>& cubeMapLayout);
+
+        void destroyCubeMap(const ResourceView<CubeMap>& cubeMap);
+
     protected:
 
         explicit Context(const ContextDesc& desc);
@@ -308,7 +334,7 @@ namespace Syrius{
         std::vector<Resource<FrameBufferLayout>> m_FrameBufferDescriptions;
         std::vector<Resource<FrameBuffer>> m_FrameBuffers; // framebuffer at location 0 is the default framebuffer
         std::vector<Resource<CubeMapLayout>> m_CubeMapLayouts;
-        std::vector<Resource<CubeMap>> m_Cubemaps;
+        std::vector<Resource<CubeMap>> m_CubeMaps;
 
 
     private:
