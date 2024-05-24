@@ -17,6 +17,7 @@
 #include "FrameBuffer.hpp"
 #include "ColorAttachment.hpp"
 #include "DepthStencilAttachment.hpp"
+#include "CubeMapLayout.hpp"
 #include "CubeMap.hpp"
 
 namespace Syrius{
@@ -180,6 +181,17 @@ namespace Syrius{
          */
         virtual ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferLayout>& desc) = 0;
 
+        /**
+         * @brief: Creates a new CubeMap layout object. The CubeMap layout object is used to describe the layout of a
+         *         cubeMap texture by adding various faces to it. The faces can be added using the addFace function or can be
+         *         loaded from files using the addFaceFromFile function.
+         * @param width the width of each face of the cubemap
+         * @param height the height of each face of the cubemap
+         * @param format the format of the cubemap
+         * @return a resource view to the created CubeMapLayout object
+         */
+        ResourceView<CubeMapLayout> createCubeMapLayout(uint32 width, uint32 height, SR_TEXTURE_FORMAT format);
+
         virtual ResourceView<CubeMap> createCubemap(const CubemapDesc& desc) = 0;
 
         virtual ResourceView<CubeMap> createCubemap(const CubemapImageDesc& desc) = 0;
@@ -291,6 +303,7 @@ namespace Syrius{
         std::vector<Resource<Sampler>> m_Samplers;
         std::vector<Resource<FrameBufferLayout>> m_FrameBufferDescriptions;
         std::vector<Resource<FrameBuffer>> m_FrameBuffers; // framebuffer at location 0 is the default framebuffer
+        std::vector<Resource<CubeMapLayout>> m_CubeMapLayouts;
         std::vector<Resource<CubeMap>> m_Cubemaps;
 
 

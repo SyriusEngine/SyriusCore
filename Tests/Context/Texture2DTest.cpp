@@ -8,43 +8,6 @@ void Texture2DTest::TearDown() {
     Test::TearDown();
 }
 
-void createRedGreenCheckerboard(std::vector<ubyte>& data, uint32 width){
-    data.resize(width * width * 4);
-    int32 sw = 0;
-    for (size_t i = 0; i < data.size(); i += 4) {
-        if (sw % 2 == 0) {
-            data[i] = 255;
-            data[i + 1] = 0;
-            data[i + 2] = 0;
-            data[i + 3] = 255;
-        } else {
-            data[i] = 0;
-            data[i + 1] = 255;
-            data[i + 2] = 0;
-            data[i + 3] = 255;
-        }
-        sw++;
-    }
-}
-
-void createCheckerboard(std::vector<ubyte>& data, ubyte r, ubyte g, ubyte b){
-    int32 sw = 0;
-    for (size_t i = 0; i < data.size(); i += 4) {
-        if (sw % 2 == 0) {
-            data[i] = 255;
-            data[i + 1] = 0;
-            data[i + 2] = 0;
-            data[i + 3] = 255;
-        } else {
-            data[i] = r;
-            data[i + 1] = g;
-            data[i + 2] = b;
-            data[i + 3] = 255;
-        }
-        sw++;
-    }
-}
-
 TEST_F(Texture2DTest, CreateTexture2D){
     std::vector<ubyte> redGreen;
     uint32 width = 4;

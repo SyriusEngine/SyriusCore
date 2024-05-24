@@ -24,9 +24,7 @@ namespace Syrius{
         }
     }
 
-    CubeMap::~CubeMap() {
-
-    }
+    CubeMap::~CubeMap() = default;
 
     uint32 CubeMap::getWidth() const {
         return m_Width;

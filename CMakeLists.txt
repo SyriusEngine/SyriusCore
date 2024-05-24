@@ -141,7 +141,8 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
     src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlCubemap.cpp
-    src/SyriusCore/Context/OpenGL/GlDeviceLimits.cpp)
+    src/SyriusCore/Context/OpenGL/GlDeviceLimits.cpp
+    src/SyriusCore/Context/CubeMapLayout.cpp)
 
 set(SYRIUSCORE_SRC
     ${SYRIUSCORE_CORE_SRC}
@@ -214,7 +215,8 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
     SyriusCoreApp/Layers/FrameBufferLayer.cpp
     SyriusCoreApp/Layers/PhongLightLayer.cpp
     SyriusCoreApp/Layers/ShaderLayer.cpp
-    SyriusCoreApp/Layers/CubeMapLayer.cpp)
+    SyriusCoreApp/Layers/CubeMapLayer.cpp
+    include/SyriusCore/Context/CubeMapLayout.hpp)
 
 add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
 add_dependencies(SyriusCoreApp SyriusCore)
@@ -246,6 +248,9 @@ set(SR_CORE_TEST_SRC
     Tests/Context/OpenGL/GLUtilsTest.cpp
 
     Tests/Context/D3D11/D3D11UtilsTest.cpp
+    src/SyriusCore/Context/CubeMapLayout.cpp
+    Tests/Context/CubeMapLayoutTest.cpp
+    Tests/Context/CubeMapLayoutTest.hpp
 )
 
 add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)

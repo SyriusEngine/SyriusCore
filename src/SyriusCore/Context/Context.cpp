@@ -6,7 +6,7 @@ namespace Syrius{
     Context::Context(const ContextDesc& desc):
     m_VerticalSync(false),
     m_Type(desc.api){
-        SR_CORE_MESSAGE("Created context with backend: " + getAPIName(m_Type));
+        SR_CORE_MESSAGE("Created context with backend: %s", getAPIName(m_Type).c_str());
     }
 
     Context::~Context() = default;
@@ -29,9 +29,13 @@ namespace Syrius{
     }
 
     ResourceView<FrameBufferLayout> Context::createFrameBufferLayout() {
-        auto ptr = new FrameBufferLayout();
-        m_FrameBufferDescriptions.emplace_back(ptr);
+        m_FrameBufferDescriptions.emplace_back(new FrameBufferLayout());
         return createResourceView(m_FrameBufferDescriptions.back());
+    }
+
+    ResourceView<CubeMapLayout> Context::createCubeMapLayout(uint32 width, uint32 height, SR_TEXTURE_FORMAT format){
+        m_CubeMapLayouts.emplace_back(new CubeMapLayout(width, height, format, m_DeviceLimits));
+        return createResourceView(m_CubeMapLayouts.back());
     }
 
     void Context::onResize(uint32 width, uint32 height) {
