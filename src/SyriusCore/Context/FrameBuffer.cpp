@@ -68,6 +68,4 @@ namespace Syrius{
     void FrameBuffer::setDepthMask(SR_DEPTH_MASK mask) {
         m_DepthStencilAttachment->setDepthMask(mask);
     }
-
-
 }
