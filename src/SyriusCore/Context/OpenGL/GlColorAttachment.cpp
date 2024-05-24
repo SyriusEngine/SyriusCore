@@ -83,8 +83,7 @@ namespace Syrius{
 
     }
 
-    GlDefaultColorAttachment::~GlDefaultColorAttachment() {
-    }
+    GlDefaultColorAttachment::~GlDefaultColorAttachment() = default;
 
     void GlDefaultColorAttachment::bind() {
 

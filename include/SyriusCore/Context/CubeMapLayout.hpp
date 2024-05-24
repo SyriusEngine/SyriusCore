@@ -11,7 +11,7 @@ namespace Syrius{
     public:
         CubeMapLayout() = delete;
 
-        CubeMapLayout(uint32 width, uint32 height, SR_TEXTURE_FORMAT format, const Resource<DeviceLimits>& deviceLimits);
+        CubeMapLayout(uint32 width, uint32 height, SR_TEXTURE_FORMAT format);
 
         ~CubeMapLayout();
 
@@ -30,8 +30,6 @@ namespace Syrius{
         [[nodiscard]] const std::array<Resource<Image>, 6>& getFaces() const;
 
     protected:
-        const Resource<DeviceLimits>& m_DeviceLimits;
-
         const uint32 m_Width;
         const uint32 m_Height;
         const SR_TEXTURE_FORMAT m_Format;

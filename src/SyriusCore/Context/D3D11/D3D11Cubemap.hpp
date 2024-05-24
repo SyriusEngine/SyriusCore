@@ -7,23 +7,17 @@
 
 namespace Syrius{
 
-    class D3D11Cubemap : public CubeMap{
+    class D3D11CubeMap : public CubeMap{
     public:
-        D3D11Cubemap(const CubemapDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11CubeMap(const ResourceView<CubeMapLayout>& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
-        D3D11Cubemap(const CubemapImageDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
-
-        ~D3D11Cubemap() override;
+        ~D3D11CubeMap() override;
 
         void bind() override;
 
         void bindShaderResource(uint32 slot) override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
-
-    private:
-
-        void createResources(const void* faces[6] );
 
     private:
         ID3D11Device* m_Device;

@@ -192,9 +192,13 @@ namespace Syrius{
          */
         ResourceView<CubeMapLayout> createCubeMapLayout(uint32 width, uint32 height, SR_TEXTURE_FORMAT format);
 
-        virtual ResourceView<CubeMap> createCubemap(const CubemapDesc& desc) = 0;
-
-        virtual ResourceView<CubeMap> createCubemap(const CubemapImageDesc& desc) = 0;
+        /**
+         * @brief: Creates a new CubeMap object. A CubeMap is a collection of 6 textures that are used to create a cube,
+         *         essentially a 3D texture of 6 individual 2D textures.
+         * @param desc a CubeMapLayout object that describes the layout of the cubemap
+         * @return a resource view to the created CubeMap object
+         */
+        virtual ResourceView<CubeMap> createCubeMap(const ResourceView<CubeMapLayout>& desc) = 0;
 
         void onResize(uint32 width, uint32 height);
 

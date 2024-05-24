@@ -31,32 +31,27 @@ namespace Syrius{
     }
 
     ResourceView<ShaderModule> GlContext::createShaderModule(const ShaderModuleDesc &desc) {
-        auto ptr = new GlShaderModule(desc);
-        m_ShaderModules.emplace_back(ptr);
+        m_ShaderModules.emplace_back(new GlShaderModule(desc));
         return createResourceView(m_ShaderModules.back());
     }
 
     ResourceView<ShaderModule> GlContext::createShaderModule(const ShaderModuleFileDesc &desc) {
-        auto ptr = new GlShaderModule(desc);
-        m_ShaderModules.emplace_back(ptr);
+        m_ShaderModules.emplace_back(new GlShaderModule(desc));
         return createResourceView(m_ShaderModules.back());
     }
 
     ResourceView<Shader> GlContext::createShader(const ShaderDesc &desc) {
-        auto ptr = new GlShader(desc);
-        m_Shaders.emplace_back(ptr);
+        m_Shaders.emplace_back(new GlShader(desc));
         return createResourceView(m_Shaders.back());
     }
 
     ResourceView<VertexBuffer> GlContext::createVertexBuffer(const VertexBufferDesc &desc) {
-        auto ptr = new GlVertexBuffer(desc, m_DeviceLimits);
-        m_VertexBuffers.emplace_back(ptr);
+        m_VertexBuffers.emplace_back(new GlVertexBuffer(desc, m_DeviceLimits));
         return createResourceView(m_VertexBuffers.back());
     }
 
     ResourceView<IndexBuffer> GlContext::createIndexBuffer(const IndexBufferDesc &desc) {
-        auto ptr = new GlIndexBuffer(desc, m_DeviceLimits);
-        m_IndexBuffers.emplace_back(ptr);
+        m_IndexBuffers.emplace_back(new GlIndexBuffer(desc, m_DeviceLimits));
         return createResourceView(m_IndexBuffers.back());
     }
 
@@ -73,45 +68,32 @@ namespace Syrius{
     }
 
     ResourceView<ConstantBuffer> GlContext::createConstantBuffer(const ConstantBufferDesc &desc) {
-        auto ptr = new GlConstantBuffer(desc, m_DeviceLimits);
-        m_ConstantBuffers.emplace_back(ptr);
+        m_ConstantBuffers.emplace_back(new GlConstantBuffer(desc, m_DeviceLimits));
         return createResourceView(m_ConstantBuffers.back());
     }
 
     ResourceView<Texture2D> GlContext::createTexture2D(const Texture2DDesc& desc) {
-        auto ptr = new GlTexture2D(desc, m_DeviceLimits);
-        m_Textures2D.emplace_back(ptr);
-
+        m_Textures2D.emplace_back(new GlTexture2D(desc, m_DeviceLimits));
         return createResourceView(m_Textures2D.back());
     }
 
     ResourceView<Texture2D> GlContext::createTexture2D(const Texture2DImageDesc &desc) {
-        auto ptr = new GlTexture2D(desc, m_DeviceLimits);
-        m_Textures2D.emplace_back(ptr);
+        m_Textures2D.emplace_back(new GlTexture2D(desc, m_DeviceLimits));
         return createResourceView(m_Textures2D.back());
     }
 
     ResourceView<Sampler> GlContext::createSampler(const SamplerDesc &desc) {
-        auto ptr = new GlSampler(desc);
-        m_Samplers.emplace_back(ptr);
+        m_Samplers.emplace_back(new GlSampler(desc));
         return createResourceView(m_Samplers.back());
     }
 
     ResourceView<FrameBuffer> GlContext::createFrameBuffer(const ResourceView<FrameBufferLayout> &desc) {
-        auto ptr = new GlFrameBuffer(desc, m_DeviceLimits);
-        m_FrameBuffers.emplace_back(ptr);
+        m_FrameBuffers.emplace_back(new GlFrameBuffer(desc, m_DeviceLimits));
         return createResourceView(m_FrameBuffers.back());
     }
 
-    ResourceView<CubeMap> GlContext::createCubemap(const CubemapDesc &desc) {
-        auto ptr = new GlCubemap(desc, m_DeviceLimits);
-        m_Cubemaps.emplace_back(ptr);
-        return createResourceView(m_Cubemaps.back());
-    }
-
-    ResourceView<CubeMap> GlContext::createCubemap(const CubemapImageDesc &desc) {
-        auto ptr = new GlCubemap(desc, m_DeviceLimits);
-        m_Cubemaps.emplace_back(ptr);
+    ResourceView<CubeMap> GlContext::createCubeMap(const ResourceView<Syrius::CubeMapLayout> &desc) {
+        m_Cubemaps.emplace_back(new GlCubeMap(desc, m_DeviceLimits));
         return createResourceView(m_Cubemaps.back());
     }
 

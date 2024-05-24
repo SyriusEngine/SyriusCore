@@ -1,68 +1,15 @@
-#include "D3D11Cubemap.hpp"
+#include "D3D11CubeMap.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 
 namespace Syrius{
 
-    D3D11Cubemap::D3D11Cubemap(const CubemapDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
-            CubeMap(desc, deviceLimits),
-            m_Device(device),
-            m_Context(context),
-            m_Texture(nullptr),
-            m_TextureView(nullptr){
-        const void* faces[6] = {
-                desc.faces[0],
-                desc.faces[1],
-                desc.faces[2],
-                desc.faces[3],
-                desc.faces[4],
-                desc.faces[5]
-        };
-        createResources(faces);
-    }
-
-    D3D11Cubemap::D3D11Cubemap(const CubemapImageDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
-            CubeMap(desc, deviceLimits),
-            m_Device(device),
-            m_Context(context),
-            m_Texture(nullptr),
-            m_TextureView(nullptr){
-        const void* faces[6] = {
-                desc.faces[0]->getData(),
-                desc.faces[1]->getData(),
-                desc.faces[2]->getData(),
-                desc.faces[3]->getData(),
-                desc.faces[4]->getData(),
-                desc.faces[5]->getData()
-        };
-
-        createResources(faces);
-    }
-
-    D3D11Cubemap::~D3D11Cubemap() {
-        if (m_TextureView) {
-            m_TextureView->Release();
-        }
-        if (m_Texture) {
-            m_Texture->Release();
-        }
-    }
-
-    void D3D11Cubemap::bind() {
-        // D3D11 doesn't have a bind function
-    }
-
-    void D3D11Cubemap::bindShaderResource(uint32 slot) {
-        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
-
-        m_Context->PSSetShaderResources(slot, 1, &m_TextureView);
-    }
-
-    uint64 D3D11Cubemap::getIdentifier() const {
-        return reinterpret_cast<uint64>(m_Texture);
-    }
-
-    void D3D11Cubemap::createResources(const void* faces[6]) {
+    D3D11CubeMap::D3D11CubeMap(const ResourceView<CubeMapLayout>& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
+    CubeMap(desc, deviceLimits),
+    m_Device(device),
+    m_Context(context),
+    m_Texture(nullptr),
+    m_TextureView(nullptr){
         D3D11_TEXTURE2D_DESC textureDesc;
         textureDesc.Width = m_Width;
         textureDesc.Height = m_Height;
@@ -77,9 +24,10 @@ namespace Syrius{
         textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
 
         uint32 typeSize = getTypeSize(getTextureDataType(m_Format)) * getTextureChannelCount(m_Format);
+        auto& faces = desc->getFaces();
         D3D11_SUBRESOURCE_DATA subresources[6];
         for (uint32 i = 0; i < 6; ++i) {
-            subresources[i].pSysMem = faces[i];
+            subresources[i].pSysMem = faces[i]->getData();
             subresources[i].SysMemPitch = m_Width * typeSize;
             subresources[i].SysMemSlicePitch = 0;
         }
@@ -93,6 +41,30 @@ namespace Syrius{
         viewDesc.TextureCube.MostDetailedMip = 0;
 
         SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_Texture, &viewDesc, &m_TextureView));
+    }
+
+
+    D3D11CubeMap::~D3D11CubeMap() {
+        if (m_TextureView) {
+            m_TextureView->Release();
+        }
+        if (m_Texture) {
+            m_Texture->Release();
+        }
+    }
+
+    void D3D11CubeMap::bind() {
+        // D3D11 doesn't have a bind function
+    }
+
+    void D3D11CubeMap::bindShaderResource(uint32 slot) {
+        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
+
+        m_Context->PSSetShaderResources(slot, 1, &m_TextureView);
+    }
+
+    uint64 D3D11CubeMap::getIdentifier() const {
+        return reinterpret_cast<uint64>(m_Texture);
     }
 }
 

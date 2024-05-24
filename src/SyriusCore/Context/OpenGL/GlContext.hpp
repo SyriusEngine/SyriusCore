@@ -53,9 +53,7 @@ namespace Syrius{
 
         ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferLayout>& desc) override;
 
-        ResourceView<CubeMap> createCubemap(const CubemapDesc& desc) override;
-
-        ResourceView<CubeMap> createCubemap(const CubemapImageDesc& desc) override;
+        ResourceView<CubeMap> createCubeMap(const ResourceView<CubeMapLayout>& desc) override;
 
     protected:
         explicit GlContext(const ContextDesc& desc);

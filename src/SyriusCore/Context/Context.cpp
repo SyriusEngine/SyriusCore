@@ -34,7 +34,7 @@ namespace Syrius{
     }
 
     ResourceView<CubeMapLayout> Context::createCubeMapLayout(uint32 width, uint32 height, SR_TEXTURE_FORMAT format){
-        m_CubeMapLayouts.emplace_back(new CubeMapLayout(width, height, format, m_DeviceLimits));
+        m_CubeMapLayouts.emplace_back(new CubeMapLayout(width, height, format));
         return createResourceView(m_CubeMapLayouts.back());
     }
 

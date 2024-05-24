@@ -5,13 +5,11 @@
 
 namespace Syrius{
 
-    class GlCubemap : public CubeMap{
+    class GlCubeMap : public CubeMap{
     public:
-        GlCubemap(const CubemapDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        GlCubeMap(const ResourceView<CubeMapLayout>& desc, const Resource<DeviceLimits>& deviceLimits);
 
-        GlCubemap(const CubemapImageDesc& desc, const Resource<DeviceLimits>& deviceLimits);
-
-        ~GlCubemap() override;
+        ~GlCubeMap() override;
 
         void bind() override;
 
@@ -22,10 +20,6 @@ namespace Syrius{
     private:
 
         static bool checkFormatSupported(GLint toCheck);
-
-        void determineFormats();
-
-        void createCubemap(const void* faces[6]);
 
     private:
         uint32 m_TextureID;

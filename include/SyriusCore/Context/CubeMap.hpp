@@ -1,29 +1,14 @@
 #pragma once
 
-#include "../Image/Image.hpp"
-#include "../Utils/Resource.hpp"
-#include "Utils.hpp"
-#include "DeviceLimits.hpp"
+#include "CubeMapLayout.hpp"
 
 namespace Syrius{
 
-    struct SR_CORE_API CubemapDesc{
-        uint32 width          = 0;
-        uint32 height         = 0;
-        SR_TEXTURE_FORMAT format = SR_TEXTURE_RGBA_UI8;
-                                        // right,   left,    top,     bottom,  front,   back
-        const void* faces[6]            = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
-    };
-
-    struct SR_CORE_API CubemapImageDesc{
-        ResourceView<Image> faces[6];
-    };
-
     class SR_CORE_API CubeMap{
     public:
-        CubeMap(const CubemapDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        CubeMap() = delete;
 
-        CubeMap(const CubemapImageDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        CubeMap(const ResourceView<CubeMapLayout>& desc, const Resource<DeviceLimits>& deviceLimits);
 
         virtual ~CubeMap();
 

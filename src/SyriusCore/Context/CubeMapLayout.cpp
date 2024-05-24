@@ -3,8 +3,7 @@
 
 namespace Syrius{
 
-    CubeMapLayout::CubeMapLayout(uint32 width, uint32 height, SR_TEXTURE_FORMAT format, const Resource<DeviceLimits> &deviceLimits):
-    m_DeviceLimits(deviceLimits),
+    CubeMapLayout::CubeMapLayout(uint32 width, uint32 height, SR_TEXTURE_FORMAT format):
     m_Width(width),
     m_Height(height),
     m_Format(format),
