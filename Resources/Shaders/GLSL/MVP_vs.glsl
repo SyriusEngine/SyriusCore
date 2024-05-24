@@ -1,6 +1,6 @@
 #version 420
 
-layout(location = 0) in vec3 position;
+layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 lColor;
 layout (location = 2) in vec3 lNormal;
 layout (location = 3) in vec3 lTangent;

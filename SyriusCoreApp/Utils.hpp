@@ -47,6 +47,8 @@ Mesh createSphere(uint32 rings, uint32 sectors);
 
 Mesh createCube();
 
+Mesh createBigCube();
+
 void printEventInfo(const Event& event);
 
 void printContextInfo(const ResourceView<Context>& context);

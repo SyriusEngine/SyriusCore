@@ -35,7 +35,23 @@ namespace Syrius{
 
     void CubeMapLayout::addFaceFromFile(SR_CUBEMAP_FACE faceID, const ImageFileDesc &desc) {
         auto image = createImage(desc);
+        if (image->getFormat() == SR_TEXTURE_RGB_UI8){
+            SR_CORE_WARNING("[CubeMapLayout]: Image format is RGB, extending to RGBA to avoid issues on some GPUs!");
+            image->extendAlpha(); // GPUs dont like 3 channel images (D3D11 in particular)
+        }
         addFace(faceID, image);
+    }
+
+    void CubeMapLayout::addFaceFromFile(SR_CUBEMAP_FACE faceID, const std::string &file) {
+        if (!std::filesystem::exists(file)){
+            SR_CORE_WARNING("[CubeMapLayout]: File %s does not exist! Face %i will not be filled", file.c_str(), faceID);
+            return;
+        }
+
+        ImageFileDesc desc;
+        desc.flipOnAccess = false;
+        desc.fileName = file;
+        addFaceFromFile(faceID, desc);
     }
 
     uint32 CubeMapLayout::getWidth() const {

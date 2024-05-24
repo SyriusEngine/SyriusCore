@@ -20,10 +20,8 @@ private:
     ShaderProgram m_ShaderProgram;
 
     ResourceView<ConstantBuffer> m_TransformBuffer;
-    ResourceView<ConstantBuffer> m_TextureParametersBuffer;
-    ResourceView<Texture2D> m_Texture1;
-    ResourceView<Texture2D> m_Texture2;
     ResourceView<Sampler> m_Sampler;
+    ResourceView<CubeMap> m_CubeMap;
 
     Camera m_Camera;
     Projection m_Projection;

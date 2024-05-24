@@ -1,6 +1,6 @@
 struct FSin{
     float4 position: SV_Position;
-    float3 texCoord: Texcoord;
+    float3 texCoord: TexCoord;
 };
 
 struct FSout{
@@ -10,10 +10,6 @@ struct FSout{
 TextureCube cm: register(t0);
 
 SamplerState splr: register(s0);
-
-cbuffer LerpData: register(b4){
-    float4 lerpFactor;
-};
 
 FSout main(FSin input){
     FSout output;
