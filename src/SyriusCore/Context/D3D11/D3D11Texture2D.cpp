@@ -121,7 +121,7 @@ namespace Syrius{
         auto channelCount = getTextureChannelCount(m_Format);
 
         if (channelCount == 3){
-            SR_CORE_EXCEPTION("Supplied texture format has 3 channels which is not supported by D3D11");
+            SR_CORE_WARNING("Supplied texture format has 3 channels which can behave weird D3D11");
         }
 
         if (data == nullptr){
