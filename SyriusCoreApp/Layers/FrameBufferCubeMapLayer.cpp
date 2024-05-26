@@ -22,7 +22,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
 
     ImageFileDesc img1Desc;
     // img1Desc.fileName = "./Resources/Textures/HDR/photo_studio_loft_hall_2k.hdr";
-    img1Desc.fileName = "./Resources/Textures/HDR/citrus_orchard_road_1k.hdr";
+    img1Desc.fileName = "./Resources/Textures/awesomeface.png";
     img1Desc.flipOnAccess = true;
     auto img1 = createImage(img1Desc);
 
