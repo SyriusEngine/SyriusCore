@@ -34,6 +34,15 @@ namespace Syrius{
             return *this;
         }
 
+        /**
+         * @brief Construct a new Resource View object that holds a pointer to a base class of the actual resource
+         * @tparam U
+         * @param resource
+         */
+        template<typename U>
+        explicit ResourceView(const Resource<U>& resource, typename std::enable_if<std::is_base_of<T, U>::value>::type* = nullptr):
+        m_ResourcePtr(resource.get()){}
+
         ~ResourceView(){
             /*
              * We do not want to delete the resource here because it is managed by the Resource class
@@ -161,11 +170,6 @@ namespace Syrius{
     template<typename T, typename... Args>
     inline Resource<T> createResource(Args&&... args){
         return std::make_unique<T>(args...);
-    }
-
-    template<typename T>
-    inline ResourceView<T> createResourceView(Resource<T>& resource){
-        return ResourceView<T>(resource);
     }
 
     template<typename T>
