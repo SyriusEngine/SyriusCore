@@ -102,7 +102,7 @@ namespace Syrius{
         D3D11_TEXTURE2D_DESC textureDesc = { 0 };
         textureDesc.Width = m_Width;
         textureDesc.Height = m_Height;
-        textureDesc.MipLevels = 0; // 0 means all levels
+        textureDesc.MipLevels = 1;
         textureDesc.ArraySize = 1;
         textureDesc.Format = getD3d11TextureFormat(m_Format);
         textureDesc.SampleDesc.Quality = 0;
@@ -142,10 +142,6 @@ namespace Syrius{
         textureViewDesc.Texture2D.MostDetailedMip = 0;
 
         SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_Texture, &textureViewDesc, &m_TextureView));
-
-        if (m_TextureView != nullptr){
-            m_Context->GenerateMips(m_TextureView);
-        }
     }
 }
 
