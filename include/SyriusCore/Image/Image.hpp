@@ -14,7 +14,7 @@ namespace Syrius{
 
         virtual void extendAlpha() = 0;
 
-        [[nodiscard]] virtual const void* getData() const = 0;
+        [[nodiscard]] virtual void* getData() = 0;
 
         [[nodiscard]] uint32 getWidth() const;
 

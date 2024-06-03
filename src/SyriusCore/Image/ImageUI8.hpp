@@ -19,7 +19,7 @@ namespace Syrius{
 
         void extendAlpha() override;
 
-        [[nodiscard]] const void* getData() const override;
+        [[nodiscard]] void* getData() override;
 
     private:
         std::vector<ubyte> m_Data;
