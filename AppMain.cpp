@@ -50,9 +50,31 @@ glm::vec3 transformNormal(glm::vec3 normal){
 }
 
 void test(){
-    glm::vec3 normal = glm::vec3(-1.0f, -1.0f, -1.0f);
-    glm::vec3 t = transformNormal(normal);
-    printf("Normal: %f %f %f\n", t.x, t.y, t.z);
+    std::vector<uint8> pixelData(512 * 512 * 4);
+    bool flip = false;
+    for (int i = 0; i < 512 * 512 * 4; i += 4) {
+        if (flip){
+            pixelData[i] = 255;
+            pixelData[i + 1] = 255;
+            pixelData[i + 2] = 255;
+            pixelData[i + 3] = 255;
+            flip = !flip;
+        } else{
+            pixelData[i] = 0;
+            pixelData[i + 1] = 0;
+            pixelData[i + 2] = 0;
+            pixelData[i + 3] = 255;
+            flip = !flip;
+        }
+    }
+
+    ImageUI8Desc desc;
+    desc.width = 512;
+    desc.height = 512;
+    desc.format = SR_TEXTURE_RGBA_UI8;
+    desc.data = pixelData.data();
+    auto img = createImage(desc);
+    img->writeToFile({"./Resources/Textures/Checkerboard.png"});
 
 }
 

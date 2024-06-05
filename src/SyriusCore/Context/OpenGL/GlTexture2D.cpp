@@ -87,6 +87,7 @@ namespace Syrius{
         if (data != nullptr){
             glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlFormat, m_GlDataType, data);
         }
+        glGenerateTextureMipmap(m_TextureID);
 
         if (m_Usage != SR_BUFFER_USAGE_STATIC){
             glCreateBuffers(1, &m_PixelUnpackBuffer);

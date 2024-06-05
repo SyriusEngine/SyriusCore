@@ -210,8 +210,8 @@ namespace Syrius{
 
     GLint getGlTextureFilter(SR_TEXTURE_FILTER filter){
         switch (filter) {
-            case SR_TEXTURE_FILTER_LINEAR:  return GL_LINEAR;
-            case SR_TEXTURE_FILTER_POINT:   return GL_NEAREST;
+            case SR_TEXTURE_FILTER_LINEAR:  return GL_LINEAR_MIPMAP_LINEAR;
+            case SR_TEXTURE_FILTER_POINT:   return GL_NEAREST_MIPMAP_NEAREST;
             default: {
                 SR_CORE_WARNING("[GLUtils]: Invalid texture filter (%i) given to converter, defaulting to GL_LINEAR", filter);
                 return GL_LINEAR;

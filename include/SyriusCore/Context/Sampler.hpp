@@ -13,7 +13,7 @@ namespace Syrius{
         SR_COMPARISON_FUNC comparisonFunc = SR_COMPARISON_FUNC_NEVER;
         float borderColor[4] = {0.0f, 0.0f, 0.0f, 0.0f };
         float minLOD = 0.0f;
-        float maxLOD = 0.0f;
+        float maxLOD = FLT_MAX;
         float LODBias = 0.0f;
     };
 

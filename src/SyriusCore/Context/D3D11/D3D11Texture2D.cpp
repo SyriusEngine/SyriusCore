@@ -98,24 +98,23 @@ namespace Syrius{
     }
 
     void D3D11Texture2D::createResources(const void *data) {
-
         D3D11_TEXTURE2D_DESC textureDesc = { 0 };
         textureDesc.Width = m_Width;
         textureDesc.Height = m_Height;
-        textureDesc.MipLevels = 1;
+        textureDesc.MipLevels = 0; // Enable auto mipmap generation
         textureDesc.ArraySize = 1;
         textureDesc.Format = getD3d11TextureFormat(m_Format);
         textureDesc.SampleDesc.Quality = 0;
         textureDesc.SampleDesc.Count = 1;
-        textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+        textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
         textureDesc.Usage = getD3d11BufferType(m_Usage);
-        if (m_Usage == SR_BUFFER_USAGE_STATIC){
-            textureDesc.CPUAccessFlags = 0;
-        }
-        else{
+        if (m_Usage != SR_BUFFER_USAGE_STATIC){
             textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
         }
-        textureDesc.MiscFlags = 0;
+        else{
+            textureDesc.CPUAccessFlags = 0;
+        }
+        textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
         auto dataType = getTextureDataType(m_Format);
         auto channelCount = getTextureChannelCount(m_Format);
@@ -124,15 +123,18 @@ namespace Syrius{
             SR_CORE_WARNING("Supplied texture format has 3 channels which can behave weird D3D11");
         }
 
-        if (data == nullptr){
-            SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_Texture));
-        }
-        else{
-            D3D11_SUBRESOURCE_DATA subresourceData = { 0 };
-            subresourceData.SysMemPitch = m_Width * (getTypeSize(dataType) * channelCount);
-            subresourceData.pSysMem = data;
+        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_Texture));
 
-            SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, &subresourceData, &m_Texture));
+        if (data != nullptr){
+            auto memPitch = m_Width * (getTypeSize(dataType) * channelCount);
+            /*
+             * When enabling MIPmapping in D3D11, the initial data for the texture should be the texture itself
+             * and all other mip levels. But we want the GPU to generate them for us. The CreateTexture2D function
+             * takes in a pointer to a D3D11_SUBRESOURCE_DATA structure which can be used to specify the initial data
+             * but when specifying mip levels, the initial data is an array. Thus supply the first mip level and let
+             * the GPU generate the rest. This can be done by UpdateSubresource function.
+             */
+            m_Context->UpdateSubresource(m_Texture, 0, nullptr, data, memPitch, 0);
         }
 
         D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc = {  };
@@ -142,6 +144,8 @@ namespace Syrius{
         textureViewDesc.Texture2D.MostDetailedMip = 0;
 
         SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_Texture, &textureViewDesc, &m_TextureView));
+
+        m_Context->GenerateMips(m_TextureView);
     }
 }
 
