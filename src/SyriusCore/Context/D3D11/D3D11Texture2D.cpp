@@ -61,6 +61,7 @@ namespace Syrius{
         box.back = 1;
 
         m_Context->UpdateSubresource(m_Texture, 0, &box, data, width * bytesPerPixel, 0);
+        m_Context->GenerateMips(m_TextureView);
     }
 
     Resource<Image> D3D11Texture2D::getData() {
