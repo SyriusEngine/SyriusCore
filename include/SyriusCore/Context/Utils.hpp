@@ -25,11 +25,17 @@ typedef enum SR_SHADER_LANGUAGE_TYPE {
 
 // buffer access types
 typedef enum SR_BUFFER_USAGE {
-    SR_BUFFER_USAGE_DEFAULT       = 0x01,
-    SR_BUFFER_USAGE_DYNAMIC       = 0x02,
-    SR_BUFFER_USAGE_STATIC        = 0x03
-
+    SR_BUFFER_USAGE_DEFAULT       = 0x00,   // GPU read/write
+    SR_BUFFER_USAGE_DYNAMIC       = 0x01,   // CPU write, GPU read
+    SR_BUFFER_USAGE_STATIC        = 0x02,   // GPU read, CPU write only when initializing
+    SR_BUFFER_USAGE_COPY          = 0x03    // GPU read/write, CPU read/write
 } SR_BUFFER_USAGE;
+
+typedef enum SR_BUFFER_MAP{
+    SR_BUFFER_MAP_READ            = 0x00,
+    SR_BUFFER_MAP_WRITE           = 0x01,
+    SR_BUFFER_MAP_READ_WRITE      = 0x02
+} SR_BUFFER_MAP;
 
 // drawing modes
 typedef enum SR_DRAW_MODE {

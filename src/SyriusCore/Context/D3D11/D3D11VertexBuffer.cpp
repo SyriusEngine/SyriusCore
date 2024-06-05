@@ -48,8 +48,8 @@ namespace Syrius{
     }
 
     void D3D11VertexBuffer::setData(const void *data, uint32 count){
-        SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[VertexBuffer]: Update on buffer object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
-        SR_CORE_PRECONDITION(count * m_Layout->getStride() <= m_Size, "[VertexBuffer]: Update on buffer object (%p) requested, which exceeds the current buffer size (%i > %i).", this, count * m_Layout->getStride(), m_Size);
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11VertexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
+        SR_CORE_PRECONDITION(count * m_Layout->getStride() <= m_Size, "[D3D11VertexBuffer]: Update on buffer object (%p) requested, which exceeds the current buffer size (%i > %i).", this, count * m_Layout->getStride(), m_Size);
 
         uint32 copySize = count * m_Layout->getStride();
         m_Count = count;
@@ -64,6 +64,8 @@ namespace Syrius{
     }
 
     Resource<ubyte[]> D3D11VertexBuffer::getData() const {
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D311VertexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
+
         auto data = createResource<ubyte[]>(m_Size);;
 
         /*

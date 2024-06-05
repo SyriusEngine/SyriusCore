@@ -7,6 +7,7 @@ namespace Syrius{
             case SR_BUFFER_USAGE_DEFAULT: return GL_DYNAMIC_DRAW;
             case SR_BUFFER_USAGE_DYNAMIC: return GL_DYNAMIC_DRAW;
             case SR_BUFFER_USAGE_STATIC:  return GL_STATIC_DRAW;
+            case SR_BUFFER_USAGE_COPY:    return GL_STREAM_COPY;
             default: {
                 SR_CORE_WARNING("[GLUtils]: Invalid usage (%i) given to converter, return default: GL_DYNAMIC_DRAW", type);
                 return GL_STATIC_DRAW;

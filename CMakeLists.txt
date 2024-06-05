@@ -22,7 +22,7 @@ if (WIN32)
         src/SyriusCore/Window/SyriusWindowWin32Impl.cpp
         src/SyriusCore/Window/Win32Utils.cpp)
 
-    set(SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC
+    set(SYRIUSCORE_PLATFORM_CONTEXT_SRC
         src/SyriusCore/Context/OpenGL/Internal/WglContext.cpp
 
         src/SyriusCore/Context/D3D11/D3D11Context.cpp
@@ -53,7 +53,7 @@ elseif(UNIX)
         src/SyriusCore/Window/SyriusWindowX11Impl.cpp
         src/SyriusCore/Window/X11Utils.cpp)
 
-    set(SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC
+    set(SYRIUSCORE_PLATFORM_CONTEXT_SRC
         src/SyriusCore/Context/OpenGL/Internal/GlxContext.cpp
         )
 
@@ -104,8 +104,8 @@ set(SYRIUSCORE_WINDOW_SRC
     src/SyriusCore/Window/Event/KeyboardEvent.cpp
     src/SyriusCore/Window/SyriusWindow.cpp)
 
-set(SYRIUSCORE_GRAPHICS_API_SRC
-    ${SYRIUSCORE_PLATFORM_GRAPHICS_API_SRC}
+set(SYRIUSCORE_CONTEXT_SRC
+    ${SYRIUSCORE_PLATFORM_CONTEXT_SRC}
     ${SYRIUSCORE_IMAGE_SRC}
 
     src/SyriusCore/Context/Context.cpp
@@ -147,7 +147,7 @@ set(SYRIUSCORE_GRAPHICS_API_SRC
 set(SYRIUSCORE_SRC
     ${SYRIUSCORE_CORE_SRC}
     ${SYRIUSCORE_WINDOW_SRC}
-    ${SYRIUSCORE_GRAPHICS_API_SRC}
+    ${SYRIUSCORE_CONTEXT_SRC}
     src/SyriusCore/SyriusCore.cpp)
 
 add_library(SyriusCore SHARED ${SYRIUSCORE_SRC})

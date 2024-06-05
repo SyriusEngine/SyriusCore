@@ -86,5 +86,12 @@ TEST_F(ShaderModuleTest, CreateShaderInvalidFile){
         FAIL() << "Unsupported API";
     }
 
-    EXPECT_DEATH(auto vsm = TestEnvironment::m_Context->createShaderModule(desc), "");
+    bool exceptionThrown = false;
+    try{
+        auto vsm = TestEnvironment::m_Context->createShaderModule(desc);
+    }
+    catch (const std::exception& e){
+        exceptionThrown = true;
+    }
+    EXPECT_TRUE(exceptionThrown);
 }

@@ -26,7 +26,9 @@ namespace Syrius{
     }
 
     std::string ShaderModule::readFile(const std::string &fileName) {
-        SR_CORE_PRECONDITION(std::filesystem::exists(fileName), "File does not exist: %s", fileName.c_str());
+        if (!std::filesystem::exists(fileName)) {
+            SR_CORE_THROW("[ShaderModule]: File does not exist: %s", fileName.c_str());
+        }
 
         std::string code;
         std::string line;

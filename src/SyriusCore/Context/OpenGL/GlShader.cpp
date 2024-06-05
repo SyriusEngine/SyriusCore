@@ -2,8 +2,8 @@
 
 namespace Syrius{
 
-    GlShader::GlShader(const ShaderDesc& desc)
-    : Shader(desc),
+    GlShader::GlShader(const ShaderDesc& desc):
+    Shader(desc),
     m_ShaderID(0){
         m_ShaderID = glCreateProgram();
 
@@ -16,7 +16,7 @@ namespace Syrius{
         glGetProgramiv(m_ShaderID, GL_LINK_STATUS, &success);
         if (!success) {
             glGetProgramInfoLog(m_ShaderID, 512, nullptr, infoLog);
-            SR_CORE_WARNING("[GlShader]: Failed to link shader program, error: %s", infoLog);
+            SR_CORE_THROW("[GlShader]: Failed to link shader program, error: %s", infoLog);
         }
     }
 

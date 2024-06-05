@@ -20,10 +20,6 @@ namespace Syrius{
         [[nodiscard]] uint64 getIdentifier() const override;
 
     private:
-
-        void createBuffer(const void* data);
-
-    private:
         uint32 m_BufferID;
 
     };

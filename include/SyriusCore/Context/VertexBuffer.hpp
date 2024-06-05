@@ -22,7 +22,7 @@ namespace Syrius{
 
         virtual void bind() = 0;
 
-        virtual void setData(const void* data, uint32 count) = 0;
+        virtual void setData(const void* data, uint32 size) = 0;
 
         [[nodiscard]] virtual Resource<ubyte[]> getData() const = 0;
 

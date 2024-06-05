@@ -5,7 +5,8 @@ namespace Syrius{
     GlVertexBuffer::GlVertexBuffer(const VertexBufferDesc &desc, const Resource<DeviceLimits>& deviceLimits):
     VertexBuffer(desc, deviceLimits),
     m_BufferID(0){
-        createBuffer(desc.data);
+        glCreateBuffers(1, &m_BufferID);
+        glNamedBufferData(m_BufferID, m_Size, desc.data, getGlBufferType(m_Usage));
     }
 
     GlVertexBuffer::~GlVertexBuffer() {
@@ -17,8 +18,8 @@ namespace Syrius{
     }
 
     void GlVertexBuffer::setData(const void *data, uint32 count) {
-        SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[VertexBuffer]: Update on buffer object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
-        SR_CORE_PRECONDITION(count * m_Layout->getStride() <= m_Size, "[VertexBuffer]: Update on buffer object (%p) requested, which exceeds the current buffer size (%i > %i).", this, count * m_Layout->getStride(), m_Size);
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlVertexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
+        SR_CORE_PRECONDITION(count * m_Layout->getStride() <= m_Size, "[GlVertexBuffer]: Update on buffer object (%p) requested, which exceeds the current buffer size (%i > %i).", this, count * m_Layout->getStride(), m_Size);
 
         uint32 copySize = count * m_Layout->getStride();
         m_Count = count;
@@ -30,6 +31,8 @@ namespace Syrius{
     }
 
     Resource<ubyte[]> GlVertexBuffer::getData() const {
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlVertexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
+
         auto data = createResource<ubyte[]>(m_Size);
         auto pBuffer = glMapNamedBuffer(m_BufferID, GL_READ_ONLY);
         if (!pBuffer){
@@ -45,11 +48,5 @@ namespace Syrius{
     uint64 GlVertexBuffer::getIdentifier() const {
         return m_BufferID;
     }
-
-    void GlVertexBuffer::createBuffer(const void *data) {
-        glCreateBuffers(1, &m_BufferID);
-        glNamedBufferData(m_BufferID, m_Size, data, getGlBufferType(m_Usage));
-    }
-
 
 }
