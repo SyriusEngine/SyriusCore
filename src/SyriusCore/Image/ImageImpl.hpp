@@ -16,7 +16,7 @@ namespace Syrius{
 
         void extendAlpha() override;
 
-        [[nodiscard]] const void* getData() const override;
+        [[nodiscard]] void* getData() override;
 
     private:
         void* m_Data;

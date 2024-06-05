@@ -39,12 +39,12 @@ namespace Syrius{
     ImageUI16::ImageUI16(const ImageUI16Desc &desc):
     Image(desc.width, desc.height, desc.format),
     m_Data(desc.width * desc.height * getTextureChannelCount(desc.format)){
-        memcpy(&m_Data[0], desc.data, desc.width * desc.height * getTextureChannelCount(desc.format));
+        if (desc.data != nullptr){
+            memcpy(&m_Data[0], desc.data, desc.width * desc.height * getTextureChannelCount(desc.format));
+        }
     }
 
-    ImageUI16::~ImageUI16() {
-
-    }
+    ImageUI16::~ImageUI16() = default;
 
     void ImageUI16::writeToFile(const ImageFileDesc &writeDesc) const {
 
@@ -78,7 +78,7 @@ namespace Syrius{
         }
     }
 
-    const void *ImageUI16::getData() const {
+    void *ImageUI16::getData() {
         return m_Data.data();
     }
 }

@@ -33,7 +33,7 @@ namespace Syrius{
         printf("Not Implemented\n");
     }
 
-    const void *ImageImpl::getData() const {
+    void *ImageImpl::getData() {
         return m_Data;
     }
 }
