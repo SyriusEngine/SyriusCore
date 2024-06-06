@@ -2,7 +2,7 @@
 
 #include <array>
 #include "Utils.hpp"
-#include "../Image/ImageFactory.hpp"
+#include "../Image/Image.hpp"
 #include "DeviceLimits.hpp"
 
 namespace Syrius{

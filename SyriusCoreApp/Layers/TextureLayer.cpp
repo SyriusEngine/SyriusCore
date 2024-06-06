@@ -26,8 +26,9 @@ TextureLayer::TextureLayer(ResourceView<Context> &context, const Resource<Syrius
     m_TextureParametersBuffer = m_Context->createConstantBuffer(textureParamsDesc);
 
     ImageFileDesc img1Desc;
-    img1Desc.fileName = "./Resources/Textures/Checkerboard.png";
+    img1Desc.fileName = "./Resources/Textures/CheckerboardRGB.png";
     img1Desc.flipOnAccess = true;
+    img1Desc.requestedChannelCount = 4;
     auto img1 = createImage(img1Desc);
     Texture2DImageDesc tex1Desc;
     tex1Desc.usage = SR_BUFFER_USAGE_DEFAULT;

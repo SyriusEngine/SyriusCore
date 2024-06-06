@@ -1,36 +1,49 @@
 #include "../../../include/SyriusCore/Image/Image.hpp"
 
+#include "ImageUI8.hpp"
+#include "ImageUI16.hpp"
+#include "ImageF32.hpp"
+
+#include "../Dependencies/stb_image/stb_image.hpp"
+#include "../Dependencies/stb_image/stb_image_resize.hpp"
+#include "../Dependencies/stb_image/stb_image_write.hpp"
+
+#include "../Utils/DebugMacros.hpp"
+
+#include <filesystem>
+
 namespace Syrius{
 
-    Image::~Image() = default;
+    Resource<Image> createImage(const ImageFileDesc& desc){
+        SR_CORE_ASSERT(std::filesystem::exists(desc.fileName), "File: %s does not exist!", desc.fileName.c_str());
 
-    uint32 Image::getWidth() const {
-        return m_Width;
+        if (stbi_is_hdr(desc.fileName.c_str())){
+            auto img = new ImageF32(desc);
+            return Resource<Image>(img);
+        }
+        else if (stbi_is_16_bit(desc.fileName.c_str())){
+            auto img = new ImageUI16(desc);
+            return Resource<Image>(img);
+        }
+        else{
+            auto img = new ImageUI8(desc);
+            return Resource<Image>(img);
+        }
     }
 
-    uint32 Image::getHeight() const {
-        return m_Height;
+    Resource<Image> createImage(const ImageF32Desc& desc){
+        auto img = new ImageF32(desc);
+        return Resource<Image>(img);
     }
 
-    uint32 Image::getChannelCount() const {
-        return getTextureChannelCount(m_Format);
+    Resource<Image> createImage(const ImageUI16Desc& desc){
+        auto img = new ImageUI16(desc);
+        return Resource<Image>(img);
     }
 
-    SR_TEXTURE_FORMAT Image::getFormat() const {
-        return m_Format;
+    Resource<Image> createImage(const ImageUI8Desc& desc){
+        auto img = new ImageUI8(desc);
+        return Resource<Image>(img);
     }
 
-    Image::Image():
-    m_Width(0),
-    m_Height(0),
-    m_Format(SR_TEXTURE_NONE){
-
-    }
-
-    Image::Image(uint32 width, uint32 height, SR_TEXTURE_FORMAT format):
-    m_Width(width),
-    m_Height(height),
-    m_Format(format){
-
-    }
 }

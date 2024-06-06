@@ -35,9 +35,8 @@ and DirectX 11 are supported.
 
 ## Installation
 ### Requirements
-* A C++17 compiler, such as MSVC 2019 or GCC 9.3.0. (MSVC is currently broken)
-* A CMake build system
-* A CMake version >= 3.16
+* A C++17 compiler, such as MSVC 2019 or GCC 9.3.0.
+* A CMake build system (version 3.16 or higher)
 
 ### Build
 Building the project is handled by CMake. To build the project, run the following commands in the root directory of the
@@ -121,7 +120,7 @@ backbuffer where ImGui has drawn to. The following code shows how to draw a GUI 
 ```cpp
 // Create a context description
 ContextDesc cDesc;
-cDesc.api = Syrius::SR_API_D3D11; // or SR_API_OPENGL
+cDesc.api = SR_API_D3D11; // or SR_API_OPENGL
 // Create the context
 auto context = window->createContext(Syrius::SR_API_D3D11);
 window->createImGuiContext(); // Create the ImGui context (managed internally by the context)

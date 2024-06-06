@@ -5,7 +5,7 @@
 #include "Event/MouseEvent.hpp"
 #include "Event/WindowEvent.hpp"
 
-#include "../Image/ImageFactory.hpp"
+#include "../Image/Image.hpp"
 
 #include "../Context/Context.hpp"
 

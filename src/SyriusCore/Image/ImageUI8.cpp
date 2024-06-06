@@ -14,13 +14,24 @@ namespace Syrius{
     m_Data(){
         stbi_set_flip_vertically_on_load(desc.flipOnAccess);
         int32 channelCount, width, height;
-        ubyte* pData = stbi_load(desc.fileName.c_str(), &width, &height, &channelCount, desc.requestedChannelCount);
+        ubyte* pData = stbi_load(desc.fileName.c_str(), &width, &height, &channelCount, 0);
         if (!pData){
             SR_CORE_WARNING("[ImageUI8]: Image: %s failed to load", desc.fileName.c_str());
             return;
         }
-        m_Data.resize(width * height * channelCount);
-        memcpy(&m_Data[0], pData, width * height * channelCount);
+        if (desc.requestedChannelCount == channelCount or desc.requestedChannelCount == 0){
+            m_Data.resize(width * height * channelCount);
+            memcpy(&m_Data[0], pData, width * height * channelCount);
+        }
+        else{
+            m_Data.resize(width * height * desc.requestedChannelCount);
+            for (uint32 i = 0; i < width * height; i++){
+                for (uint32 j = 0; j < desc.requestedChannelCount; j++){
+                    m_Data[i * desc.requestedChannelCount + j] = pData[i * channelCount + j];
+                }
+            }
+            channelCount = desc.requestedChannelCount;
+        }
         m_Width = width;
         m_Height = height;
         switch (channelCount) {
@@ -45,9 +56,7 @@ namespace Syrius{
         }
     }
 
-    ImageUI8::~ImageUI8() {
-
-    }
+    ImageUI8::~ImageUI8() = default;
 
     void ImageUI8::writeToFile(const ImageFileDesc &desc) const {
         stbi_flip_vertically_on_write(desc.flipOnAccess);
@@ -68,22 +77,9 @@ namespace Syrius{
                 stbi_write_bmp(desc.fileName.c_str(), width, height, channelCount, &m_Data[0]);
                 break;
             }
-            case SR_IMAGE_HDR: {
-                // check file extension
-                std::string extension = desc.fileName.substr(desc.fileName.find_last_of('.') + 1);
-                if (extension != "hdr"){
-                    SR_CORE_WARNING("[ImageUI8]: Image: %s has an invalid extension for HDR image type", desc.fileName.c_str());
-                    return;
-                }
-                // convert data to HDR
-                float* pData = stbi_loadf_from_memory(&m_Data[0], width * height * channelCount, &width, &height, &channelCount, channelCount);
-                if (!pData){
-                    SR_CORE_WARNING("[ImageUI8]: Image: %s failed to convert to HDR", desc.fileName.c_str());
-                    return;
-                }
-                // write to file
-                stbi_write_hdr(desc.fileName.c_str(), width, height, channelCount, pData);
-                stbi_image_free(pData);
+            default: {
+                SR_CORE_WARNING("[ImageUI8]: Image: %s cannot be written to file type: %d", desc.fileName.c_str(), desc.imgType);
+                break;
             }
         }
     }

@@ -4,7 +4,7 @@
 #include "Utils/Message.hpp"
 #include "Utils/PlatformDetection.hpp"
 
-#include "Image/Image.hpp"
+#include "Image/ImageBase.hpp"
 #include "Utils/Resource.hpp"
 
 #include "Window/SyriusWindow.hpp"

@@ -88,11 +88,10 @@ set(SYRIUSCORE_CORE_SRC
         src/SyriusCore/Utils/SyriusCoreInclude.cpp)
 
 set(SYRIUSCORE_IMAGE_SRC
+    src/SyriusCore/Image/ImageBase.cpp
     src/SyriusCore/Image/Image.cpp
-    src/SyriusCore/Image/ImageFactory.cpp
     src/SyriusCore/Image/ImageUI8.cpp
     src/SyriusCore/Image/ImageF32.cpp
-    src/SyriusCore/Image/ImageImpl.cpp
     src/SyriusCore/Image/ImageUI16.cpp
     src/SyriusCore/Image/InternalUtils.cpp)
 
@@ -125,6 +124,7 @@ set(SYRIUSCORE_CONTEXT_SRC
     src/SyriusCore/Context/ColorAttachment.cpp
     src/SyriusCore/Context/DepthStencilAttachment.cpp
     src/SyriusCore/Context/CubeMap.cpp
+    src/SyriusCore/Context/CubeMapLayout.cpp
 
     src/SyriusCore/Context/OpenGL/GlContext.cpp
     src/SyriusCore/Context/OpenGL/GlViewport.cpp
@@ -141,8 +141,7 @@ set(SYRIUSCORE_CONTEXT_SRC
     src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlCubemap.cpp
-    src/SyriusCore/Context/OpenGL/GlDeviceLimits.cpp
-    src/SyriusCore/Context/CubeMapLayout.cpp)
+    src/SyriusCore/Context/OpenGL/GlDeviceLimits.cpp)
 
 set(SYRIUSCORE_SRC
     ${SYRIUSCORE_CORE_SRC}
@@ -253,7 +252,7 @@ set(SR_CORE_TEST_SRC
     src/SyriusCore/Context/CubeMapLayout.cpp
     Tests/Context/CubeMapLayoutTest.cpp
     Tests/Context/CubeMapLayoutTest.hpp
-)
+    Tests/Image/ImageUI8Test.cpp Tests/Image/ImageUI8Test.hpp Tests/Image/ImageF32Test.cpp Tests/Image/ImageF32Test.hpp)
 
 add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)
 

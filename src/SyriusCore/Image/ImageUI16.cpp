@@ -46,7 +46,7 @@ namespace Syrius{
 
     ImageUI16::~ImageUI16() = default;
 
-    void ImageUI16::writeToFile(const ImageFileDesc &writeDesc) const {
+    void ImageUI16::writeToFile(const ImageFileDesc &desc) const {
 
     }
 
