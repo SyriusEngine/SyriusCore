@@ -26,7 +26,7 @@ TextureLayer::TextureLayer(ResourceView<Context> &context, const Resource<Syrius
     m_TextureParametersBuffer = m_Context->createConstantBuffer(textureParamsDesc);
 
     ImageFileDesc img1Desc;
-    img1Desc.fileName = "./Resources/Textures/CheckerboardRGB.png";
+    img1Desc.fileName = "./Resources/Textures/awesomeface.png";
     img1Desc.flipOnAccess = true;
     img1Desc.requestedChannelCount = 4;
     auto img1 = createImage(img1Desc);
@@ -35,14 +35,14 @@ TextureLayer::TextureLayer(ResourceView<Context> &context, const Resource<Syrius
     tex1Desc.image = createResourceView(img1);
     m_Texture1 = m_Context->createTexture2D(tex1Desc);
 
-//    ImageFileDesc img2Desc;
-//    img2Desc.fileName = "./Resources/Textures/insta512.png";
-//    img2Desc.flipOnAccess = true;
-//    auto img2 = createImage(img2Desc);
-//    Texture2DImageDesc tex2Desc;
-//    tex2Desc.image = createResourceView(img2);
-//    tex2Desc.usage = SR_BUFFER_USAGE_DYNAMIC;
-//    m_Texture2 = m_Context->createTexture2D(tex2Desc);
+    ImageFileDesc img2Desc;
+    img2Desc.fileName = "./Resources/Textures/insta512.png";
+    img2Desc.flipOnAccess = true;
+    auto img2 = createImage(img2Desc);
+    Texture2DImageDesc tex2Desc;
+    tex2Desc.image = createResourceView(img2);
+    tex2Desc.usage = SR_BUFFER_USAGE_DEFAULT;
+    m_Texture2 = m_Context->createTexture2D(tex2Desc);
 
     SamplerDesc splrDesc;
     m_Sampler = m_Context->createSampler(splrDesc);
@@ -64,7 +64,7 @@ void TextureLayer::onUpdate() {
 
     m_ShaderProgram.shaderProgram->bind();
     m_Texture1->bindShaderResource(0);
-    //m_Texture2->bindShaderResource(1);
+    m_Texture2->bindShaderResource(1);
     m_Sampler->bindShaderResource(0);
     m_TransformBuffer->bind(0);
     m_TextureParametersBuffer->bind(4);

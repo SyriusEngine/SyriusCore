@@ -11,6 +11,9 @@ namespace Syrius {
     m_ColorBuffer(nullptr),
     m_RenderTargetView(nullptr),
     m_BufferView(nullptr) {
+        if (!m_DeviceLimits->texture2DFormatSupported(desc.format)){
+            SR_CORE_THROW("[D3D11Texture2D]: Supplied texture format (%i) is not supported by the device", desc.format);
+        }
         createResources();
     }
 
@@ -23,7 +26,7 @@ namespace Syrius {
     }
 
     void D3D11ColorAttachment::bindShaderResource(uint32 slot) {
-        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
+        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[D3D11ColorAttachment]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
 
         m_Context->PSSetShaderResources(slot, 1, &m_BufferView);
     }
@@ -193,7 +196,7 @@ namespace Syrius {
             backBuffer->Release();
 
         } else {
-            SR_CORE_EXCEPTION("Failed to get back buffer from swap chain");
+            SR_CORE_THROW("[D3D11ColorAttachment]: Failed to get back buffer from swap chain %p", m_SwapChain);
         }
     }
 }

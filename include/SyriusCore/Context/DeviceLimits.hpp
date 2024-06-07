@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include "Utils.hpp"
 
 namespace Syrius{
@@ -147,6 +148,15 @@ namespace Syrius{
          * @return true if the graphics device supports double buffering, false otherwise
          */
         [[nodiscard]] virtual bool isDoubleBuffered() const = 0;
+
+        /**
+         * @brief Returns whether or not the graphics device supports the specified texture format.
+         * @param format The SR_TEXTURE_FORMAT format to check for support
+         */
+         [[nodiscard]] virtual bool texture2DFormatSupported(SR_TEXTURE_FORMAT format) = 0;
+
+    protected:
+        std::unordered_map<SR_TEXTURE_FORMAT, bool> m_SupportedTexture2DFormats;
 
     };
 

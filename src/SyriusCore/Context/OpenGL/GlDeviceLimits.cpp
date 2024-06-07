@@ -98,4 +98,15 @@ namespace Syrius{
         glGetIntegerv(constant, &retVal);
         return retVal;
     }
+
+    bool GlDeviceLimits::texture2DFormatSupported(SR_TEXTURE_FORMAT format) {
+        if (m_SupportedTexture2DFormats.find(format) != m_SupportedTexture2DFormats.end()){
+            return m_SupportedTexture2DFormats.at(format);
+        }
+        GLint supportedFormat = GL_FALSE;
+        auto glFormat = getGlTextureFormat(format);
+        glGetInternalformativ(GL_TEXTURE_2D, glFormat, GL_INTERNALFORMAT_SUPPORTED, 1, &supportedFormat);
+        m_SupportedTexture2DFormats[format] = supportedFormat == GL_TRUE;
+        return supportedFormat == GL_TRUE;
+    }
 }

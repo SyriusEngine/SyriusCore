@@ -11,45 +11,47 @@ namespace Syrius{
 
         ~GlDeviceLimits() override = default;
 
-        std::string getAPIVersion() const override;
+        [[nodiscard]] std::string getAPIVersion() const override;
 
-        std::string getDeviceName() const override;
+        [[nodiscard]] std::string getDeviceName() const override;
 
-        std::string getDeviceVendor() const override;
+        [[nodiscard]] std::string getDeviceVendor() const override;
 
-        std::string getShadingLanguageVersion() const override;
+        [[nodiscard]] std::string getShadingLanguageVersion() const override;
 
-        uint32 getMaxFramebufferWidth() const override;
+        [[nodiscard]] uint32 getMaxFramebufferWidth() const override;
 
-        uint32 getMaxFramebufferHeight() const override;
+        [[nodiscard]] uint32 getMaxFramebufferHeight() const override;
 
-        uint32 getMaxFramebufferColorAttachments() const override;
+        [[nodiscard]] uint32 getMaxFramebufferColorAttachments() const override;
 
-        uint32 getMaxViewportWidth() const override;
+        [[nodiscard]] uint32 getMaxViewportWidth() const override;
 
-        uint32 getMaxViewportHeight() const override;
+        [[nodiscard]] uint32 getMaxViewportHeight() const override;
 
-        uint32 getMaxTextureSlots() const override;
+        [[nodiscard]] uint32 getMaxTextureSlots() const override;
 
-        uint32 getMaxTextureSize() const override;
+        [[nodiscard]] uint32 getMaxTextureSize() const override;
 
-        uint32 getMaxSSSBOSlots() const override;
+        [[nodiscard]] uint32 getMaxSSSBOSlots() const override;
 
-        uint32 getMaxConstantBufferSize() const override;
+        [[nodiscard]] uint32 getMaxConstantBufferSize() const override;
 
-        uint32 getMaxConstantBufferSlots() const override;
+        [[nodiscard]] uint32 getMaxConstantBufferSlots() const override;
 
-        uint32 getMaxDepthBufferBits() const override;
+        [[nodiscard]] uint32 getMaxDepthBufferBits() const override;
 
-        uint32 getMaxVertexAttributes() const override;
+        [[nodiscard]] uint32 getMaxVertexAttributes() const override;
 
-        uint64 getMaxVertexCount() const override; // maximum number of vertices for a draw call
+        [[nodiscard]] uint64 getMaxVertexCount() const override; // maximum number of vertices for a draw call
 
-        uint64 getMaxIndexCount() const override; // maximum number of indices for a draw call
+        [[nodiscard]] uint64 getMaxIndexCount() const override; // maximum number of indices for a draw call
 
-        uint64 getMaxIndex() const override; // largest index value for a draw call
+        [[nodiscard]] uint64 getMaxIndex() const override; // largest index value for a draw call
 
-        bool isDoubleBuffered() const override;
+        [[nodiscard]] bool isDoubleBuffered() const override;
+
+        [[nodiscard]] bool texture2DFormatSupported(SR_TEXTURE_FORMAT format) override;
 
     private:
 

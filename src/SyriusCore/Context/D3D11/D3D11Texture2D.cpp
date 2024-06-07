@@ -10,6 +10,9 @@ namespace Syrius{
     m_Context(context),
     m_Texture(nullptr),
     m_TextureView(nullptr){
+        if (!m_DeviceLimits->texture2DFormatSupported(desc.format)){
+            SR_CORE_THROW("[D3D11Texture2D]: Supplied texture format (%i) is not supported by the device", desc.format);
+        }
         createResources(desc.data);
     }
 
@@ -19,6 +22,9 @@ namespace Syrius{
     m_Context(context),
     m_Texture(nullptr),
     m_TextureView(nullptr){
+        if (!m_DeviceLimits->texture2DFormatSupported(desc.image->getFormat())){
+            SR_CORE_THROW("[D3D11Texture2D]: Supplied texture format (%i) is not supported by the device", desc.image->getFormat());
+        }
         createResources(desc.image->getData());
     }
 
@@ -99,6 +105,10 @@ namespace Syrius{
     }
 
     void D3D11Texture2D::createResources(const void *data) {
+        if (m_Usage == SR_BUFFER_USAGE_DYNAMIC){
+            SR_CORE_WARNING("[D3D11Texture2D]: Dynamic textures with mipmapping are not supported in D3D11. Changing usage to default");
+            m_Usage = SR_BUFFER_USAGE_DEFAULT;
+        }
         D3D11_TEXTURE2D_DESC textureDesc = { 0 };
         textureDesc.Width = m_Width;
         textureDesc.Height = m_Height;

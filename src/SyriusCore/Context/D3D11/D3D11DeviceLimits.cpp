@@ -103,6 +103,17 @@ namespace Syrius{
         return true;
     }
 
+    bool D3D11DeviceLimits::texture2DFormatSupported(SR_TEXTURE_FORMAT format) {
+        if (m_SupportedTexture2DFormats.find(format) != m_SupportedTexture2DFormats.end()){
+            return m_SupportedTexture2DFormats.at(format);
+        }
+        UINT isSupported = 0;
+        auto d3d11Format = getD3d11TextureFormat(format);
+        m_device->CheckFormatSupport(d3d11Format, &isSupported);
+        m_SupportedTexture2DFormats[format] = isSupported & D3D11_FORMAT_SUPPORT_TEXTURE2D;
+        return isSupported & D3D11_FORMAT_SUPPORT_TEXTURE2D;
+    }
+
 
 }
 

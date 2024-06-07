@@ -6,6 +6,9 @@ namespace Syrius{
     Texture2D(desc, deviceLimits),
     m_TextureID(0),
     m_GlFormat(0){
+        if (!deviceLimits->texture2DFormatSupported(desc.format)){
+            SR_CORE_THROW("[GlTexture2D]: Texture format (%i) is not supported by the device", desc.format);
+        }
         createTexture(desc.data);
     }
 
@@ -13,6 +16,9 @@ namespace Syrius{
     Texture2D(desc, deviceLimits),
     m_TextureID(0),
     m_GlFormat(0){
+        if (!deviceLimits->texture2DFormatSupported(desc.image->getFormat())){
+            SR_CORE_THROW("[GlTexture2D]: Texture format (%i) is not supported by the device", desc.image->getFormat());
+        }
         createTexture(desc.image->getData());
     }
 

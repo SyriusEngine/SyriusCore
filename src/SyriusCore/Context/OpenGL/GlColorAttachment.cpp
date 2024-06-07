@@ -10,6 +10,9 @@ namespace Syrius{
     m_TextureID(0),
     m_ChannelCount(0),
     m_GlDataType(getGlDataType(getTextureDataType(desc.format))){
+        if (!m_DeviceLimits->texture2DFormatSupported(desc.format)){
+            SR_CORE_THROW("[GlColorAttachment]: Texture format (%i) is not supported by the device", desc.format);
+        }
         SR_CHANNEL_FORMAT baseFormat = getTextureChannelFormat(desc.format);
         m_GlFormat = getGlChannelType(baseFormat);
         m_ChannelCount = getChannelFormatCount(baseFormat);
@@ -17,16 +20,9 @@ namespace Syrius{
         glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
-        GLint supportedFormat = GL_FALSE;
-        glGetInternalformativ(GL_TEXTURE_2D, m_InternalFormat, GL_INTERNALFORMAT_SUPPORTED, 1, &supportedFormat);
-        if (supportedFormat == GL_TRUE){
-            SR_CORE_OPENGL_CALL(glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr));
-            glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        }
-        else{
-            SR_CORE_EXCEPTION("OpenGL does not support a color attachment format: %i", desc.format);
-        }
+        glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr);
+        glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
 
     GlColorAttachment::~GlColorAttachment() {
