@@ -197,3 +197,11 @@ TEST_F(ImageUI8Test, DownscaleImageUI8){
     }
     EXPECT_TRUE(correct);
 }
+
+TEST_F(ImageUI8Test, CreateImageUI8InvalidFormat){
+    ImageUI8Desc desc;
+    desc.width = 2;
+    desc.height = 2;
+    desc.format = SR_TEXTURE_NONE;
+    EXPECT_DEATH(createImage(desc), "");
+}

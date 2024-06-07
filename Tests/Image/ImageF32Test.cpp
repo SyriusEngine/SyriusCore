@@ -204,4 +204,12 @@ TEST_F(ImageF32Test, DownscaleImageF32){
     EXPECT_TRUE(correct);
 }
 
+TEST_F(ImageF32Test, CreateImageF32InvalidFormat){
+    ImageF32Desc desc;
+    desc.width = 2;
+    desc.height = 2;
+    desc.format = SR_TEXTURE_NONE;
+    EXPECT_DEATH(createImage(desc), "");
+}
+
 
