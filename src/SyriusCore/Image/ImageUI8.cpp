@@ -24,7 +24,7 @@ namespace Syrius{
             memcpy(&m_Data[0], pData, width * height * channelCount);
         }
         else{
-            m_Data.resize(width * height * desc.requestedChannelCount);
+            m_Data.resize(width * height * desc.requestedChannelCount, static_cast<uint8>(desc.defaultChannelValue));
             for (uint32 i = 0; i < width * height; i++){
                 for (uint32 j = 0; j < desc.requestedChannelCount; j++){
                     m_Data[i * desc.requestedChannelCount + j] = pData[i * channelCount + j];
@@ -50,7 +50,11 @@ namespace Syrius{
 
     ImageUI8::ImageUI8(const ImageUI8Desc &desc):
     Image(desc.width, desc.height, desc.format),
-    m_Data(desc.width * desc.height * getTextureChannelCount(desc.format)){
+    m_Data(desc.width * desc.height * getTextureChannelCount(desc.format), desc.defaultChannelValue){
+        SR_CORE_PRECONDITION(desc.width > 0, "[ImageUI8]: Image: %p cannot be created with a width of 0", this);
+        SR_CORE_PRECONDITION(desc.height > 0, "[ImageUI8]: Image: %p cannot be created with a height of 0", this);
+        SR_CORE_PRECONDITION(getTextureDataType(desc.format) == SR_UINT8, "[ImageUI8]: Image: %p cannot be created with a format (given = %i) that is not of type uint8", this, desc.format)
+
         if (desc.data != nullptr){
             memcpy(&m_Data[0], desc.data, desc.width * desc.height * getTextureChannelCount(desc.format));
         }
@@ -85,11 +89,14 @@ namespace Syrius{
     }
 
     void ImageUI8::resize(uint32 width, uint32 height) {
+        SR_CORE_PRECONDITION(width > 0, "[ImageUI8]: Image: %p cannot be resized to a width of 0", this);
+        SR_CORE_PRECONDITION(height > 0, "[ImageUI8]: Image: %p cannot be resized to a height of 0", this);
+
         int32 channelCount = getTextureChannelCount(m_Format);
         std::vector<ubyte> resizedData(width * height * channelCount);
 
         if (!stbir_resize_uint8(&m_Data[0], m_Width, m_Height, 0, &resizedData[0], width, height, 0, channelCount)){
-            SR_CORE_WARNING("[ImageUI8]: Image: %x failed to resize", this);
+            SR_CORE_WARNING("[ImageUI8]: Image: %p failed to resize", this);
             return;
         }
         m_Data = resizedData;

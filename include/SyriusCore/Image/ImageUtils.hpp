@@ -13,9 +13,10 @@ namespace Syrius{
 
     struct SR_CORE_API ImageFileDesc{
         std::string fileName;
-        bool flipOnAccess             = true;
-        SR_IMAGE_TYPE imgType       = SR_IMAGE_PNG;
-        uint32 requestedChannelCount= 0;
+        bool flipOnAccess               = true;
+        SR_IMAGE_TYPE imgType           = SR_IMAGE_PNG;
+        uint32 requestedChannelCount    = 0; // 0 => all channels available in the image
+        uint64 defaultChannelValue      = 255; // if the image has fewer channels than requested, fill the rest with this value
     };
 
     struct SR_CORE_API ImageDesc{
@@ -26,24 +27,28 @@ namespace Syrius{
     };
 
     struct SR_CORE_API ImageUI8Desc{
-        const ubyte* data       = nullptr;
-        int32 width             = 0;
-        int32 height            = 0;
-        SR_TEXTURE_FORMAT format= SR_TEXTURE_RGBA_UI8;
+        const ubyte* data           = nullptr;
+        int32 width                 = 0;
+        int32 height                = 0;
+        SR_TEXTURE_FORMAT format    = SR_TEXTURE_RGBA_UI8;
+        uint8 defaultChannelValue   = 255;
     };
 
     struct SR_CORE_API ImageUI16Desc{
-        const uint16* data      = nullptr;
-        int32 width             = 0;
-        int32 height            = 0;
-        SR_TEXTURE_FORMAT format= SR_TEXTURE_RGBA_UI16;
+        const uint16* data          = nullptr;
+        int32 width                 = 0;
+        int32 height                = 0;
+        SR_TEXTURE_FORMAT format    = SR_TEXTURE_RGBA_UI16;
+        uint16 defaultChannelValue  = 65535;
+
     };
 
     struct SR_CORE_API ImageF32Desc{
-        const float* data       = nullptr;
-        int32 width             = 0;
-        int32 height            = 0;
-        SR_TEXTURE_FORMAT format= SR_TEXTURE_RGBA_F32;
+        const float* data           = nullptr;
+        int32 width                 = 0;
+        int32 height                = 0;
+        SR_TEXTURE_FORMAT format    = SR_TEXTURE_RGBA_F32;
+        float defaultChannelValue   = 1.0f;
     };
 
 }

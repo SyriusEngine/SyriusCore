@@ -44,23 +44,6 @@ void runAllTests(const std::string& iniFile){
     runTest<FrameBufferCubeMapLayer>(iniFile, "FrameBufferCubeMap");
 }
 
-glm::vec3 transformNormal(glm::vec3 normal){
-    glm::vec3 t = glm::normalize(normal * 2.0f - 1.0f);
-    return t;
-}
-
-void test(){
-    auto img = createImage({"./TestResources/Textures/Red-100x100-F32-RGBA.hdr"});
-    auto width = img->getWidth();
-    auto height = img->getHeight();
-    auto channelCount = img->getChannelCount();
-    auto data = reinterpret_cast<float*>(img->getData());
-    for (int i = 0; i < width * height * channelCount; i += channelCount){
-        data[i] = 1.0f;
-    }
-    img->writeToFile({"./TestResources/Textures/Red-100x100-F32-RGBA.hdr"});
-}
-
 int main(int argc, char** argv) {
     try {
         if (argc < 2) {
