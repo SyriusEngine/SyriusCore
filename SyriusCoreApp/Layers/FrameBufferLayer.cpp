@@ -52,6 +52,10 @@ m_Projection(context, window->getWidth(), window->getHeight()){
 
     // Framebuffer stuff
     auto fbLayout = m_Context->createFrameBufferLayout();
+    ViewportDesc vpDesc;
+    vpDesc.width = m_Context->getWidth();
+    vpDesc.height = m_Context->getHeight();
+    fbLayout->addViewportDesc(vpDesc);
     ColorAttachmentDesc f32ca;
     f32ca.format = SR_TEXTURE_RGBA_F32;
     f32ca.width = m_Context->getWidth();

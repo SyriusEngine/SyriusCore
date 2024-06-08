@@ -24,4 +24,6 @@ protected:
     static ShaderStorage createScreenShader1CA();
 
     static ShaderStorage createScreenShader2CA();
+
+    static bool isPixelCorrect(Resource<Image>& img, uint8 r, uint8 g, uint8 b, uint8 a);
 };

@@ -145,6 +145,16 @@ ShaderStorage FrameBufferTest::createScreenShader2CA() {
     return ss;
 }
 
+bool FrameBufferTest::isPixelCorrect(Resource<Syrius::Image> &img, uint8 r, uint8 g, uint8 b, uint8 a) {
+    auto data = reinterpret_cast<uint8*>(img->getData());
+    for (uint32 i = 0; i < s_Width * s_Height * 4; i+=4){
+        if (data[i] != r || data[i+1] != g || data[i+2] != b || data[i+3] != a){
+            return false;
+        }
+    }
+    return true;
+}
+
 
 TEST_F(FrameBufferTest, CreateFrameBufferNoAttachments){
     auto fbLayout = TestEnvironment::m_Context->createFrameBufferLayout();
@@ -169,15 +179,7 @@ TEST_F(FrameBufferTest, ClearFrameBuffer1ColorAttachment){
     EXPECT_EQ(img->getHeight(), s_Height);
     EXPECT_EQ(img->getFormat(), SR_TEXTURE_RGBA_UI8);
 
-    auto data = reinterpret_cast<uint8*>(img->getData());
-    bool correct = true;
-    for (uint32 i = 0; i < s_Width * s_Height * 4; i+=4){
-        if (data[i] != 255 || data[i+1] != 0 || data[i+2] != 0 || data[i+3] != 255){
-            correct = false;
-            break;
-        }
-    }
-    EXPECT_TRUE(correct);
+    EXPECT_TRUE(isPixelCorrect(img, 255, 0, 0, 255));
 }
 
 TEST_F(FrameBufferTest, ClearFrameBuffer2ColorAttachments){
@@ -199,23 +201,8 @@ TEST_F(FrameBufferTest, ClearFrameBuffer2ColorAttachments){
     EXPECT_EQ(img2->getHeight(), s_Height);
     EXPECT_EQ(img2->getFormat(), SR_TEXTURE_RGBA_UI8);
 
-    auto data = reinterpret_cast<uint8*>(img1->getData());
-    bool correct = true;
-    for (uint32 i = 0; i < s_Width * s_Height * 4; i+=4){
-        if (data[i] != 255 || data[i+1] != 0 || data[i+2] != 0 || data[i+3] != 255){
-            correct = false;
-            break;
-        }
-    }
-
-    data = reinterpret_cast<uint8*>(img2->getData());
-    for (uint32 i = 0; i < s_Width * s_Height * 4; i+=4){
-        if (data[i] != 0 || data[i+1] != 255 || data[i+2] != 0 || data[i+3] != 255){
-            correct = false;
-            break;
-        }
-    }
-    EXPECT_TRUE(correct);
+    EXPECT_TRUE(isPixelCorrect(img1, 255, 0, 0, 255));
+    EXPECT_TRUE(isPixelCorrect(img2, 0, 255, 0, 255));
 }
 
 TEST_F(FrameBufferTest, GetColorAttachmentOutOfBounds){
@@ -236,15 +223,7 @@ TEST_F(FrameBufferTest, DrawFrameBuffer1CA){
 
     auto ca1 = fb->getColorAttachment(0);
     auto img1 = ca1->getData();
-    auto data = reinterpret_cast<uint8*>(img1->getData());
-    bool correct = true;
-    for (uint32 i = 0; i < s_Width * s_Height * 4; i+=4){
-        if (data[i] != 255 || data[i+1] != 0 || data[i+2] != 0 || data[i+3] != 255){
-            correct = false;
-            break;
-        }
-    }
-    EXPECT_TRUE(correct);
+    EXPECT_TRUE(isPixelCorrect(img1, 255, 0, 0, 255));
 }
 
 TEST_F(FrameBufferTest, DrawFrameBuffer2CA){
@@ -259,23 +238,9 @@ TEST_F(FrameBufferTest, DrawFrameBuffer2CA){
 
     auto ca1 = fb->getColorAttachment(0);
     auto img1 = ca1->getData();
-    auto data = reinterpret_cast<uint8*>(img1->getData());
-    bool correct = true;
-    for (uint32 i = 0; i < s_Width * s_Height * 4; i+=4){
-        if (data[i] != 255 || data[i+1] != 0 || data[i+2] != 0 || data[i+3] != 255){
-            correct = false;
-            break;
-        }
-    }
+    EXPECT_TRUE(isPixelCorrect(img1, 255, 0, 0, 255));
 
     auto ca2 = fb->getColorAttachment(1);
     auto img2 = ca2->getData();
-    data = reinterpret_cast<uint8*>(img2->getData());
-    for (uint32 i = 0; i < s_Width * s_Height * 4; i+=4){
-        if (data[i] != 0 || data[i+1] != 255 || data[i+2] != 0 || data[i+3] != 255){
-            correct = false;
-            break;
-        }
-    }
-    EXPECT_TRUE(correct);
+    EXPECT_TRUE(isPixelCorrect(img2, 0, 255, 0, 255));
 }
