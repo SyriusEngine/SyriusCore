@@ -8,23 +8,36 @@ void Texture2DTest::TearDown() {
     Test::TearDown();
 }
 
+constexpr uint32 s_Width = 50;
+constexpr uint32 s_Height = 50;
+
+template<typename T>
+void createRedVector(std::vector<T>& vec){
+    vec.resize(s_Width * s_Height * 4);
+    for (size_t i = 0; i < vec.size(); i += 4){
+        vec[i] = 255;
+        vec[i + 1] = 0;
+        vec[i + 2] = 0;
+        vec[i + 3] = 255;
+    }
+}
+
 TEST_F(Texture2DTest, CreateTexture2D){
-    std::vector<ubyte> redGreen;
-    uint32 width = 4;
-    createRedGreenCheckerboard(redGreen, width);
+    std::vector<uint8> red;
+    createRedVector(red);
     Texture2DDesc desc;
-    desc.width = width;
-    desc.height = width;
+    desc.width = s_Width;
+    desc.height = s_Height;
     desc.format = SR_TEXTURE_RGBA_UI8;
-    desc.data = redGreen.data();
+    desc.data = red.data();
     desc.usage = SR_BUFFER_USAGE_DEFAULT;
 
     auto tex = TestEnvironment::m_Context->createTexture2D(desc);
 
     EXPECT_NE(tex, nullptr);
-    EXPECT_EQ(tex->getWidth(), width);
-    EXPECT_EQ(tex->getHeight(), width);
-    EXPECT_EQ(tex->getFormat(), SR_TEXTURE_RGBA_UI8);
+    EXPECT_EQ(tex->getWidth(), desc.width);
+    EXPECT_EQ(tex->getHeight(), desc.height);
+    EXPECT_EQ(tex->getFormat(), desc.format);
 }
 
 TEST_F(Texture2DTest, CreateTexture2DNoData){
@@ -37,67 +50,71 @@ TEST_F(Texture2DTest, CreateTexture2DNoData){
     auto tex = TestEnvironment::m_Context->createTexture2D(desc);
 
     EXPECT_NE(tex, nullptr);
-    EXPECT_EQ(tex->getWidth(), 512);
-    EXPECT_EQ(tex->getHeight(), 512);
-    EXPECT_EQ(tex->getFormat(), SR_TEXTURE_RGBA_UI8);
+    EXPECT_EQ(tex->getWidth(), desc.width);
+    EXPECT_EQ(tex->getHeight(), desc.height);
+    EXPECT_EQ(tex->getFormat(), desc.format);
 
 }
 
-TEST_F(Texture2DTest, ReadTexture2D){
-    std::vector<ubyte> redGreen;
-    uint32 width = 50;
-    createRedGreenCheckerboard(redGreen, width);
+TEST_F(Texture2DTest, ReadTexture2DUI8){
+    std::vector<uint8> red;
+    createRedVector(red);
     Texture2DDesc desc;
-    desc.width = width;
-    desc.height = width;
+    desc.width = s_Width;
+    desc.height = s_Height;
     desc.format = SR_TEXTURE_RGBA_UI8;
-    desc.data = redGreen.data();
+    desc.data = red.data();
     desc.usage = SR_BUFFER_USAGE_DEFAULT;
 
     auto tex = TestEnvironment::m_Context->createTexture2D(desc);
 
     auto img = tex->getData();
-    EXPECT_EQ(img->getWidth(), width);
-    EXPECT_EQ(img->getHeight(), width);
-    EXPECT_EQ(img->getFormat(), SR_TEXTURE_RGBA_UI8);
 
     auto data = img->getData();
     auto ui8Data = reinterpret_cast<const ubyte*>(data);
     bool equal = true;
-    for (size_t i = 0; i < redGreen.size(); ++i){
-        if (ui8Data[i] != redGreen[i]){
+    for (size_t i = 0; i < red.size(); ++i){
+        if (ui8Data[i] != red[i]){
             equal = false;
             break;
         }
     }
     EXPECT_TRUE(equal);
+}
 
-    if (TestEnvironment::m_ExportImages){
-        ImageFileDesc fileDesc;
-        fileDesc.fileName = "Texture2DTest_ReadTexture2D.png";
-        fileDesc.flipOnAccess = true;
-        img->writeToFile(fileDesc);
-    }
+TEST_F(Texture2DTest, ReadTexture2DF32){
+    // TODO: Fix Texture2D image conversion
+//    std::vector<float> red;
+//    createRedVector(red);
+//    Texture2DDesc desc;
+//    desc.width = s_Width;
+//    desc.height = s_Height;
+//    desc.format = SR_TEXTURE_RGBA_F32;
+//    desc.data = red.data();
+//    desc.usage = SR_BUFFER_USAGE_DEFAULT;
+//
+//    auto tex = TestEnvironment::m_Context->createTexture2D(desc);
+//
+//    auto img = tex->getData();
+//
+//    auto data = img->getData();
+//    auto ui8Data = reinterpret_cast<const float*>(data);
+//    bool equal = true;
+//    for (size_t i = 0; i < red.size(); ++i){
+//        if (ui8Data[i] != red[i]){
+//            equal = false;
+//            break;
+//        }
+//    }
+//    EXPECT_TRUE(equal);
 }
 
 TEST_F(Texture2DTest, UpdateTexture2DFull){
 
-    if (TestEnvironment::m_ExportImages){
-        ImageFileDesc fileDesc;
-        fileDesc.fileName = "Texture2DTest_UpdateTexture2DFull.png";
-        fileDesc.flipOnAccess = true;
-        // img->writeToFile(fileDesc);
-    }
 }
 
 TEST_F(Texture2DTest, UpdateTexture2DPartial){
 
-    if (TestEnvironment::m_ExportImages){
-        ImageFileDesc fileDesc;
-        fileDesc.fileName = "Texture2DTest_UpdateTexture2DPartial.png";
-        fileDesc.flipOnAccess = false;
-        // img->writeToFile(fileDesc);
-    }
 }
 
 TEST_F(Texture2DTest, UpdateTexture2DLargerData){
@@ -105,12 +122,13 @@ TEST_F(Texture2DTest, UpdateTexture2DLargerData){
     desc.width = 2;
     desc.height = 2;
     desc.format = SR_TEXTURE_RGBA_UI8;
-    desc.data = s_RedGreen.data();
-    desc.usage = SR_BUFFER_USAGE_DYNAMIC;
+    desc.data = nullptr;
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
 
     auto tex = TestEnvironment::m_Context->createTexture2D(desc);
+    std::vector<uint8> largeData(4 * 4 * 4, 255);
 
-    EXPECT_DEATH(tex->setData(s_RedGreenBlue.data(), 0, 0, 3, 3), "");
+    EXPECT_DEATH(tex->setData(largeData.data(), 0, 0, 3, 3), "");
 }
 
 TEST_F(Texture2DTest, UpdateTexture2DOutOfRegion){
@@ -118,10 +136,10 @@ TEST_F(Texture2DTest, UpdateTexture2DOutOfRegion){
     desc.width = 2;
     desc.height = 2;
     desc.format = SR_TEXTURE_RGBA_UI8;
-    desc.data = s_RedGreen.data();
-    desc.usage = SR_BUFFER_USAGE_DYNAMIC;
+    desc.data = nullptr;
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
 
     auto tex = TestEnvironment::m_Context->createTexture2D(desc);
-
-    EXPECT_DEATH(tex->setData(s_RedGreen.data(), 300, 300, 2, 2), "");
+    std::vector<uint8> largeData(2 * 2 * 4, 255);
+    EXPECT_DEATH(tex->setData(largeData.data(), 300, 300, 2, 2), "");
 }

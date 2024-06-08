@@ -70,7 +70,13 @@ namespace Syrius{
         ImageUI8Desc imgDesc;
         imgDesc.width = m_Width;
         imgDesc.height = m_Height;
-        imgDesc.format = m_Format;
+        switch (channelCount) {
+            case 1: imgDesc.format = SR_TEXTURE_R_UI8; break;
+            case 2: imgDesc.format = SR_TEXTURE_RG_UI8; break;
+            case 3: imgDesc.format = SR_TEXTURE_RGB_UI8; break;
+            case 4: imgDesc.format = SR_TEXTURE_RGBA_UI8; break;
+            default: SR_CORE_THROW("[GlTexture2D]: Invalid channel count (%i) for texture object (%p)", channelCount, this);
+        }
         imgDesc.data = data.get();
         return createImage(imgDesc);
     }

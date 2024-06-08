@@ -44,33 +44,3 @@ static std::vector<uint32> s_RectangleIndices = {
     0, 1, 2,
     2, 3, 0
 };
-
-static std::vector<uint8> s_RedGreen = {
-    255, 0, 0, 255,     0, 255, 0, 255,
-    0, 255, 0, 255,     255, 0, 0, 255
-};
-
-static std::vector<uint8> s_RedGreenBlue = {
-    255, 0, 0, 255,     0, 255, 0, 255,     0, 0, 255, 255,
-    0, 255, 0, 255,     0, 0, 255, 255,     255, 0, 0, 255,
-    0, 0, 255, 255,     255, 0, 0, 255,     0, 255, 0, 255
-};
-
-inline void createRedGreenCheckerboard(std::vector<ubyte>& data, uint32 width){
-    data.resize(width * width * 4);
-    int32 sw = 0;
-    for (size_t i = 0; i < data.size(); i += 4) {
-        if (sw % 2 == 0) {
-            data[i] = 255;
-            data[i + 1] = 0;
-            data[i + 2] = 0;
-            data[i + 3] = 255;
-        } else {
-            data[i] = 0;
-            data[i + 1] = 255;
-            data[i + 2] = 0;
-            data[i + 3] = 255;
-        }
-        sw++;
-    }
-}
