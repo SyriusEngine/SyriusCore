@@ -12,7 +12,7 @@
 #include "GlConstantBuffer.hpp"
 #include "GlSampler.hpp"
 #include "GlFrameBuffer.hpp"
-#include "GlCubemap.hpp"
+#include "GlCubeMap.hpp"
 
 
 namespace Syrius{

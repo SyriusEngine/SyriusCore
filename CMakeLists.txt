@@ -140,7 +140,7 @@ set(SYRIUSCORE_CONTEXT_SRC
     src/SyriusCore/Context/OpenGL/GlFrameBuffer.cpp
     src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp
-    src/SyriusCore/Context/OpenGL/GlCubemap.cpp
+    src/SyriusCore/Context/OpenGL/GlCubeMap.cpp
     src/SyriusCore/Context/OpenGL/GlDeviceLimits.cpp
     src/SyriusCore/Context/CubeColorAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlCubeColorAttachment.cpp
