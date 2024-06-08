@@ -27,7 +27,7 @@ namespace Syrius{
     }
 
     void FrameBufferLayout::configure() {
-        if (m_ColorAttachmentDesc.empty() && m_DepthStencilAttachmentDesc.empty()){
+        if (m_ColorAttachmentDesc.empty() && m_DepthStencilAttachmentDesc.empty() && m_CubeColorAttachmentDesc.empty()){
             SR_CORE_THROW("[FrameBufferLayout]: No color or depth stencil attachment was added to the framebuffer description");
         }
         if (m_ViewportDesc.empty()){
