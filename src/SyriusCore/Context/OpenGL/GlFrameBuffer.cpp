@@ -74,7 +74,7 @@ namespace Syrius{
             auto attachment = new GlCubeColorAttachment(attachDesc, m_DeviceLimits, m_FrameBufferID, colorAttachmentIndex);
             m_CubeColorAttachments.emplace_back(attachment);
             for (uint32 i = 0; i < 6; i++){
-                drawBuffers.push_back(GL_COLOR_ATTACHMENT0 + colorAttachmentIndex + i);
+                drawBuffers.push_back(GL_COLOR_ATTACHMENT0 + i);
                 colorAttachmentIndex++;
             }
         }
