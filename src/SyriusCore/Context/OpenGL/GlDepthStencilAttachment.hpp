@@ -30,7 +30,7 @@ namespace Syrius{
     protected:
         uint32 m_BufferID;
         uint32 m_FrameBufferID;
-        GLenum m_GlFormat;
+        GLenum m_GlInternalFormat;
 
         GLenum m_GlDepthFunc;
 

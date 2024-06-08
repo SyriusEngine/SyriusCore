@@ -92,11 +92,9 @@ namespace Syrius{
             GlDepthStencilAttachment* attachment;
             if (dsaDesc.enableShaderAccess){
                 attachment = new GlDepthStencilAttachmentTexture(dsaDesc, m_DeviceLimits, m_FrameBufferID);
-                glNamedFramebufferTexture(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT,  attachment->getIdentifier(), 0);
             }
             else{
                 attachment = new GlDepthStencilAttachmentRenderBuffer(dsaDesc, m_DeviceLimits, m_FrameBufferID);
-                glNamedFramebufferRenderbuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, attachment->getIdentifier());
             }
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(attachment);
         }
@@ -110,7 +108,6 @@ namespace Syrius{
             dummyDesc.enableShaderAccess = false;
             auto df = new GlDepthStencilAttachmentRenderBuffer(dummyDesc, m_DeviceLimits, 0);
             m_DepthStencilAttachment = Resource<DepthStencilAttachment>(df);
-            glNamedFramebufferRenderbuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, df->getIdentifier());
         }
     }
 
