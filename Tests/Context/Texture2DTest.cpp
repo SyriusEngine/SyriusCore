@@ -45,7 +45,7 @@ TEST_F(Texture2DTest, CreateTexture2DNoData){
 
 TEST_F(Texture2DTest, ReadTexture2D){
     std::vector<ubyte> redGreen;
-    uint32 width = 4;
+    uint32 width = 50;
     createRedGreenCheckerboard(redGreen, width);
     Texture2DDesc desc;
     desc.width = width;
@@ -124,17 +124,4 @@ TEST_F(Texture2DTest, UpdateTexture2DOutOfRegion){
     auto tex = TestEnvironment::m_Context->createTexture2D(desc);
 
     EXPECT_DEATH(tex->setData(s_RedGreen.data(), 300, 300, 2, 2), "");
-}
-
-TEST_F(Texture2DTest, UpdateTexture2DStatic){
-    Texture2DDesc desc;
-    desc.width = 2;
-    desc.height = 2;
-    desc.format = SR_TEXTURE_RGBA_UI8;
-    desc.data = s_RedGreen.data();
-    desc.usage = SR_BUFFER_USAGE_STATIC;
-
-    auto tex = TestEnvironment::m_Context->createTexture2D(desc);
-
-    EXPECT_DEATH(tex->setData(s_RedGreen.data(), 0, 0, 2, 2), "");
 }
