@@ -32,13 +32,14 @@ static std::vector<float> s_RectangleVertices = {
     -0.5f,  0.5f,   0.0f, 1.0f, 1.0f, 0.0f
 };
 
-static std::vector<float> s_RectangleVertices2 = {
+static std::vector<float> s_ScreenVertices = {
         // X      Y     Z     R     G       B
         -1.0f,  -1.0f,  0.0f, 1.0f, 0.0f, 0.0f,
         1.0f,   -1.0f,  0.0f, 0.0f, 1.0f, 0.0f,
         1.0f,   1.0f,   0.0f, 0.0f, 0.0f, 1.0f,
         -1.0f,  1.0f,   0.0f, 1.0f, 1.0f, 0.0f
 };
+
 
 static std::vector<uint32> s_RectangleIndices = {
     0, 1, 2,

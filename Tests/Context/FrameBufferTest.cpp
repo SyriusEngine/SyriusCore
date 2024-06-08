@@ -1,4 +1,5 @@
 #include "FrameBufferTest.hpp"
+#include "FrameBufferShaders.hpp"
 
 void FrameBufferTest::SetUp() {
     Test::SetUp();
@@ -57,6 +58,93 @@ ResourceView<FrameBuffer> FrameBufferTest::createFrameBuffer2CA() {
 
     return TestEnvironment::m_Context->createFrameBuffer(fbLayout);
 }
+
+ResourceView<VertexArray> FrameBufferTest::createScreenQuad(ShaderStorage& ss) {
+    auto vLayout = TestEnvironment::m_Context->createVertexLayout();
+    vLayout->addAttribute("Position", SR_FLOAT32_3);
+    vLayout->addAttribute("Color", SR_FLOAT32_3);
+
+    VertexBufferDesc vbDesc;
+    vbDesc.count = 4;
+    vbDesc.data = s_ScreenVertices.data();
+    vbDesc.layout = vLayout;
+    auto vb = TestEnvironment::m_Context->createVertexBuffer(vbDesc);
+
+    IndexBufferDesc ibDesc;
+    ibDesc.count = 6;
+    ibDesc.data = s_RectangleIndices.data();
+    ibDesc.dataType = SR_UINT32;
+    auto ib = TestEnvironment::m_Context->createIndexBuffer(ibDesc);
+
+    VertexArrayDesc vaDesc;
+    vaDesc.vertexBuffer = vb;
+    vaDesc.indexBuffer = ib;
+    vaDesc.vertexShader = ss.vertexShader;
+    return TestEnvironment::m_Context->createVertexArray(vaDesc);
+}
+
+ShaderStorage FrameBufferTest::createScreenShader1CA() {
+    ShaderStorage ss;
+    ShaderModuleDesc vsmDesc;
+    vsmDesc.shaderType = SR_SHADER_VERTEX;
+
+    ShaderModuleDesc fsmDesc;
+    fsmDesc.shaderType = SR_SHADER_FRAGMENT;
+
+    if (TestEnvironment::m_API == SR_API_OPENGL){
+        vsmDesc.language = SR_SHADER_LANGUAGE_GLSL;
+        fsmDesc.language = SR_SHADER_LANGUAGE_GLSL;
+        vsmDesc.code = s_GLSLVertexShader;
+        fsmDesc.code = s_GLSLFragmentShader1CA;
+    }
+    else if (TestEnvironment::m_API == SR_API_D3D11){
+        vsmDesc.language = SR_SHADER_LANGUAGE_HLSL;
+        fsmDesc.language = SR_SHADER_LANGUAGE_HLSL;
+        vsmDesc.code = s_HLSLVertexShader;
+        fsmDesc.code = s_HLSLFragmentShader1CA;
+    }
+    ss.vertexShader = TestEnvironment::m_Context->createShaderModule(vsmDesc);
+    ss.fragmentShader = TestEnvironment::m_Context->createShaderModule(fsmDesc);
+
+    ShaderDesc sDesc;
+    sDesc.vertexShader = ss.vertexShader;
+    sDesc.fragmentShader = ss.fragmentShader;
+
+    ss.shader =  TestEnvironment::m_Context->createShader(sDesc);
+    return ss;
+}
+
+ShaderStorage FrameBufferTest::createScreenShader2CA() {
+    ShaderStorage ss;
+    ShaderModuleDesc vsmDesc;
+    vsmDesc.shaderType = SR_SHADER_VERTEX;
+
+    ShaderModuleDesc fsmDesc;
+    fsmDesc.shaderType = SR_SHADER_FRAGMENT;
+
+    if (TestEnvironment::m_API == SR_API_OPENGL){
+        vsmDesc.language = SR_SHADER_LANGUAGE_GLSL;
+        fsmDesc.language = SR_SHADER_LANGUAGE_GLSL;
+        vsmDesc.code = s_GLSLVertexShader;
+        fsmDesc.code = s_GLSLFragmentShader2CA;
+    }
+    else if (TestEnvironment::m_API == SR_API_D3D11){
+        vsmDesc.language = SR_SHADER_LANGUAGE_HLSL;
+        fsmDesc.language = SR_SHADER_LANGUAGE_HLSL;
+        vsmDesc.code = s_HLSLVertexShader;
+        fsmDesc.code = s_HLSLFragmentShader2CA;
+    }
+    ss.vertexShader = TestEnvironment::m_Context->createShaderModule(vsmDesc);
+    ss.fragmentShader = TestEnvironment::m_Context->createShaderModule(fsmDesc);
+
+    ShaderDesc sDesc;
+    sDesc.vertexShader = ss.vertexShader;
+    sDesc.fragmentShader = ss.fragmentShader;
+
+    ss.shader =  TestEnvironment::m_Context->createShader(sDesc);
+    return ss;
+}
+
 
 TEST_F(FrameBufferTest, CreateFrameBufferNoAttachments){
     auto fbLayout = TestEnvironment::m_Context->createFrameBufferLayout();
@@ -134,4 +222,60 @@ TEST_F(FrameBufferTest, GetColorAttachmentOutOfBounds){
     auto fb = createFrameBuffer1CA();
 
     EXPECT_DEATH(auto val = fb->getColorAttachment(1), "");
+}
+
+TEST_F(FrameBufferTest, DrawFrameBuffer1CA){
+    auto fb = createFrameBuffer1CA();
+    auto ss = createScreenShader1CA();
+    auto va = createScreenQuad(ss);
+
+    fb->bind();
+    ss.shader->bind();
+    TestEnvironment::m_Context->draw(va);
+    fb->unbind();
+
+    auto ca1 = fb->getColorAttachment(0);
+    auto img1 = ca1->getData();
+    auto data = reinterpret_cast<uint8*>(img1->getData());
+    bool correct = true;
+    for (uint32 i = 0; i < s_Width * s_Height * 4; i+=4){
+        if (data[i] != 255 || data[i+1] != 0 || data[i+2] != 0 || data[i+3] != 255){
+            correct = false;
+            break;
+        }
+    }
+    EXPECT_TRUE(correct);
+}
+
+TEST_F(FrameBufferTest, DrawFrameBuffer2CA){
+    auto fb = createFrameBuffer2CA();
+    auto ss = createScreenShader2CA();
+    auto va = createScreenQuad(ss);
+
+    fb->bind();
+    ss.shader->bind();
+    TestEnvironment::m_Context->draw(va);
+    fb->unbind();
+
+    auto ca1 = fb->getColorAttachment(0);
+    auto img1 = ca1->getData();
+    auto data = reinterpret_cast<uint8*>(img1->getData());
+    bool correct = true;
+    for (uint32 i = 0; i < s_Width * s_Height * 4; i+=4){
+        if (data[i] != 255 || data[i+1] != 0 || data[i+2] != 0 || data[i+3] != 255){
+            correct = false;
+            break;
+        }
+    }
+
+    auto ca2 = fb->getColorAttachment(1);
+    auto img2 = ca2->getData();
+    data = reinterpret_cast<uint8*>(img2->getData());
+    for (uint32 i = 0; i < s_Width * s_Height * 4; i+=4){
+        if (data[i] != 0 || data[i+1] != 255 || data[i+2] != 0 || data[i+3] != 255){
+            correct = false;
+            break;
+        }
+    }
+    EXPECT_TRUE(correct);
 }
