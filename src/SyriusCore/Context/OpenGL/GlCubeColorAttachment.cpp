@@ -17,6 +17,7 @@ namespace Syrius{
         for(uint32 i = 0; i < 6; i++){
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr);
             glNamedFramebufferTexture(m_FrameBufferID, GL_COLOR_ATTACHMENT0 + m_BaseAttachmentID + i, m_TextureID, 0);
+            glNamedFramebufferTextureLayer(m_FrameBufferID, GL_COLOR_ATTACHMENT0 + m_BaseAttachmentID + i, m_TextureID, 0, i);
         }
     }
 
