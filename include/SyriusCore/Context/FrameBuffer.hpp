@@ -41,6 +41,7 @@ namespace Syrius{
         std::vector<Resource<Viewport>> m_Viewports;
         std::vector<Resource<ColorAttachment>> m_ColorAttachments;
         Resource<DepthStencilAttachment> m_DepthStencilAttachment;
+        std::vector<Resource<CubeColorAttachment>> m_CubeColorAttachments;
 
     };
 

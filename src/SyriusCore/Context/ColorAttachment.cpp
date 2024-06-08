@@ -16,9 +16,7 @@ namespace Syrius{
 
     }
 
-    ColorAttachment::~ColorAttachment() {
-
-    }
+    ColorAttachment::~ColorAttachment() = default;
 
     void ColorAttachment::setClearColor(float r, float g, float b, float a) {
         m_ClearColor[0] = r;

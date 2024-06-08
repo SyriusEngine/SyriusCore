@@ -6,9 +6,6 @@ namespace Syrius{
     FrameBuffer::FrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits):
     m_DeviceLimits(deviceLimits),
     m_DepthStencilAttachment(nullptr){
-        SR_CORE_PRECONDITION(desc->getColorAttachmentDesc().size() < m_DeviceLimits->getMaxFramebufferColorAttachments(),
-                             "[FrameBuffer]: Number of color attachments (%i) exceeds the maximum number of color attachments supported by the device (%i)",
-                             desc->getColorAttachmentDesc().size(), m_DeviceLimits->getMaxFramebufferColorAttachments());
 
     }
 
@@ -19,11 +16,17 @@ namespace Syrius{
         for (auto& colorAttachment : m_ColorAttachments){
             colorAttachment.reset();
         }
+        for (auto& cubeColorAttachment : m_CubeColorAttachments){
+            cubeColorAttachment.reset();
+        }
         m_DepthStencilAttachment.reset();
     }
 
     void FrameBuffer::clear() {
         for (const auto &attachment: m_ColorAttachments){
+            attachment->clear();
+        }
+        for (const auto &attachment: m_CubeColorAttachments){
             attachment->clear();
         }
         m_DepthStencilAttachment->clear();
@@ -35,6 +38,9 @@ namespace Syrius{
         }
         for (auto& colorAttachment : m_ColorAttachments){
             colorAttachment->onResize(width, height);
+        }
+        for (auto& cubeColorAttachment : m_CubeColorAttachments){
+            cubeColorAttachment->onResize(width, height);
         }
         m_DepthStencilAttachment->onResize(width, height);
     }

@@ -36,6 +36,7 @@ namespace Syrius{
         GLenum attachmentIndex = GL_COLOR_ATTACHMENT0;
         std::vector<GLenum> drawBuffers;
         uint32 colorAttachmentIndex = 0;
+        // 2D color attachments
         for (const auto& attachDesc: desc->getColorAttachmentDesc()){
             auto attachment = new GlColorAttachment(attachDesc, m_DeviceLimits, m_FrameBufferID, colorAttachmentIndex);
             m_ColorAttachments.emplace_back(attachment);
@@ -44,6 +45,19 @@ namespace Syrius{
             attachmentIndex++;
             colorAttachmentIndex++;
         }
+        // Cube color attachments
+        for (const auto& attachDesc: desc->getCubeColorAttachmentDesc()){
+            auto attachment = new GlCubeColorAttachment(attachDesc, m_DeviceLimits, m_FrameBufferID, colorAttachmentIndex);
+            m_CubeColorAttachments.emplace_back(attachment);
+            auto identifier = attachment->getIdentifier();
+            for (uint32 i = 0; i < 6; i++){
+                glNamedFramebufferTexture(m_FrameBufferID, attachmentIndex, attachment->getIdentifier(), 0);
+                drawBuffers.push_back(attachmentIndex);
+                attachmentIndex++;
+                colorAttachmentIndex++;
+            }
+        }
+
         glNamedFramebufferDrawBuffers(m_FrameBufferID, drawBuffers.size(), &drawBuffers[0]);
 
         if (!desc->getDepthStencilAttachmentDesc().empty()){

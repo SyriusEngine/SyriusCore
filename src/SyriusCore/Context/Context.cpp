@@ -29,7 +29,7 @@ namespace Syrius{
     }
 
     ResourceView<FrameBufferLayout> Context::createFrameBufferLayout() {
-        m_FrameBufferDescriptions.emplace_back(new FrameBufferLayout());
+        m_FrameBufferDescriptions.emplace_back(new FrameBufferLayout(m_DeviceLimits));
         return createResourceView(m_FrameBufferDescriptions.back());
     }
 

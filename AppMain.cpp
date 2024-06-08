@@ -12,7 +12,6 @@
 #include "SyriusCoreApp/Layers/PhongLightLayer.hpp"
 #include "SyriusCoreApp/Layers/ShaderLayer.hpp"
 #include "SyriusCoreApp/Layers/CubeMapLayer.hpp"
-#include "SyriusCoreApp/Layers/FrameBufferCubeMapLayer.hpp"
 
 template<typename T>
 void runTest(const std::string& iniFile, const std::string& windowTitle){
@@ -41,7 +40,6 @@ void runAllTests(const std::string& iniFile){
     runTest<FrameBufferLayer>(iniFile, "FrameBuffer");
     runTest<PhongLightLayer>(iniFile, "PhongLight");
     runTest<CubeMapLayer>(iniFile, "CubeMap");
-    runTest<FrameBufferCubeMapLayer>(iniFile, "FrameBufferCubeMap");
 }
 
 int main(int argc, char** argv) {
@@ -83,10 +81,7 @@ int main(int argc, char** argv) {
                 runTest<CubeMapLayer>(argv[1], arg);
             } else if (arg == "All") {
                 runAllTests(argv[1]);
-            } else if (arg == "FrameBufferCubeMap") {
-                runTest<FrameBufferCubeMapLayer>(argv[1], arg);
             }
-
             else {
                 std::cerr << "Unknown test: " << arg << std::endl;
             }
