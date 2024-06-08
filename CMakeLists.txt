@@ -215,7 +215,6 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
     SyriusCoreApp/Layers/DepthTestLayer.cpp
     SyriusCoreApp/Layers/TextureAtlasLayer.cpp
     SyriusCoreApp/Layers/FrameBufferLayer.cpp
-    SyriusCoreApp/Layers/PhongLightLayer.cpp
     SyriusCoreApp/Layers/ShaderLayer.cpp
     SyriusCoreApp/Layers/CubeMapLayer.cpp
 )
@@ -253,7 +252,9 @@ set(SR_CORE_TEST_SRC
     Tests/Context/D3D11/D3D11UtilsTest.cpp
 
     Tests/Image/ImageUI8Test.cpp
-    Tests/Image/ImageF32Test.cpp)
+    Tests/Image/ImageF32Test.cpp
+    Tests/Context/FrameBufferTest.cpp
+    Tests/Context/FrameBufferTest.hpp)
 
 add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)
 

@@ -21,7 +21,7 @@ namespace Syrius{
 
         void addCubeColorAttachmentDesc(const CubeColorAttachmentDesc& desc);
 
-        void configure();
+        bool isValid();
 
         [[nodiscard]] const std::vector<ViewportDesc>& getViewportDesc() const;
 

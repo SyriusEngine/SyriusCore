@@ -9,7 +9,6 @@
 #include "SyriusCoreApp/Layers/DepthTestLayer.hpp"
 #include "SyriusCoreApp/Layers/TextureAtlasLayer.hpp"
 #include "SyriusCoreApp/Layers/FrameBufferLayer.hpp"
-#include "SyriusCoreApp/Layers/PhongLightLayer.hpp"
 #include "SyriusCoreApp/Layers/ShaderLayer.hpp"
 #include "SyriusCoreApp/Layers/CubeMapLayer.hpp"
 
@@ -38,7 +37,6 @@ void runAllTests(const std::string& iniFile){
     runTest<DepthTestLayer>(iniFile, "DepthTest");
     runTest<TextureAtlasLayer>(iniFile, "TextureAtlas");
     runTest<FrameBufferLayer>(iniFile, "FrameBuffer");
-    runTest<PhongLightLayer>(iniFile, "PhongLight");
     runTest<CubeMapLayer>(iniFile, "CubeMap");
 }
 
@@ -75,8 +73,6 @@ int main(int argc, char** argv) {
                 runTest<TextureAtlasLayer>(argv[1], arg);
             } else if (arg == "FrameBuffer") {
                 runTest<FrameBufferLayer>(argv[1], arg);
-            } else if (arg == "PhongLight") {
-                runTest<PhongLightLayer>(argv[1], arg);
             } else if (arg == "CubeMap") {
                 runTest<CubeMapLayer>(argv[1], arg);
             } else if (arg == "All") {

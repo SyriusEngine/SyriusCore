@@ -29,11 +29,12 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     m_TextureParametersBuffer = m_Context->createConstantBuffer(textureParamsDesc);
 
     ImageFileDesc img1Desc;
-    img1Desc.fileName = "./Resources/Textures/Logo.jpg";
+    img1Desc.fileName = "./Resources/Textures/awesomeface.png";
     img1Desc.flipOnAccess = true;
+    img1Desc.requestedChannelCount = 4;
     auto img1 = createImage(img1Desc);
     Texture2DImageDesc tex1Desc;
-    tex1Desc.usage = SR_BUFFER_USAGE_DYNAMIC;
+    tex1Desc.usage = SR_BUFFER_USAGE_DEFAULT;
     tex1Desc.image = createResourceView(img1);
     m_Texture1 = m_Context->createTexture2D(tex1Desc);
 
@@ -43,7 +44,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     auto img2 = createImage(img2Desc);
     Texture2DImageDesc tex2Desc;
     tex2Desc.image = createResourceView(img2);
-    tex2Desc.usage = SR_BUFFER_USAGE_DYNAMIC;
+    tex2Desc.usage = SR_BUFFER_USAGE_DEFAULT;
     m_Texture2 = m_Context->createTexture2D(tex2Desc);
 
     SamplerDesc splrDesc;

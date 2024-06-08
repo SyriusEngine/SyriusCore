@@ -62,7 +62,12 @@ namespace Syrius{
         ImageUI8Desc imgDesc;
         imgDesc.width = m_Width;
         imgDesc.height = m_Height;
-        imgDesc.format = m_Format;
+        switch (m_ChannelCount) {
+            case 1: imgDesc.format = SR_TEXTURE_R_UI8; break;
+            case 2: imgDesc.format = SR_TEXTURE_RG_UI8; break;
+            case 3: imgDesc.format = SR_TEXTURE_RGB_UI8; break;
+            case 4: imgDesc.format = SR_TEXTURE_RGBA_UI8; break;
+        }
         imgDesc.data = data;
         auto img =  createImage(imgDesc);
         delete[] data;

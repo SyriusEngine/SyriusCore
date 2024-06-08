@@ -6,7 +6,9 @@ namespace Syrius{
     FrameBuffer::FrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits):
     m_DeviceLimits(deviceLimits),
     m_DepthStencilAttachment(nullptr){
-
+        if (!desc->isValid()){
+            SR_CORE_THROW("[FrameBuffer]: Framebuffer layout (%p) is not valid", desc.get());
+        }
     }
 
     FrameBuffer::~FrameBuffer() {

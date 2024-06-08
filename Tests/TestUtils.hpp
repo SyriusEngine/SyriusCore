@@ -32,6 +32,14 @@ static std::vector<float> s_RectangleVertices = {
     -0.5f,  0.5f,   0.0f, 1.0f, 1.0f, 0.0f
 };
 
+static std::vector<float> s_RectangleVertices2 = {
+        // X      Y     Z     R     G       B
+        -1.0f,  -1.0f,  0.0f, 1.0f, 0.0f, 0.0f,
+        1.0f,   -1.0f,  0.0f, 0.0f, 1.0f, 0.0f,
+        1.0f,   1.0f,   0.0f, 0.0f, 0.0f, 1.0f,
+        -1.0f,  1.0f,   0.0f, 1.0f, 1.0f, 0.0f
+};
+
 static std::vector<uint32> s_RectangleIndices = {
     0, 1, 2,
     2, 3, 0
@@ -40,19 +48,6 @@ static std::vector<uint32> s_RectangleIndices = {
 static std::vector<uint8> s_RedGreen = {
     255, 0, 0, 255,     0, 255, 0, 255,
     0, 255, 0, 255,     255, 0, 0, 255
-};
-
-static std::vector<uint8> s_RedBlue = {
-    255, 0, 0, 255,     0, 0, 255, 255,
-    0, 0, 255, 255,     255, 0, 0, 255
-};
-
-static std::vector<uint8> s_Magenta = {
-    255, 0, 255, 255,
-};
-
-static std::vector<uint8> s_Turquoise = {
-    0, 255, 255, 255,
 };
 
 static std::vector<uint8> s_RedGreenBlue = {
@@ -74,24 +69,6 @@ inline void createRedGreenCheckerboard(std::vector<ubyte>& data, uint32 width){
             data[i] = 0;
             data[i + 1] = 255;
             data[i + 2] = 0;
-            data[i + 3] = 255;
-        }
-        sw++;
-    }
-}
-
-inline void createCheckerboard(std::vector<ubyte>& data, ubyte r, ubyte g, ubyte b){
-    int32 sw = 0;
-    for (size_t i = 0; i < data.size(); i += 4) {
-        if (sw % 2 == 0) {
-            data[i] = 255;
-            data[i + 1] = 0;
-            data[i + 2] = 0;
-            data[i + 3] = 255;
-        } else {
-            data[i] = r;
-            data[i + 1] = g;
-            data[i + 2] = b;
             data[i + 3] = 255;
         }
         sw++;

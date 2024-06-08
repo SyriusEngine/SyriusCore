@@ -44,6 +44,8 @@ namespace Syrius {
 
     Resource<Image> D3D11ColorAttachment::getData() {
         // we use a staging texture to copy the data back to the CPU as a texture cannot be mapped
+        auto channelCount = getTextureChannelCount(m_Format);
+
         D3D11_TEXTURE2D_DESC desc;
         m_ColorBuffer->GetDesc(&desc);
         desc.Usage = D3D11_USAGE_STAGING;
@@ -58,13 +60,33 @@ namespace Syrius {
         D3D11_MAPPED_SUBRESOURCE mappedResource;
         SR_CORE_D3D11_CALL(m_Context->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &mappedResource));
 
-        BYTE* data = static_cast<BYTE*>(mappedResource.pData);
+        auto* data = static_cast<float*>(mappedResource.pData);
         ImageUI8Desc imgDesc;
         imgDesc.width = desc.Width;
         imgDesc.height = desc.Height;
-        imgDesc.format = m_Format;
-        imgDesc.data = data;
+        switch (channelCount) {
+            case 1: imgDesc.format = SR_TEXTURE_R_UI8; break;
+            case 2: imgDesc.format = SR_TEXTURE_RG_UI8; break;
+            case 3: imgDesc.format = SR_TEXTURE_RGB_UI8; break;
+            case 4: imgDesc.format = SR_TEXTURE_RGBA_UI8; break;
+            default: SR_CORE_THROW("[D3D11ColorAttachment]: Invalid channel count %i", channelCount);
+        }
+        imgDesc.data = nullptr;
         auto img = createImage(imgDesc);
+
+        auto imgData = reinterpret_cast<uint8*>(img->getData());
+        size_t rowPitch = mappedResource.RowPitch / sizeof(float);
+        // remove added padding data (if any), this is added by D3D11 to properly align the data
+        for (uint32 y = 0; y < desc.Height; ++y) {
+            for (uint32 x = 0; x < desc.Width; ++x) {
+                for (uint32 c = 0; c < channelCount; ++c) {
+                    size_t srcIndex = (y * rowPitch) + (x * channelCount) + c;
+                    size_t destIndex = (y * desc.Width * channelCount) + (x * channelCount) + c;
+                    imgData[destIndex] = static_cast<uint8>(data[srcIndex] * 255.0f);
+                }
+            }
+        }
+
         m_Context->Unmap(stagingTexture, 0);
         stagingTexture->Release();
         return std::move(img);
@@ -79,8 +101,6 @@ namespace Syrius {
     }
 
     void  D3D11ColorAttachment::createResources(){
-        SR_CHANNEL_FORMAT sF = getTextureChannelFormat(m_Format);
-
         D3D11_TEXTURE2D_DESC textureDesc = {0};
         textureDesc.Width = m_Width;
         textureDesc.Height = m_Height;

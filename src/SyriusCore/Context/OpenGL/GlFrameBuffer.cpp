@@ -4,21 +4,21 @@ namespace Syrius{
 
     GLint checkFramebuffer(uint32 framebuffer){
         auto status = glCheckNamedFramebufferStatus(framebuffer, GL_FRAMEBUFFER);
-        std::string message = "openGL Framebuffer error: ";
+        std::string errorStr;
         switch (status){
-            case GL_FRAMEBUFFER_COMPLETE: message += "GL_FRAMEBUFFER_COMPLETE"; break;
-            case GL_FRAMEBUFFER_UNDEFINED: message += "GL_FRAMEBUFFER_UNDEFINED"; break;
-            case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT: message += "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT"; break;
-            case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT: message += "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT"; break;
-            case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER: message += "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER"; break;
-            case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER: message += "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER"; break;
-            case GL_FRAMEBUFFER_UNSUPPORTED: message += "GL_FRAMEBUFFER_UNSUPPORTED"; break;
-            case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE: message += "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE"; break;
-            case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS: message += "GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS"; break;
-            default: message += "Unknown error"; break;
+            case GL_FRAMEBUFFER_COMPLETE:                       errorStr = "GL_FRAMEBUFFER_COMPLETE"; break;
+            case GL_FRAMEBUFFER_UNDEFINED:                      errorStr = "GL_FRAMEBUFFER_UNDEFINED"; break;
+            case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:          errorStr = "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT"; break;
+            case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:  errorStr = "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT"; break;
+            case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:         errorStr = "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER"; break;
+            case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:         errorStr = "GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER"; break;
+            case GL_FRAMEBUFFER_UNSUPPORTED:                    errorStr = "GL_FRAMEBUFFER_UNSUPPORTED"; break;
+            case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:         errorStr = "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE"; break;
+            case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:       errorStr = "GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS"; break;
+            default: errorStr += "Unknown error"; break;
         }
         if (status != GL_FRAMEBUFFER_COMPLETE){
-            SR_CORE_EXCEPTION(message);
+            SR_CORE_THROW("[GlFrameBuffer]: Framebuffer (%i) is not complete, error: %s", framebuffer, errorStr.c_str());
         }
         return status;
     }
