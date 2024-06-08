@@ -39,7 +39,7 @@ const Vertex s_Rectangle[] = {
 
 Mesh createTriangle();
 
-Mesh createRectangle();
+Mesh createRectangle(float size = 0.5f);
 
 Mesh createScreenRectangle();
 

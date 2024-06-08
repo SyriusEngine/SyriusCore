@@ -17,12 +17,21 @@ namespace Syrius{
         m_GlFormat = getGlChannelType(baseFormat);
         m_ChannelCount = getChannelFormatCount(baseFormat);
 
-        glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
-        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+//        glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
+//        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+//
+//        glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr);
+//        glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//        glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr);
+        glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
+        glTextureStorage2D(m_TextureID, 1, m_InternalFormat, m_Width, m_Height);
+
         glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+        glNamedFramebufferTexture(m_FrameBufferID, GL_COLOR_ATTACHMENT0 + m_AttachmentID, m_TextureID, 0);
     }
 
     GlColorAttachment::~GlColorAttachment() {
@@ -50,9 +59,9 @@ namespace Syrius{
          * This underlying line wont work for some reason?
          * We use the old method for now (glBind spamming)
          */
-        // glTextureStorage2D(m_TextureID, 1, m_InternalFormat, width, height);
-        glBindTexture(GL_TEXTURE_2D, m_TextureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr);
+        glTextureStorage2D(m_TextureID, 1, m_InternalFormat, width, height);
+        //glBindTexture(GL_TEXTURE_2D, m_TextureID);
+        //glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr);
     }
 
     Resource<Image> GlColorAttachment::getData() {
@@ -91,6 +100,7 @@ namespace Syrius{
     }
 
     void GlDefaultColorAttachment::bindShaderResource(uint32 slot) {
+        SR_CORE_WARNING("[GlDefaultColorAttachment]: Attempted to bind default color attachment (%p) as shader resource at slot %i, this is not supported", this, slot)
     }
 
     void GlDefaultColorAttachment::clear() {
@@ -103,7 +113,8 @@ namespace Syrius{
     }
 
     Resource<Image> GlDefaultColorAttachment::getData() {
-        return {};
+        SR_CORE_WARNING("[GlDefaultColorAttachment]: Attempted to get data from default color attachment (%p), this is not supported", this)
+        return nullptr;
     }
 
     uint64 GlDefaultColorAttachment::getIdentifier() const {

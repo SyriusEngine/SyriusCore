@@ -28,8 +28,7 @@ namespace Syrius{
 
     }
 
-    GlDepthStencilAttachment::~GlDepthStencilAttachment() {
-    }
+    GlDepthStencilAttachment::~GlDepthStencilAttachment() = default;
 
     void GlDepthStencilAttachment::bind() {
         if (m_EnableDepthTest){
@@ -170,9 +169,7 @@ namespace Syrius{
 
     }
 
-    GlDefaultDepthStencilAttachment::~GlDefaultDepthStencilAttachment() {
-
-    }
+    GlDefaultDepthStencilAttachment::~GlDefaultDepthStencilAttachment() = default;
 
     void GlDefaultDepthStencilAttachment::bindShaderResource(uint32 slot) {
         SR_CORE_WARNING("Binding default depth stencil attachment as shader resource is not supported");

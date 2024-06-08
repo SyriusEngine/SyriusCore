@@ -74,7 +74,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
 
     m_ScreenProgram = m_ShaderLibrary.loadShader("Screen");
 
-    Mesh rectangle = createRectangle();
+    Mesh rectangle = createRectangle(0.75f);
     m_ScreenVertexArray = loadMesh(rectangle, m_ScreenProgram);
 
     addImGuiDrawFunction([this]{

@@ -20,6 +20,12 @@ namespace Syrius{
         void unbind() override;
 
     private:
+
+        void createColorAttachments(const ResourceView<FrameBufferLayout>& desc);
+
+        void createDepthStencilAttachment(const ResourceView<FrameBufferLayout>& desc);
+
+    private:
         uint32 m_FrameBufferID;
 
     };
