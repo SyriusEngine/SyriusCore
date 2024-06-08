@@ -59,6 +59,25 @@ ResourceView<FrameBuffer> FrameBufferTest::createFrameBuffer2CA() {
     return TestEnvironment::m_Context->createFrameBuffer(fbLayout);
 }
 
+ResourceView<FrameBuffer> FrameBufferTest::createFrameBufferCCA() {
+    auto fbLayout = TestEnvironment::m_Context->createFrameBufferLayout();
+    ViewportDesc vpDesc;
+    vpDesc.width = s_Width;
+    vpDesc.height = s_Height;
+    fbLayout->addViewportDesc(vpDesc);
+    CubeColorAttachmentDesc ccaDesc;
+    ccaDesc.format = SR_TEXTURE_RGBA_F32;
+    ccaDesc.width = s_Width;
+    ccaDesc.height = s_Height;
+    ccaDesc.clearColor[0] = 0.0f;
+    ccaDesc.clearColor[1] = 0.0f;
+    ccaDesc.clearColor[2] = 1.0f;
+    ccaDesc.clearColor[3] = 1.0f;
+    fbLayout->addCubeColorAttachmentDesc(ccaDesc);
+
+    return TestEnvironment::m_Context->createFrameBuffer(fbLayout);
+}
+
 ResourceView<VertexArray> FrameBufferTest::createScreenQuad(ShaderStorage& ss) {
     auto vLayout = TestEnvironment::m_Context->createVertexLayout();
     vLayout->addAttribute("Position", SR_FLOAT32_3);
@@ -147,7 +166,9 @@ ShaderStorage FrameBufferTest::createScreenShader2CA() {
 
 bool FrameBufferTest::isPixelCorrect(Resource<Syrius::Image> &img, uint8 r, uint8 g, uint8 b, uint8 a) {
     auto data = reinterpret_cast<uint8*>(img->getData());
-    for (uint32 i = 0; i < s_Width * s_Height * 4; i+=4){
+    auto width = img->getWidth();
+    auto height = img->getHeight();
+    for (uint32 i = 0; i < width * height * 4; i+=4){
         if (data[i] != r || data[i+1] != g || data[i+2] != b || data[i+3] != a){
             return false;
         }
@@ -203,6 +224,21 @@ TEST_F(FrameBufferTest, ClearFrameBuffer2ColorAttachments){
 
     EXPECT_TRUE(isPixelCorrect(img1, 255, 0, 0, 255));
     EXPECT_TRUE(isPixelCorrect(img2, 0, 255, 0, 255));
+}
+
+TEST_F(FrameBufferTest, ClearFrameBufferCubeColorAttachment){
+    auto fb = createFrameBufferCCA();
+
+    fb->clear();
+
+    auto cca = fb->getCubeColorAttachment(0);
+    auto img = cca->getData(SR_CUBEMAP_FACE_RIGHT);
+
+    EXPECT_EQ(img->getWidth(), s_Width);
+    EXPECT_EQ(img->getHeight(), s_Height);
+    EXPECT_EQ(img->getFormat(), SR_TEXTURE_RGBA_UI8);
+
+    EXPECT_TRUE(isPixelCorrect(img, 0, 0, 255, 255));
 }
 
 TEST_F(FrameBufferTest, GetColorAttachmentOutOfBounds){

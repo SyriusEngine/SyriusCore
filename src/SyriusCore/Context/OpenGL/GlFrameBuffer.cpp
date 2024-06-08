@@ -70,35 +70,21 @@ namespace Syrius{
             colorAttachmentIndex++;
         }
         // Cube color attachments
-//        for (const auto& attachDesc: desc->getCubeColorAttachmentDesc()){
-//            auto attachment = new GlCubeColorAttachment(attachDesc, m_DeviceLimits, m_FrameBufferID, colorAttachmentIndex);
-//            m_CubeColorAttachments.emplace_back(attachment);
-//            auto identifier = attachment->getIdentifier();
-//            for (uint32 i = 0; i < 6; i++){
-//                glNamedFramebufferTexture(m_FrameBufferID, attachmentIndex, attachment->getIdentifier(), 0);
-//                drawBuffers.push_back(attachmentIndex);
-//                attachmentIndex++;
-//                colorAttachmentIndex++;
-//            }
-//        }
+        for (const auto& attachDesc: desc->getCubeColorAttachmentDesc()){
+            auto attachment = new GlCubeColorAttachment(attachDesc, m_DeviceLimits, m_FrameBufferID, colorAttachmentIndex);
+            m_CubeColorAttachments.emplace_back(attachment);
+            for (uint32 i = 0; i < 6; i++){
+                drawBuffers.push_back(GL_COLOR_ATTACHMENT0 + colorAttachmentIndex + i);
+                colorAttachmentIndex++;
+            }
+        }
 
         glNamedFramebufferDrawBuffers(m_FrameBufferID, drawBuffers.size(), &drawBuffers[0]);
 
     }
 
     void GlFrameBuffer::createDepthStencilAttachment(const ResourceView<FrameBufferLayout> &desc) {
-        if (!desc->getDepthStencilAttachmentDesc().empty()){
-            auto dsaDesc = desc->getDepthStencilAttachmentDesc().back();
-            GlDepthStencilAttachment* attachment;
-            if (dsaDesc.enableShaderAccess){
-                attachment = new GlDepthStencilAttachmentTexture(dsaDesc, m_DeviceLimits, m_FrameBufferID);
-            }
-            else{
-                attachment = new GlDepthStencilAttachmentRenderBuffer(dsaDesc, m_DeviceLimits, m_FrameBufferID);
-            }
-            m_DepthStencilAttachment = Resource<DepthStencilAttachment>(attachment);
-        }
-        else{
+        if (desc->getDepthStencilAttachmentDesc().empty()){
             // create a dummy depth stencil attachment such that the object exists but does nothing
             DepthStencilAttachmentDesc dummyDesc;
             dummyDesc.width = desc->getViewportDesc().back().width;
@@ -106,9 +92,18 @@ namespace Syrius{
             dummyDesc.enableDepthTest = false;
             dummyDesc.enableStencilTest = false;
             dummyDesc.enableShaderAccess = false;
-            auto df = new GlDepthStencilAttachmentRenderBuffer(dummyDesc, m_DeviceLimits, 0);
-            m_DepthStencilAttachment = Resource<DepthStencilAttachment>(df);
+            desc->addDepthStencilAttachmentDesc(dummyDesc);
         }
+        auto dsaDesc = desc->getDepthStencilAttachmentDesc().back();
+        GlDepthStencilAttachment* attachment;
+        if (dsaDesc.enableShaderAccess){
+            attachment = new GlDepthStencilAttachmentTexture(dsaDesc, m_DeviceLimits, m_FrameBufferID);
+        }
+        else{
+            // RenderBuffers are faster than Textures but cannot be accessed in shaders
+            attachment = new GlDepthStencilAttachmentRenderBuffer(dsaDesc, m_DeviceLimits, m_FrameBufferID);
+        }
+        m_DepthStencilAttachment = Resource<DepthStencilAttachment>(attachment);
     }
 
     GlDefaultFrameBuffer::GlDefaultFrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits) :

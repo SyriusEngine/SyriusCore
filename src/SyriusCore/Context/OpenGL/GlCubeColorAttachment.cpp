@@ -16,12 +16,8 @@ namespace Syrius{
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID);
         for(uint32 i = 0; i < 6; i++){
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr);
+            glNamedFramebufferTexture(m_FrameBufferID, GL_COLOR_ATTACHMENT0 + m_BaseAttachmentID + i, m_TextureID, 0);
         }
-        glTextureParameteri(m_TextureID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTextureParameteri(m_TextureID, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     }
 
     GlCubeColorAttachment::~GlCubeColorAttachment() = default;
@@ -50,6 +46,24 @@ namespace Syrius{
         for(uint32 i = 0; i < 6; i++){
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr);
         }
+    }
+
+    Resource<Image> GlCubeColorAttachment::getData(SR_CUBEMAP_FACE face) {
+        auto channelCount = getTextureChannelCount(m_Format);
+        uint32 size = m_Width * m_Height * channelCount;
+        ImageUI8Desc imgDesc;
+        imgDesc.width = m_Width;
+        imgDesc.height = m_Height;
+        switch (channelCount) {
+            case 1: imgDesc.format = SR_TEXTURE_R_UI8; break;
+            case 2: imgDesc.format = SR_TEXTURE_RG_UI8; break;
+            case 3: imgDesc.format = SR_TEXTURE_RGB_UI8; break;
+            case 4: imgDesc.format = SR_TEXTURE_RGBA_UI8; break;
+        }
+        imgDesc.data = nullptr;
+        auto img =  createImage(imgDesc);
+        glGetTextureImage(m_TextureID, face, m_GlFormat, GL_UNSIGNED_BYTE, size, img->getData());
+        return std::move(img);
     }
 
     uint64 GlCubeColorAttachment::getIdentifier() const {

@@ -19,6 +19,8 @@ namespace Syrius{
 
         void onResize(uint32 width, uint32 height) override;
 
+        Resource<Image> getData(SR_CUBEMAP_FACE face) override;
+
         [[nodiscard]] uint64 getIdentifier() const override;
 
     private:

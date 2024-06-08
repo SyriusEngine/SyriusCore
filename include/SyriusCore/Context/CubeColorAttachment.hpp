@@ -27,6 +27,8 @@ namespace Syrius{
 
         virtual void onResize(uint32 width, uint32 height) = 0;
 
+        [[nodiscard]] virtual Resource<Image> getData(SR_CUBEMAP_FACE face) = 0;
+
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 
         [[nodiscard]] uint32 getWidth() const;

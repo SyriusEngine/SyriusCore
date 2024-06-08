@@ -35,6 +35,8 @@ namespace Syrius{
 
         ResourceView<DepthStencilAttachment> getDepthStencilAttachment();
 
+        [[nodiscard]] ResourceView<CubeColorAttachment> getCubeColorAttachment(uint32 index);
+
     protected:
         const Resource<DeviceLimits>& m_DeviceLimits;
 

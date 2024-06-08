@@ -19,6 +19,8 @@ protected:
 
     static ResourceView<FrameBuffer> createFrameBuffer2CA();
 
+    static ResourceView<FrameBuffer> createFrameBufferCCA();
+
     static ResourceView<VertexArray> createScreenQuad(ShaderStorage& ss);
 
     static ShaderStorage createScreenShader1CA();
