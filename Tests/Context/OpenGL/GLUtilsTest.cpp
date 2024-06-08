@@ -146,8 +146,8 @@ TEST_F(GLUtilsTest, GetTextureAddressMode){
 }
 
 TEST_F(GLUtilsTest, GetTextureFilter){
-    EXPECT_EQ(getGlTextureFilter(SR_TEXTURE_FILTER_LINEAR), GL_LINEAR_MIPMAP_LINEAR);
-    EXPECT_EQ(getGlTextureFilter(SR_TEXTURE_FILTER_POINT), GL_NEAREST_MIPMAP_NEAREST);
+    EXPECT_EQ(getGlTextureFilter(SR_TEXTURE_FILTER_LINEAR), GL_LINEAR);
+    EXPECT_EQ(getGlTextureFilter(SR_TEXTURE_FILTER_POINT), GL_NEAREST);
 }
 
 TEST_F(GLUtilsTest, GetComparisonFunc){
