@@ -63,6 +63,20 @@ namespace Syrius{
         m_Context->Unmap(m_Buffer, 0);
     }
 
+    void D3D11VertexBuffer::copyFrom(const ResourceView<VertexBuffer> &other) {
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11VertexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
+
+        if (m_Size >= other->getSize()){
+            auto otherBuffer = reinterpret_cast<ID3D11Buffer*>(other->getIdentifier());
+            SR_CORE_ASSERT(otherBuffer, "[D3D11VertexBuffer]: Copy from buffer object (%p) requested, which has no valid identifier!", other.get());
+            m_Context->CopyResource(m_Buffer, otherBuffer);
+        }
+        else{
+            SR_CORE_WARNING("[D3D11VertexBuffer]: Copy from buffer object (%p) requested, which exceeds the current "
+                            "buffer size (%i > %i)", this, other->getSize(), m_Size);
+        }
+    }
+
     Resource<ubyte[]> D3D11VertexBuffer::getData() const {
         SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D311VertexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
 
@@ -102,6 +116,7 @@ namespace Syrius{
     uint64 D3D11VertexBuffer::getIdentifier() const {
         return reinterpret_cast<uint64>(m_Buffer);
     }
+
 }
 
 #endif

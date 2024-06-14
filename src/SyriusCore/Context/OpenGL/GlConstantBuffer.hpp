@@ -16,6 +16,8 @@ namespace Syrius{
 
         void setData(const void* data, uint64 size) override;
 
+        void copyFrom(const ResourceView<ConstantBuffer>& other) override;
+
         [[nodiscard]] Resource<ubyte[]> getData() const override;
 
         [[nodiscard]] uint64 getIdentifier() const override;

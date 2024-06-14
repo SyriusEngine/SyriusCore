@@ -122,3 +122,27 @@ TEST_F(VertexBufferTest, UpdateVertexBufferLargerData){
 
     EXPECT_DEATH(vb->setData(s_RectangleVertices.data(), 4), "");
 }
+
+TEST_F(VertexBufferTest, CopyVertexBuffer){
+    VertexBufferDesc desc;
+    desc.data = s_TriangleVertices.data();
+    desc.count = 3;
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
+    desc.layout = m_Layout;
+
+    auto srcVb = TestEnvironment::m_Context->createVertexBuffer(desc);
+
+    desc.data = nullptr; // don't set any data in the destination buffer
+    auto dstVb = TestEnvironment::m_Context->createVertexBuffer(desc);
+
+    dstVb->copyFrom(srcVb);
+
+    auto data = dstVb->getData();
+    EXPECT_NE(data, nullptr);
+
+    // check if the data has changed
+    auto floatData = reinterpret_cast<float*>(data.get());
+    for (int i = 0; i < s_TriangleVertices.size(); i++){
+        EXPECT_EQ(floatData[i], s_TriangleVertices[i]);
+    }
+}

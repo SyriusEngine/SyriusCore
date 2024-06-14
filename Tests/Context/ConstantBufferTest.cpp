@@ -165,3 +165,34 @@ TEST_F(ConstantBufferTest, UpdateConstantBufferLargerData){
     newData[1] = m_Data;
     EXPECT_DEATH(cb->setData(newData, sizeof(CBData) * 2), "");
 }
+
+TEST_F(ConstantBufferTest, CopyConstantBuffer){
+    ConstantBufferDesc desc;
+    desc.name = "CBData";
+    desc.size = sizeof(CBData);
+    desc.data = &m_Data;
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
+    desc.shaderStage = SR_SHADER_VERTEX;
+
+    auto srcCb = TestEnvironment::m_Context->createConstantBuffer(desc);
+
+    desc.data = nullptr;
+    auto dstCb = TestEnvironment::m_Context->createConstantBuffer(desc);
+
+    dstCb->copyFrom(srcCb);
+
+    auto data = dstCb->getData();
+    auto cbData = reinterpret_cast<CBData*>(data.get());
+    EXPECT_EQ(cbData->position.x, 1.0f);
+    EXPECT_EQ(cbData->position.y, 2.0f);
+    EXPECT_EQ(cbData->position.z, 3.0f);
+    EXPECT_EQ(cbData->position.w, 4.0f);
+
+    for (int i = 0; i < 4; i++) {
+        EXPECT_EQ(cbData->view.rows[i].x, i);
+        EXPECT_EQ(cbData->view.rows[i].y, i + 1);
+        EXPECT_EQ(cbData->view.rows[i].z, i + 2);
+        EXPECT_EQ(cbData->view.rows[i].w, i + 3);
+    }
+
+}

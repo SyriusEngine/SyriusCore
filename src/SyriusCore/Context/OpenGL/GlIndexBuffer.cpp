@@ -33,6 +33,19 @@ namespace Syrius{
         SR_CORE_ASSERT(retVal, "[GlIndexBuffer]: Failed to unmap buffer object (%i)", m_BufferID);
     }
 
+    void GlIndexBuffer::copyFrom(const ResourceView<IndexBuffer> &other) {
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlIndexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
+
+        if (m_Size >= other->getSize()){
+            auto copySize = std::min(m_Size, other->getSize());
+            glCopyNamedBufferSubData(other->getIdentifier(), m_BufferID, 0, 0, copySize);
+        }
+        else{
+            SR_CORE_WARNING("[GlIndexBuffer]: Copy from buffer object (%p) requested, which exceeds the current buffer "
+                            "size (%i > %i).", this, other->getSize(), m_Size);
+        }
+    }
+
     Resource<ubyte[]> GlIndexBuffer::getData() const {
         SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlIndexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
 

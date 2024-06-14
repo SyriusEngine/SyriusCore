@@ -54,6 +54,20 @@ namespace Syrius{
         m_Context->Unmap(m_Buffer, 0);
     }
 
+    void D3D11ConstantBufferBase::copyFrom(const ResourceView<ConstantBuffer> &other) {
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11ConstantBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
+
+        if (m_Size >= other->getSize()){
+            auto otherBuffer = reinterpret_cast<ID3D11Buffer*>(other->getIdentifier());
+            SR_CORE_ASSERT(otherBuffer, "[D3D11ConstantBuffer]: Copy from buffer object (%p) requested, which has no valid identifier!", other.get());
+            m_Context->CopyResource(m_Buffer, otherBuffer);
+        }
+        else{
+            SR_CORE_WARNING("[D3D11ConstantBuffer]: Copy from buffer object (%p) requested, which exceeds the current "
+                            "buffer size (%i > %i)", this, other->getSize(), m_Size);
+        }
+    }
+
     Resource<ubyte[]> D3D11ConstantBufferBase::getData() const {
         auto data = createResource<ubyte[]>(m_Size);
 

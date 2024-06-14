@@ -129,3 +129,27 @@ TEST_F(IndexBufferTest, UpdateIndexBufferLargerData){
 
     EXPECT_DEATH(ib->setData(s_RectangleIndices.data(), 4), "");
 }
+
+TEST_F(IndexBufferTest, CopyIndexBuffer){
+    IndexBufferDesc desc;
+    desc.data = s_TriangleIndices.data();
+    desc.count = 3;
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
+    desc.dataType = SR_UINT32;
+
+    auto srcIb = TestEnvironment::m_Context->createIndexBuffer(desc);
+
+    desc.data = nullptr; // create a new index buffer with no data
+    auto dstIb = TestEnvironment::m_Context->createIndexBuffer(desc);
+
+    dstIb->copyFrom(srcIb);
+
+    auto data = dstIb->getData();
+    EXPECT_NE(data, nullptr);
+
+    // check if the data has changed
+    auto uint32Data = reinterpret_cast<uint32*>(data.get());
+    for (int i = 0; i < s_TriangleIndices.size(); i++){
+        EXPECT_EQ(uint32Data[i], s_TriangleIndices[i]);
+    }
+}
