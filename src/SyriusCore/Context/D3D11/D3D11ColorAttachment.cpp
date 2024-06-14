@@ -5,12 +5,12 @@
 namespace Syrius {
 
     D3D11ColorAttachment::D3D11ColorAttachment(const ColorAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext) :
-    ColorAttachment(desc, deviceLimits),
-    m_Device(device),
-    m_Context(deviceContext),
-    m_ColorBuffer(nullptr),
-    m_RenderTargetView(nullptr),
-    m_BufferView(nullptr) {
+            ColorAttachment(desc, deviceLimits),
+            m_Device(device),
+            m_Context(deviceContext),
+            m_Texture(nullptr),
+            m_RenderTargetView(nullptr),
+            m_TextureView(nullptr) {
         if (!m_DeviceLimits->texture2DFormatSupported(desc.format)){
             SR_CORE_THROW("[D3D11Texture2D]: Supplied texture format (%i) is not supported by the device", desc.format);
         }
@@ -28,7 +28,7 @@ namespace Syrius {
     void D3D11ColorAttachment::bindShaderResource(uint32 slot) {
         SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[D3D11ColorAttachment]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
 
-        m_Context->PSSetShaderResources(slot, 1, &m_BufferView);
+        m_Context->PSSetShaderResources(slot, 1, &m_TextureView);
     }
 
     void D3D11ColorAttachment::clear() {
@@ -47,7 +47,7 @@ namespace Syrius {
         auto channelCount = getTextureChannelCount(m_Format);
 
         D3D11_TEXTURE2D_DESC desc;
-        m_ColorBuffer->GetDesc(&desc);
+        m_Texture->GetDesc(&desc);
         desc.Usage = D3D11_USAGE_STAGING;
         desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
         desc.BindFlags = 0;
@@ -55,7 +55,7 @@ namespace Syrius {
         ID3D11Texture2D* stagingTexture = nullptr;
         SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&desc, nullptr, &stagingTexture));
 
-        m_Context->CopyResource(stagingTexture, m_ColorBuffer);
+        m_Context->CopyResource(stagingTexture, m_Texture);
 
         D3D11_MAPPED_SUBRESOURCE mappedResource;
         SR_CORE_D3D11_CALL(m_Context->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &mappedResource));
@@ -93,7 +93,7 @@ namespace Syrius {
     }
 
     uint64 D3D11ColorAttachment::getIdentifier() const {
-        return reinterpret_cast<uint64>(m_ColorBuffer);
+        return reinterpret_cast<uint64>(m_Texture);
     }
 
     ID3D11RenderTargetView *D3D11ColorAttachment::getRenderTargetView() const {
@@ -114,14 +114,14 @@ namespace Syrius {
         textureDesc.CPUAccessFlags = 0;
         textureDesc.MiscFlags = 0;
 
-        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_ColorBuffer));
+        SR_CORE_D3D11_CALL(m_Device->CreateTexture2D(&textureDesc, nullptr, &m_Texture));
 
         D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc = {};
         renderTargetViewDesc.Format = textureDesc.Format;
         renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
         renderTargetViewDesc.Texture2D.MipSlice = 0;
 
-        SR_CORE_D3D11_CALL(m_Device->CreateRenderTargetView(m_ColorBuffer, &renderTargetViewDesc, &m_RenderTargetView));
+        SR_CORE_D3D11_CALL(m_Device->CreateRenderTargetView(m_Texture, &renderTargetViewDesc, &m_RenderTargetView));
 
         D3D11_SHADER_RESOURCE_VIEW_DESC textureViewDesc = {};
         textureViewDesc.Format = textureDesc.Format;
@@ -129,18 +129,18 @@ namespace Syrius {
         textureViewDesc.Texture2D.MipLevels = 1;
         textureViewDesc.Texture2D.MostDetailedMip = 0;
 
-        SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_ColorBuffer, &textureViewDesc, &m_BufferView));
+        SR_CORE_D3D11_CALL(m_Device->CreateShaderResourceView(m_Texture, &textureViewDesc, &m_TextureView));
     }
 
     void  D3D11ColorAttachment::destroyResources(){
-        if (m_BufferView) {
-            m_BufferView->Release();
+        if (m_TextureView) {
+            m_TextureView->Release();
         }
         if (m_RenderTargetView) {
             m_RenderTargetView->Release();
         }
-        if (m_ColorBuffer) {
-            m_ColorBuffer->Release();
+        if (m_Texture) {
+            m_Texture->Release();
         }
     }
 

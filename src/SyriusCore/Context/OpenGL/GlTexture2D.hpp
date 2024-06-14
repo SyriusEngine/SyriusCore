@@ -19,6 +19,10 @@ namespace Syrius{
 
         void setData(const void* data, uint32 x, uint32 y, uint32 width, uint32 height) override;
 
+        void copyFrom(const ResourceView<Texture2D>& other) override;
+
+        void copyFrom(const ResourceView<ColorAttachment>& other) override;
+
         Resource<Image> getData() override;
 
         [[nodiscard]] uint64 getIdentifier() const override;

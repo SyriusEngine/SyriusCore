@@ -27,6 +27,10 @@ namespace Syrius{
 
         [[nodiscard]] ID3D11RenderTargetView *getRenderTargetView() const;
 
+        [[nodiscard]] inline ID3D11Texture2D* getTexture() const { return m_Texture; }
+
+        [[nodiscard]] inline ID3D11ShaderResourceView* getTextureView() const { return m_TextureView; }
+
     private:
 
         void createResources();
@@ -37,9 +41,9 @@ namespace Syrius{
         ID3D11Device *m_Device;
         ID3D11DeviceContext *m_Context;
 
-        ID3D11Texture2D *m_ColorBuffer;
+        ID3D11Texture2D *m_Texture;
         ID3D11RenderTargetView *m_RenderTargetView;
-        ID3D11ShaderResourceView *m_BufferView;
+        ID3D11ShaderResourceView *m_TextureView;
     };
 
     class D3D11DefaultColorAttachment : public ColorAttachment {

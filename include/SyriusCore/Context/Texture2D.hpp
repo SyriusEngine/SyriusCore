@@ -8,6 +8,8 @@
 
 namespace Syrius{
 
+    class ColorAttachment;
+
     struct SR_CORE_API Texture2DDesc{
         uint32 width                = 0;
         uint32 height               = 0;
@@ -35,6 +37,10 @@ namespace Syrius{
         virtual void bindShaderResource(uint32 slot) = 0;
 
         virtual void setData(const void* data, uint32 x, uint32 y, uint32 width, uint32 height) = 0;
+
+        virtual void copyFrom(const ResourceView<Texture2D>& other) = 0;
+
+        virtual void copyFrom(const ResourceView<ColorAttachment>& other) = 0;
 
         virtual Resource<Image> getData() = 0;
 

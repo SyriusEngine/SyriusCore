@@ -1,4 +1,5 @@
 #include "GlTexture2D.hpp"
+#include "GlColorAttachment.hpp"
 
 namespace Syrius{
 
@@ -58,6 +59,25 @@ namespace Syrius{
 
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    void GlTexture2D::copyFrom(const ResourceView<Texture2D> &other) {
+        SR_CORE_PRECONDITION(m_Width == other->getWidth(), "[GlTexture2D]: Width of the source texture (%i) does not match the width of the destination texture (%i)", other->getWidth(), m_Width);
+        SR_CORE_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
+        SR_CORE_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlTexture2D]: Copy on texture object (%p) requested, which has been created with SR_BUFFER_USAGE_STATIC flag!", this);
+
+        glCopyImageSubData(other->getIdentifier(), GL_TEXTURE_2D, 0, 0, 0, 0, m_TextureID, GL_TEXTURE_2D, 0, 0, 0, 0, m_Width, m_Height, 1);
+
+    }
+
+    void GlTexture2D::copyFrom(const ResourceView<ColorAttachment> &other) {
+        SR_CORE_PRECONDITION(m_Width == other->getWidth(), "[GlTexture2D]: Width of the source texture (%i) does not match the width of the destination texture (%i)", other->getWidth(), m_Width);
+        SR_CORE_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
+        SR_CORE_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlTexture2D]: Copy on texture object (%p) requested, which has been created with SR_BUFFER_USAGE_STATIC flag!", this);
+
+        glCopyImageSubData(other->getIdentifier(), GL_TEXTURE_2D, 0, 0, 0, 0, m_TextureID, GL_TEXTURE_2D, 0, 0, 0, 0, m_Width, m_Height, 1);
     }
 
     Resource<Image> GlTexture2D::getData() {

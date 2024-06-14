@@ -1,4 +1,5 @@
 #include "D3D11Texture2D.hpp"
+#include "D3D11ColorAttachment.hpp"
 
 #if defined(SR_CORE_PLATFORM_WIN64)
 
@@ -68,6 +69,28 @@ namespace Syrius{
 
         m_Context->UpdateSubresource(m_Texture, 0, &box, data, width * bytesPerPixel, 0);
         m_Context->GenerateMips(m_TextureView);
+    }
+
+    void D3D11Texture2D::copyFrom(const ResourceView<Texture2D> &other) {
+        SR_CORE_PRECONDITION(m_Width == other->getWidth(), "[D3D11Texture2D]: Width of the source texture (%i) does not match the width of the destination texture (%i)", other->getWidth(), m_Width);
+        SR_CORE_PRECONDITION(m_Height == other->getHeight(), "[D3D11Texture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
+        SR_CORE_PRECONDITION(m_Format == other->getFormat(), "[D3D11Texture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11Texture2D]: Copy on texture object (%p) requested, which has been created with SR_BUFFER_USAGE_STATIC flag!", this);
+
+        auto srcBuffer = dynamic_cast<D3D11Texture2D*>(other.get());
+        SR_CORE_ASSERT(srcBuffer, "[D3D11Texture2D]: Copy from buffer object (%p) requested, which has no valid identifier!", other.get());
+        m_Context->CopyResource(m_Texture, srcBuffer->getTexture());
+    }
+
+    void D3D11Texture2D::copyFrom(const ResourceView<ColorAttachment> &other) {
+        SR_CORE_PRECONDITION(m_Width == other->getWidth(), "[D3D11Texture2D]: Width of the source texture (%i) does not match the width of the destination texture (%i)", other->getWidth(), m_Width);
+        SR_CORE_PRECONDITION(m_Height == other->getHeight(), "[D3D11Texture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
+        SR_CORE_PRECONDITION(m_Format == other->getFormat(), "[D3D11Texture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
+        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11Texture2D]: Copy on texture object (%p) requested, which has been created with SR_BUFFER_USAGE_STATIC flag!", this);
+
+        auto srcBuffer = dynamic_cast<D3D11ColorAttachment*>(other.get());
+        SR_CORE_ASSERT(srcBuffer, "[D3D11Texture2D]: Copy from buffer object (%p) requested, which has no valid identifier!", other.get());
+        m_Context->CopyResource(m_Texture, srcBuffer->getTexture());
     }
 
     Resource<Image> D3D11Texture2D::getData() {

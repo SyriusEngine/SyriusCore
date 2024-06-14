@@ -143,3 +143,34 @@ TEST_F(Texture2DTest, UpdateTexture2DOutOfRegion){
     std::vector<uint8> largeData(2 * 2 * 4, 255);
     EXPECT_DEATH(tex->setData(largeData.data(), 300, 300, 2, 2), "");
 }
+
+TEST_F(Texture2DTest, CopyTexture2DUI8){
+    std::vector<uint8> red;
+    createRedVector(red);
+    Texture2DDesc desc;
+    desc.width = s_Width;
+    desc.height = s_Height;
+    desc.format = SR_TEXTURE_RGBA_UI8;
+    desc.data = red.data();
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
+
+    auto srcTex = TestEnvironment::m_Context->createTexture2D(desc);
+
+    desc.data = nullptr;
+    auto dstTex = TestEnvironment::m_Context->createTexture2D(desc);
+
+    dstTex->copyFrom(srcTex);
+
+    auto img = dstTex->getData();
+
+    auto data = img->getData();
+    auto ui8Data = reinterpret_cast<const ubyte*>(data);
+    bool equal = true;
+    for (size_t i = 0; i < red.size(); ++i){
+        if (ui8Data[i] != red[i]){
+            equal = false;
+            break;
+        }
+    }
+    EXPECT_TRUE(equal);
+}
