@@ -72,22 +72,3 @@ TEST_F(FrameBufferLayoutTest, CreateFrameBufferLayoutTooManyColorAttachments){
     }
     EXPECT_FALSE(fbLayout->isValid());
 }
-
-TEST_F(FrameBufferLayoutTest, CreateFrameBufferLayoutTooManyAttachmentsCube){
-    auto fbLayout = TestEnvironment::m_Context->createFrameBufferLayout();
-
-    CubeColorAttachmentDesc ccaDesc;
-    fbLayout->addCubeColorAttachmentDesc(ccaDesc);
-
-    /*
-     * Similar to the previous test, the maximum number of color attachments is (usually) 8.
-     */
-    for (uint32 i = 0; i < 4; i++){
-        ColorAttachmentDesc ca;
-        ca.width = 800;
-        ca.height = 600;
-        ca.format = SR_TEXTURE_RGBA_UI8;
-        fbLayout->addColorAttachmentDesc(ca);
-    }
-    EXPECT_FALSE(fbLayout->isValid());
-}

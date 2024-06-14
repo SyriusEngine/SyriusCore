@@ -18,17 +18,11 @@ namespace Syrius{
         for (auto& colorAttachment : m_ColorAttachments){
             colorAttachment.reset();
         }
-        for (auto& cubeColorAttachment : m_CubeColorAttachments){
-            cubeColorAttachment.reset();
-        }
         m_DepthStencilAttachment.reset();
     }
 
     void FrameBuffer::clear() {
         for (const auto &attachment: m_ColorAttachments){
-            attachment->clear();
-        }
-        for (const auto &attachment: m_CubeColorAttachments){
             attachment->clear();
         }
         m_DepthStencilAttachment->clear();
@@ -40,9 +34,6 @@ namespace Syrius{
         }
         for (auto& colorAttachment : m_ColorAttachments){
             colorAttachment->onResize(width, height);
-        }
-        for (auto& cubeColorAttachment : m_CubeColorAttachments){
-            cubeColorAttachment->onResize(width, height);
         }
         m_DepthStencilAttachment->onResize(width, height);
     }
@@ -67,13 +58,6 @@ namespace Syrius{
 
     ResourceView<DepthStencilAttachment> FrameBuffer::getDepthStencilAttachment() {
         return createResourceView(m_DepthStencilAttachment);
-    }
-
-    ResourceView<CubeColorAttachment> FrameBuffer::getCubeColorAttachment(uint32 index) {
-        SR_CORE_PRECONDITION(m_CubeColorAttachments.size() > 0, "No cube color attachment was added to the framebuffer");
-        SR_CORE_PRECONDITION(index < m_CubeColorAttachments.size(), "Index: %i is out of bounds for cube color attachment", index);
-
-        return createResourceView(m_CubeColorAttachments[index]);
     }
 
     void FrameBuffer::setDepthFunc(SR_COMPARISON_FUNC func) {

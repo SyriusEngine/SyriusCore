@@ -22,16 +22,12 @@ namespace Syrius{
         m_DepthStencilAttachmentDesc.push_back(desc);
     }
 
-    void FrameBufferLayout::addCubeColorAttachmentDesc(const CubeColorAttachmentDesc &desc) {
-        m_CubeColorAttachmentDesc.push_back(desc);
-    }
-
     bool FrameBufferLayout::isValid() {
         if (m_ViewportDesc.empty()){
             SR_CORE_WARNING("[FrameBufferLayout]: No viewport was added to the FrameBufferLayout (%p)", this);
             return false;
         }
-        if (m_ColorAttachmentDesc.empty() && m_DepthStencilAttachmentDesc.empty() && m_CubeColorAttachmentDesc.empty()){
+        if (m_ColorAttachmentDesc.empty() && m_DepthStencilAttachmentDesc.empty()){
             SR_CORE_WARNING("[FrameBufferLayout]: No attachments were added to the FrameBufferLayout (%p)", this);
             return false;
         }
@@ -39,11 +35,10 @@ namespace Syrius{
             SR_CORE_WARNING("[FrameBufferLayout]: Multiple Depth Stencil attachments were added to FrameBufferLayout (%p),"
                             " only the last one will be used", this);
         }
-        if (m_ColorAttachmentDesc.size() + (m_CubeColorAttachmentDesc.size() * 6) > m_DeviceLimits->getMaxFramebufferColorAttachments()){
-            SR_CORE_THROW("[FrameBufferLayout]: Number of color attachments (Color Attachments %i, cube color attachments"
-                          " %i) exceeds the maximum number of color attachments (%i) supported by the device",
-                          m_ColorAttachmentDesc.size(), m_CubeColorAttachmentDesc.size(),
-                          m_DeviceLimits->getMaxFramebufferColorAttachments());
+        if (m_ColorAttachmentDesc.size() > m_DeviceLimits->getMaxFramebufferColorAttachments()){
+            SR_CORE_THROW("[FrameBufferLayout]: Number of color attachments (Color Attachments %i"
+                          " exceeds the maximum number of color attachments (%i) supported by the device",
+                          m_ColorAttachmentDesc.size(), m_DeviceLimits->getMaxFramebufferColorAttachments());
             return false;
         }
         return true;
@@ -60,9 +55,4 @@ namespace Syrius{
     const std::vector<DepthStencilAttachmentDesc>& FrameBufferLayout::getDepthStencilAttachmentDesc() const {
         return m_DepthStencilAttachmentDesc;
     }
-
-    const std::vector<CubeColorAttachmentDesc> &FrameBufferLayout::getCubeColorAttachmentDesc() const {
-        return m_CubeColorAttachmentDesc;
-    }
-
 }

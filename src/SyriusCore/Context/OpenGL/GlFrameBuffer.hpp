@@ -5,7 +5,6 @@
 #include "GlViewport.hpp"
 #include "GlColorAttachment.hpp"
 #include "GlDepthStencilAttachment.hpp"
-#include "GlCubeColorAttachment.hpp"
 
 namespace Syrius{
 

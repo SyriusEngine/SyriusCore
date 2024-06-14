@@ -69,16 +69,6 @@ namespace Syrius{
             drawBuffers.push_back(GL_COLOR_ATTACHMENT0 + colorAttachmentIndex);
             colorAttachmentIndex++;
         }
-        // Cube color attachments
-        for (const auto& attachDesc: desc->getCubeColorAttachmentDesc()){
-            auto attachment = new GlCubeColorAttachment(attachDesc, m_DeviceLimits, m_FrameBufferID, colorAttachmentIndex);
-            m_CubeColorAttachments.emplace_back(attachment);
-            for (uint32 i = 0; i < 6; i++){
-                drawBuffers.push_back(GL_COLOR_ATTACHMENT0 + i);
-                colorAttachmentIndex++;
-            }
-        }
-
         glNamedFramebufferDrawBuffers(m_FrameBufferID, drawBuffers.size(), &drawBuffers[0]);
 
     }
