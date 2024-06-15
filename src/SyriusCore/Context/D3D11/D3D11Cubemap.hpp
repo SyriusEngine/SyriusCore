@@ -17,6 +17,10 @@ namespace Syrius{
 
         void bindShaderResource(uint32 slot) override;
 
+        void copyFrom(const ResourceView<Texture2D>& other, SR_CUBEMAP_FACE destinationFace) override;
+
+        void copyFrom(const ResourceView<ColorAttachment>& other, SR_CUBEMAP_FACE destinationFace) override;
+
         [[nodiscard]] uint64 getIdentifier() const override;
 
     private:

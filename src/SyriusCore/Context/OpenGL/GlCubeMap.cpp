@@ -1,4 +1,6 @@
 #include "GlCubeMap.hpp"
+#include "GlTexture2D.hpp"
+#include "GlColorAttachment.hpp"
 
 namespace Syrius{
 
@@ -44,6 +46,29 @@ namespace Syrius{
         SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
 
         glBindTextureUnit(slot, m_TextureID);
+    }
+
+    void GlCubeMap::copyFrom(const ResourceView<Texture2D> &other, SR_CUBEMAP_FACE destinationFace) {
+        SR_CORE_PRECONDITION(m_Width == other->getWidth(), "[GlTexture2D]: Width of the source texture (%i) does not match the width of the destination texture (%i)", other->getWidth(), m_Width);
+        SR_CORE_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
+        SR_CORE_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
+
+        GLint glFace = getGlCubeMapFace(destinationFace);
+
+        glCopyImageSubData(other->getIdentifier(), GL_TEXTURE_2D, 0, 0, 0, 0,
+                           m_TextureID, GL_TEXTURE_CUBE_MAP, 0, 0, 0, glFace, m_Width, m_Height, 1);
+    }
+
+    void GlCubeMap::copyFrom(const ResourceView<ColorAttachment> &other, SR_CUBEMAP_FACE destinationFace) {
+        SR_CORE_PRECONDITION(m_Width == other->getWidth(), "[GlTexture2D]: Width of the source texture (%i) does not match the width of the destination texture (%i)", other->getWidth(), m_Width);
+        SR_CORE_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
+        SR_CORE_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
+
+        GLint glFace = getGlCubeMapFace(destinationFace);
+
+        glCopyImageSubData(other->getIdentifier(), GL_TEXTURE_2D, 0, 0, 0, 0,
+                           m_TextureID, GL_TEXTURE_CUBE_MAP, 0, 0, 0, glFace,
+                           m_Width, m_Height, 1);
     }
 
     uint64 GlCubeMap::getIdentifier() const {

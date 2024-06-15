@@ -63,9 +63,18 @@ namespace Syrius{
         m_Context->PSSetShaderResources(slot, 1, &m_TextureView);
     }
 
-    uint64 D3D11CubeMap::getIdentifier() const {
-        return reinterpret_cast<uint64>(m_Texture);
+    void D3D11CubeMap::copyFrom(const ResourceView<Texture2D> &other, SR_CUBEMAP_FACE destinationFace) {
+
     }
+
+    void D3D11CubeMap::copyFrom(const ResourceView<ColorAttachment> &other, SR_CUBEMAP_FACE destinationFace) {
+
+    }
+
+    uint64 D3D11CubeMap::getIdentifier() const {
+        return reinterpret_cast<uint64>(m_TextureView);
+    }
+
 }
 
 #endif

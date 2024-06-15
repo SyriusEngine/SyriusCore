@@ -4,6 +4,9 @@
 
 namespace Syrius{
 
+    class Texture2D;
+    class ColorAttachment;
+
     class SR_CORE_API CubeMap{
     public:
         CubeMap() = delete;
@@ -15,6 +18,10 @@ namespace Syrius{
         virtual void bind() = 0;
 
         virtual void bindShaderResource(uint32 slot) = 0;
+
+        virtual void copyFrom(const ResourceView<Texture2D>& other, SR_CUBEMAP_FACE destinationFace) = 0;
+
+        virtual void copyFrom(const ResourceView<ColorAttachment>& other, SR_CUBEMAP_FACE destinationFace) = 0;
 
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 
