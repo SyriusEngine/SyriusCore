@@ -35,7 +35,5 @@ namespace Syrius{
 
     GLint getGlStencilFunc(SR_STENCIL_FUNC);
 
-    GLint getGlCubeMapFace(SR_CUBEMAP_FACE face);
-
 }
 

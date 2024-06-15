@@ -66,6 +66,35 @@ ResourceView<CubeMap> CubeMapTest::createCubeMap() {
     return cb;
 }
 
+ResourceView<CubeMap> CubeMapTest::createRedCubeMap() {
+    std::vector<uint8> red;
+    createVector(red, static_cast<uint8>(255), static_cast<uint8>(0), static_cast<uint8>(0), static_cast<uint8>(255));
+
+    ImageUI8Desc desc;
+    desc.width = s_Width;
+    desc.height = s_Height;
+    desc.format = SR_TEXTURE_RGBA_UI8;
+    desc.data = red.data();
+
+    auto right = createImage(desc);
+    auto left = createImage(desc);
+    auto top = createImage(desc);
+    auto bottom = createImage(desc);
+    auto front = createImage(desc);
+    auto back = createImage(desc);
+
+    auto cbl = TestEnvironment::m_Context->createCubeMapLayout(desc.width, desc.height, desc.format);
+    cbl->addFace(SR_CUBEMAP_FACE_RIGHT, right);
+    cbl->addFace(SR_CUBEMAP_FACE_LEFT, left);
+    cbl->addFace(SR_CUBEMAP_FACE_TOP, top);
+    cbl->addFace(SR_CUBEMAP_FACE_BOTTOM, bottom);
+    cbl->addFace(SR_CUBEMAP_FACE_FRONT, front);
+    cbl->addFace(SR_CUBEMAP_FACE_BACK, back);
+
+    auto cb = TestEnvironment::m_Context->createCubeMap(cbl);
+    return cb;
+}
+
 TEST_F(CubeMapTest, CreateCubeMapUI8){
     auto cb = createCubeMap();
     EXPECT_NE(cb, nullptr);
@@ -139,5 +168,34 @@ TEST_F(CubeMapTest, ReadCubeMap){
     EXPECT_TRUE(compareData(reinterpret_cast<const ubyte*>(img->getData()), redGreen));
     img = cb->getData(SR_CUBEMAP_FACE_BACK);
     EXPECT_TRUE(compareData(reinterpret_cast<const ubyte*>(img->getData()), greenBlue));
+}
 
+TEST_F(CubeMapTest, CopyFromTextureCubeMap){
+    // first create cubemap
+    auto redCb = createRedCubeMap();
+
+    // then create texture
+    std::vector<uint8> blue;
+    createVector(blue, static_cast<uint8>(0), static_cast<uint8>(0), static_cast<uint8>(255), static_cast<uint8>(255));
+
+    Texture2DDesc desc;
+    desc.width = s_Width;
+    desc.height = s_Height;
+    desc.format = SR_TEXTURE_RGBA_UI8;
+    desc.data = blue.data();
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
+    auto tex = TestEnvironment::m_Context->createTexture2D(desc);
+
+    // update top face of cubemap with texture data
+    redCb->copyFrom(tex, SR_CUBEMAP_FACE_LEFT);
+    redCb->copyFrom(tex, SR_CUBEMAP_FACE_RIGHT);
+    redCb->copyFrom(tex, SR_CUBEMAP_FACE_TOP);
+    redCb->copyFrom(tex, SR_CUBEMAP_FACE_BOTTOM);
+    redCb->copyFrom(tex, SR_CUBEMAP_FACE_FRONT);
+    redCb->copyFrom(tex, SR_CUBEMAP_FACE_BACK);
+
+
+    // validate
+    auto img = redCb->getData(SR_CUBEMAP_FACE_TOP);
+    EXPECT_TRUE(compareData(reinterpret_cast<const ubyte*>(img->getData()), blue));
 }

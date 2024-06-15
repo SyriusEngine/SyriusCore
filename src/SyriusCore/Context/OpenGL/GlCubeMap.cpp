@@ -53,10 +53,12 @@ namespace Syrius{
         SR_CORE_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
         SR_CORE_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
 
-        GLint glFace = getGlCubeMapFace(destinationFace);
+//        glCopyImageSubData(other->getIdentifier(), GL_TEXTURE_2D, 0, 0, 0, 0,
+//                           m_TextureID, GL_TEXTURE_CUBE_MAP, 0, 0, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + destinationFace,
+//                           m_Width, m_Height, 1);
 
-        glCopyImageSubData(other->getIdentifier(), GL_TEXTURE_2D, 0, 0, 0, 0,
-                           m_TextureID, GL_TEXTURE_CUBE_MAP, 0, 0, 0, glFace, m_Width, m_Height, 1);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID);
+        glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + destinationFace, 0, 0, 0, 0, 0, m_Width, m_Height);
     }
 
     void GlCubeMap::copyFrom(const ResourceView<ColorAttachment> &other, SR_CUBEMAP_FACE destinationFace) {
@@ -64,11 +66,12 @@ namespace Syrius{
         SR_CORE_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
         SR_CORE_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
 
-        GLint glFace = getGlCubeMapFace(destinationFace);
+//        glCopyImageSubData(other->getIdentifier(), GL_TEXTURE_2D, 0, 0, 0, 0,
+//                           m_TextureID, GL_TEXTURE_CUBE_MAP, 0, 0, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + destinationFace,
+//                           m_Width, m_Height, 1);
 
-        glCopyImageSubData(other->getIdentifier(), GL_TEXTURE_2D, 0, 0, 0, 0,
-                           m_TextureID, GL_TEXTURE_CUBE_MAP, 0, 0, 0, glFace,
-                           m_Width, m_Height, 1);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID);
+        glCopyTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + destinationFace, 0, 0, 0, 0, 0, m_Width, m_Height);
     }
 
     Resource<Image> GlCubeMap::getData(SR_CUBEMAP_FACE destinationFace) {
@@ -84,13 +87,12 @@ namespace Syrius{
             default: SR_CORE_THROW("[GlTexture2D]: Invalid channel count (%i) for texture object (%p)", channelCount, this);
         }
         auto img = createImage(imgDesc);
-        GLint glFace = getGlCubeMapFace(destinationFace);
 
         // TODO: I couldn't get the DSA method to work
 //        glGetTextureSubImage(m_TextureID, 0, 0, 0, glFace, m_Width, m_Height, 1, m_GlChannelFormat, m_GlDataType, size, img->getData());
 
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID);
-        glGetTexImage(glFace, 0, m_GlChannelFormat, m_GlDataType, img->getData());
+        glGetTexImage(GL_TEXTURE_CUBE_MAP_POSITIVE_X + destinationFace, 0, m_GlChannelFormat, m_GlDataType, img->getData());
 
         return std::move(img);
     }

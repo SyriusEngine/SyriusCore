@@ -10,4 +10,6 @@ protected:
     void TearDown() override;
 
     static ResourceView<CubeMap> createCubeMap();
+
+    static ResourceView<CubeMap> createRedCubeMap();
 };

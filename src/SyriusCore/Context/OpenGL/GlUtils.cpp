@@ -235,19 +235,4 @@ namespace Syrius{
             }
         }
     }
-
-    GLint getGlCubeMapFace(SR_CUBEMAP_FACE face){
-        switch (face) {
-            case SR_CUBEMAP_FACE_RIGHT:     return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
-            case SR_CUBEMAP_FACE_LEFT:      return GL_TEXTURE_CUBE_MAP_NEGATIVE_X;
-            case SR_CUBEMAP_FACE_TOP:       return GL_TEXTURE_CUBE_MAP_POSITIVE_Y;
-            case SR_CUBEMAP_FACE_BOTTOM:    return GL_TEXTURE_CUBE_MAP_NEGATIVE_Y;
-            case SR_CUBEMAP_FACE_FRONT:     return GL_TEXTURE_CUBE_MAP_POSITIVE_Z;
-            case SR_CUBEMAP_FACE_BACK:      return GL_TEXTURE_CUBE_MAP_NEGATIVE_Z;
-            default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid cubemap face (%i) given to converter, defaulting to GL_TEXTURE_CUBE_MAP_POSITIVE_X", face);
-                return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
-            }
-        }
-    }
 }
