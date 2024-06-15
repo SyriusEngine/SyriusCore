@@ -251,7 +251,7 @@ set(SR_CORE_TEST_SRC
     Tests/Image/ImageUI8Test.cpp
     Tests/Image/ImageF32Test.cpp
     Tests/Context/FrameBufferTest.cpp
-    Tests/Context/FrameBufferTest.hpp)
+    Tests/Context/FrameBufferTest.hpp Tests/Context/CubeMapTest.cpp Tests/Context/CubeMapTest.hpp)
 
 add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)
 

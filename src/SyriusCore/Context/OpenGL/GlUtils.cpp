@@ -248,6 +248,6 @@ namespace Syrius{
                 SR_CORE_WARNING("[GLUtils]: Invalid cubemap face (%i) given to converter, defaulting to GL_TEXTURE_CUBE_MAP_POSITIVE_X", face);
                 return GL_TEXTURE_CUBE_MAP_POSITIVE_X;
             }
+        }
     }
-
 }

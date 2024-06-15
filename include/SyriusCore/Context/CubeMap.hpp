@@ -23,6 +23,8 @@ namespace Syrius{
 
         virtual void copyFrom(const ResourceView<ColorAttachment>& other, SR_CUBEMAP_FACE destinationFace) = 0;
 
+        virtual Resource<Image> getData(SR_CUBEMAP_FACE destinationFace) = 0;
+
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 
         [[nodiscard]] uint32 getWidth() const;

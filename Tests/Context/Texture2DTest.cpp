@@ -22,13 +22,31 @@ void createRedVector(std::vector<T>& vec){
     }
 }
 
-TEST_F(Texture2DTest, CreateTexture2D){
+TEST_F(Texture2DTest, CreateTexture2DUI8){
     std::vector<uint8> red;
     createRedVector(red);
     Texture2DDesc desc;
     desc.width = s_Width;
     desc.height = s_Height;
     desc.format = SR_TEXTURE_RGBA_UI8;
+    desc.data = red.data();
+    desc.usage = SR_BUFFER_USAGE_DEFAULT;
+
+    auto tex = TestEnvironment::m_Context->createTexture2D(desc);
+
+    EXPECT_NE(tex, nullptr);
+    EXPECT_EQ(tex->getWidth(), desc.width);
+    EXPECT_EQ(tex->getHeight(), desc.height);
+    EXPECT_EQ(tex->getFormat(), desc.format);
+}
+
+TEST_F(Texture2DTest, CreateTexture2DF32){
+    std::vector<float> red;
+    createRedVector(red);
+    Texture2DDesc desc;
+    desc.width = s_Width;
+    desc.height = s_Height;
+    desc.format = SR_TEXTURE_RGBA_F32;
     desc.data = red.data();
     desc.usage = SR_BUFFER_USAGE_DEFAULT;
 
@@ -53,7 +71,6 @@ TEST_F(Texture2DTest, CreateTexture2DNoData){
     EXPECT_EQ(tex->getWidth(), desc.width);
     EXPECT_EQ(tex->getHeight(), desc.height);
     EXPECT_EQ(tex->getFormat(), desc.format);
-
 }
 
 TEST_F(Texture2DTest, ReadTexture2DUI8){
@@ -80,41 +97,6 @@ TEST_F(Texture2DTest, ReadTexture2DUI8){
         }
     }
     EXPECT_TRUE(equal);
-}
-
-TEST_F(Texture2DTest, ReadTexture2DF32){
-    // TODO: Fix Texture2D image conversion
-//    std::vector<float> red;
-//    createRedVector(red);
-//    Texture2DDesc desc;
-//    desc.width = s_Width;
-//    desc.height = s_Height;
-//    desc.format = SR_TEXTURE_RGBA_F32;
-//    desc.data = red.data();
-//    desc.usage = SR_BUFFER_USAGE_DEFAULT;
-//
-//    auto tex = TestEnvironment::m_Context->createTexture2D(desc);
-//
-//    auto img = tex->getData();
-//
-//    auto data = img->getData();
-//    auto ui8Data = reinterpret_cast<const float*>(data);
-//    bool equal = true;
-//    for (size_t i = 0; i < red.size(); ++i){
-//        if (ui8Data[i] != red[i]){
-//            equal = false;
-//            break;
-//        }
-//    }
-//    EXPECT_TRUE(equal);
-}
-
-TEST_F(Texture2DTest, UpdateTexture2DFull){
-
-}
-
-TEST_F(Texture2DTest, UpdateTexture2DPartial){
-
 }
 
 TEST_F(Texture2DTest, UpdateTexture2DLargerData){
@@ -144,7 +126,7 @@ TEST_F(Texture2DTest, UpdateTexture2DOutOfRegion){
     EXPECT_DEATH(tex->setData(largeData.data(), 300, 300, 2, 2), "");
 }
 
-TEST_F(Texture2DTest, CopyTexture2DUI8){
+TEST_F(Texture2DTest, CopyTexture2D){
     std::vector<uint8> red;
     createRedVector(red);
     Texture2DDesc desc;

@@ -71,6 +71,30 @@ namespace Syrius{
                            m_Width, m_Height, 1);
     }
 
+    Resource<Image> GlCubeMap::getData(SR_CUBEMAP_FACE destinationFace) {
+        auto channelCount = getTextureChannelCount(m_Format);
+        ImageUI8Desc imgDesc;
+        imgDesc.width = m_Width;
+        imgDesc.height = m_Height;
+        switch (channelCount) {
+            case 1: imgDesc.format = SR_TEXTURE_R_UI8; break;
+            case 2: imgDesc.format = SR_TEXTURE_RG_UI8; break;
+            case 3: imgDesc.format = SR_TEXTURE_RGB_UI8; break;
+            case 4: imgDesc.format = SR_TEXTURE_RGBA_UI8; break;
+            default: SR_CORE_THROW("[GlTexture2D]: Invalid channel count (%i) for texture object (%p)", channelCount, this);
+        }
+        auto img = createImage(imgDesc);
+        GLint glFace = getGlCubeMapFace(destinationFace);
+
+        // TODO: I couldn't get the DSA method to work
+//        glGetTextureSubImage(m_TextureID, 0, 0, 0, glFace, m_Width, m_Height, 1, m_GlChannelFormat, m_GlDataType, size, img->getData());
+
+        glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID);
+        glGetTexImage(glFace, 0, m_GlChannelFormat, m_GlDataType, img->getData());
+
+        return std::move(img);
+    }
+
     uint64 GlCubeMap::getIdentifier() const {
         return m_TextureID;
     }
@@ -81,4 +105,5 @@ namespace Syrius{
 
         return isSupported == GL_TRUE;
     }
+
 }

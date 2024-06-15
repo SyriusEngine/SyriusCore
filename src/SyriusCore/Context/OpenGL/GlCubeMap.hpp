@@ -19,6 +19,8 @@ namespace Syrius{
 
         void copyFrom(const ResourceView<ColorAttachment>& other, SR_CUBEMAP_FACE destinationFace) override;
 
+        Resource<Image> getData(SR_CUBEMAP_FACE destinationFace) override;
+
         [[nodiscard]] uint64 getIdentifier() const override;
 
     private:

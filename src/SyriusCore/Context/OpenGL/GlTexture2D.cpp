@@ -90,9 +90,6 @@ namespace Syrius{
         SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlTexture2D]: Update on texture2D object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
 
         auto channelCount = getTextureChannelCount(m_Format);
-        auto size = m_Width * m_Height * channelCount;
-        auto data = Resource<uint8>(new uint8[size]);
-        glGetTextureImage(m_TextureID, 0, m_GlChannelFormat, m_GlDataType, size, data.get());
         ImageUI8Desc imgDesc;
         imgDesc.width = m_Width;
         imgDesc.height = m_Height;
@@ -103,8 +100,10 @@ namespace Syrius{
             case 4: imgDesc.format = SR_TEXTURE_RGBA_UI8; break;
             default: SR_CORE_THROW("[GlTexture2D]: Invalid channel count (%i) for texture object (%p)", channelCount, this);
         }
-        imgDesc.data = data.get();
-        return createImage(imgDesc);
+        auto img = createImage(imgDesc);
+        auto size = m_Width * m_Height * channelCount;
+        glGetTextureImage(m_TextureID, 0, m_GlChannelFormat, m_GlDataType, size, img->getData());
+        return std::move(img);
     }
 
     uint64 GlTexture2D::getIdentifier() const {
