@@ -31,13 +31,11 @@ namespace Syrius{
 
         void createTexture(const void* data);
 
-        void setGlFormats();
-
     private:
         uint32 m_TextureID;
         uint32 m_PixelUnpackBuffer;
 
-        GLenum m_GlFormat;
+        GLenum m_GlChannelFormat;
         GLint m_GlInternalFormat;
         GLenum m_GlDataType;
     };

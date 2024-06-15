@@ -4,25 +4,25 @@ namespace Syrius{
 
     GlCubeMap::GlCubeMap(const ResourceView<CubeMapLayout> &desc, const Resource<DeviceLimits> &deviceLimits) :
     CubeMap(desc, deviceLimits),
-    m_TextureID(0){
-        m_GlDataType = getGlTextureDataType(m_Format);
-        m_GlInternalFormat = getGlTextureFormat(m_Format);
-        m_GlFormat = getGlChannelType(getTextureChannelFormat(m_Format));
+    m_TextureID(0),
+    m_GlChannelFormat(getGlChannelFormat(desc->getFormat())),
+    m_GlInternalFormat(getGlTextureFormatSized(desc->getFormat())),
+    m_GlDataType(getGlTextureDataType(desc->getFormat())){
 
         if (!checkFormatSupported(m_GlInternalFormat)){
             SR_CORE_THROW("Internal format (%i) not supported, CubeMap object will be created but will not contain a"
                             "reference to a corresponding GPU object!", m_GlInternalFormat);
         }
-        if (!checkFormatSupported(m_GlFormat)){
+        if (!checkFormatSupported(m_GlChannelFormat)){
             SR_CORE_THROW("Format (%i) not supported, CubeMap object will be created but will not contain a"
-                            "reference to a corresponding GPU object!", m_GlFormat);
+                            "reference to a corresponding GPU object!", m_GlChannelFormat);
         }
 
         glGenTextures(1, &m_TextureID);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID);
         auto& faces = desc->getFaces();
         for (uint32 i = 0; i < 6; i++){
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, m_GlInternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, faces[i]->getData());
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, m_GlInternalFormat, m_Width, m_Height, 0, m_GlChannelFormat, m_GlDataType, faces[i]->getData());
         }
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

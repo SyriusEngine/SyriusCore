@@ -24,7 +24,7 @@ namespace Syrius{
     private:
         uint32 m_TextureID;
 
-        GLenum m_GlFormat;
+        GLenum m_GlChannelFormat;
         GLint m_GlInternalFormat;
         GLenum m_GlDataType;
     };

@@ -50,53 +50,51 @@ TEST_F(GLUtilsTest, GetDrawMode){
 }
 
 TEST_F(GLUtilsTest, GetChannelType){
-    EXPECT_EQ(getGlChannelType(SR_CHANNEL_R), GL_RED);
-    EXPECT_EQ(getGlChannelType(SR_CHANNEL_RG), GL_RG);
-    EXPECT_EQ(getGlChannelType(SR_CHANNEL_RGB), GL_RGB);
-    EXPECT_EQ(getGlChannelType(SR_CHANNEL_RGBA), GL_RGBA);
-    EXPECT_EQ(getGlChannelType(SR_CHANNEL_BGR), GL_BGR);
-    EXPECT_EQ(getGlChannelType(SR_CHANNEL_BGRA), GL_BGRA);
+    EXPECT_EQ(getGlChannelFormat(SR_TEXTURE_R_UI8), GL_RED);
+    EXPECT_EQ(getGlChannelFormat(SR_TEXTURE_RG_I16), GL_RG);
+    EXPECT_EQ(getGlChannelFormat(SR_TEXTURE_RGB_I32), GL_RGB);
+    EXPECT_EQ(getGlChannelFormat(SR_TEXTURE_RGBA_F32), GL_RGBA);
 }
 
 TEST_F(GLUtilsTest, GetTextureInternalFormat){
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_UI8), GL_R8UI);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_I8), GL_R8I);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_UI16), GL_R16UI);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_I16), GL_R16I);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_UI32), GL_R32UI);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_I32), GL_R32I);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_F16), GL_R16F);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_R_F32), GL_R32F);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_UI8), GL_RG8UI);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_I8), GL_RG8I);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_UI16), GL_RG16UI);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_I16), GL_RG16I);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_UI32), GL_RG32UI);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_I32), GL_RG32I);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_F16), GL_RG16F);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RG_F32), GL_RG32F);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_UI8), GL_RGB8UI);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_I8), GL_RGB8I);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_UI16), GL_RGB16UI);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_I16), GL_RGB16I);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_UI32), GL_RGB32UI);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_I32), GL_RGB32I);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_F16), GL_RGB16F);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGB_F32), GL_RGB32F);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_UI8), GL_RGBA8UI);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_I8), GL_RGBA8I);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_UI16), GL_RGBA16UI);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_I16), GL_RGBA16I);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_UI32), GL_RGBA32UI);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_I32), GL_RGBA32I);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_F16), GL_RGBA16F);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_RGBA_F32), GL_RGBA32F);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_R_UI8), GL_R8UI);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_R_I8), GL_R8I);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_R_UI16), GL_R16UI);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_R_I16), GL_R16I);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_R_UI32), GL_R32UI);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_R_I32), GL_R32I);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_R_F16), GL_R16F);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_R_F32), GL_R32F);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RG_UI8), GL_RG8UI);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RG_I8), GL_RG8I);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RG_UI16), GL_RG16UI);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RG_I16), GL_RG16I);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RG_UI32), GL_RG32UI);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RG_I32), GL_RG32I);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RG_F16), GL_RG16F);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RG_F32), GL_RG32F);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGB_UI8), GL_RGB8UI);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGB_I8), GL_RGB8I);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGB_UI16), GL_RGB16UI);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGB_I16), GL_RGB16I);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGB_UI32), GL_RGB32UI);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGB_I32), GL_RGB32I);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGB_F16), GL_RGB16F);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGB_F32), GL_RGB32F);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGBA_UI8), GL_RGBA8UI);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGBA_I8), GL_RGBA8I);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGBA_UI16), GL_RGBA16UI);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGBA_I16), GL_RGBA16I);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGBA_UI32), GL_RGBA32UI);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGBA_I32), GL_RGBA32I);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGBA_F16), GL_RGBA16F);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_RGBA_F32), GL_RGBA32F);
 
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_DEPTH_16), GL_DEPTH_COMPONENT16);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_DEPTH_24), GL_DEPTH_COMPONENT24);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_DEPTH_32), GL_DEPTH_COMPONENT32);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_DEPTH_24_STENCIL_8), GL_DEPTH24_STENCIL8);
-    EXPECT_EQ(getGlTextureInternalFormat(SR_TEXTURE_DEPTH_32_STENCIL_8), GL_DEPTH32F_STENCIL8);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_DEPTH_16), GL_DEPTH_COMPONENT16);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_DEPTH_24), GL_DEPTH_COMPONENT24);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_DEPTH_32), GL_DEPTH_COMPONENT32);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_DEPTH_24_STENCIL_8), GL_DEPTH24_STENCIL8);
+    EXPECT_EQ(getGlTextureFormat(SR_TEXTURE_DEPTH_32_STENCIL_8), GL_DEPTH32F_STENCIL8);
 }
 
 TEST_F(GLUtilsTest, GetTextureFormat){

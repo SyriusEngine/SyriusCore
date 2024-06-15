@@ -6,7 +6,10 @@ namespace Syrius{
     GlTexture2D::GlTexture2D(const Texture2DDesc& desc, const Resource<DeviceLimits>& deviceLimits):
     Texture2D(desc, deviceLimits),
     m_TextureID(0),
-    m_GlFormat(0){
+    m_PixelUnpackBuffer(0),
+    m_GlChannelFormat(getGlChannelFormat(desc.format)),
+    m_GlInternalFormat(getGlTextureFormatSized(desc.format)),
+    m_GlDataType(getGlTextureDataType(desc.format)){
         if (!deviceLimits->texture2DFormatSupported(desc.format)){
             SR_CORE_THROW("[GlTexture2D]: Texture format (%i) is not supported by the device", desc.format);
         }
@@ -16,7 +19,10 @@ namespace Syrius{
     GlTexture2D::GlTexture2D(const Texture2DImageDesc &desc, const Resource<DeviceLimits>& deviceLimits):
     Texture2D(desc, deviceLimits),
     m_TextureID(0),
-    m_GlFormat(0){
+    m_PixelUnpackBuffer(0),
+    m_GlChannelFormat(getGlChannelFormat(desc.image->getFormat())),
+    m_GlInternalFormat(getGlTextureFormatSized(desc.image->getFormat())),
+    m_GlDataType(getGlTextureDataType(desc.image->getFormat())){
         if (!deviceLimits->texture2DFormatSupported(desc.image->getFormat())){
             SR_CORE_THROW("[GlTexture2D]: Texture format (%i) is not supported by the device", desc.image->getFormat());
         }
@@ -55,7 +61,7 @@ namespace Syrius{
          */
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
-        glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, m_GlFormat, m_GlDataType, nullptr); // nullptr is used to indicate that the data is stored in the buffer bound to GL_PIXEL_UNPACK_BUFFER
+        glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, m_GlChannelFormat, m_GlDataType, nullptr); // nullptr is used to indicate that the data is stored in the buffer bound to GL_PIXEL_UNPACK_BUFFER
 
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -86,7 +92,7 @@ namespace Syrius{
         auto channelCount = getTextureChannelCount(m_Format);
         auto size = m_Width * m_Height * channelCount;
         auto data = Resource<uint8>(new uint8[size]);
-        glGetTextureImage(m_TextureID, 0, m_GlFormat, m_GlDataType, size, data.get());
+        glGetTextureImage(m_TextureID, 0, m_GlChannelFormat, m_GlDataType, size, data.get());
         ImageUI8Desc imgDesc;
         imgDesc.width = m_Width;
         imgDesc.height = m_Height;
@@ -105,19 +111,11 @@ namespace Syrius{
         return m_TextureID;
     }
 
-    void GlTexture2D::setGlFormats() {
-        m_GlDataType = getGlTextureDataType(m_Format);
-        auto channelFormat = getTextureChannelFormat(m_Format);
-        m_GlFormat = getGlChannelType(channelFormat);
-        m_GlInternalFormat = getGlTextureFormat(m_Format);
-    }
-
     void GlTexture2D::createTexture(const void* data) {
-        setGlFormats();
         glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
         glTextureStorage2D(m_TextureID, 1, m_GlInternalFormat, m_Width, m_Height);
         if (data != nullptr){
-            glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlFormat, m_GlDataType, data);
+            glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, m_GlChannelFormat, m_GlDataType, data);
         }
         glGenerateTextureMipmap(m_TextureID);
 

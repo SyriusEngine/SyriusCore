@@ -19,11 +19,11 @@ namespace Syrius{
 
     GLenum getGlBufferType(SR_BUFFER_USAGE type);
 
-    GLenum getGlChannelType(SR_CHANNEL_FORMAT type);
-
-    GLint getGlTextureInternalFormat(SR_TEXTURE_FORMAT format);
+    GLenum getGlChannelFormat(SR_TEXTURE_FORMAT type);
 
     GLint getGlTextureFormat(SR_TEXTURE_FORMAT format);
+
+    GLint getGlTextureFormatSized(SR_TEXTURE_FORMAT format);
 
     GLenum getGlTextureDataType(SR_TEXTURE_FORMAT format);
 

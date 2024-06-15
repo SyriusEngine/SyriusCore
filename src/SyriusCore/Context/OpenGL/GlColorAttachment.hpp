@@ -28,11 +28,9 @@ namespace Syrius{
         const uint32 m_FrameBufferID;
         const uint32 m_AttachmentID;
 
-        GLint m_InternalFormat;
-        GLenum m_GlFormat;
+        GLenum m_GlChannelFormat;
+        GLint m_GlInternalFormat;
         GLenum m_GlDataType;
-        uint32 m_ChannelCount;
-
     };
 
     class GlDefaultColorAttachment : public ColorAttachment{

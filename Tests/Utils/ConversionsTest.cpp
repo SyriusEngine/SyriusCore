@@ -89,28 +89,6 @@ TEST_F(Conversions, testGetScalarType){
     EXPECT_EQ(getScalarType(SR_FLOAT64_3X3), SR_FLOAT64);
 }
 
-TEST_F(Conversions, testGetTextureChannelFormat){
-    EXPECT_EQ(getTextureChannelFormat(SR_TEXTURE_RGBA_F32), SR_CHANNEL_RGBA);
-    EXPECT_EQ(getTextureChannelFormat(SR_TEXTURE_RG_I32), SR_CHANNEL_RG);
-    EXPECT_EQ(getTextureChannelFormat(SR_TEXTURE_R_F16), SR_CHANNEL_R);
-    EXPECT_EQ(getTextureChannelFormat(SR_TEXTURE_RGBA_UI8), SR_CHANNEL_RGBA);
-
-    EXPECT_THROW(getTextureChannelFormat(SR_TEXTURE_DEPTH_16), std::runtime_error);
-    EXPECT_THROW(getTextureChannelFormat(SR_TEXTURE_DEPTH_24), std::runtime_error);
-    EXPECT_THROW(getTextureChannelFormat(SR_TEXTURE_DEPTH_32), std::runtime_error);
-    EXPECT_THROW(getTextureChannelFormat(SR_TEXTURE_DEPTH_24_STENCIL_8), std::runtime_error);
-    EXPECT_THROW(getTextureChannelFormat(SR_TEXTURE_DEPTH_32_STENCIL_8), std::runtime_error);
-}
-
-TEST_F(Conversions, testGetChannelFormatCount){
-    EXPECT_EQ(getChannelFormatCount(SR_CHANNEL_R), 1);
-    EXPECT_EQ(getChannelFormatCount(SR_CHANNEL_RG), 2);
-    EXPECT_EQ(getChannelFormatCount(SR_CHANNEL_RGB), 3);
-    EXPECT_EQ(getChannelFormatCount(SR_CHANNEL_RGBA), 4);
-    EXPECT_EQ(getChannelFormatCount(SR_CHANNEL_BGR), 3);
-    EXPECT_EQ(getChannelFormatCount(SR_CHANNEL_BGRA), 4);
-}
-
 TEST_F(Conversions, testGetTextureChannelCount){
     EXPECT_EQ(getTextureChannelCount(SR_TEXTURE_RGBA_F32), 4);
     EXPECT_EQ(getTextureChannelCount(SR_TEXTURE_RG_I32), 2);

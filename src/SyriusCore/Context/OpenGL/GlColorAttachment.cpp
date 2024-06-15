@@ -4,18 +4,15 @@ namespace Syrius{
 
     GlColorAttachment::GlColorAttachment(const ColorAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID, uint32 attachmentID):
     ColorAttachment(desc, deviceLimits),
-    m_InternalFormat(getGlTextureInternalFormat(desc.format)),
     m_FrameBufferID(framebufferID),
     m_AttachmentID(attachmentID),
     m_TextureID(0),
-    m_ChannelCount(0),
-    m_GlDataType(getGlDataType(getTextureDataType(desc.format))){
+    m_GlChannelFormat(getGlChannelFormat(desc.format)),
+    m_GlInternalFormat(getGlTextureFormat(desc.format)),
+    m_GlDataType(getGlTextureDataType(desc.format)){
         if (!m_DeviceLimits->texture2DFormatSupported(desc.format)){
             SR_CORE_THROW("[GlColorAttachment]: Texture format (%i) is not supported by the device", desc.format);
         }
-        SR_CHANNEL_FORMAT baseFormat = getTextureChannelFormat(desc.format);
-        m_GlFormat = getGlChannelType(baseFormat);
-        m_ChannelCount = getChannelFormatCount(baseFormat);
 
 //        glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
 //        glBindTexture(GL_TEXTURE_2D, m_TextureID);
@@ -25,7 +22,7 @@ namespace Syrius{
 //        glTextureParameteri(m_TextureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
-        glTextureStorage2D(m_TextureID, 1, m_InternalFormat, m_Width, m_Height);
+        glTextureStorage2D(m_TextureID, 1, m_GlInternalFormat, m_Width, m_Height);
 
         glNamedFramebufferTexture(m_FrameBufferID, GL_COLOR_ATTACHMENT0 + m_AttachmentID, m_TextureID, 0);
     }
@@ -55,7 +52,7 @@ namespace Syrius{
          * This underlying line wont work for some reason?
          * We use the old method for now (glBind spamming)
          */
-        glTextureStorage2D(m_TextureID, 1, m_InternalFormat, width, height);
+        glTextureStorage2D(m_TextureID, 1, m_GlInternalFormat, width, height);
         //glBindTexture(GL_TEXTURE_2D, m_TextureID);
         //glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr);
     }
@@ -74,7 +71,7 @@ namespace Syrius{
         }
         imgDesc.data = nullptr;
         auto img =  createImage(imgDesc);
-        glGetTextureImage(m_TextureID, 0, m_GlFormat, GL_UNSIGNED_BYTE, size, img->getData());
+        glGetTextureImage(m_TextureID, 0, m_GlChannelFormat, GL_UNSIGNED_BYTE, size, img->getData());
         return std::move(img);
     }
 

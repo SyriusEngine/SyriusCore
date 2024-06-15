@@ -64,14 +64,13 @@ namespace Syrius{
         }
     }
 
-    GLenum getGlChannelType(SR_CHANNEL_FORMAT type){
-        switch (type) {
-            case SR_CHANNEL_R:       return GL_RED;
-            case SR_CHANNEL_RG:      return GL_RG;
-            case SR_CHANNEL_RGB:     return GL_RGB;
-            case SR_CHANNEL_RGBA:    return GL_RGBA;
-            case SR_CHANNEL_BGR:     return GL_BGR;
-            case SR_CHANNEL_BGRA:    return GL_BGRA;
+    GLenum getGlChannelFormat(SR_TEXTURE_FORMAT type){
+        auto channelCount = getTextureChannelCount(type);
+        switch (channelCount) {
+            case 1:       return GL_RED;
+            case 2:      return GL_RG;
+            case 3:     return GL_RGB;
+            case 4:    return GL_RGBA;
             default: {
                 SR_CORE_WARNING("[GLUtils]: Invalid channel type (%i) given to converter, return default: GL_RGBA", type);
                 return GL_RGBA;
@@ -79,7 +78,7 @@ namespace Syrius{
         }
     }
 
-    GLint getGlTextureInternalFormat(SR_TEXTURE_FORMAT format){
+    GLint getGlTextureFormat(SR_TEXTURE_FORMAT format){
         switch (format) {
             case SR_TEXTURE_R_I8:       return GL_R8I;
             case SR_TEXTURE_R_I16:      return GL_R16I;
@@ -125,16 +124,16 @@ namespace Syrius{
         }
     }
 
-    GLint getGlTextureFormat(SR_TEXTURE_FORMAT format){
+    GLint getGlTextureFormatSized(SR_TEXTURE_FORMAT format){
         auto dataType = getTextureDataType(format);
         auto size = getTypeSize(dataType);
-        auto channelFormat = getTextureChannelFormat(format);
+        auto channelCount = getTextureChannelCount(format);
         if (size == 1){
-            switch (channelFormat) {
-                case SR_CHANNEL_R:       return GL_R8;
-                case SR_CHANNEL_RG:      return GL_RG8;
-                case SR_CHANNEL_RGB:     return GL_RGB8;
-                case SR_CHANNEL_RGBA:    return GL_RGBA8;
+            switch (channelCount) {
+                case 1:       return GL_R8;
+                case 2:      return GL_RG8;
+                case 3:     return GL_RGB8;
+                case 4:    return GL_RGBA8;
                 default: {
                     SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_RGBA8", format);
                     return GL_RGBA8;
@@ -142,26 +141,14 @@ namespace Syrius{
             }
         }
         else if (size == 2){
-            switch (channelFormat) {
-                case SR_CHANNEL_R:       return GL_R16;
-                case SR_CHANNEL_RG:      return GL_RG16;
-                case SR_CHANNEL_RGB:     return GL_RGB16;
-                case SR_CHANNEL_RGBA:    return GL_RGBA16;
+            switch (channelCount) {
+                case 1:       return GL_R16;
+                case 2:      return GL_RG16;
+                case 3:     return GL_RGB16;
+                case 4:    return GL_RGBA16;
                 default: {
                     SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_RGBA16", format);
                     return GL_RGBA16;
-                }
-            }
-        }
-        else if (size == 4){
-            switch (channelFormat) {
-                case SR_CHANNEL_R:       return GL_R32F;
-                case SR_CHANNEL_RG:      return GL_RG32F;
-                case SR_CHANNEL_RGB:     return GL_RGB32F;
-                case SR_CHANNEL_RGBA:    return GL_RGBA32F;
-                default: {
-                    SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_RGBA32F", format);
-                    return GL_RGBA32F;
                 }
             }
         }

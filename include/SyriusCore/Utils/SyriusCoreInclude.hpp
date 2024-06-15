@@ -137,16 +137,6 @@ typedef enum SR_SCALAR_TYPE: uint8 {
     SR_FLOAT64_4X4  = 0xCF,
 } SR_SCALAR_TYPE;
 
-// base texture formats, the upper 4 bits represent the number of channels
-typedef enum SR_CHANNEL_FORMAT: uint8 {
-    SR_CHANNEL_R     = 0x10,
-    SR_CHANNEL_RG    = 0x20,
-    SR_CHANNEL_RGB   = 0x30,
-    SR_CHANNEL_RGBA  = 0x40,
-    SR_CHANNEL_BGR   = 0x31,
-    SR_CHANNEL_BGRA  = 0x41
-} SR_CHANNEL_FORMAT;
-
 // Texture formats with data types, upper 4 bits represent the number of channels, lower 4 bits represent the data usage
 typedef enum SR_TEXTURE_FORMAT: uint8 {
     SR_TEXTURE_NONE         = 0x00,
@@ -248,25 +238,6 @@ namespace Syrius {
      * @return SR_TYPE
      */
     SR_TYPE SR_CORE_API getScalarType(SR_SCALAR_TYPE type);
-
-    /**
-     * @brief Returns the channel format of a texture format.
-     *        This is handy when only the channel layout is needed and not the data type.
-     * @example SR_TEXTURE_RGBA_F32 -> SR_CHANNEL_RGBA
-     * @example SR_TEXTURE_RG_I32 -> SR_CHANNEL_RG
-     * @param format SR_TEXTURE_FORMAT
-     * @return SR_CHANNEL_FORMAT
-     */
-    SR_CHANNEL_FORMAT SR_CORE_API getTextureChannelFormat(SR_TEXTURE_FORMAT format);
-
-    /**
-     * @brief Returns the number of channels in a channel format
-     * @example SR_CHANNEL_RGBA -> 4
-     * @example SR_CHANNEL_RG -> 2
-     * @param format SR_CHANNEL_FORMAT
-     * @return number of channels
-     */
-    uint8 SR_CORE_API getChannelFormatCount(SR_CHANNEL_FORMAT format);
 
     /**
      * @brief Returns the number of channels in a texture format. The logic is the same as in getChannelFormatCount
