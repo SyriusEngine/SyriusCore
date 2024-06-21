@@ -31,6 +31,39 @@ namespace Syrius{
         }
     }
 
+    Resource<Image> createImage(const ImageDesc& desc){
+        auto formatType = getTextureDataType(desc.format);
+        switch (formatType) {
+            case SR_UINT8:{
+                ImageUI8Desc imgDesc;
+                imgDesc.data = reinterpret_cast<const ubyte*>(desc.data);
+                imgDesc.width = desc.width;
+                imgDesc.height = desc.height;
+                imgDesc.format = desc.format;
+                return Resource<Image>(new ImageUI8(imgDesc));
+            }
+            case SR_UINT16:{
+                ImageUI16Desc imgDesc;
+                imgDesc.data = reinterpret_cast<const uint16*>(desc.data);
+                imgDesc.width = desc.width;
+                imgDesc.height = desc.height;
+                imgDesc.format = desc.format;
+                return Resource<Image>(new ImageUI16(imgDesc));
+            }
+            case SR_FLOAT32:{
+                ImageF32Desc imgDesc;
+                imgDesc.data = reinterpret_cast<const float*>(desc.data);
+                imgDesc.width = desc.width;
+                imgDesc.height = desc.height;
+                imgDesc.format = desc.format;
+                return Resource<Image>(new ImageF32(imgDesc));
+            }
+            default:{
+            }
+
+        }
+    }
+
     Resource<Image> createImage(const ImageF32Desc& desc){
         auto img = new ImageF32(desc);
         return Resource<Image>(img);

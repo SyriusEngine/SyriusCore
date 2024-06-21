@@ -93,7 +93,8 @@ set(SYRIUSCORE_IMAGE_SRC
     src/SyriusCore/Image/ImageUI8.cpp
     src/SyriusCore/Image/ImageF32.cpp
     src/SyriusCore/Image/ImageUI16.cpp
-    src/SyriusCore/Image/InternalUtils.cpp)
+    src/SyriusCore/Image/InternalImageUtils.cpp
+    src/SyriusCore/Image/ImageT.cpp src/SyriusCore/Image/ImageIterator.cpp)
 
 set(SYRIUSCORE_WINDOW_SRC
     ${SYRIUSCORE_PLATFORM_WINDOW_SRC}
@@ -243,6 +244,8 @@ set(SR_CORE_TEST_SRC
     Tests/Context/Texture2DTest.cpp
     Tests/Context/FramebufferLayoutTest.cpp
     Tests/Context/CubeMapLayoutTest.cpp
+    Tests/Context/FrameBufferTest.cpp
+    Tests/Context/CubeMapTest.cpp
 
     Tests/Context/OpenGL/GLUtilsTest.cpp
 
@@ -250,8 +253,7 @@ set(SR_CORE_TEST_SRC
 
     Tests/Image/ImageUI8Test.cpp
     Tests/Image/ImageF32Test.cpp
-    Tests/Context/FrameBufferTest.cpp
-    Tests/Context/FrameBufferTest.hpp Tests/Context/CubeMapTest.cpp Tests/Context/CubeMapTest.hpp)
+    Tests/Image/ImageUtilsTest.cpp)
 
 add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)
 

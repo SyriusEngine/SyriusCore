@@ -5,13 +5,11 @@
 
 namespace Syrius{
 
-    class ImageUI8 : public Image{
+    class ImageT: public Image{
     public:
-        explicit ImageUI8(const ImageFileDesc& desc);
+        explicit ImageT(const ImageDesc& desc);
 
-        explicit ImageUI8(const ImageUI8Desc& desc);
-
-        ~ImageUI8() override;
+        ~ImageT() override;
 
         void writeToFile(const ImageFileDesc& writeDesc) const override;
 
@@ -22,8 +20,6 @@ namespace Syrius{
         [[nodiscard]] void* getData() override;
 
     private:
-        std::vector<ubyte> m_Data;
-
+        Resource<ubyte> m_Data;
     };
-
 }

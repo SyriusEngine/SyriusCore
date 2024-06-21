@@ -24,5 +24,7 @@ namespace Syrius{
             dst.push_back(255);
         }
     }
+
+    uint32 getBytesPerPixel(SR_TEXTURE_FORMAT format);
 }
 
