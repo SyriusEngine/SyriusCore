@@ -150,6 +150,32 @@ TEST_F(ImageF32Test, CreateImageFromMemoryF32NoData){
     EXPECT_TRUE(correct);
 }
 
+TEST_F(ImageF32Test, CreateImageF32InvalidFormat){
+    ImageF32Desc desc;
+    desc.width = 2;
+    desc.height = 2;
+    desc.format = SR_TEXTURE_NONE;
+    EXPECT_DEATH(createImage(desc), "");
+}
+
+TEST_F(ImageF32Test, CreateImageF32FromT){
+    std::vector<float> data = {
+            1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+    };
+
+    ImageDesc desc;
+    desc.width = 2;
+    desc.height = 2;
+    desc.format = SR_TEXTURE_RGB_F32;
+    desc.data = data.data();
+    auto img = createImage(desc);
+
+    EXPECT_EQ(img->getWidth(), desc.width);
+    EXPECT_EQ(img->getHeight(), desc.height);
+    EXPECT_EQ(img->getFormat(), desc.format);
+}
+
 TEST_F(ImageF32Test, UpscaleImageF32){
     ImageFileDesc desc;
     desc.fileName = "./TestResources/Textures/Red-100x100-F32-RGB.hdr";
@@ -202,14 +228,6 @@ TEST_F(ImageF32Test, DownscaleImageF32){
         }
     }
     EXPECT_TRUE(correct);
-}
-
-TEST_F(ImageF32Test, CreateImageF32InvalidFormat){
-    ImageF32Desc desc;
-    desc.width = 2;
-    desc.height = 2;
-    desc.format = SR_TEXTURE_NONE;
-    EXPECT_DEATH(createImage(desc), "");
 }
 
 

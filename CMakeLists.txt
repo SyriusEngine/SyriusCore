@@ -94,7 +94,7 @@ set(SYRIUSCORE_IMAGE_SRC
     src/SyriusCore/Image/ImageF32.cpp
     src/SyriusCore/Image/ImageUI16.cpp
     src/SyriusCore/Image/InternalImageUtils.cpp
-    src/SyriusCore/Image/ImageT.cpp src/SyriusCore/Image/ImageIterator.cpp)
+    src/SyriusCore/Image/ImageT.cpp)
 
 set(SYRIUSCORE_WINDOW_SRC
     ${SYRIUSCORE_PLATFORM_WINDOW_SRC}

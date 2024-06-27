@@ -3,6 +3,7 @@
 #include "ImageUI8.hpp"
 #include "ImageUI16.hpp"
 #include "ImageF32.hpp"
+#include "ImageT.hpp"
 
 #include "../Dependencies/stb_image/stb_image.hpp"
 #include "../Dependencies/stb_image/stb_image_resize.hpp"
@@ -59,8 +60,8 @@ namespace Syrius{
                 return Resource<Image>(new ImageF32(imgDesc));
             }
             default:{
+                return createResource<ImageT>(desc);
             }
-
         }
     }
 

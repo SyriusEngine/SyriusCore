@@ -146,6 +146,32 @@ TEST_F(ImageUI8Test, CreateImageFromMemoryUI8NoData){
     EXPECT_TRUE(correct);
 }
 
+TEST_F(ImageUI8Test, CreateImageUI8InvalidFormat){
+    ImageUI8Desc desc;
+    desc.width = 2;
+    desc.height = 2;
+    desc.format = SR_TEXTURE_NONE;
+    EXPECT_DEATH(createImage(desc), "");
+}
+
+TEST_F(ImageUI8Test, CreateImageUI8FromT){
+    std::vector<uint8> data = {
+            255, 0, 255, 255, 0, 255,
+            255, 0, 255, 255, 0, 255
+    };
+
+    ImageDesc desc;
+    desc.width = 2;
+    desc.height = 2;
+    desc.format = SR_TEXTURE_RGB_UI8;
+    desc.data = data.data();
+    auto img = createImage(desc);
+
+    EXPECT_EQ(img->getWidth(), desc.width);
+    EXPECT_EQ(img->getHeight(), desc.height);
+    EXPECT_EQ(img->getFormat(), desc.format);
+}
+
 TEST_F(ImageUI8Test, UpscaleImageUI8){
     ImageFileDesc desc;
     desc.fileName = "./TestResources/Textures/Red-100x100-UI8-RGB.png";
@@ -196,12 +222,4 @@ TEST_F(ImageUI8Test, DownscaleImageUI8){
         }
     }
     EXPECT_TRUE(correct);
-}
-
-TEST_F(ImageUI8Test, CreateImageUI8InvalidFormat){
-    ImageUI8Desc desc;
-    desc.width = 2;
-    desc.height = 2;
-    desc.format = SR_TEXTURE_NONE;
-    EXPECT_DEATH(createImage(desc), "");
 }
