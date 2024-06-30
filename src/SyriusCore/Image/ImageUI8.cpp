@@ -14,7 +14,7 @@ namespace Syrius{
     m_Data(){
         stbi_set_flip_vertically_on_load(desc.flipOnAccess);
         int32 channelCount, width, height;
-        ubyte* pData = stbi_load(desc.fileName.c_str(), &width, &height, &channelCount, 0);
+        UByte* pData = stbi_load(desc.fileName.c_str(), &width, &height, &channelCount, 0);
         if (!pData){
             SR_CORE_WARNING("[ImageUI8]: Image: %s failed to load", desc.fileName.c_str());
             return;
@@ -34,13 +34,7 @@ namespace Syrius{
         }
         m_Width = width;
         m_Height = height;
-        switch (channelCount) {
-            case 1: m_Format = SR_TEXTURE_R_UI8; break;
-            case 2: m_Format = SR_TEXTURE_RG_UI8; break;
-            case 3: m_Format = SR_TEXTURE_RGB_UI8; break;
-            case 4: m_Format = SR_TEXTURE_RGBA_UI8; break;
-            default: SR_CORE_WARNING("[ImageUI8]: Image: %s has an unsupported number of channels: %d", desc.fileName.c_str(), channelCount);
-        }
+        m_Format = getFormatFromChannelCount(channelCount, SR_UINT8);
 
         stbi_image_free(pData);
 
@@ -93,7 +87,7 @@ namespace Syrius{
         SR_CORE_PRECONDITION(height > 0, "[ImageUI8]: Image: %p cannot be resized to a height of 0", this);
 
         int32 channelCount = getTextureChannelCount(m_Format);
-        std::vector<ubyte> resizedData(width * height * channelCount);
+        std::vector<UByte> resizedData(width * height * channelCount);
 
         if (!stbir_resize_uint8(&m_Data[0], m_Width, m_Height, 0, &resizedData[0], width, height, 0, channelCount)){
             SR_CORE_WARNING("[ImageUI8]: Image: %p failed to resize", this);
@@ -107,8 +101,8 @@ namespace Syrius{
     void ImageUI8::extendAlpha() {
         uint32 channelCount = getTextureChannelCount(m_Format);
         if (channelCount == 3){
-            std::vector<ubyte> rgbaData;
-            addAlpha<ubyte>(m_Data, rgbaData, m_Width, m_Height, channelCount);
+            std::vector<UByte> rgbaData;
+            addAlpha<UByte>(m_Data, rgbaData, m_Width, m_Height, channelCount);
             m_Data = rgbaData;
             m_Format = SR_TEXTURE_RGBA_UI8;
         }
@@ -116,6 +110,16 @@ namespace Syrius{
 
     void *ImageUI8::getData() {
         return m_Data.data();
+    }
+
+    Resource<Image> ImageUI8::convertToUI8() {
+        ImageUI8Desc desc;
+        desc.data = m_Data.data();
+        desc.width = m_Width;
+        desc.height = m_Height;
+        desc.format = m_Format;
+
+        return Resource<Image>(new ImageUI8(desc));
     }
 
 }

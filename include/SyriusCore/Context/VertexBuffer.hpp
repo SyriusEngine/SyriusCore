@@ -26,7 +26,7 @@ namespace Syrius{
 
         virtual void copyFrom(const ResourceView<VertexBuffer>& other) = 0;
 
-        [[nodiscard]] virtual Resource<ubyte[]> getData() const = 0;
+        [[nodiscard]] virtual Resource<UByte[]> getData() const = 0;
 
         [[nodiscard]] virtual uint64 getIdentifier() const = 0;
 

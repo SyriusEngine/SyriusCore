@@ -131,7 +131,7 @@ TEST_F(CubeMapTest, CreateCubeMapNoData){
     EXPECT_EQ(cb->getFormat(), desc.format);
 }
 
-bool compareData(const ubyte* data, const std::vector<ubyte>& vec){
+bool compareData(const UByte* data, const std::vector<UByte>& vec){
     for (size_t i = 0; i < vec.size(); ++i){
         if (data[i] != vec[i]){
             return false;
@@ -157,17 +157,17 @@ TEST_F(CubeMapTest, ReadCubeMap){
     auto cb = createCubeMap();
 
     auto img = cb->getData(SR_CUBEMAP_FACE_RIGHT);
-    EXPECT_TRUE(compareData(reinterpret_cast<const ubyte*>(img->getData()), red));
+    EXPECT_TRUE(compareData(reinterpret_cast<const UByte*>(img->getData()), red));
     img = cb->getData(SR_CUBEMAP_FACE_LEFT);
-    EXPECT_TRUE(compareData(reinterpret_cast<const ubyte*>(img->getData()), blue));
+    EXPECT_TRUE(compareData(reinterpret_cast<const UByte*>(img->getData()), blue));
     img = cb->getData(SR_CUBEMAP_FACE_TOP);
-    EXPECT_TRUE(compareData(reinterpret_cast<const ubyte*>(img->getData()), green));
+    EXPECT_TRUE(compareData(reinterpret_cast<const UByte*>(img->getData()), green));
     img = cb->getData(SR_CUBEMAP_FACE_BOTTOM);
-    EXPECT_TRUE(compareData(reinterpret_cast<const ubyte*>(img->getData()), redBlue));
+    EXPECT_TRUE(compareData(reinterpret_cast<const UByte*>(img->getData()), redBlue));
     img = cb->getData(SR_CUBEMAP_FACE_FRONT);
-    EXPECT_TRUE(compareData(reinterpret_cast<const ubyte*>(img->getData()), redGreen));
+    EXPECT_TRUE(compareData(reinterpret_cast<const UByte*>(img->getData()), redGreen));
     img = cb->getData(SR_CUBEMAP_FACE_BACK);
-    EXPECT_TRUE(compareData(reinterpret_cast<const ubyte*>(img->getData()), greenBlue));
+    EXPECT_TRUE(compareData(reinterpret_cast<const UByte*>(img->getData()), greenBlue));
 }
 
 TEST_F(CubeMapTest, CopyFromTextureCubeMap){
@@ -197,5 +197,5 @@ TEST_F(CubeMapTest, CopyFromTextureCubeMap){
 
     // validate
     auto img = redCb->getData(SR_CUBEMAP_FACE_TOP);
-    EXPECT_TRUE(compareData(reinterpret_cast<const ubyte*>(img->getData()), blue));
+    EXPECT_TRUE(compareData(reinterpret_cast<const UByte*>(img->getData()), blue));
 }

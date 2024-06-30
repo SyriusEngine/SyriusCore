@@ -58,7 +58,7 @@ namespace Syrius{
 
         // TODO: Test this code because dont know if it works
         auto channelCount = getTextureChannelCount(m_Format);
-        auto bytesPerPixel = channelCount * sizeof(ubyte);
+        auto bytesPerPixel = channelCount * sizeof(UByte);
         D3D11_BOX box = { 0 };
         box.left = x;
         box.right = x + width;

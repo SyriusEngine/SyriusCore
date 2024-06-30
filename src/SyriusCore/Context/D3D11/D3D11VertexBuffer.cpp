@@ -77,10 +77,10 @@ namespace Syrius{
         }
     }
 
-    Resource<ubyte[]> D3D11VertexBuffer::getData() const {
+    Resource<UByte[]> D3D11VertexBuffer::getData() const {
         SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D311VertexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
 
-        auto data = createResource<ubyte[]>(m_Size);;
+        auto data = createResource<UByte[]>(m_Size);;
 
         /*
          * Reading from a vertex buffer in D3D11 is not directly supported.

@@ -37,7 +37,7 @@ namespace Syrius{
         switch (formatType) {
             case SR_UINT8:{
                 ImageUI8Desc imgDesc;
-                imgDesc.data = reinterpret_cast<const ubyte*>(desc.data);
+                imgDesc.data = reinterpret_cast<const UByte*>(desc.data);
                 imgDesc.width = desc.width;
                 imgDesc.height = desc.height;
                 imgDesc.format = desc.format;

@@ -68,8 +68,8 @@ namespace Syrius{
         }
     }
 
-    Resource<ubyte[]> D3D11ConstantBufferBase::getData() const {
-        auto data = createResource<ubyte[]>(m_Size);
+    Resource<UByte[]> D3D11ConstantBufferBase::getData() const {
+        auto data = createResource<UByte[]>(m_Size);
 
         /*
          * Reading from a constant buffer in D3D11 is not directly supported.

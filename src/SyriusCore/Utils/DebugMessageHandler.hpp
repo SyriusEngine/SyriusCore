@@ -18,7 +18,7 @@ namespace Syrius{
         template<typename... Args>
         static void pushMessage(SR_CORE_MESSAGE_SEVERITY severity, SR_CORE_MESSAGE_SOURCE type, const std::string& function, const std::string& file, uint32 line, const std::string& message, Args... args){
             Size formatSize = std::snprintf(nullptr, 0, message.c_str(), args...);
-            std::vector<byte> formatBuffer(formatSize + 1);
+            std::vector<SByte> formatBuffer(formatSize + 1);
             std::snprintf(reinterpret_cast<char*>(formatBuffer.data()), formatSize + 1, message.c_str(), args...);
             Message msg;
             msg.severity = severity;
@@ -38,7 +38,7 @@ namespace Syrius{
         template<typename... Args>
         static void throwMessage(const std::string& function, const std::string& file, uint32 line, const std::string& message, Args... args){
             Size formatSize = std::snprintf(nullptr, 0, message.c_str(), args...);
-            std::vector<byte> formatBuffer(formatSize + 1);
+            std::vector<SByte> formatBuffer(formatSize + 1);
             std::snprintf(reinterpret_cast<char*>(formatBuffer.data()), formatSize + 1, message.c_str(), args...);
             std::string msg = std::string(reinterpret_cast<char*>(formatBuffer.data()));
             std::string exc = "EXCEPTION THROWN -> [" + file + ":" + function + ":" + std::to_string(line) + "] " + msg;
@@ -48,7 +48,7 @@ namespace Syrius{
         template<typename... Args>
         static void syriusAssert(SR_CORE_MESSAGE_SOURCE source, const char* condition, const std::string& function, const std::string& file, uint32 line, const std::string& message, Args... args){
             Size formatSize = std::snprintf(nullptr, 0, message.c_str(), args...);
-            std::vector<byte> formatBuffer(formatSize + 1);
+            std::vector<SByte> formatBuffer(formatSize + 1);
             std::snprintf(reinterpret_cast<char*>(formatBuffer.data()), formatSize + 1, message.c_str(), args...);
             Message msg;
             msg.severity = SR_CORE_MESSAGE_SEVERITY_HIGH;

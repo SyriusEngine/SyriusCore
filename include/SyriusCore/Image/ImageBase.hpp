@@ -16,6 +16,8 @@ namespace Syrius{
 
         [[nodiscard]] virtual void* getData() = 0;
 
+        [[nodiscard]] virtual Resource<Image> convertToUI8() = 0;
+
         [[nodiscard]] uint32 getWidth() const;
 
         [[nodiscard]] uint32 getHeight() const;

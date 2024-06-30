@@ -88,7 +88,7 @@ TEST_F(Texture2DTest, ReadTexture2DUI8){
     auto img = tex->getData();
 
     auto data = img->getData();
-    auto ui8Data = reinterpret_cast<const ubyte*>(data);
+    auto ui8Data = reinterpret_cast<const UByte*>(data);
     bool equal = true;
     for (size_t i = 0; i < red.size(); ++i){
         if (ui8Data[i] != red[i]){
@@ -146,7 +146,7 @@ TEST_F(Texture2DTest, CopyTexture2D){
     auto img = dstTex->getData();
 
     auto data = img->getData();
-    auto ui8Data = reinterpret_cast<const ubyte*>(data);
+    auto ui8Data = reinterpret_cast<const UByte*>(data);
     bool equal = true;
     for (size_t i = 0; i < red.size(); ++i){
         if (ui8Data[i] != red[i]){

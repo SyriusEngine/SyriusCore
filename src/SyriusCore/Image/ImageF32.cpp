@@ -5,6 +5,7 @@
 #include "../Dependencies/stb_image/stb_image_write.hpp"
 
 #include "../Utils/DebugMacros.hpp"
+#include "ImageUI8.hpp"
 
 namespace Syrius{
 
@@ -35,13 +36,8 @@ namespace Syrius{
         }
         m_Width = width;
         m_Height = height;
-        switch (channelCount) {
-            case 1: m_Format = SR_TEXTURE_R_F32; break;
-            case 2: m_Format = SR_TEXTURE_RG_F32; break;
-            case 3: m_Format = SR_TEXTURE_RGB_F32; break;
-            case 4: m_Format = SR_TEXTURE_RGBA_F32; break;
-            default: SR_CORE_WARNING("[ImageF32]: Image: %s has an unsupported number of channels: %d", desc.fileName.c_str(), channelCount);
-        }
+        m_Format = getFormatFromChannelCount(channelCount, SR_FLOAT32);
+
         stbi_image_free(pData);
     }
 
@@ -108,4 +104,21 @@ namespace Syrius{
         return m_Data.data();
     }
 
+    Resource<Image> ImageF32::convertToUI8() {
+        ImageUI8Desc desc;
+        desc.width = m_Width;
+        desc.height = m_Height;
+        desc.format = getFormatFromChannelCount(getTextureChannelCount(m_Format), SR_UINT8);
+
+        auto img = createResource<ImageUI8>(desc);
+        auto ui8Data = img->getData();
+        auto channelCount = getTextureChannelCount(desc.format);
+        for (uint32 i = 0; i < m_Width * m_Height; i++){
+            for (uint32 j = 0; j < channelCount; j++){
+                reinterpret_cast<UByte*>(ui8Data)[i * channelCount + j] = static_cast<UByte>(m_Data[i * channelCount + j] * 255.0f);
+            }
+        }
+
+        return img;
+    }
 }

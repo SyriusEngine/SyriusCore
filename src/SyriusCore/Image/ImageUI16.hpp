@@ -21,6 +21,8 @@ namespace Syrius{
 
         [[nodiscard]] void* getData() override;
 
+        [[nodiscard]] Resource<Image> convertToUI8() override;
+
     private:
         std::vector<uint16> m_Data;
     };

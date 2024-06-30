@@ -191,8 +191,8 @@ typedef enum SR_TEXTURE_FORMAT: uint8 {
 } SR_TEXTURE_FORMAT;
 
 namespace Syrius {
-    typedef unsigned char ubyte;
-    typedef char byte;
+    typedef unsigned char UByte;
+    typedef char SByte;
 
 #if defined(SR_CORE_DEBUG)
     const static bool s_SyriusDebugMode = true;

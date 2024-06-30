@@ -46,10 +46,10 @@ namespace Syrius{
         }
     }
 
-    Resource<ubyte[]> GlIndexBuffer::getData() const {
+    Resource<UByte[]> GlIndexBuffer::getData() const {
         SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlIndexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
 
-        auto data = createResource<ubyte[]>(m_Size);
+        auto data = createResource<UByte[]>(m_Size);
         auto pBuffer = glMapNamedBuffer(m_BufferID, GL_READ_ONLY);
         if (!pBuffer){
             SR_CORE_THROW("[GlIndexBuffer]: Failed to map buffer object (%i)", m_BufferID);

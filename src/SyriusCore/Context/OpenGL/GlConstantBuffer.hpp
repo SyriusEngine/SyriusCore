@@ -18,7 +18,7 @@ namespace Syrius{
 
         void copyFrom(const ResourceView<ConstantBuffer>& other) override;
 
-        [[nodiscard]] Resource<ubyte[]> getData() const override;
+        [[nodiscard]] Resource<UByte[]> getData() const override;
 
         [[nodiscard]] uint64 getIdentifier() const override;
 
