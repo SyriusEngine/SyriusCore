@@ -25,8 +25,6 @@ namespace Syrius{
         }
     }
 
-    uint32 getBytesPerPixel(SR_TEXTURE_FORMAT format);
-
     SR_TEXTURE_FORMAT getFormatFromChannelCount(uint32 channelCount, SR_DATA_TYPE dataType);
 }
 

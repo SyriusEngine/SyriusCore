@@ -58,20 +58,42 @@ namespace Syrius{
     }
 
     Resource<Image> GlColorAttachment::getData() {
-        auto channelCount = getTextureChannelCount(m_Format);
-        uint32 size = m_Width * m_Height * channelCount;
-        ImageUI8Desc imgDesc;
+        uint32 size = m_Width * m_Height * getBytesPerPixel(m_Format);
+        ImageDesc imgDesc;
         imgDesc.width = m_Width;
         imgDesc.height = m_Height;
-        switch (channelCount) {
-            case 1: imgDesc.format = SR_TEXTURE_R_UI8; break;
-            case 2: imgDesc.format = SR_TEXTURE_RG_UI8; break;
-            case 3: imgDesc.format = SR_TEXTURE_RGB_UI8; break;
-            case 4: imgDesc.format = SR_TEXTURE_RGBA_UI8; break;
-        }
+        imgDesc.format = m_Format;
         imgDesc.data = nullptr;
         auto img =  createImage(imgDesc);
-        glGetTextureImage(m_TextureID, 0, m_GlChannelFormat, GL_UNSIGNED_BYTE, size, img->getData());
+
+        // use a pbo to read the data from the texture
+        GLuint pboID;
+        glCreateBuffers(1, &pboID);
+        glNamedBufferData(pboID, size, nullptr, GL_STATIC_READ);
+
+        // bind the pbo
+        glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
+        glBindBuffer(GL_PIXEL_PACK_BUFFER, pboID);
+        glReadBuffer(GL_COLOR_ATTACHMENT0 + m_AttachmentID);
+        glPixelStorei(GL_PACK_ALIGNMENT, 1);
+
+        // copy the data from the texture to the pbo
+        glReadPixels(0, 0, m_Width, m_Height, m_GlChannelFormat, m_GlDataType, nullptr);
+
+        // map the pbo
+        auto pBuffer = glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
+        if (!pBuffer){
+            SR_CORE_THROW("[GlColorAttachment]: Failed to map pixel buffer object (%i)", pboID);
+        }
+        memcpy(img->getData(), pBuffer, size);
+        auto retVal = glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
+        SR_CORE_ASSERT(retVal, "[GlColorAttachment]: Failed to unmap pixel buffer object (%i)", pboID);
+
+        // unbind the pbo
+        glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
+        glDeleteBuffers(1, &pboID);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
         return std::move(img);
     }
 

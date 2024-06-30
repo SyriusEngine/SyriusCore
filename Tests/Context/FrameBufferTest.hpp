@@ -19,13 +19,22 @@ protected:
 
     static ResourceView<FrameBuffer> createFrameBuffer2CA();
 
-    static ResourceView<FrameBuffer> createFrameBufferCCA();
-
     static ResourceView<VertexArray> createScreenQuad(ShaderStorage& ss);
 
     static ShaderStorage createScreenShader1CA();
 
     static ShaderStorage createScreenShader2CA();
 
-    static bool isPixelCorrect(Resource<Image>& img, uint8 r, uint8 g, uint8 b, uint8 a);
+    template<typename T>
+    bool isPixelCorrect(Resource<Image>& img, T r, T g, T b, T a){
+        auto data = reinterpret_cast<T*>(img->getData());
+        auto width = img->getWidth();
+        auto height = img->getHeight();
+        for (uint32 i = 0; i < width * height * 4; i+=4){
+            if (data[i] != r || data[i+1] != g || data[i+2] != b || data[i+3] != a){
+                return false;
+            }
+        }
+        return true;
+    }
 };
