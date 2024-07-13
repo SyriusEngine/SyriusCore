@@ -57,6 +57,21 @@ namespace Syrius{
         //glTexImage2D(GL_TEXTURE_2D, 0, m_InternalFormat, m_Width, m_Height, 0, m_GlFormat, m_GlDataType, nullptr);
     }
 
+    GLenum getGlReadPixelFormat(GLenum channelFormat, GLenum dataType){
+        if (dataType == GL_UNSIGNED_BYTE or dataType == GL_BYTE or
+            dataType == GL_UNSIGNED_SHORT or dataType == GL_SHORT or
+            dataType == GL_UNSIGNED_INT or dataType == GL_INT){
+            switch (channelFormat) {
+                case GL_RED: return GL_RED_INTEGER;
+                case GL_RG: return GL_RG_INTEGER;
+                case GL_RGB: return GL_RGB_INTEGER;
+                case GL_RGBA: return GL_RGBA_INTEGER;
+                default: SR_CORE_THROW("[GlColorAttachment]: Invalid channel format (%i)", channelFormat);
+            }
+        }
+        return channelFormat;
+    }
+
     Resource<Image> GlColorAttachment::getData() {
         uint32 size = m_Width * m_Height * getBytesPerPixel(m_Format);
         ImageDesc imgDesc;
@@ -78,7 +93,7 @@ namespace Syrius{
         glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
         // copy the data from the texture to the pbo
-        glReadPixels(0, 0, m_Width, m_Height, m_GlChannelFormat, m_GlDataType, nullptr);
+        glReadPixels(0, 0, m_Width, m_Height, getGlReadPixelFormat(m_GlChannelFormat, m_GlDataType), m_GlDataType, nullptr);
 
         // map the pbo
         auto pBuffer = glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
