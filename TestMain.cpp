@@ -59,7 +59,7 @@ int32 runTests(const EnvironmentDesc& envDesc){
 }
 
 int main(int argc, char** argv) {
-    //TestDebugMessageHandler::init("TestMessageOutput.txt");
+    TestDebugMessageHandler::init("TestMessageOutput.txt");
     testing::InitGoogleTest(&argc, argv);
 
     if (argc < 2) {
