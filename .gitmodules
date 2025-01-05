@@ -1,0 +1,3 @@
+[submodule "SyriusBuildUtils"]
+	path = SyriusBuildUtils
+	url = https://github.com/SyriusEngine/SyriusBuildUtils

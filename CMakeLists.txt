@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 project(SyriusCore)
 
-set(CMAKE_CXX_STANDARD 17)
+include(SyriusBuildUtils/CMakeUtils.cmake)
+
+include_or_fetch(SyriusUtils)
 
 add_compile_definitions(SR_CORE_DEBUG)
 add_compile_definitions(SR_CORE_EXPORT_DLL)
-
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
 if (WIN32)
     set(GLAD_PLATFORM_SRC
@@ -154,6 +152,8 @@ add_library(SyriusCore SHARED ${SYRIUSCORE_SRC})
 
 if (WIN32)
     if (MINGW)
+        set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+
         set(SYRIUS_CORE_LIBS
                 -limm32
                 -ldwmapi
@@ -255,12 +255,28 @@ set(SR_CORE_TEST_SRC
     Tests/Image/ImageF32Test.cpp
     Tests/Image/ImageUtilsTest.cpp)
 
-add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)
+if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTS)
+    # Add GTest
+    set(GTEST_DIR "${CMAKE_CURRENT_LIST_DIR}/Dependencies/gtest")
+    if (NOT EXISTS ${GTEST_DIR})
+        message("GTest not found, cloning from git...")
+        execute_process(COMMAND git clone https://github.com/google/googletest ${GTEST_DIR}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            RESULT_VARIABLE result)
+        if(result)
+            message(FATAL_ERROR "Failed to download GTest")
+        endif()
+    else()
+        message(STATUS "GTest found!")
+    endif ()
+    add_subdirectory(${GTEST_DIR})
 
-if (MSVC)
-    target_link_libraries(SyriusCoreTest ${SYRIUS_CORE_LIBS} gtest)
-else()
-    target_link_libraries(SyriusCoreTest ${SYRIUS_CORE_LIBS} -lgtest)
-endif()
+    message(STATUS "Building tests")
+
+    add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)
+    add_dependencies(SyriusCoreTest gtest)
+
+    target_link_libraries(SyriusCoreTest  ${SYRIUS_CORE_LIBS} GTest::gtest)
+endif ()
 
 
