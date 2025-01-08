@@ -1,9 +1,76 @@
 cmake_minimum_required(VERSION 3.16)
 project(SyriusCore)
 
+# Check if SyriusBuildUtils has been initialized
+if (NOT EXISTS "${CMAKE_CURRENT_LIST_DIR}/SyriusBuildUtils/CMakeUtils.cmake")
+    message("SyriusBuildUtils not found, cloning from git...")
+    execute_process(COMMAND git submodule init
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        RESULT_VARIABLE INIT_RESULT)
+    if(INIT_RESULT)
+        message(FATAL_ERROR "Failed to init SyriusBuildUtils")
+    endif()
+    execute_process(COMMAND git submodule update
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        RESULT_VARIABLE UPDATE_RESULT)
+    if(UPDATE_RESULT)
+        message(FATAL_ERROR "Failed to update SyriusBuildUtils")
+    endif()
+else()
+    message(STATUS "SyriusBuildUtils found!")
+endif()
 include(SyriusBuildUtils/CMakeUtils.cmake)
 
-include_or_fetch(SyriusUtils)
+# Find the SyriusUtils repo (locally or from git)
+set(SYRIUS_UTILS_DIR)
+include_or_fetch(SyriusUtils SYRIUS_UTILS_DIR)
+message("SyriusUtils found in ${SYRIUS_UTILS_DIR}")
+
+# Then, if we are on Windows, copy and paste it into the current bin dir
+# Nifty trick to get the name of the build folder of the other dir
+get_filename_component(BUILD_FOLDER_NAME ${CMAKE_BINARY_DIR} NAME)
+
+if (WIN32)
+    if (MINGW)
+        set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+        set(SYRIUS_CORE_LIBS
+            -limm32
+            -ldwmapi
+            -luser32
+            -ldxgi
+            -lopenGL32
+            -ld3d11
+            -ld3dcompiler_47
+            SyriusUtils
+            )
+
+        set(SYRIUS_UTILS_DLL "${SYRIUS_UTILS_DIR}/${BUILD_FOLDER_NAME}/libSyriusUtils.dll")
+
+    elseif(MSVC)
+        set(SYRIUS_CORE_LIBS
+            imm32
+            dwmapi
+            user32
+            dxgi
+            dxguid
+            openGL32
+            d3d11
+            d3dcompiler)
+        set(SYRIUS_UTILS_DLL "${SYRIUS_UTILS_DIR}/${BUILD_FOLDER_NAME}/SyriusUtils.dll")
+    endif()
+
+elseif(UNIX)
+    set(SYRIUS_CORE_LIBS
+        -lX11
+        -ldl
+        -lGL)
+endif()
+
+add_custom_target(CopySyriusUtilsDLL ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SYRIUS_UTILS_DLL} ${CMAKE_CURRENT_BINARY_DIR}
+    DEPENDS ${SYRIUS_UTILS_DLL}
+    COMMENT "Copying ${SYRIUS_UTILS_DLL} to build tree")
+add_dependencies(CopySyriusUtilsDLL SyriusUtils)
 
 add_compile_definitions(SR_CORE_DEBUG)
 add_compile_definitions(SR_CORE_EXPORT_DLL)
@@ -149,41 +216,7 @@ set(SYRIUSCORE_SRC
     src/SyriusCore/SyriusCore.cpp)
 
 add_library(SyriusCore SHARED ${SYRIUSCORE_SRC})
-
-if (WIN32)
-    if (MINGW)
-        set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
-
-        set(SYRIUS_CORE_LIBS
-                -limm32
-                -ldwmapi
-                -luser32
-                -ldxgi
-                -lopenGL32
-                -ld3d11
-                -ld3dcompiler_47)
-
-    elseif(MSVC)
-
-        set(SYRIUS_CORE_LIBS
-                imm32
-                dwmapi
-                user32
-                dxgi
-                dxguid
-                openGL32
-                d3d11
-                d3dcompiler)
-    endif()
-
-elseif(UNIX)
-
-    set(SYRIUS_CORE_LIBS
-            -lX11
-            -ldl
-            -lGL)
-endif()
-
+add_dependencies(SyriusCore CopySyriusUtilsDLL)
 target_link_libraries(SyriusCore ${SYRIUS_CORE_LIBS})
 
 
