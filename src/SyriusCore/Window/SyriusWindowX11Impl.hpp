@@ -1,7 +1,8 @@
 #pragma once
 
+#include <SyriusUtils/SyriusUtils.hpp>
+
 #include "../../../include/SyriusCore/Window/SyriusWindow.hpp"
-#include "../../../include/SyriusCore/Utils/PlatformDetection.hpp"
 #include "../Utils/DebugMacros.hpp"
 #include "X11Utils.hpp"
 #include "../Context/OpenGL/Internal/GlxContext.hpp"

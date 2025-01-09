@@ -31,10 +31,10 @@ typedef enum SR_WIDOW_ICON {
 namespace Syrius{
 
     struct WindowDesc{
-        int32 xPos            = 200;
-        int32 yPos            = 200;
-        uint32 width          = SR_DEFAULT_WIDTH;
-        uint32 height         = SR_DEFAULT_HEIGHT;
+        i32 xPos            = 200;
+        i32 yPos            = 200;
+        u32 width          = SR_DEFAULT_WIDTH;
+        u32 height         = SR_DEFAULT_HEIGHT;
         std::string title     = "SyriusCore";
         SR_WINDOW_STYLE style = SR_WINDOW_STYLE_DEFAULT;
     };
@@ -45,13 +45,13 @@ namespace Syrius{
 
         virtual ~SyriusWindow();
 
-        [[nodiscard]] int32 getPosX() const;
+        [[nodiscard]] i32 getPosX() const;
 
-        [[nodiscard]] int32 getPosY() const;
+        [[nodiscard]] i32 getPosY() const;
 
-        [[nodiscard]] uint32 getWidth() const;
+        [[nodiscard]] u32 getWidth() const;
 
-        [[nodiscard]] uint32 getHeight() const;
+        [[nodiscard]] u32 getHeight() const;
 
         [[nodiscard]] const std::string& getTitle() const;
 
@@ -77,9 +77,9 @@ namespace Syrius{
 
         virtual void close() = 0;
 
-        virtual void setPosition(int32 posX, int32 posY) = 0;
+        virtual void setPosition(i32 posX, i32 posY) = 0;
 
-        virtual void resize(uint32 newWidth, uint32 newHeight) = 0;
+        virtual void resize(u32 newWidth, u32 newHeight) = 0;
 
         virtual void requestFocus() = 0;
 
@@ -93,17 +93,17 @@ namespace Syrius{
 
         virtual void setTitle(const std::string& newTitle) = 0;
 
-        virtual void setIcon(const ImageFileDesc& desc, uint32 icons) = 0;
+        virtual void setIcon(const ImageFileDesc& desc, u32 icons) = 0;
 
-        virtual void setIcon(const Resource<Image>& image, uint32 icons) = 0;
+        virtual void setIcon(const UP<Image>& image, u32 icons) = 0;
 
         virtual void pollEvents() = 0;
 
-        virtual void setMousePosition(int32 mousePosX, int32 mousePosY) = 0;
+        virtual void setMousePosition(i32 mousePosX, i32 mousePosY) = 0;
 
-        virtual int32 getMousePositionX() = 0;
+        virtual i32 getMousePositionX() = 0;
 
-        virtual int32 getMousePositionY() = 0;
+        virtual i32 getMousePositionY() = 0;
 
         virtual void hideMouse() = 0;
 
@@ -130,10 +130,10 @@ namespace Syrius{
         void dispatchEvent(const Event& event);
 
     protected:
-        int32 m_PosX;
-        int32 m_PosY;
-        uint32 m_Width;
-        uint32 m_Height;
+        i32 m_PosX;
+        i32 m_PosY;
+        u32 m_Width;
+        u32 m_Height;
         std::string m_Title;
         bool m_Open;
         bool m_Focused;
@@ -146,9 +146,9 @@ namespace Syrius{
         bool m_KeyRepeat;
         bool m_UseImGui;
 
-        static uint32 m_ImGuiInstances;
+        static u32 m_ImGuiInstances;
 
-        Resource<Context> m_Context;
+        UP<Context> m_Context;
 
     private:
         std::deque<Event> m_EventQueue;

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include "../../../include/SyriusCore/Utils/PlatformDetection.hpp"
+#include <SyriusUtils/SyriusUtils.hpp>
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 class D3D11UtilsTest: public testing::Test{
 protected:

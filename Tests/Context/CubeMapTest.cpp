@@ -8,8 +8,8 @@ void CubeMapTest::TearDown() {
     Test::TearDown();
 }
 
-constexpr uint32 s_Width = 50;
-constexpr uint32 s_Height = 50;
+constexpr u32 s_Width = 50;
+constexpr u32 s_Height = 50;
 
 template<typename T>
 void createVector(std::vector<T>& vec, T red, T green, T blue, T alpha){
@@ -23,18 +23,18 @@ void createVector(std::vector<T>& vec, T red, T green, T blue, T alpha){
 }
 
 ResourceView<CubeMap> CubeMapTest::createCubeMap() {
-    std::vector<uint8> red;
-    createVector(red, static_cast<uint8>(255), static_cast<uint8>(0), static_cast<uint8>(0), static_cast<uint8>(255));
-    std::vector<uint8> green;
-    createVector(green, static_cast<uint8>(0), static_cast<uint8>(255), static_cast<uint8>(0), static_cast<uint8>(255));
-    std::vector<uint8> blue;
-    createVector(blue, static_cast<uint8>(0), static_cast<uint8>(0), static_cast<uint8>(255), static_cast<uint8>(255));
-    std::vector<uint8> redBlue;
-    createVector(redBlue, static_cast<uint8>(255), static_cast<uint8>(0), static_cast<uint8>(255), static_cast<uint8>(255));
-    std::vector<uint8> greenBlue;
-    createVector(greenBlue, static_cast<uint8>(0), static_cast<uint8>(255), static_cast<uint8>(255), static_cast<uint8>(255));
-    std::vector<uint8> redGreen;
-    createVector(redGreen, static_cast<uint8>(255), static_cast<uint8>(255), static_cast<uint8>(0), static_cast<uint8>(255));
+    std::vector<u8> red;
+    createVector(red, static_cast<u8>(255), static_cast<u8>(0), static_cast<u8>(0), static_cast<u8>(255));
+    std::vector<u8> green;
+    createVector(green, static_cast<u8>(0), static_cast<u8>(255), static_cast<u8>(0), static_cast<u8>(255));
+    std::vector<u8> blue;
+    createVector(blue, static_cast<u8>(0), static_cast<u8>(0), static_cast<u8>(255), static_cast<u8>(255));
+    std::vector<u8> redBlue;
+    createVector(redBlue, static_cast<u8>(255), static_cast<u8>(0), static_cast<u8>(255), static_cast<u8>(255));
+    std::vector<u8> greenBlue;
+    createVector(greenBlue, static_cast<u8>(0), static_cast<u8>(255), static_cast<u8>(255), static_cast<u8>(255));
+    std::vector<u8> redGreen;
+    createVector(redGreen, static_cast<u8>(255), static_cast<u8>(255), static_cast<u8>(0), static_cast<u8>(255));
 
     ImageUI8Desc desc;
     desc.width = s_Width;
@@ -67,8 +67,8 @@ ResourceView<CubeMap> CubeMapTest::createCubeMap() {
 }
 
 ResourceView<CubeMap> CubeMapTest::createRedCubeMap() {
-    std::vector<uint8> red;
-    createVector(red, static_cast<uint8>(255), static_cast<uint8>(0), static_cast<uint8>(0), static_cast<uint8>(255));
+    std::vector<u8> red;
+    createVector(red, static_cast<u8>(255), static_cast<u8>(0), static_cast<u8>(0), static_cast<u8>(255));
 
     ImageUI8Desc desc;
     desc.width = s_Width;
@@ -141,18 +141,18 @@ bool compareData(const UByte* data, const std::vector<UByte>& vec){
 }
 
 TEST_F(CubeMapTest, ReadCubeMap){
-    std::vector<uint8> red;
-    createVector(red, static_cast<uint8>(255), static_cast<uint8>(0), static_cast<uint8>(0), static_cast<uint8>(255));
-    std::vector<uint8> green;
-    createVector(green, static_cast<uint8>(0), static_cast<uint8>(255), static_cast<uint8>(0), static_cast<uint8>(255));
-    std::vector<uint8> blue;
-    createVector(blue, static_cast<uint8>(0), static_cast<uint8>(0), static_cast<uint8>(255), static_cast<uint8>(255));
-    std::vector<uint8> redBlue;
-    createVector(redBlue, static_cast<uint8>(255), static_cast<uint8>(0), static_cast<uint8>(255), static_cast<uint8>(255));
-    std::vector<uint8> greenBlue;
-    createVector(greenBlue, static_cast<uint8>(0), static_cast<uint8>(255), static_cast<uint8>(255), static_cast<uint8>(255));
-    std::vector<uint8> redGreen;
-    createVector(redGreen, static_cast<uint8>(255), static_cast<uint8>(255), static_cast<uint8>(0), static_cast<uint8>(255));
+    std::vector<u8> red;
+    createVector(red, static_cast<u8>(255), static_cast<u8>(0), static_cast<u8>(0), static_cast<u8>(255));
+    std::vector<u8> green;
+    createVector(green, static_cast<u8>(0), static_cast<u8>(255), static_cast<u8>(0), static_cast<u8>(255));
+    std::vector<u8> blue;
+    createVector(blue, static_cast<u8>(0), static_cast<u8>(0), static_cast<u8>(255), static_cast<u8>(255));
+    std::vector<u8> redBlue;
+    createVector(redBlue, static_cast<u8>(255), static_cast<u8>(0), static_cast<u8>(255), static_cast<u8>(255));
+    std::vector<u8> greenBlue;
+    createVector(greenBlue, static_cast<u8>(0), static_cast<u8>(255), static_cast<u8>(255), static_cast<u8>(255));
+    std::vector<u8> redGreen;
+    createVector(redGreen, static_cast<u8>(255), static_cast<u8>(255), static_cast<u8>(0), static_cast<u8>(255));
 
     auto cb = createCubeMap();
 
@@ -175,8 +175,8 @@ TEST_F(CubeMapTest, CopyFromTextureCubeMap){
     auto redCb = createRedCubeMap();
 
     // then create texture
-    std::vector<uint8> blue;
-    createVector(blue, static_cast<uint8>(0), static_cast<uint8>(0), static_cast<uint8>(255), static_cast<uint8>(255));
+    std::vector<u8> blue;
+    createVector(blue, static_cast<u8>(0), static_cast<u8>(0), static_cast<u8>(255), static_cast<u8>(255));
 
     Texture2DDesc desc;
     desc.width = s_Width;

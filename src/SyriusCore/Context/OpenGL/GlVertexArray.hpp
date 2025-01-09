@@ -17,12 +17,12 @@ namespace Syrius{
 
         void drawBuffers() override;
 
-        void drawBuffersInstanced(uint32 instanceCount) override;
+        void drawBuffersInstanced(u32 instanceCount) override;
 
         void setDrawMode(SR_DRAW_MODE drawMode) override;
 
     private:
-        uint32 m_ArrayID;
+        u32 m_ArrayID;
         GLenum m_GlDrawMode;
 
     };
@@ -39,12 +39,12 @@ namespace Syrius{
 
         void drawBuffers() override;
 
-        void drawBuffersInstanced(uint32 instanceCount) override;
+        void drawBuffersInstanced(u32 instanceCount) override;
 
         void setDrawMode(SR_DRAW_MODE drawMode) override;
 
     private:
-        uint32 m_ArrayID;
+        u32 m_ArrayID;
         GLenum m_GlDrawMode;
         GLenum m_IndexDataType;
     };

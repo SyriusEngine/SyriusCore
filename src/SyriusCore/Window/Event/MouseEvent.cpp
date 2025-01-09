@@ -7,13 +7,13 @@ namespace Syrius{
 
     }
 
-    MouseMovedEvent::MouseMovedEvent(int32 posX, int32 posY)
+    MouseMovedEvent::MouseMovedEvent(i32 posX, i32 posY)
     : MouseEvent(SR_EVENT_MOUSE_MOVED){
         mousePosX = posX;
         mousePosY = posY;
     }
 
-    MouseScrolledEvent::MouseScrolledEvent(int32 scrollX, int32 scrollY)
+    MouseScrolledEvent::MouseScrolledEvent(i32 scrollX, i32 scrollY)
     : MouseEvent(SR_EVENT_MOUSE_SCROLLED){
         mouseScrollX = scrollX;
         mouseScrollY = scrollY;
@@ -39,7 +39,7 @@ namespace Syrius{
 
     }
 
-    RawMouseMovedEvent::RawMouseMovedEvent(int32 deltaX, int32 deltaY)
+    RawMouseMovedEvent::RawMouseMovedEvent(i32 deltaX, i32 deltaY)
     : MouseEvent(SR_EVENT_RAW_MOUSE_MOVED){
         mouseDeltaX = deltaX;
         mouseDeltaY = deltaY;

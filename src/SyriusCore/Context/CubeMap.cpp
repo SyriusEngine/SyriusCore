@@ -3,7 +3,7 @@
 
 namespace Syrius{
 
-    CubeMap::CubeMap(const ResourceView<CubeMapLayout>& desc, const Resource<DeviceLimits>& deviceLimits):
+    CubeMap::CubeMap(const ResourceView<CubeMapLayout>& desc, const UP<DeviceLimits>& deviceLimits):
     m_Width(desc->getWidth()),
     m_Height(desc->getHeight()),
     m_Format(desc->getFormat()),
@@ -13,11 +13,11 @@ namespace Syrius{
 
     CubeMap::~CubeMap() = default;
 
-    uint32 CubeMap::getWidth() const {
+    u32 CubeMap::getWidth() const {
         return m_Width;
     }
 
-    uint32 CubeMap::getHeight() const {
+    u32 CubeMap::getHeight() const {
         return m_Height;
     }
 

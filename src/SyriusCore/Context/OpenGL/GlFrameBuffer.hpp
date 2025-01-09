@@ -10,7 +10,7 @@ namespace Syrius{
 
     class GlFrameBuffer : public FrameBuffer{
     public:
-        GlFrameBuffer(const ResourceView<FrameBufferLayout>& desc, const Resource<DeviceLimits>& deviceLimits);
+        GlFrameBuffer(const ResourceView<FrameBufferLayout>& desc, const UP<DeviceLimits>& deviceLimits);
 
         ~GlFrameBuffer() override;
 
@@ -25,13 +25,13 @@ namespace Syrius{
         void createDepthStencilAttachment(const ResourceView<FrameBufferLayout>& desc);
 
     private:
-        uint32 m_FrameBufferID;
+        u32 m_FrameBufferID;
 
     };
 
     class GlDefaultFrameBuffer : public FrameBuffer{
     public:
-        GlDefaultFrameBuffer(const ResourceView<FrameBufferLayout>& desc, const Resource<DeviceLimits>& deviceLimits);
+        GlDefaultFrameBuffer(const ResourceView<FrameBufferLayout>& desc, const UP<DeviceLimits>& deviceLimits);
 
         ~GlDefaultFrameBuffer() override;
 

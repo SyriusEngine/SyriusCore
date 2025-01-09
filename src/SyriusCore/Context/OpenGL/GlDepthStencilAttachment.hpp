@@ -7,7 +7,7 @@ namespace Syrius{
 
     class GlDepthStencilAttachment : public DepthStencilAttachment{
     public:
-        GlDepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID);
+        GlDepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const UP<DeviceLimits>& deviceLimits, u32 framebufferID);
 
         ~GlDepthStencilAttachment() override;
 
@@ -23,13 +23,13 @@ namespace Syrius{
 
         void setDepthMask(SR_DEPTH_MASK mask) override;
 
-        [[nodiscard]] Resource<Image> getData() override;
+        [[nodiscard]] UP<Image> getData() override;
 
-        [[nodiscard]] uint64 getIdentifier() const override;
+        [[nodiscard]] u64 getIdentifier() const override;
 
     protected:
-        uint32 m_BufferID;
-        uint32 m_FrameBufferID;
+        u32 m_BufferID;
+        u32 m_FrameBufferID;
         GLenum m_GlInternalFormat;
 
         GLenum m_GlDepthFunc;
@@ -42,7 +42,7 @@ namespace Syrius{
 
     class GlDepthStencilAttachmentRenderBuffer : public GlDepthStencilAttachment{
     public:
-        GlDepthStencilAttachmentRenderBuffer(const DepthStencilAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID);
+        GlDepthStencilAttachmentRenderBuffer(const DepthStencilAttachmentDesc& desc, const UP<DeviceLimits>& deviceLimits, u32 framebufferID);
 
         ~GlDepthStencilAttachmentRenderBuffer() override;
 
@@ -50,14 +50,14 @@ namespace Syrius{
 
         void unbind() override;
 
-        void bindShaderResource(uint32 slot) override;
+        void bindShaderResource(u32 slot) override;
 
-        void onResize(uint32 width, uint32 height) override;
+        void onResize(u32 width, u32 height) override;
     };
 
     class GlDepthStencilAttachmentTexture : public GlDepthStencilAttachment{
     public:
-        GlDepthStencilAttachmentTexture(const DepthStencilAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID);
+        GlDepthStencilAttachmentTexture(const DepthStencilAttachmentDesc& desc, const UP<DeviceLimits>& deviceLimits, u32 framebufferID);
 
         ~GlDepthStencilAttachmentTexture() override;
 
@@ -65,23 +65,23 @@ namespace Syrius{
 
         void unbind() override;
 
-        void bindShaderResource(uint32 slot) override;
+        void bindShaderResource(u32 slot) override;
 
-        void onResize(uint32 width, uint32 height) override;
+        void onResize(u32 width, u32 height) override;
     };
 
     class GlDefaultDepthStencilAttachment : public GlDepthStencilAttachment{
     public:
-        GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const UP<DeviceLimits>& deviceLimits);
 
         ~GlDefaultDepthStencilAttachment() override;
 
-        void bindShaderResource(uint32 slot) override;
+        void bindShaderResource(u32 slot) override;
 
-        void onResize(uint32 width, uint32 height) override;
+        void onResize(u32 width, u32 height) override;
 
-        [[nodiscard]] Resource<Image> getData() override;
+        [[nodiscard]] UP<Image> getData() override;
 
-        [[nodiscard]] uint64 getIdentifier() const override;
+        [[nodiscard]] u64 getIdentifier() const override;
     };
 }

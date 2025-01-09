@@ -24,7 +24,7 @@ namespace Syrius{
 
         virtual ~Sampler();
 
-        virtual void bindShaderResource(uint32 slot) = 0;
+        virtual void bindShaderResource(u32 slot) = 0;
 
         virtual void setFilter(SR_TEXTURE_FILTER minFilter, SR_TEXTURE_FILTER magFilter) = 0;
 
@@ -36,7 +36,7 @@ namespace Syrius{
 
         virtual void setLOD(float minLOD, float maxLOD, float LODBias) = 0;
 
-        [[nodiscard]] virtual uint64 getIdentifier() = 0;
+        [[nodiscard]] virtual u64 getIdentifier() = 0;
 
         [[nodiscard]] SR_TEXTURE_FILTER getMinFilter() const;
 

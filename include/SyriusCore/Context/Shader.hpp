@@ -2,7 +2,6 @@
 
 #include "Utils.hpp"
 #include "ShaderModule.hpp"
-#include "../Utils/Resource.hpp"
 
 namespace Syrius{
 
@@ -19,7 +18,7 @@ namespace Syrius{
 
         virtual void bind() = 0;
 
-        [[nodiscard]] virtual uint64 getIdentifier() const = 0;
+        [[nodiscard]] virtual u64 getIdentifier() const = 0;
 
     private:
 

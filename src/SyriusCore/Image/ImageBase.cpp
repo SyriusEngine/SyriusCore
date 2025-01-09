@@ -4,15 +4,15 @@ namespace Syrius{
 
     Image::~Image() = default;
 
-    uint32 Image::getWidth() const {
+    u32 Image::getWidth() const {
         return m_Width;
     }
 
-    uint32 Image::getHeight() const {
+    u32 Image::getHeight() const {
         return m_Height;
     }
 
-    uint32 Image::getChannelCount() const {
+    u32 Image::getChannelCount() const {
         return getTextureChannelCount(m_Format);
     }
 
@@ -27,7 +27,7 @@ namespace Syrius{
 
     }
 
-    Image::Image(uint32 width, uint32 height, SR_TEXTURE_FORMAT format):
+    Image::Image(u32 width, u32 height, SR_TEXTURE_FORMAT format):
     m_Width(width),
     m_Height(height),
     m_Format(format){

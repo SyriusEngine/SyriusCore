@@ -11,31 +11,31 @@ namespace Syrius{
     public:
         CubeMapLayout() = delete;
 
-        CubeMapLayout(uint32 width, uint32 height, SR_TEXTURE_FORMAT format);
+        CubeMapLayout(u32 width, u32 height, SR_TEXTURE_FORMAT format);
 
         ~CubeMapLayout();
 
-        void addFace(SR_CUBEMAP_FACE faceID, Resource<Image>& image);
+        void addFace(SR_CUBEMAP_FACE faceID, UP<Image>& image);
 
         void addFaceFromFile(SR_CUBEMAP_FACE faceID, const ImageFileDesc& desc);
 
         void addFaceFromFile(SR_CUBEMAP_FACE faceID, const std::string& file);
 
-        [[nodiscard]] uint32 getWidth() const;
+        [[nodiscard]] u32 getWidth() const;
 
-        [[nodiscard]] uint32 getHeight() const;
+        [[nodiscard]] u32 getHeight() const;
 
         [[nodiscard]] SR_TEXTURE_FORMAT getFormat() const;
 
-        [[nodiscard]] const Resource<Image>& getFace(SR_CUBEMAP_FACE faceID) const;
+        [[nodiscard]] const UP<Image>& getFace(SR_CUBEMAP_FACE faceID) const;
 
-        [[nodiscard]] const std::array<Resource<Image>, 6>& getFaces() const;
+        [[nodiscard]] const std::array<UP<Image>, 6>& getFaces() const;
 
     protected:
-        const uint32 m_Width;
-        const uint32 m_Height;
+        const u32 m_Width;
+        const u32 m_Height;
         const SR_TEXTURE_FORMAT m_Format;
 
-        std::array<Resource<Image>, 6> m_Faces;
+        std::array<UP<Image>, 6> m_Faces;
     };
 }

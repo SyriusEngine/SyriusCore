@@ -67,10 +67,10 @@ namespace Syrius{
         void terminateGlad();
 
     private:
-        static uint32 m_ContextCount;
-        static uint64 m_ActiveContextID;
+        static u32 m_ContextCount;
+        static u64 m_ActiveContextID;
 
-        uint64 m_ID;
+        u64 m_ID;
 
     };
 

@@ -2,7 +2,7 @@
 
 namespace Syrius{
 
-    GlColorAttachment::GlColorAttachment(const ColorAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID, uint32 attachmentID):
+    GlColorAttachment::GlColorAttachment(const ColorAttachmentDesc &desc, const UP<DeviceLimits>& deviceLimits, u32 framebufferID, u32 attachmentID):
     ColorAttachment(desc, deviceLimits),
     m_FrameBufferID(framebufferID),
     m_AttachmentID(attachmentID),
@@ -10,9 +10,7 @@ namespace Syrius{
     m_GlChannelFormat(getGlChannelFormat(desc.format)),
     m_GlInternalFormat(getGlTextureFormat(desc.format)),
     m_GlDataType(getGlTextureDataType(desc.format)){
-        if (!m_DeviceLimits->texture2DFormatSupported(desc.format)){
-            SR_CORE_THROW("[GlColorAttachment]: Texture format (%i) is not supported by the device", desc.format);
-        }
+        SR_LOG_THROW_IF_FALSE(m_DeviceLimits->texture2DFormatSupported(desc.format), "GlColorAttachment", "Texture format (%i) is not supported by the device", desc.format);
 
 //        glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
 //        glBindTexture(GL_TEXTURE_2D, m_TextureID);
@@ -35,8 +33,8 @@ namespace Syrius{
 
     }
 
-    void GlColorAttachment::bindShaderResource(uint32 slot) {
-        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
+    void GlColorAttachment::bindShaderResource(u32 slot) {
+        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
 
         glBindTextureUnit(slot, m_TextureID);
     }
@@ -45,7 +43,7 @@ namespace Syrius{
         glClearNamedFramebufferfv(m_FrameBufferID, GL_COLOR, m_AttachmentID, &m_ClearColor[0]);
     }
 
-    void GlColorAttachment::onResize(uint32 width, uint32 height) {
+    void GlColorAttachment::onResize(u32 width, u32 height) {
         m_Width = width;
         m_Height = height;
         /*
@@ -66,14 +64,14 @@ namespace Syrius{
                 case GL_RG: return GL_RG_INTEGER;
                 case GL_RGB: return GL_RGB_INTEGER;
                 case GL_RGBA: return GL_RGBA_INTEGER;
-                default: SR_CORE_THROW("[GlColorAttachment]: Invalid channel format (%i)", channelFormat);
+                default: SR_LOG_THROW("GlColorAttachment", "Invalid channel format (%i)", channelFormat);
             }
         }
         return channelFormat;
     }
 
-    Resource<Image> GlColorAttachment::getData() {
-        uint32 size = m_Width * m_Height * getBytesPerPixel(m_Format);
+    UP<Image> GlColorAttachment::getData() {
+        u32 size = m_Width * m_Height * getBytesPerPixel(m_Format);
         ImageDesc imgDesc;
         imgDesc.width = m_Width;
         imgDesc.height = m_Height;
@@ -97,12 +95,12 @@ namespace Syrius{
 
         // map the pbo
         auto pBuffer = glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
-        if (!pBuffer){
-            SR_CORE_THROW("[GlColorAttachment]: Failed to map pixel buffer object (%i)", pboID);
-        }
+
+        SR_LOG_THROW_IF_FALSE(pBuffer, "GlColorAttachment", "Failed to map pixel buffer object (%i)", pboID);
+
         memcpy(img->getData(), pBuffer, size);
         auto retVal = glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
-        SR_CORE_ASSERT(retVal, "[GlColorAttachment]: Failed to unmap pixel buffer object (%i)", pboID);
+        SR_ASSERT(retVal, "[GlColorAttachment]: Failed to unmap pixel buffer object (%i)", pboID);
 
         // unbind the pbo
         glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
@@ -112,12 +110,12 @@ namespace Syrius{
         return std::move(img);
     }
 
-    uint64 GlColorAttachment::getIdentifier() const {
+    u64 GlColorAttachment::getIdentifier() const {
         return m_TextureID;
     }
 
 
-    GlDefaultColorAttachment::GlDefaultColorAttachment(const ColorAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    GlDefaultColorAttachment::GlDefaultColorAttachment(const ColorAttachmentDesc &desc, const UP<DeviceLimits>& deviceLimits):
     ColorAttachment(desc, deviceLimits){
 
     }
@@ -128,25 +126,25 @@ namespace Syrius{
 
     }
 
-    void GlDefaultColorAttachment::bindShaderResource(uint32 slot) {
-        SR_CORE_WARNING("[GlDefaultColorAttachment]: Attempted to bind default color attachment (%p) as shader resource at slot %i, this is not supported", this, slot)
+    void GlDefaultColorAttachment::bindShaderResource(u32 slot) {
+        SR_LOG_WARNING("GlDefaultColorAttachment", "Attempted to bind default color attachment (%p) as shader resource at slot %i, this is not supported", this, slot)
     }
 
     void GlDefaultColorAttachment::clear() {
        glClearNamedFramebufferfv(0, GL_COLOR, 0, m_ClearColor);
     }
 
-    void GlDefaultColorAttachment::onResize(uint32 width, uint32 height) {
+    void GlDefaultColorAttachment::onResize(u32 width, u32 height) {
         m_Width = width;
         m_Height = height;
     }
 
-    Resource<Image> GlDefaultColorAttachment::getData() {
-        SR_CORE_WARNING("[GlDefaultColorAttachment]: Attempted to get data from default color attachment (%p), this is not supported", this)
+    UP<Image> GlDefaultColorAttachment::getData() {
+        SR_LOG_WARNING("GlDefaultColorAttachment", "Attempted to get data from default color attachment (%p), this is not supported", this)
         return nullptr;
     }
 
-    uint64 GlDefaultColorAttachment::getIdentifier() const {
+    u64 GlDefaultColorAttachment::getIdentifier() const {
         return 0;
     }
 

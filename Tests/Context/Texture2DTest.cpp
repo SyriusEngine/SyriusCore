@@ -8,8 +8,8 @@ void Texture2DTest::TearDown() {
     Test::TearDown();
 }
 
-constexpr uint32 s_Width = 50;
-constexpr uint32 s_Height = 50;
+constexpr u32 s_Width = 50;
+constexpr u32 s_Height = 50;
 
 template<typename T>
 void createRedVector(std::vector<T>& vec){
@@ -23,7 +23,7 @@ void createRedVector(std::vector<T>& vec){
 }
 
 TEST_F(Texture2DTest, CreateTexture2DUI8){
-    std::vector<uint8> red;
+    std::vector<u8> red;
     createRedVector(red);
     Texture2DDesc desc;
     desc.width = s_Width;
@@ -74,7 +74,7 @@ TEST_F(Texture2DTest, CreateTexture2DNoData){
 }
 
 TEST_F(Texture2DTest, ReadTexture2DUI8){
-    std::vector<uint8> red;
+    std::vector<u8> red;
     createRedVector(red);
     Texture2DDesc desc;
     desc.width = s_Width;
@@ -108,7 +108,7 @@ TEST_F(Texture2DTest, UpdateTexture2DLargerData){
     desc.usage = SR_BUFFER_USAGE_DEFAULT;
 
     auto tex = TestEnvironment::m_Context->createTexture2D(desc);
-    std::vector<uint8> largeData(4 * 4 * 4, 255);
+    std::vector<u8> largeData(4 * 4 * 4, 255);
 
     EXPECT_DEATH(tex->setData(largeData.data(), 0, 0, 3, 3), "");
 }
@@ -122,12 +122,12 @@ TEST_F(Texture2DTest, UpdateTexture2DOutOfRegion){
     desc.usage = SR_BUFFER_USAGE_DEFAULT;
 
     auto tex = TestEnvironment::m_Context->createTexture2D(desc);
-    std::vector<uint8> largeData(2 * 2 * 4, 255);
+    std::vector<u8> largeData(2 * 2 * 4, 255);
     EXPECT_DEATH(tex->setData(largeData.data(), 300, 300, 2, 2), "");
 }
 
 TEST_F(Texture2DTest, CopyTexture2D){
-    std::vector<uint8> red;
+    std::vector<u8> red;
     createRedVector(red);
     Texture2DDesc desc;
     desc.width = s_Width;

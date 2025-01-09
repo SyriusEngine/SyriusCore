@@ -2,7 +2,7 @@
 
 namespace Syrius{
 
-    GLint checkFramebuffer(uint32 framebuffer){
+    GLint checkFramebuffer(u32 framebuffer){
         auto status = glCheckNamedFramebufferStatus(framebuffer, GL_FRAMEBUFFER);
         std::string errorStr;
         switch (status){
@@ -17,13 +17,13 @@ namespace Syrius{
             case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:       errorStr = "GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS"; break;
             default: errorStr += "Unknown error"; break;
         }
-        if (status != GL_FRAMEBUFFER_COMPLETE){
-            SR_CORE_THROW("[GlFrameBuffer]: Framebuffer (%i) is not complete, error: %s", framebuffer, errorStr.c_str());
-        }
+
+        SR_LOG_THROW_IF_FALSE(status == GL_FRAMEBUFFER_COMPLETE, "GlFrameBuffer", "Framebuffer (%i) is not complete, error: %s", framebuffer, errorStr.c_str());
+        
         return status;
     }
 
-    GlFrameBuffer::GlFrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits) :
+    GlFrameBuffer::GlFrameBuffer(const ResourceView<FrameBufferLayout> &desc, const UP<DeviceLimits>& deviceLimits) :
     FrameBuffer(desc, deviceLimits),
     m_FrameBufferID(0){
         for (const auto& viewDesc: desc->getViewportDesc()){
@@ -35,7 +35,7 @@ namespace Syrius{
         createColorAttachments(desc);
         createDepthStencilAttachment(desc);
 
-        SR_CORE_POSTCONDITION(checkFramebuffer(m_FrameBufferID) == GL_FRAMEBUFFER_COMPLETE, "[GlFrameBuffer]: Framebuffer (%i) creation failed!", m_FrameBufferID);
+        SR_POSTCONDITION(checkFramebuffer(m_FrameBufferID) == GL_FRAMEBUFFER_COMPLETE, "[GlFrameBuffer]: Framebuffer (%i) creation failed!", m_FrameBufferID);
     }
 
     GlFrameBuffer::~GlFrameBuffer() {
@@ -43,7 +43,7 @@ namespace Syrius{
     }
 
     void GlFrameBuffer::bind() {
-        SR_CORE_PRECONDITION(glCheckNamedFramebufferStatus(m_FrameBufferID, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "[GlFrameBuffer]: Framebuffer (%i) cannot be bound because it is incomplete", m_FrameBufferID);
+        SR_PRECONDITION(glCheckNamedFramebufferStatus(m_FrameBufferID, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "[GlFrameBuffer]: Framebuffer (%i) cannot be bound because it is incomplete", m_FrameBufferID);
 
         glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
 
@@ -61,7 +61,7 @@ namespace Syrius{
 
     void GlFrameBuffer::createColorAttachments(const ResourceView<FrameBufferLayout> &desc) {
         std::vector<GLenum> drawBuffers;
-        uint32 colorAttachmentIndex = 0;
+        u32 colorAttachmentIndex = 0;
         // 2D color attachments
         for (const auto& attachDesc: desc->getColorAttachmentDesc()){
             auto attachment = new GlColorAttachment(attachDesc, m_DeviceLimits, m_FrameBufferID, colorAttachmentIndex);
@@ -93,10 +93,10 @@ namespace Syrius{
             // RenderBuffers are faster than Textures but cannot be accessed in shaders
             attachment = new GlDepthStencilAttachmentRenderBuffer(dsaDesc, m_DeviceLimits, m_FrameBufferID);
         }
-        m_DepthStencilAttachment = Resource<DepthStencilAttachment>(attachment);
+        m_DepthStencilAttachment = UP<DepthStencilAttachment>(attachment);
     }
 
-    GlDefaultFrameBuffer::GlDefaultFrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits) :
+    GlDefaultFrameBuffer::GlDefaultFrameBuffer(const ResourceView<FrameBufferLayout> &desc, const UP<DeviceLimits>& deviceLimits) :
     FrameBuffer(desc, deviceLimits) {
         auto viewport = new GlViewport(desc->getViewportDesc().back(), m_DeviceLimits);
         m_Viewports.emplace_back(viewport);
@@ -106,10 +106,10 @@ namespace Syrius{
 
         if (!desc->getDepthStencilAttachmentDesc().empty()){
             if (desc->getDepthStencilAttachmentDesc().size() > 1){
-                SR_CORE_MESSAGE("The default framebuffer cannot have more than one depth stencil attachment, only the last one will be used");
+                SR_LOG_INFO("GlFramebuffer", "The default framebuffer cannot have more than one depth stencil attachment, only the last one will be used");
             }
             auto df = new GlDefaultDepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back(), m_DeviceLimits);
-            m_DepthStencilAttachment = Resource<DepthStencilAttachment>(df);
+            m_DepthStencilAttachment = UP<DepthStencilAttachment>(df);
         }
         else{
             // create a dummy depth stencil attachment such that the object exists but does nothing
@@ -119,7 +119,7 @@ namespace Syrius{
             dummyDesc.enableDepthTest = false;
             dummyDesc.enableStencilTest = false;
             auto df = new GlDefaultDepthStencilAttachment(dummyDesc, m_DeviceLimits);
-            m_DepthStencilAttachment = Resource<DepthStencilAttachment>(df);
+            m_DepthStencilAttachment = UP<DepthStencilAttachment>(df);
         }
 
     }

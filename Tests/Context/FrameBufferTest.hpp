@@ -26,11 +26,11 @@ protected:
     static ShaderStorage createScreenShader2CA();
 
     template<typename T>
-    bool isPixelCorrect(Resource<Image>& img, T r, T g, T b, T a){
+    bool isPixelCorrect(UP<Image>& img, T r, T g, T b, T a){
         auto data = reinterpret_cast<T*>(img->getData());
         auto width = img->getWidth();
         auto height = img->getHeight();
-        for (uint32 i = 0; i < width * height * 4; i+=4){
+        for (u32 i = 0; i < width * height * 4; i+=4){
             if (data[i] != r || data[i+1] != g || data[i+2] != b || data[i+3] != a){
                 return false;
             }

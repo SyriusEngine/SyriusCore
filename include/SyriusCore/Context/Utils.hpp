@@ -1,8 +1,9 @@
 #pragma once
 
+#include <SyriusUtils/SyriusUtils.hpp>
+
 #include "../Utils/SyriusCoreInclude.hpp"
 #include "../Image/Image.hpp"
-#include "../Utils/Resource.hpp"
 
 // shader types
 typedef enum SR_SHADER_TYPE {
@@ -90,7 +91,7 @@ typedef enum SR_TEXTURE_WRAP{
     SR_TEXTURE_WRAP_CLAMP_BORDER    = 0x04
 } SR_TEXTURE_ADDRESS_WRAP;
 
-typedef enum SR_CUBEMAP_FACE: uint32{
+typedef enum SR_CUBEMAP_FACE: u32{
     SR_CUBEMAP_FACE_RIGHT   = 0x00,
     SR_CUBEMAP_FACE_LEFT    = 0x01,
     SR_CUBEMAP_FACE_TOP     = 0x02,

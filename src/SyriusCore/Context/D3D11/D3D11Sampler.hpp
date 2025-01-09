@@ -3,7 +3,7 @@
 #include "../../../../include/SyriusCore/Context/Sampler.hpp"
 #include "D3D11Utils.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -13,7 +13,7 @@ namespace Syrius{
 
         ~D3D11Sampler() override;
 
-        void bindShaderResource(uint32 slot) override;
+        void bindShaderResource(u32 slot) override;
 
         void setFilter(SR_TEXTURE_FILTER minFilter, SR_TEXTURE_FILTER magFilter) override;
 
@@ -25,7 +25,7 @@ namespace Syrius{
 
         void setLOD(float minLOD, float maxLOD, float LODBias) override;
 
-        [[nodiscard]] uint64 getIdentifier() override;
+        [[nodiscard]] u64 getIdentifier() override;
 
     private:
 

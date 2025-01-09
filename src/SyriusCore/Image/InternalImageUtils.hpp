@@ -6,8 +6,8 @@
 namespace Syrius{
 
     template<typename T>
-    void addAlpha(const std::vector<T>& src, std::vector<T>& dst, uint32 width, uint32 height, uint32 channelCount){
-        SR_CORE_PRECONDITION(channelCount == 3, "Invalid channel count: %i", channelCount);
+    void addAlpha(const std::vector<T>& src, std::vector<T>& dst, u32 width, u32 height, u32 channelCount){
+        SR_PRECONDITION(channelCount == 3, "Invalid channel count: %i", channelCount);
 
         size_t numPixels = src.size() / 3;
 
@@ -25,6 +25,6 @@ namespace Syrius{
         }
     }
 
-    SR_TEXTURE_FORMAT getFormatFromChannelCount(uint32 channelCount, SR_DATA_TYPE dataType);
+    SR_TEXTURE_FORMAT getFormatFromChannelCount(u32 channelCount, SR_DATA_TYPE dataType);
 }
 

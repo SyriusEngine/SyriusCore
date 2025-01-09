@@ -76,18 +76,16 @@ add_compile_definitions(SR_CORE_DEBUG)
 add_compile_definitions(SR_CORE_EXPORT_DLL)
 
 if (WIN32)
-    set(GLAD_PLATFORM_SRC
-        src/SyriusCore/Dependencies/glad/src/wgl.c)
+    set(SYRIUS_CORE_PLATFORM_SRC
+        src/SyriusCore/Dependencies/glad/src/wgl.c
 
-    set(IMGUI_PLATFORM_SRC
         src/SyriusCore/Dependencies/imgui/imgui_impl_win32.cpp
-        src/SyriusCore/Dependencies/imgui/imgui_impl_dx11.cpp)
+        src/SyriusCore/Dependencies/imgui/imgui_impl_dx11.cpp
+        src/SyriusCore/Dependencies/imgui/imgui_impl_opengl3.cpp
 
-    set(SYRIUSCORE_PLATFORM_WINDOW_SRC
         src/SyriusCore/Window/SyriusWindowWin32Impl.cpp
-        src/SyriusCore/Window/Win32Utils.cpp)
+        src/SyriusCore/Window/Win32Utils.cpp
 
-    set(SYRIUSCORE_PLATFORM_CONTEXT_SRC
         src/SyriusCore/Context/OpenGL/Internal/WglContext.cpp
 
         src/SyriusCore/Context/D3D11/D3D11Context.cpp
@@ -105,73 +103,56 @@ if (WIN32)
         src/SyriusCore/Context/D3D11/D3D11ColorAttachment.cpp
         src/SyriusCore/Context/D3D11/D3D11DepthStencilAttachment.cpp
         src/SyriusCore/Context/D3D11/D3D11DeviceLimits.cpp
-        src/SyriusCore/Context/D3D11/D3D11Cubemap.cpp)
-
-elseif(UNIX)
-    set(GLAD_PLATFORM_SRC
-        src/SyriusCore/Dependencies/glad/src/glx.c)
-
-    set(IMGUI_PLATFORM_SRC
+        src/SyriusCore/Context/D3D11/D3D11Cubemap.cpp
         )
 
-    set(SYRIUSCORE_PLATFORM_WINDOW_SRC
-        src/SyriusCore/Window/SyriusWindowX11Impl.cpp
-        src/SyriusCore/Window/X11Utils.cpp)
+elseif(UNIX)
+    set(SYRIUS_CORE_PLATFORM_SRC
+        src/SyriusCore/Dependencies/glad/src/glx.c
 
-    set(SYRIUSCORE_PLATFORM_CONTEXT_SRC
+        src/SyriusCore/Dependencies/imgui/imgui_impl_opengl3.cpp
+
+        src/SyriusCore/Window/SyriusWindowX11Impl.cpp
+        src/SyriusCore/Window/X11Utils.cpp
+
         src/SyriusCore/Context/OpenGL/Internal/GlxContext.cpp
         )
 
 endif()
 
-set(GLAD_SRC
-    ${GLAD_PLATFORM_SRC}
-    src/SyriusCore/Dependencies/glad/src/gl.c)
+set(SYRIUS_CORE_SRC
+    src/SyriusCore/SyriusCore.cpp
 
-set(IMGUI_SRC
-    ${IMGUI_PLATFORM_SRC}
+    ${SYRIUS_CORE_PLATFORM_SRC}
+    src/SyriusCore/Dependencies/glad/src/gl.c
+
     src/SyriusCore/Dependencies/imgui/imgui.cpp
     src/SyriusCore/Dependencies/imgui/imgui_demo.cpp
     src/SyriusCore/Dependencies/imgui/imgui_draw.cpp
-    src/SyriusCore/Dependencies/imgui/imgui_impl_opengl3.cpp
     src/SyriusCore/Dependencies/imgui/imgui_tables.cpp
-    src/SyriusCore/Dependencies/imgui/imgui_widgets.cpp)
+    src/SyriusCore/Dependencies/imgui/imgui_widgets.cpp
 
-set(STB_IMAGE_SRC
     src/SyriusCore/Dependencies/stb_image/stb_image.cpp
     src/SyriusCore/Dependencies/stb_image/stb_image_resize.cpp
-    src/SyriusCore/Dependencies/stb_image/stb_image_write.cpp)
+    src/SyriusCore/Dependencies/stb_image/stb_image_write.cpp
 
-set(SYRIUSCORE_CORE_SRC
-    ${GLAD_SRC}
-    ${IMGUI_SRC}
-    ${STB_IMAGE_SRC}
-    ${SYRIUSCORE_CORE_PLATFORM_SRC}
-        src/SyriusCore/Utils/DebugMessageHandler.cpp
-        src/SyriusCore/Utils/Message.cpp
-        src/SyriusCore/Utils/MemoryAllocationTracker.cpp
-        src/SyriusCore/Utils/SyriusCoreInclude.cpp)
+    src/SyriusCore/Utils/CoreLogger.cpp
+    src/SyriusCore/Utils/SyriusCoreInclude.cpp
+    src/SyriusCore/Utils/CoreLoggerDefs.cpp
 
-set(SYRIUSCORE_IMAGE_SRC
     src/SyriusCore/Image/ImageBase.cpp
     src/SyriusCore/Image/Image.cpp
     src/SyriusCore/Image/ImageUI8.cpp
     src/SyriusCore/Image/ImageF32.cpp
     src/SyriusCore/Image/ImageUI16.cpp
     src/SyriusCore/Image/InternalImageUtils.cpp
-    src/SyriusCore/Image/ImageT.cpp)
+    src/SyriusCore/Image/ImageT.cpp
 
-set(SYRIUSCORE_WINDOW_SRC
-    ${SYRIUSCORE_PLATFORM_WINDOW_SRC}
     src/SyriusCore/Window/Event/Event.cpp
     src/SyriusCore/Window/Event/MouseEvent.cpp
     src/SyriusCore/Window/Event/WindowEvent.cpp
     src/SyriusCore/Window/Event/KeyboardEvent.cpp
-    src/SyriusCore/Window/SyriusWindow.cpp)
-
-set(SYRIUSCORE_CONTEXT_SRC
-    ${SYRIUSCORE_PLATFORM_CONTEXT_SRC}
-    ${SYRIUSCORE_IMAGE_SRC}
+    src/SyriusCore/Window/SyriusWindow.cpp
 
     src/SyriusCore/Context/Context.cpp
     src/SyriusCore/Context/Viewport.cpp
@@ -207,18 +188,14 @@ set(SYRIUSCORE_CONTEXT_SRC
     src/SyriusCore/Context/OpenGL/GlColorAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlCubeMap.cpp
-    src/SyriusCore/Context/OpenGL/GlDeviceLimits.cpp)
+    src/SyriusCore/Context/OpenGL/GlDeviceLimits.cpp
+    )
 
-set(SYRIUSCORE_SRC
-    ${SYRIUSCORE_CORE_SRC}
-    ${SYRIUSCORE_WINDOW_SRC}
-    ${SYRIUSCORE_CONTEXT_SRC}
-    src/SyriusCore/SyriusCore.cpp)
 
-add_library(SyriusCore SHARED ${SYRIUSCORE_SRC})
+add_library(SyriusCore SHARED ${SYRIUS_CORE_SRC})
 add_dependencies(SyriusCore CopySyriusUtilsDLL)
+target_include_directories(SyriusCore PUBLIC include)
 target_link_libraries(SyriusCore ${SYRIUS_CORE_LIBS})
-
 
 ################### Syrius Core App ###################
 
@@ -259,12 +236,7 @@ else()
     target_link_libraries(SyriusCoreApp -lSyriusCore)
 endif()
 
-
-
 ################### Testing ###################
-include_directories(./Dependencies/gtest/include/)
-link_directories(./Dependencies/gtest/lib/)
-
 set(SR_CORE_TEST_SRC
     Tests/Utils/ConversionsTest.cpp
     Tests/TestEnvironment.cpp
@@ -306,7 +278,7 @@ if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTS)
 
     message(STATUS "Building tests")
 
-    add_executable(SyriusCoreTest ${SYRIUSCORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)
+    add_executable(SyriusCoreTest ${SYRIUS_CORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)
     add_dependencies(SyriusCoreTest gtest)
 
     target_link_libraries(SyriusCoreTest  ${SYRIUS_CORE_LIBS} GTest::gtest)

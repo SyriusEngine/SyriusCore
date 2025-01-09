@@ -5,7 +5,7 @@ class TestDebugMessageHandler{
 public:
     static void init(const std::string& debugOutput){
         m_File = std::ofstream(debugOutput);
-        setDebugMessageCallback(TestDebugMessageHandler::messageCallback);
+//        setDebugMessageCallback(TestDebugMessageHandler::messageCallback);
     }
 
     static void terminate(){
@@ -14,32 +14,32 @@ public:
 
     static void messageCallback(const Message& msg){
         std::string severity;
-        switch (msg.severity){
-            case SR_CORE_MESSAGE_SEVERITY_INFO:     severity = "INFO";  break;
-            case SR_CORE_MESSAGE_SEVERITY_LOW:      severity = "LOW";   break;
-            case SR_CORE_MESSAGE_SEVERITY_MEDIUM:   severity = "MEDIUM";break;
-            case SR_CORE_MESSAGE_SEVERITY_HIGH:     severity = "HIGH";  break;
-        }
+//        switch (msg.severity){
+//            case SR_CORE_MESSAGE_SEVERITY_INFO:     severity = "INFO";  break;
+//            case SR_CORE_MESSAGE_SEVERITY_LOW:      severity = "LOW";   break;
+//            case SR_CORE_MESSAGE_SEVERITY_MEDIUM:   severity = "MEDIUM";break;
+//            case SR_CORE_MESSAGE_SEVERITY_HIGH:     severity = "HIGH";  break;
+//        }
+//
+//        std::string source;
+//        switch (msg.messageType){
+//            case SR_CORE_MESSAGE: source = "MESSAGE"; break;
+//            case SR_CORE_MESSAGE_OPENGL: source = "OPENGL"; break;
+//            case SR_CORE_MESSAGE_VULKAN: source = "VULKAN"; break;
+//            case SR_CORE_MESSAGE_D3D11: source = "D3D11"; break;
+//            case SR_CORE_MESSAGE_HRESULT: source = "HRESULT"; break;
+//            case SR_CORE_MESSAGE_DXGI: source = "DXGI"; break;
+//            case SR_CORE_MESSAGE_WIN32: source = "WIN32"; break;
+//            case SR_CORE_MESSAGE_X11: source = "X11"; break;
+//            case SR_CORE_MESSAGE_PRECONDITION: source = "PRECONDITION"; break;
+//            case SR_CORE_MESSAGE_POSTCONDITION: source = "POSTCONDITION"; break;
+//            case SR_CORE_MESSAGE_ASSERTION: source = "ASSERTION"; break;
+//        }
+//        auto message = msg.message;
+//        message.erase(remove(message.begin(), message.end(), '\n'), message.end());
+//        std::string final = "[" + msg.file + " : " + msg.function + " : " + std::to_string(msg.line) + "][" + source + " : " + severity + "]: " + message + "\n";
 
-        std::string source;
-        switch (msg.messageType){
-            case SR_CORE_MESSAGE: source = "MESSAGE"; break;
-            case SR_CORE_MESSAGE_OPENGL: source = "OPENGL"; break;
-            case SR_CORE_MESSAGE_VULKAN: source = "VULKAN"; break;
-            case SR_CORE_MESSAGE_D3D11: source = "D3D11"; break;
-            case SR_CORE_MESSAGE_HRESULT: source = "HRESULT"; break;
-            case SR_CORE_MESSAGE_DXGI: source = "DXGI"; break;
-            case SR_CORE_MESSAGE_WIN32: source = "WIN32"; break;
-            case SR_CORE_MESSAGE_X11: source = "X11"; break;
-            case SR_CORE_MESSAGE_PRECONDITION: source = "PRECONDITION"; break;
-            case SR_CORE_MESSAGE_POSTCONDITION: source = "POSTCONDITION"; break;
-            case SR_CORE_MESSAGE_ASSERTION: source = "ASSERTION"; break;
-        }
-        auto message = msg.message;
-        message.erase(remove(message.begin(), message.end(), '\n'), message.end());
-        std::string final = "[" + msg.file + " : " + msg.function + " : " + std::to_string(msg.line) + "][" + source + " : " + severity + "]: " + message + "\n";
-
-        m_File << final;
+//        m_File << final;
     }
 
 private:
@@ -48,7 +48,7 @@ private:
 
 std::ofstream TestDebugMessageHandler::m_File;
 
-int32 runTests(const EnvironmentDesc& envDesc){
+i32 runTests(const EnvironmentDesc& envDesc){
     // testing::internal::CaptureStdout();
     TestEnvironment::setup(envDesc);
     auto retVal = RUN_ALL_TESTS();
@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
         std::cerr << "Usage: " << argv[0] << " <Option (OpenGL/D3D11)>" << std::endl;
         return 1;
     }
-    int32 retVal = 0;
+    i32 retVal = 0;
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
         if (arg == "OpenGL"){

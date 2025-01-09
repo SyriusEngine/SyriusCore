@@ -3,7 +3,7 @@
 
 namespace Syrius{
 
-    uint32 SyriusWindow::m_ImGuiInstances = 0;
+    u32 SyriusWindow::m_ImGuiInstances = 0;
 
     SyriusWindow::SyriusWindow(const WindowDesc &desc)
     : m_PosX(desc.xPos),
@@ -31,19 +31,19 @@ namespace Syrius{
         }
     }
 
-    int32 SyriusWindow::getPosX() const {
+    i32 SyriusWindow::getPosX() const {
         return m_PosX;
     }
 
-    int32 SyriusWindow::getPosY() const {
+    i32 SyriusWindow::getPosY() const {
         return m_PosY;
     }
 
-    uint32 SyriusWindow::getWidth() const {
+    u32 SyriusWindow::getWidth() const {
         return m_Width;
     }
 
-    uint32 SyriusWindow::getHeight() const {
+    u32 SyriusWindow::getHeight() const {
         return m_Height;
     }
 
@@ -74,8 +74,8 @@ namespace Syrius{
     }
 
     void SyriusWindow::createImGuiContext() {
-        SR_CORE_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to create an ImGui context")
-        SR_CORE_PRECONDITION(!m_UseImGui, "There exists already an ImGui context")
+        SR_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to create an ImGui context")
+        SR_PRECONDITION(!m_UseImGui, "There exists already an ImGui context")
 
         m_Context->createImGuiContext();
         m_UseImGui = true;
@@ -83,8 +83,8 @@ namespace Syrius{
     }
 
     void SyriusWindow::destroyImGuiContext() {
-        SR_CORE_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to destroy an ImGui context")
-        SR_CORE_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
+        SR_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to destroy an ImGui context")
+        SR_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
 
         m_Context->destroyImGuiContext();
         m_UseImGui = false;
@@ -92,15 +92,15 @@ namespace Syrius{
     }
 
     void SyriusWindow::onImGuiBegin() {
-        SR_CORE_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to destroy an ImGui context")
-        SR_CORE_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
+        SR_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to destroy an ImGui context")
+        SR_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
 
         m_Context->onImGuiBegin();
     }
 
     void SyriusWindow::onImGuiEnd() {
-        SR_CORE_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to destroy an ImGui context")
-        SR_CORE_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
+        SR_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to destroy an ImGui context")
+        SR_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
 
         m_Context->onImGuiEnd();
     }
@@ -110,7 +110,7 @@ namespace Syrius{
     }
 
     void SyriusWindow::destroyContext() {
-        SR_CORE_MESSAGE_ON_CONDITION(!m_UseImGui, "There exists an ImGui context, destroying it");
+        SR_LOG_INFO_IF_FALSE(m_UseImGui != 0, "SyriusWindow", "There exists an ImGui context, destroying it");
 
         if (m_UseImGui){
             this->destroyImGuiContext();

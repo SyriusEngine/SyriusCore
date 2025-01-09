@@ -1,16 +1,16 @@
 #include "D3D11IndexBuffer.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
-    D3D11IndexBuffer::D3D11IndexBuffer(const IndexBufferDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
+    D3D11IndexBuffer::D3D11IndexBuffer(const IndexBufferDesc &desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
     IndexBuffer(desc, deviceLimits),
     m_Device(device),
     m_Context(context),
     m_Buffer(nullptr),
     m_DxgiDataType(getD3d11DataType(desc.dataType)){
-        SR_CORE_PRECONDITION(desc.dataType == SR_UINT32 or desc.dataType == SR_UINT16, "D3D11 Index buffers only supports 16 and 32 bit integer data types, supplied type: %i", desc.dataType);
+        SR_PRECONDITION(desc.dataType == SR_UINT32 or desc.dataType == SR_UINT16, "D3D11 Index buffers only supports 16 and 32 bit integer data types, supplied type: %i", desc.dataType);
 
         D3D11_BUFFER_DESC bufferDesc;
         bufferDesc.ByteWidth = m_Size;
@@ -48,12 +48,12 @@ namespace Syrius{
         m_Context->IASetIndexBuffer(m_Buffer, m_DxgiDataType, 0);
     }
 
-    void D3D11IndexBuffer::setData(const void *data, uint32 count){
-        SR_CORE_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[IndexBuffer]: Update on buffer object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
-        SR_CORE_PRECONDITION(count * getTypeSize(m_DataType) <= m_Size, "[IndexBuffer]: Update on buffer object (%p) requested, which exceeds the current buffer size (%i > %i).", this, count * getTypeSize(m_DataType), m_Size);
+    void D3D11IndexBuffer::setData(const void *data, u32 count){
+        SR_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[IndexBuffer]: Update on buffer object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
+        SR_PRECONDITION(count * getTypeSize(m_DataType) <= m_Size, "[IndexBuffer]: Update on buffer object (%p) requested, which exceeds the current buffer size (%i > %i).", this, count * getTypeSize(m_DataType), m_Size);
 
 
-        uint32 copySize = count * getTypeSize(m_DataType);
+        u32 copySize = count * getTypeSize(m_DataType);
         m_Count = count;
 
         D3D11_MAPPED_SUBRESOURCE mappedResource;
@@ -63,21 +63,21 @@ namespace Syrius{
     }
 
     void D3D11IndexBuffer::copyFrom(const ResourceView<IndexBuffer> &other) {
-        SR_CORE_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11IndexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
+        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11IndexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
 
         if (m_Size >= other->getSize()){
             auto otherBuffer = reinterpret_cast<ID3D11Buffer*>(other->getIdentifier());
-            SR_CORE_ASSERT(otherBuffer, "[D3D11IndexBuffer]: Copy from buffer object (%p) requested, which has no valid identifier!", other.get());
+            SR_ASSERT(otherBuffer, "[D3D11IndexBuffer]: Copy from buffer object (%p) requested, which is invalid!", other.get());
             m_Context->CopyResource(m_Buffer, otherBuffer);
         }
         else{
-            SR_CORE_WARNING("[D3D11IndexBuffer]: Copy from buffer object (%p) requested, which exceeds the current "
+            SR_LOG_WARNING("[D3D11IndexBuffer]", "Copy from buffer object (%p) requested, which exceeds the current "
                             "buffer size (%i > %i)", this, other->getSize(), m_Size);
         }
     }
 
-    Resource<UByte[]> D3D11IndexBuffer::getData() const {
-        auto data = createResource<UByte[]>(m_Size);
+    UP<UByte[]> D3D11IndexBuffer::getData() const {
+        auto data = createUP<UByte[]>(m_Size);
 
         /*
          * Reading from an index buffer in D3D11 is not directly supported.
@@ -98,9 +98,9 @@ namespace Syrius{
         // and copy the data from the staging buffer to the data array
         D3D11_MAPPED_SUBRESOURCE map = { nullptr };
         SR_CORE_D3D11_CALL(m_Context->Map(stagingBuffer, 0, D3D11_MAP_READ, 0, &map));
-        if (map.pData == nullptr){
-            SR_CORE_THROW("[D3D11IndexBuffer]: Failed to map staging buffer (%p)", stagingBuffer);
-        }
+
+        SR_LOG_THROW_IF_FALSE(map.pData != nullptr, "D3D11IndexBuffer", "Failed to map staging buffer (%p)", stagingBuffer);
+
         memcpy(data.get(), map.pData, m_Size);
         m_Context->Unmap(stagingBuffer, 0);
 
@@ -110,8 +110,8 @@ namespace Syrius{
         return std::move(data);
     }
 
-    uint64 D3D11IndexBuffer::getIdentifier() const {
-        return reinterpret_cast<uint64>(m_Buffer);
+    u64 D3D11IndexBuffer::getIdentifier() const {
+        return reinterpret_cast<u64>(m_Buffer);
     }
 }
 

@@ -8,22 +8,22 @@ namespace Syrius{
 
     class GlConstantBuffer: public ConstantBuffer{
     public:
-        GlConstantBuffer(const ConstantBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        GlConstantBuffer(const ConstantBufferDesc& desc, const UP<DeviceLimits>& deviceLimits);
 
         ~GlConstantBuffer() override;
 
-        void bind(uint32 slot) override;
+        void bind(u32 slot) override;
 
-        void setData(const void* data, uint64 size) override;
+        void setData(const void* data, u64 size) override;
 
         void copyFrom(const ResourceView<ConstantBuffer>& other) override;
 
-        [[nodiscard]] Resource<UByte[]> getData() const override;
+        [[nodiscard]] UP<UByte[]> getData() const override;
 
-        [[nodiscard]] uint64 getIdentifier() const override;
+        [[nodiscard]] u64 getIdentifier() const override;
 
     private:
-        uint32 m_BufferID;
+        u32 m_BufferID;
     };
 }
 

@@ -3,7 +3,7 @@
 #include "../../../../include/SyriusCore/Context/VertexArray.hpp"
 #include "D3D11Utils.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -19,7 +19,7 @@ namespace Syrius{
 
         void drawBuffers() override;
 
-        void drawBuffersInstanced(uint32 instanceCount) override;
+        void drawBuffersInstanced(u32 instanceCount) override;
 
         void setDrawMode(SR_DRAW_MODE drawMode) override;
 
@@ -44,7 +44,7 @@ namespace Syrius{
 
         void drawBuffers() override;
 
-        void drawBuffersInstanced(uint32 instanceCount) override;
+        void drawBuffersInstanced(u32 instanceCount) override;
 
         void setDrawMode(SR_DRAW_MODE drawMode) override;
 

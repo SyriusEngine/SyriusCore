@@ -6,8 +6,8 @@
 namespace Syrius{
 
     struct SR_CORE_API DepthStencilAttachmentDesc{
-        uint32 width               = SR_DEFAULT_WIDTH;
-        uint32 height              = SR_DEFAULT_HEIGHT;
+        u32 width               = SR_DEFAULT_WIDTH;
+        u32 height              = SR_DEFAULT_HEIGHT;
         SR_TEXTURE_FORMAT format   = SR_TEXTURE_DEPTH_24_STENCIL_8;
 
         bool enableShaderAccess = false; // enables sampling from this attachment in shaders
@@ -19,8 +19,8 @@ namespace Syrius{
 
         bool enableStencilTest                  = false;
         SR_COMPARISON_FUNC stencilFunc          = SR_COMPARISON_FUNC_ALWAYS;
-        uint32 clearStencil                     = 0;
-        uint32 stencilMask                      = 0xFFFFFFFF;
+        u32 clearStencil                     = 0;
+        u32 stencilMask                      = 0xFFFFFFFF;
         SR_STENCIL_FUNC stencilFail             = SR_STENCIL_FUNC_KEEP;
         SR_STENCIL_FUNC stencilPass             = SR_STENCIL_FUNC_KEEP;
         SR_STENCIL_FUNC stencilPassDepthFail    = SR_STENCIL_FUNC_KEEP;
@@ -28,7 +28,7 @@ namespace Syrius{
 
     class SR_CORE_API DepthStencilAttachment{
     public:
-        DepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        DepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const UP<DeviceLimits>& deviceLimits);
 
         virtual ~DepthStencilAttachment();
 
@@ -36,11 +36,11 @@ namespace Syrius{
 
         virtual void unbind() = 0;
 
-        virtual void bindShaderResource(uint32 slot) = 0;
+        virtual void bindShaderResource(u32 slot) = 0;
 
         virtual void clear() = 0;
 
-        virtual void onResize(uint32 width, uint32 height) = 0;
+        virtual void onResize(u32 width, u32 height) = 0;
 
         virtual void enableDepthTest(bool enable) = 0;
 
@@ -50,13 +50,13 @@ namespace Syrius{
 
         void setClearDepth(float depth);
 
-        [[nodiscard]] virtual Resource<Image> getData() = 0;
+        [[nodiscard]] virtual UP<Image> getData() = 0;
 
-        [[nodiscard]] virtual uint64 getIdentifier() const = 0;
+        [[nodiscard]] virtual u64 getIdentifier() const = 0;
 
-        [[nodiscard]] uint32 getWidth() const;
+        [[nodiscard]] u32 getWidth() const;
 
-        [[nodiscard]] uint32 getHeight() const;
+        [[nodiscard]] u32 getHeight() const;
 
         [[nodiscard]] SR_TEXTURE_FORMAT getFormat() const;
 
@@ -72,9 +72,9 @@ namespace Syrius{
 
         [[nodiscard]] SR_COMPARISON_FUNC getStencilFunc() const;
 
-        [[nodiscard]] uint32 getClearStencil() const;
+        [[nodiscard]] u32 getClearStencil() const;
 
-        [[nodiscard]] uint32 getStencilMask() const;
+        [[nodiscard]] u32 getStencilMask() const;
 
         [[nodiscard]] SR_STENCIL_FUNC getStencilFail() const;
 
@@ -83,10 +83,10 @@ namespace Syrius{
         [[nodiscard]] SR_STENCIL_FUNC getStencilPassDepthFail() const;
 
     protected:
-        const Resource<DeviceLimits>& m_DeviceLimits;
+        const UP<DeviceLimits>& m_DeviceLimits;
 
-        uint32 m_Width;
-        uint32 m_Height;
+        u32 m_Width;
+        u32 m_Height;
         SR_TEXTURE_FORMAT m_Format;
         const bool m_EnableShaderAccess;
 
@@ -97,8 +97,8 @@ namespace Syrius{
 
         bool m_EnableStencilTest;
         SR_COMPARISON_FUNC m_StencilFunc;
-        uint32 m_ClearStencil;
-        uint32 m_StencilMask;
+        u32 m_ClearStencil;
+        u32 m_StencilMask;
         SR_STENCIL_FUNC m_StencilFail;
         SR_STENCIL_FUNC m_StencilPass;
         SR_STENCIL_FUNC m_StencilPassDepthFail;

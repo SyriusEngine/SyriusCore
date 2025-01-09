@@ -4,7 +4,7 @@
 #include "../../../../../include/SyriusCore/Dependencies/imgui/imgui.h"
 #include "../../../Dependencies/imgui/imgui_impl_opengl3.h"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 #include "../../../Dependencies/imgui/imgui_impl_win32.h"
 #include "../../../Dependencies/glad/glad/wgl.h"
@@ -46,9 +46,9 @@ namespace Syrius {
         void terminateWGL();
 
     private:
-        static uint32 m_ContextCount;
+        static u32 m_ContextCount;
 
-        uint32 m_WGLVersion;
+        u32 m_WGLVersion;
 
         PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = NULL;
         PFNWGLGETSWAPINTERVALEXTPROC wglGetSwapIntervalEXT = NULL;

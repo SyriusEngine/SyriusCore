@@ -51,11 +51,11 @@ namespace Syrius {
         SR_EVENT_TYPE type;
 
         union {
-            int32 windowPosX, windowWidth, mousePosX, mouseScrollX, mouseDeltaX, mouseButton, keyCode = 0;
+            i32 windowPosX, windowWidth, mousePosX, mouseScrollX, mouseDeltaX, mouseButton, keyCode = 0;
         };
 
         union {
-            int32 windowPosY, windowHeight, mousePosY, mouseScrollY, mouseDeltaY = 0;
+            i32 windowPosY, windowHeight, mousePosY, mouseScrollY, mouseDeltaY = 0;
         };
 
         char keyTyped = 0;

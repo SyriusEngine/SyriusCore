@@ -24,9 +24,9 @@ TEST_F(ImageUI8Test, CreateImageFromFileUI8){
     EXPECT_EQ(channelCount, 3);
     EXPECT_EQ(img->getFormat(), SR_TEXTURE_RGB_UI8);
 
-    auto data = reinterpret_cast<uint8*>(img->getData());
+    auto data = reinterpret_cast<u8*>(img->getData());
     bool correct = true;
-    for (uint32 i = 0; i < width * height * channelCount; i += channelCount){
+    for (u32 i = 0; i < width * height * channelCount; i += channelCount){
         if (data[i] != 255 or data[i + 1] != 0){
             correct = false;
             break;
@@ -50,9 +50,9 @@ TEST_F(ImageUI8Test, CreateImageFromFileUI8RequestMoreChannels){
     EXPECT_EQ(channelCount, 4);
     EXPECT_EQ(img->getFormat(), SR_TEXTURE_RGBA_UI8);
 
-    auto data = reinterpret_cast<uint8*>(img->getData());
+    auto data = reinterpret_cast<u8*>(img->getData());
     bool correct = true;
-    for (uint32 i = 0; i < width * height * channelCount; i += channelCount){
+    for (u32 i = 0; i < width * height * channelCount; i += channelCount){
         if (data[i] != 255 or data[i + 1] != 0){
             correct = false;
             break;
@@ -76,9 +76,9 @@ TEST_F(ImageUI8Test, CreateImageFromFileUI8RequestFewerChannels){
     EXPECT_EQ(channelCount, 1);
     EXPECT_EQ(img->getFormat(), SR_TEXTURE_R_UI8);
 
-    auto data = reinterpret_cast<uint8*>(img->getData());
+    auto data = reinterpret_cast<u8*>(img->getData());
     bool correct = true;
-    for (uint32 i = 0; i < width * height * channelCount; i++){
+    for (u32 i = 0; i < width * height * channelCount; i++){
         if (data[i] != 255){
             correct = false;
             break;
@@ -88,7 +88,7 @@ TEST_F(ImageUI8Test, CreateImageFromFileUI8RequestFewerChannels){
 }
 
 TEST_F(ImageUI8Test, CreateImageFromMemoryUI8WithData){
-    std::vector<uint8> data = {
+    std::vector<u8> data = {
             255, 0, 255, 255, 0, 255,
             255, 0, 255, 255, 0, 255
     };
@@ -108,9 +108,9 @@ TEST_F(ImageUI8Test, CreateImageFromMemoryUI8WithData){
     EXPECT_EQ(channelCount, 3);
     EXPECT_EQ(img->getFormat(), SR_TEXTURE_RGB_UI8);
 
-    auto imgData = reinterpret_cast<uint8*>(img->getData());
+    auto imgData = reinterpret_cast<u8*>(img->getData());
     bool correct = true;
-    for (uint32 i = 0; i < width * height * channelCount; i += channelCount){
+    for (u32 i = 0; i < width * height * channelCount; i += channelCount){
         if (imgData[i] != data[i]){
             correct = false;
             break;
@@ -135,9 +135,9 @@ TEST_F(ImageUI8Test, CreateImageFromMemoryUI8NoData){
     EXPECT_EQ(channelCount, 3);
     EXPECT_EQ(img->getFormat(), SR_TEXTURE_RGB_UI8);
 
-    auto imgData = reinterpret_cast<uint8*>(img->getData());
+    auto imgData = reinterpret_cast<u8*>(img->getData());
     bool correct = true;
-    for (uint32 i = 0; i < width * height * channelCount; i += channelCount){
+    for (u32 i = 0; i < width * height * channelCount; i += channelCount){
         if (imgData[i] != desc.defaultChannelValue){
             correct = false;
             break;
@@ -155,7 +155,7 @@ TEST_F(ImageUI8Test, CreateImageUI8InvalidFormat){
 }
 
 TEST_F(ImageUI8Test, CreateImageUI8FromT){
-    std::vector<uint8> data = {
+    std::vector<u8> data = {
             255, 0, 255, 255, 0, 255,
             255, 0, 255, 255, 0, 255
     };
@@ -187,9 +187,9 @@ TEST_F(ImageUI8Test, UpscaleImageUI8){
     EXPECT_EQ(img->getHeight(), newHeight);
     EXPECT_EQ(img->getChannelCount(), channelCount);
 
-    auto data = reinterpret_cast<uint8*>(img->getData());
+    auto data = reinterpret_cast<u8*>(img->getData());
     bool correct = true;
-    for (uint32 i = 0; i < newWidth * newHeight * channelCount; i += channelCount){
+    for (u32 i = 0; i < newWidth * newHeight * channelCount; i += channelCount){
         if (data[i] != 255 or data[i + 1] != 0){
             correct = false;
             break;
@@ -213,9 +213,9 @@ TEST_F(ImageUI8Test, DownscaleImageUI8){
     EXPECT_EQ(img->getHeight(), newHeight);
     EXPECT_EQ(img->getChannelCount(), channelCount);
 
-    auto data = reinterpret_cast<uint8*>(img->getData());
+    auto data = reinterpret_cast<u8*>(img->getData());
     bool correct = true;
-    for (uint32 i = 0; i < newWidth * newHeight * channelCount; i += channelCount){
+    for (u32 i = 0; i < newWidth * newHeight * channelCount; i += channelCount){
         if (data[i] != 255 or data[i + 1] != 0){
             correct = false;
             break;

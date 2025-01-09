@@ -3,8 +3,8 @@
 namespace Syrius{
 
     // keep track of with gl context is currently active
-    uint64 GlContext::m_ActiveContextID = 0;
-    uint32 GlContext::m_ContextCount = 0;
+    u64 GlContext::m_ActiveContextID = 0;
+    u32 GlContext::m_ContextCount = 0;
 
     GlContext::GlContext(const ContextDesc& desc):
     Context(desc),
@@ -121,12 +121,12 @@ namespace Syrius{
             defaultFbDesc->addDepthStencilAttachmentDesc(dsaDesc);
         }
 
-        m_DeviceLimits = createResource<GlDeviceLimits>();
+        m_DeviceLimits = createUP<GlDeviceLimits>();
 
         auto ptr = new GlDefaultFrameBuffer(defaultFbDesc, m_DeviceLimits);
         m_FrameBuffers.emplace_back(ptr);
 
-        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+        SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
     }
 
     void GlContext::terminateGl() {
@@ -135,28 +135,27 @@ namespace Syrius{
 
     void GlContext::initGlad() {
         if (m_ContextCount == 0) {
-            int32 version = gladLoaderLoadGL();
-#if defined(SR_CORE_DEBUG)
-            if (version > 0){
-                int32 major = GLAD_VERSION_MAJOR(version);
-                int32 minor = GLAD_VERSION_MINOR(version);
-                SR_CORE_MESSAGE("Glad Initialized for OpenGL %i.%i", major, minor)
+            i32 version = gladLoaderLoadGL();
+
+            SR_LOG_THROW_IF_FALSE(version != 0, "GlContext", "Failed to initialize Glad")
+
+            #if defined(SR_CORE_DEBUG)
+                i32 major = GLAD_VERSION_MAJOR(version);
+                i32 minor = GLAD_VERSION_MINOR(version);
+                SR_LOG_INFO("GlContext", "Glad Initialized for OpenGL %i.%i", major, minor)
                 if (major < 4 || (major == 4 && minor < 5)){
-                    SR_CORE_WARNING("SyriusCore is designed around OpenGL version is 4.5. Some features may not be available with version  %i.%i", major, minor)
+                    SR_LOG_WARNING("GlContext", "SyriusCore is designed around OpenGL version is 4.5. Some features may not be available with version  %i.%i", major, minor)
                 }
                 glEnable(GL_DEBUG_OUTPUT);
                 glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-#if defined(SR_COMPILER_MSVC)
-                auto func = (GLDEBUGPROC) DebugMessageHandler::pushOpenGLMessageCallback;
-                glDebugMessageCallback(func, nullptr);
-#else
-                glDebugMessageCallback(DebugMessageHandler::pushOpenGLMessageCallback, nullptr);
-#endif
-            }
-            else {
-                SR_CORE_EXCEPTION("Failed to initialize OpenGL");
-            }
-#endif
+
+                #if defined(SR_COMPILER_MSVC)
+                    auto func = (GLDEBUGPROC) CoreLogger::openGLMessageCallbackk;
+                    glDebugMessageCallback(func, nullptr);
+                #else
+                    glDebugMessageCallback(CoreLogger::openGLMessageCallback, nullptr);
+                #endif
+            #endif
         }
         m_ContextCount++;
     }

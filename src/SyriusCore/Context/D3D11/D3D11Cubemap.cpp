@@ -1,10 +1,10 @@
 #include "D3D11CubeMap.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
-    D3D11CubeMap::D3D11CubeMap(const ResourceView<CubeMapLayout>& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
+    D3D11CubeMap::D3D11CubeMap(const ResourceView<CubeMapLayout>& desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *context):
     CubeMap(desc, deviceLimits),
     m_Device(device),
     m_Context(context),
@@ -23,10 +23,10 @@ namespace Syrius{
         textureDesc.CPUAccessFlags = 0;
         textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
 
-        uint32 typeSize = getTypeSize(getTextureDataType(m_Format)) * getTextureChannelCount(m_Format);
+        u32 typeSize = getTypeSize(getTextureDataType(m_Format)) * getTextureChannelCount(m_Format);
         auto& faces = desc->getFaces();
         D3D11_SUBRESOURCE_DATA subresources[6];
-        for (uint32 i = 0; i < 6; ++i) {
+        for (u32 i = 0; i < 6; ++i) {
             subresources[i].pSysMem = faces[i]->getData();
             subresources[i].SysMemPitch = m_Width * typeSize;
             subresources[i].SysMemSlicePitch = 0;
@@ -57,8 +57,8 @@ namespace Syrius{
         // D3D11 doesn't have a bind function
     }
 
-    void D3D11CubeMap::bindShaderResource(uint32 slot) {
-        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
+    void D3D11CubeMap::bindShaderResource(u32 slot) {
+        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
 
         m_Context->PSSetShaderResources(slot, 1, &m_TextureView);
     }
@@ -71,7 +71,7 @@ namespace Syrius{
 
     }
 
-    Resource<Image> D3D11CubeMap::getData(SR_CUBEMAP_FACE destinationFace) {
+    UP<Image> D3D11CubeMap::getData(SR_CUBEMAP_FACE destinationFace) {
         // we use a staging texture to copy the data back to the CPU as a cubeMap cannot be mapped
         auto channelCount = getTextureChannelCount(m_Format);
 
@@ -90,10 +90,10 @@ namespace Syrius{
 
         D3D11_MAPPED_SUBRESOURCE map = { nullptr };
         SR_CORE_D3D11_CALL(m_Context->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &map));
-        if (map.pData == nullptr){
-            SR_CORE_THROW("[D3D11Texture2D]: Failed to map staging texture (%p)", stagingTexture);
-        }
-        auto* data = static_cast<uint8*>(map.pData); // TODO: Data is not always uint8
+
+        SR_LOG_THROW_IF_FALSE(map.pData != nullptr, "D3D11Cubemap", "Failed to map staging texture (%p)", stagingTexture);
+
+        auto* data = static_cast<u8*>(map.pData); // TODO: Data is not always u8
 
         ImageUI8Desc imgDesc;
         imgDesc.width = desc.Width;
@@ -104,17 +104,17 @@ namespace Syrius{
             case 2: imgDesc.format = SR_TEXTURE_RG_UI8; break;
             case 3: imgDesc.format = SR_TEXTURE_RGB_UI8; break;
             case 4: imgDesc.format = SR_TEXTURE_RGBA_UI8; break;
-            default: SR_CORE_THROW("[D3D11ColorAttachment]: Invalid channel count %i", channelCount);
+            default: SR_LOG_THROW("D3D11ColorAttachment", "Invalid channel count %i", channelCount);
         }
         imgDesc.data = nullptr;
         auto img = createImage(imgDesc);
 
-        auto imgData = reinterpret_cast<uint8*>(img->getData());
-        size_t rowPitch = map.RowPitch / sizeof(uint8);
+        auto imgData = reinterpret_cast<u8*>(img->getData());
+        size_t rowPitch = map.RowPitch / sizeof(u8);
         // remove added padding data (if any), this is added by D3D11 to properly align the data
-        for (uint32 y = 0; y < desc.Height; ++y) {
-            for (uint32 x = 0; x < desc.Width; ++x) {
-                for (uint32 c = 0; c < channelCount; ++c) {
+        for (u32 y = 0; y < desc.Height; ++y) {
+            for (u32 x = 0; x < desc.Width; ++x) {
+                for (u32 c = 0; c < channelCount; ++c) {
                     size_t srcIndex = (y * rowPitch) + (x * channelCount) + c;
                     size_t destIndex = (y * desc.Width * channelCount) + (x * channelCount) + c;
                     imgData[destIndex] = data[srcIndex];
@@ -127,8 +127,8 @@ namespace Syrius{
         return std::move(img);
     }
 
-    uint64 D3D11CubeMap::getIdentifier() const {
-        return reinterpret_cast<uint64>(m_TextureView);
+    u64 D3D11CubeMap::getIdentifier() const {
+        return reinterpret_cast<u64>(m_TextureView);
     }
 
 }

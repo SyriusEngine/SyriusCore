@@ -13,7 +13,7 @@ namespace Syrius {
 
         ~GlShaderModule() override;
 
-        [[nodiscard]] uint64 getIdentifier() const override;
+        [[nodiscard]] u64 getIdentifier() const override;
 
     private:
 
@@ -22,7 +22,7 @@ namespace Syrius {
         void loadGlsl(const std::string& code);
 
     private:
-        uint32 m_ModuleID;
+        u32 m_ModuleID;
 
     };
 }

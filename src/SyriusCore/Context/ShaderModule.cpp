@@ -26,9 +26,7 @@ namespace Syrius{
     }
 
     std::string ShaderModule::readFile(const std::string &fileName) {
-        if (!std::filesystem::exists(fileName)) {
-            SR_CORE_THROW("[ShaderModule]: File does not exist: %s", fileName.c_str());
-        }
+        SR_LOG_THROW_IF_FALSE(std::filesystem::exists(fileName), "ShaderModule", "File does not exist: %s", fileName.c_str());
 
         std::string code;
         std::string line;
@@ -44,13 +42,13 @@ namespace Syrius{
             }
         }
         else{
-            SR_CORE_WARNING("Failed to open file: %s", fileName.c_str());
+            SR_LOG_WARNING("ShaderModule", "Failed to open file: %s", fileName.c_str());
         }
         return code;
     }
 
     std::string ShaderModule::readFileBinary(const std::string &fileName) {
-        SR_CORE_PRECONDITION(std::filesystem::exists(fileName), "File does not exist: %s", fileName.c_str());
+        SR_LOG_THROW_IF_FALSE(std::filesystem::exists(fileName), "ShaderModule", "File does not exist: %s", fileName.c_str());
 
         std::string byteCode;
         std::ifstream file(fileName, std::ios::ate | std::ios::binary);
@@ -62,7 +60,7 @@ namespace Syrius{
             file.close();
         }
         else{
-            SR_CORE_WARNING("Failed to open file: %s", fileName.c_str());
+            SR_LOG_WARNING("ShaderModule", "Failed to open file: %s", fileName.c_str());
         }
 
         return byteCode;

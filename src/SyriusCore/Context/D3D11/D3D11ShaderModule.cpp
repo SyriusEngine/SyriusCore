@@ -1,6 +1,6 @@
 #include "D3D11ShaderModule.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -9,11 +9,11 @@ namespace Syrius{
     m_Device(device),
     m_Context(context),
     m_ShaderBlob(nullptr){
-        SR_CORE_PRECONDITION(desc.language == SR_SHADER_LANGUAGE_HLSL, "D3D11 shader module only supports HLSL code, provided language %i", desc.language);
+        SR_PRECONDITION(desc.language == SR_SHADER_LANGUAGE_HLSL, "D3D11 shader module only supports HLSL code, provided language %i", desc.language);
 
         loadShader(desc.code);
 
-        SR_CORE_POSTCONDITION(m_ShaderBlob != nullptr, "Failed to load shader")
+        SR_POSTCONDITION(m_ShaderBlob != nullptr, "Failed to load shader")
     }
 
     D3D11ShaderModule::D3D11ShaderModule(const ShaderModuleFileDesc &desc, ID3D11Device *device, ID3D11DeviceContext *context):
@@ -21,12 +21,12 @@ namespace Syrius{
     m_Device(device),
     m_Context(context),
     m_ShaderBlob(nullptr){
-        SR_CORE_PRECONDITION(desc.language == SR_SHADER_LANGUAGE_HLSL, "D3D11 shader module only supports HLSL code, provided language %i", desc.language);
+        SR_PRECONDITION(desc.language == SR_SHADER_LANGUAGE_HLSL, "D3D11 shader module only supports HLSL code, provided language %i", desc.language);
 
         auto code = readFile(desc.filePath);
         loadShader(code);
 
-        SR_CORE_POSTCONDITION(m_ShaderBlob != nullptr, "Failed to load shader")
+        SR_POSTCONDITION(m_ShaderBlob != nullptr, "Failed to load shader")
     }
 
     D3D11ShaderModule::~D3D11ShaderModule() {
@@ -35,8 +35,8 @@ namespace Syrius{
         }
     }
 
-    uint64 D3D11ShaderModule::getIdentifier() const {
-        return reinterpret_cast<uint64>(m_ShaderBlob);
+    u64 D3D11ShaderModule::getIdentifier() const {
+        return reinterpret_cast<u64>(m_ShaderBlob);
     }
 
     std::string D3D11ShaderModule::getShaderVersion(SR_SHADER_TYPE shaderType) {
@@ -46,7 +46,7 @@ namespace Syrius{
             case SR_SHADER_FRAGMENT:
                 return "ps_5_0";
             default: {
-                SR_CORE_THROW("Invalid shader type (%i) given to D3D11 shader", shaderType);
+                SR_LOG_THROW("D3D11ShaderModule", "Invalid shader type (%i) given to D3D11 shader", shaderType);
                 return "";
             }
         }
@@ -54,10 +54,10 @@ namespace Syrius{
     }
 
     void D3D11ShaderModule::loadShader(const std::string &code) {
-        SR_CORE_PRECONDITION(m_ShaderBlob == nullptr, "Shader blob already exists")
-        SR_CORE_PRECONDITION(!code.empty(), "Shader code is empty")
+        SR_PRECONDITION(m_ShaderBlob == nullptr, "Shader blob already exists")
+        SR_PRECONDITION(!code.empty(), "Shader code is empty")
 
-        uint32 flags = D3DCOMPILE_ENABLE_STRICTNESS;
+        u32 flags = D3DCOMPILE_ENABLE_STRICTNESS;
 
 #if defined(SR_CORE_DEBUG)
         flags |= D3DCOMPILE_DEBUG | D3DCOMPILE_WARNINGS_ARE_ERRORS;
@@ -80,7 +80,7 @@ namespace Syrius{
 
         if (exceptionBlob){
             auto msg = static_cast<const char*>(exceptionBlob->GetBufferPointer());
-            SR_CORE_WARNING("Failed to compile shader, type = %S, error = %s", getShaderTypeString(m_ShaderType).c_str(), msg);
+            SR_LOG_WARNING("D3D11ShaderModule", "Failed to compile shader, type = %S, error = %s", getShaderTypeString(m_ShaderType).c_str(), msg);
 
             exceptionBlob->Release();
         }

@@ -14,10 +14,10 @@ namespace Syrius{
 
         void bind() override;
 
-        [[nodiscard]] uint64 getIdentifier() const override;
+        [[nodiscard]] u64 getIdentifier() const override;
 
     private:
-        uint32 m_ShaderID;
+        u32 m_ShaderID;
 
     };
 

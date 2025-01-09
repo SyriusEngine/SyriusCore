@@ -3,7 +3,7 @@
 
 namespace Syrius{
 
-    FrameBufferLayout::FrameBufferLayout(const Resource<DeviceLimits>& deviceLimits):
+    FrameBufferLayout::FrameBufferLayout(const UP<DeviceLimits>& deviceLimits):
     m_DeviceLimits(deviceLimits){
 
     };
@@ -24,19 +24,19 @@ namespace Syrius{
 
     bool FrameBufferLayout::isValid() {
         if (m_ViewportDesc.empty()){
-            SR_CORE_WARNING("[FrameBufferLayout]: No viewport was added to the FrameBufferLayout (%p)", this);
+            SR_LOG_WARNING("FrameBufferLayout", "No viewport was added to the FrameBufferLayout (%p)", this);
             return false;
         }
         if (m_ColorAttachmentDesc.empty() && m_DepthStencilAttachmentDesc.empty()){
-            SR_CORE_WARNING("[FrameBufferLayout]: No attachments were added to the FrameBufferLayout (%p)", this);
+            SR_LOG_WARNING("FrameBufferLayout", "No attachments were added to the FrameBufferLayout (%p)", this);
             return false;
         }
         if (m_DepthStencilAttachmentDesc.size() > 1){
-            SR_CORE_WARNING("[FrameBufferLayout]: Multiple Depth Stencil attachments were added to FrameBufferLayout (%p),"
+            SR_LOG_WARNING("FrameBufferLayout", "Multiple Depth Stencil attachments were added to FrameBufferLayout (%p),"
                             " only the last one will be used", this);
         }
         if (m_ColorAttachmentDesc.size() > m_DeviceLimits->getMaxFramebufferColorAttachments()){
-            SR_CORE_THROW("[FrameBufferLayout]: Number of color attachments (Color Attachments %i"
+            SR_LOG_WARNING("FrameBufferLayout", "Number of color attachments (Color Attachments %i"
                           " exceeds the maximum number of color attachments (%i) supported by the device",
                           m_ColorAttachmentDesc.size(), m_DeviceLimits->getMaxFramebufferColorAttachments());
             return false;

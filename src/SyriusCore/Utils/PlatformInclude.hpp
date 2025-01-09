@@ -14,11 +14,11 @@
 #include <map>
 
 #include "../../../include/SyriusCore/Utils/SyriusCoreInclude.hpp"
-#include "MemoryAllocationTracker.hpp"
+#include <SyriusUtils/SyriusUtils.hpp>
 
 #include "../Dependencies/glad/glad/gl.h"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 #include <windows.h>
 #include <dshow.h>
 #include <commdlg.h>
@@ -32,7 +32,7 @@
 
 #include "../Dependencies/glad/glad/wgl.h"
 
-#elif defined(SR_CORE_PLATFORM_LINUX)
+#elif defined(SR_PLATFORM_LINUX)
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/keysym.h>

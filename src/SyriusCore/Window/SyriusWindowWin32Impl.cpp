@@ -1,11 +1,11 @@
 #include "SyriusWindowWin32Impl.hpp"
 #include "../Context/OpenGL/Internal/WglContext.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
-    uint32 SyriusWindowWin32Impl::m_WindowCount = 0;
+    u32 SyriusWindowWin32Impl::m_WindowCount = 0;
 
     SyriusWindowWin32Impl::SyriusWindowWin32Impl(const WindowDesc &desc):
     SyriusWindow(desc),
@@ -38,35 +38,33 @@ namespace Syrius{
                                  nullptr, nullptr,
                                  GetModuleHandleW(nullptr),
                                  this);
-        if (m_Hwnd){
-            m_WindowCount++;
-            ShowWindow(m_Hwnd, SW_SHOW);
-            m_Open = true;
-            m_Focused = true;
-
-            // store a pointer to our Window on the Win32 API side
-            SetWindowLongPtrW(m_Hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
-            m_Callback = SetWindowLongPtrW(m_Hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&SyriusWindowWin32Impl::windowEventProc));
-
-            //register raw input devices
-            RAWINPUTDEVICE mouse;
-            mouse.usUsagePage = 0x01; //mouse
-            mouse.usUsage = 0x02;     //mouse
-            mouse.dwFlags = 0;
-            mouse.hwndTarget = nullptr; // register to all windows, maybe change this later to only register to this window
-
-            RAWINPUTDEVICE keyboard;
-            keyboard.usUsagePage = 0x01; //keyboard
-            keyboard.usUsage = 0x06;     //keyboard
-            keyboard.dwFlags = 0;
-            keyboard.hwndTarget = nullptr; // register to all windows, maybe change this later to only register to this window
-
-            SR_CORE_CHECK_CALL(RegisterRawInputDevices(&mouse, 1, sizeof(mouse)), "Failed to register raw input mouse");
-            SR_CORE_CHECK_CALL(RegisterRawInputDevices(&keyboard, 1, sizeof(keyboard)), "Failed to register raw input keyboard");
+        if (!m_Hwnd){
+            SR_LOG_WARNING("SyriusWindowWin32Impl", "Failed to create window");
         }
-        else{
-            SR_CORE_WARNING("Failed to create window");
-        }
+        m_WindowCount++;
+        ShowWindow(m_Hwnd, SW_SHOW);
+        m_Open = true;
+        m_Focused = true;
+
+        // store a pointer to our Window on the Win32 API side
+        SetWindowLongPtrW(m_Hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+        m_Callback = SetWindowLongPtrW(m_Hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&SyriusWindowWin32Impl::windowEventProc));
+
+        //register raw input devices
+        RAWINPUTDEVICE mouse;
+        mouse.usUsagePage = 0x01; //mouse
+        mouse.usUsage = 0x02;     //mouse
+        mouse.dwFlags = 0;
+        mouse.hwndTarget = nullptr; // register to all windows, maybe change this later to only register to this window
+
+        RAWINPUTDEVICE keyboard;
+        keyboard.usUsagePage = 0x01; //keyboard
+        keyboard.usUsage = 0x06;     //keyboard
+        keyboard.dwFlags = 0;
+        keyboard.hwndTarget = nullptr; // register to all windows, maybe change this later to only register to this window
+
+        SR_LOG_WARNING_IF_FALSE(RegisterRawInputDevices(&mouse, 1, sizeof(mouse)), "SyriusWindowWin32Impl", "Failed to register raw input mouse");
+        SR_LOG_WARNING_IF_FALSE(RegisterRawInputDevices(&keyboard, 1, sizeof(keyboard)), "SyriusWindowWin32Impl", "Failed to register raw input keyboard");
     }
 
     SyriusWindowWin32Impl::~SyriusWindowWin32Impl() {
@@ -85,27 +83,27 @@ namespace Syrius{
         ShowWindow(m_Hwnd, SW_HIDE);
     }
 
-    void SyriusWindowWin32Impl::setPosition(int32 posX, int32 posY) {
+    void SyriusWindowWin32Impl::setPosition(i32 posX, i32 posY) {
         if (!m_Fullscreen){
             m_PosX = posX;
             m_PosY = posY;
 
-            SR_CORE_CHECK_CALL(SetWindowPos(m_Hwnd, nullptr, posX, posY, 0, 0, SWP_NOSIZE | SWP_NOZORDER), "Failed to set window position");
+            SR_LOG_WARNING_IF_FALSE(SetWindowPos(m_Hwnd, nullptr, posX, posY, 0, 0, SWP_NOSIZE | SWP_NOZORDER), "SyriusWindowWin32Impl", "Failed to set window position");
         }
     }
 
-    void SyriusWindowWin32Impl::resize(uint32 newWidth, uint32 newHeight) {
+    void SyriusWindowWin32Impl::resize(u32 newWidth, u32 newHeight) {
         if (!m_Fullscreen){
             m_Width = newWidth;
             m_Height = newHeight;
 
-            SR_CORE_CHECK_CALL(SetWindowPos(m_Hwnd, nullptr, 0, 0, newWidth, newHeight, SWP_NOMOVE | SWP_NOZORDER), "Failed to resize window");
+            SR_LOG_WARNING_IF_FALSE(SetWindowPos(m_Hwnd, nullptr, 0, 0, newWidth, newHeight, SWP_NOMOVE | SWP_NOZORDER), "SyriusWindowWin32Impl", "Failed to resize window");
 
         }
     }
 
     void SyriusWindowWin32Impl::requestFocus() {
-        SR_CORE_CHECK_CALL(SetFocus(m_Hwnd), "Failed to request focus");
+        SR_LOG_WARNING_IF_FALSE(SetFocus(m_Hwnd), "SyriusWindowWin32Impl", "Failed to request focus");
     }
 
     void SyriusWindowWin32Impl::enableFullscreen() {
@@ -120,12 +118,12 @@ namespace Syrius{
             MONITORINFO monitorInfo;
             monitorInfo.cbSize = sizeof(monitorInfo);
             HMONITOR monitor = MonitorFromWindow(m_Hwnd, MONITOR_DEFAULTTONEAREST);
-            SR_CORE_CHECK_CALL(GetMonitorInfoW(monitor, &monitorInfo), "Failed to get monitor info");
+            SR_LOG_WARNING_IF_FALSE(GetMonitorInfoW(monitor, &monitorInfo), "SyriusWindowWin32Impl", "Failed to get monitor info");
 
             // set window to fullscreen
-            SR_CORE_CHECK_CALL(SetWindowLongW(m_Hwnd, GWL_STYLE, m_SavedWindowInfo.m_Style & ~(WS_CAPTION | WS_THICKFRAME)), "Failed to set window style");
-            SR_CORE_CHECK_CALL(SetWindowLongW(m_Hwnd, GWL_EXSTYLE, m_SavedWindowInfo.m_ExStyle & ~(WS_EX_DLGMODALFRAME | WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE)), "Failed to set window extended style");
-            SR_CORE_CHECK_CALL(SetWindowPos(m_Hwnd, HWND_TOP, monitorInfo.rcMonitor.left, monitorInfo.rcMonitor.top, monitorInfo.rcMonitor.right - monitorInfo.rcMonitor.left, monitorInfo.rcMonitor.bottom - monitorInfo.rcMonitor.top, SWP_NOOWNERZORDER | SWP_FRAMECHANGED), "Failed to set window position");
+            SR_LOG_WARNING_IF_FALSE(SetWindowLongW(m_Hwnd, GWL_STYLE, m_SavedWindowInfo.m_Style & ~(WS_CAPTION | WS_THICKFRAME)), "SyriusWindowWin32Impl", "Failed to set window style");
+            SR_LOG_WARNING_IF_FALSE(SetWindowLongW(m_Hwnd, GWL_EXSTYLE, m_SavedWindowInfo.m_ExStyle & ~(WS_EX_DLGMODALFRAME | WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE)), "SyriusWindowWin32Impl", "Failed to set window extended style");
+            SR_LOG_WARNING_IF_FALSE(SetWindowPos(m_Hwnd, HWND_TOP, monitorInfo.rcMonitor.left, monitorInfo.rcMonitor.top, monitorInfo.rcMonitor.right - monitorInfo.rcMonitor.left, monitorInfo.rcMonitor.bottom - monitorInfo.rcMonitor.top, SWP_NOOWNERZORDER | SWP_FRAMECHANGED), "SyriusWindowWin32Impl", "Failed to set window position");
 
 
             m_Fullscreen = true;
@@ -135,9 +133,9 @@ namespace Syrius{
     void SyriusWindowWin32Impl::disableFullscreen() {
         if (m_Fullscreen){
             // restore window
-            SR_CORE_CHECK_CALL(SetWindowLongW(m_Hwnd, GWL_STYLE, m_SavedWindowInfo.m_Style), "Failed to set window style");
-            SR_CORE_CHECK_CALL(SetWindowLongW(m_Hwnd, GWL_EXSTYLE, m_SavedWindowInfo.m_ExStyle), "Failed to set window extended style");
-            SR_CORE_CHECK_CALL(SetWindowPos(m_Hwnd, nullptr, m_SavedWindowInfo.m_Rect.left, m_SavedWindowInfo.m_Rect.top, m_SavedWindowInfo.m_Rect.right - m_SavedWindowInfo.m_Rect.left, m_SavedWindowInfo.m_Rect.bottom - m_SavedWindowInfo.m_Rect.top, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED), "Failed to set window position");
+            SR_LOG_WARNING_IF_FALSE(SetWindowLongW(m_Hwnd, GWL_STYLE, m_SavedWindowInfo.m_Style), "SyriusWindowWin32Impl", "Failed to set window style");
+            SR_LOG_WARNING_IF_FALSE(SetWindowLongW(m_Hwnd, GWL_EXSTYLE, m_SavedWindowInfo.m_ExStyle), "SyriusWindowWin32Impl", "Failed to set window extended style");
+            SR_LOG_WARNING_IF_FALSE(SetWindowPos(m_Hwnd, nullptr, m_SavedWindowInfo.m_Rect.left, m_SavedWindowInfo.m_Rect.top, m_SavedWindowInfo.m_Rect.right - m_SavedWindowInfo.m_Rect.left, m_SavedWindowInfo.m_Rect.bottom - m_SavedWindowInfo.m_Rect.top, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED), "SyriusWindowWin32Impl", "Failed to set window position");
             if (m_SavedWindowInfo.m_IsMaximized){
                 ShowWindow(m_Hwnd, SW_MAXIMIZE);
             }
@@ -148,33 +146,33 @@ namespace Syrius{
     }
 
     void SyriusWindowWin32Impl::show() {
-        SR_CORE_CHECK_CALL(ShowWindow(m_Hwnd, SW_SHOW), "Failed to show window");
+        SR_LOG_WARNING_IF_FALSE(ShowWindow(m_Hwnd, SW_SHOW), "SyriusWindowWin32Impl", "Failed to show window");
     }
 
     void SyriusWindowWin32Impl::hide() {
-        SR_CORE_CHECK_CALL(ShowWindow(m_Hwnd, SW_HIDE), "Failed to hide window");
+        SR_LOG_WARNING_IF_FALSE(ShowWindow(m_Hwnd, SW_HIDE), "SyriusWindowWin32Impl", "Failed to hide window");
     }
 
     void SyriusWindowWin32Impl::setTitle(const std::string &newTitle) {
         m_Title = newTitle;
         auto wTitle = stringToWideString(m_Title);
 
-        SR_CORE_CHECK_CALL(SetWindowTextW(m_Hwnd, wTitle.c_str()), "Failed to set window title");
+        SR_LOG_WARNING_IF_FALSE(SetWindowTextW(m_Hwnd, wTitle.c_str()), "SyriusWindowWin32Impl", "Failed to set window title");
     }
 
-    void SyriusWindowWin32Impl::setIcon(const ImageFileDesc& desc, uint32 icons) {
+    void SyriusWindowWin32Impl::setIcon(const ImageFileDesc& desc, u32 icons) {
         auto img = createImage(desc);
         setIcon(img, icons);
     }
 
-    void SyriusWindowWin32Impl::setIcon(const Resource<Image>& image, uint32 icons) {
+    void SyriusWindowWin32Impl::setIcon(const UP<Image>& image, u32 icons) {
         if (m_Icon){
             DestroyIcon(m_Icon);
             m_Icon = nullptr;
         }
         std::vector<UByte> bgra(image->getWidth() * image->getHeight() * image->getChannelCount());
         memcpy(&bgra[0], image->getData(), image->getWidth() * image->getHeight() * image->getChannelCount());
-        for (uint32 i = 0; i < image->getWidth() * image->getHeight() * image->getChannelCount(); i += image->getChannelCount()){
+        for (u32 i = 0; i < image->getWidth() * image->getHeight() * image->getChannelCount(); i += image->getChannelCount()){
             std::swap(bgra[i], bgra[i + 2]);
         }
         m_Icon = CreateIcon(GetModuleHandleW(nullptr), image->getWidth(), image->getHeight(), 1, image->getChannelCount() * 8, nullptr, &bgra[0]);
@@ -190,7 +188,7 @@ namespace Syrius{
             m_Icon = nullptr;
         }
 
-        SR_CORE_POSTCONDITION(m_Icon != nullptr, "Failed to set the window icon");
+        SR_POSTCONDITION(m_Icon != nullptr, "Failed to set the window icon");
     }
 
     void SyriusWindowWin32Impl::pollEvents() {
@@ -201,20 +199,20 @@ namespace Syrius{
         }
     }
 
-    void SyriusWindowWin32Impl::setMousePosition(int32 mousePosX, int32 mousePosY) {
+    void SyriusWindowWin32Impl::setMousePosition(i32 mousePosX, i32 mousePosY) {
         auto relMousePosX = m_PosX + mousePosX;
         auto relMousePosY = m_PosY + mousePosY;
 
-        SR_CORE_CHECK_CALL(SetCursorPos(relMousePosX, relMousePosY), "Failed to set mouse position");
+        SR_LOG_WARNING_IF_FALSE(SetCursorPos(relMousePosX, relMousePosY), "SyriusWindowWin32Impl", "Failed to set mouse position");
     }
 
-    int32 SyriusWindowWin32Impl::getMousePositionX() {
+    i32 SyriusWindowWin32Impl::getMousePositionX() {
         POINT mousePos;
         GetCursorPos(&mousePos);
         return mousePos.x;
     }
 
-    int32 SyriusWindowWin32Impl::getMousePositionY() {
+    i32 SyriusWindowWin32Impl::getMousePositionY() {
         POINT mousePos;
         GetCursorPos(&mousePos);
         return mousePos.y;
@@ -241,7 +239,7 @@ namespace Syrius{
 
     void SyriusWindowWin32Impl::releaseMouse() {
         if (m_MouseGrabbed){
-            SR_CORE_CHECK_CALL(ClipCursor(nullptr), "Failed to release the mouse");
+            SR_LOG_WARNING_IF_FALSE(ClipCursor(nullptr), "SyriusWindowWin32Impl", "Failed to release the mouse");
             m_MouseGrabbed = false;
         }
 
@@ -250,18 +248,18 @@ namespace Syrius{
     void SyriusWindowWin32Impl::centerWindow() {
         if (!m_Fullscreen){
             HDC screenDC = GetDC(nullptr);
-            uint32 width = GetDeviceCaps(screenDC, HORZRES);
-            uint32 height = GetDeviceCaps(screenDC, VERTRES);
+            u32 width = GetDeviceCaps(screenDC, HORZRES);
+            u32 height = GetDeviceCaps(screenDC, VERTRES);
             ReleaseDC(nullptr, screenDC);
-            auto posX = static_cast<int32>((width - m_Width) / 2);
-            auto posY = static_cast<int32>((height - m_Height) / 2);
+            auto posX = static_cast<i32>((width - m_Width) / 2);
+            auto posY = static_cast<i32>((height - m_Height) / 2);
             setPosition(posX, posY);
         }
     }
 
     void SyriusWindowWin32Impl::centerMouse() {
-        uint32 mouseX = m_Width / 2;
-        uint32 mouseY = m_Height / 2;
+        u32 mouseX = m_Width / 2;
+        u32 mouseY = m_Height / 2;
         setMousePosition(mouseX, mouseY);
     }
 
@@ -312,14 +310,14 @@ namespace Syrius{
         desc.backBufferHeight = desc.backBufferHeight == 0 ? clientSpace.bottom : desc.backBufferHeight;
         switch (desc.api) {
             case SR_API_OPENGL:
-                m_Context = Resource<Context>(new WglContext(m_Hwnd, desc));
+                m_Context = UP<Context>(new WglContext(m_Hwnd, desc));
                 break;
             case SR_API_D3D11:
-                m_Context = Resource<Context>(new D3D11Context(m_Hwnd, desc));
+                m_Context = UP<Context>(new D3D11Context(m_Hwnd, desc));
                 break;
 
             default:
-                SR_CORE_WARNING("cannot create context: unsupported API")
+                SR_LOG_WARNING("SyriusWindowWin32Impl", "cannot create context: unsupported API (%i)", desc.api);
         }
         return createResourceView(m_Context);
 
@@ -376,8 +374,8 @@ namespace Syrius{
             }
             case WM_SIZE: {
                 if (wparam != SIZE_MINIMIZED && !m_Resizing && !m_Moving && m_Open){
-                    int32_t newWidth = GET_X_LPARAM(lparam);
-                    int32_t newHeight = GET_Y_LPARAM(lparam);
+                    i32 newWidth = GET_X_LPARAM(lparam);
+                    i32 newHeight = GET_Y_LPARAM(lparam);
                     m_Width = newWidth;
                     m_Height = newHeight;
                     WindowResizedEvent event(newWidth, newHeight);
@@ -518,8 +516,8 @@ namespace Syrius{
             }
             case WM_MOUSEMOVE: {
                 if (m_CaptureMouseAndKeyboardEvents){
-                    auto mouseX = static_cast<int32_t>(GET_X_LPARAM(lparam));
-                    auto mouseY = static_cast<int32_t>(GET_Y_LPARAM(lparam));
+                    auto mouseX = static_cast<i32>(GET_X_LPARAM(lparam));
+                    auto mouseY = static_cast<i32>(GET_Y_LPARAM(lparam));
                     RECT window;
                     GetClientRect(m_Hwnd, &window);
                     if ((wparam & (MK_LBUTTON | MK_MBUTTON | MK_RBUTTON | MK_XBUTTON1 | MK_XBUTTON2)) == 0){
@@ -555,8 +553,8 @@ namespace Syrius{
             }
             case WM_MOUSEWHEEL: {
                 if (m_MouseInside && m_CaptureMouseAndKeyboardEvents){
-                    int32_t xOffset = LOWORD(lparam);
-                    int32_t yOffset = HIWORD(lparam);
+                    i32 xOffset = LOWORD(lparam);
+                    i32 yOffset = HIWORD(lparam);
                     MouseScrolledEvent event(xOffset, yOffset);
                     dispatchEvent(event);
                 }
@@ -564,12 +562,12 @@ namespace Syrius{
             }
             // raw input from devices
             case WM_INPUT: {
-                uint32 size;
+                u32 size;
                 if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lparam), RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == -1){
                     break;
                 }
                 else{
-                    std::vector<uint8> buffer(size);
+                    std::vector<u8> buffer(size);
                     if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lparam), RID_INPUT, buffer.data(), &size, sizeof(RAWINPUTHEADER)) != size){
                         break;
                     }
@@ -605,9 +603,9 @@ namespace Syrius{
             }
             case WM_DROPFILES: {
                 auto hDrop = reinterpret_cast<HDROP>(wparam);
-                uint32 count = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
-                for (uint32 i = 0; i < count; ++i){
-                    uint32 length = DragQueryFile(hDrop, i, nullptr, 0);
+                u32 count = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
+                for (u32 i = 0; i < count; ++i){
+                    u32 length = DragQueryFile(hDrop, i, nullptr, 0);
                     std::string file(length, '\0');
                     DragQueryFile(hDrop, i, file.data(), length + 1);
                     WindowFileDroppedEvent event(file);
@@ -671,7 +669,7 @@ namespace Syrius{
             auto setProcessDpiAwarenessFunc = reinterpret_cast<SetProcessDpiAwarenessFuncType>(GetProcAddress(shCoreDll, "SetProcessDpiAwareness"));
             if (setProcessDpiAwarenessFunc){
                 if (setProcessDpiAwarenessFunc(ProcessSystemDpiAware) == E_INVALIDARG){
-                    SR_CORE_WARNING("Failed to set process DPI awareness using shCore.dll libary, falling back on user32.dll");
+                    SR_LOG_WARNING("SyriusWindowWin32Impl", "Failed to set process DPI awareness using shCore.dll libary, falling back on user32.dll");
                 }
                 else{
                     FreeLibrary(shCoreDll);
@@ -688,7 +686,7 @@ namespace Syrius{
             auto setProcessDPIAwareFunc = reinterpret_cast<SetProcessDPIAwareFuncType>(GetProcAddress(user32Dll, "SetProcessDPIAware"));
             if (setProcessDPIAwareFunc){
                 if (!setProcessDPIAwareFunc()){
-                    SR_CORE_WARNING("Failed to set process DPI awareness");
+                    SR_LOG_WARNING("SyriusWindowWin32Impl", "Failed to set process DPI awareness");
                 }
             }
             FreeLibrary(user32Dll);

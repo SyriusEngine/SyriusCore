@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../include/SyriusCore/Utils/PlatformDetection.hpp"
+#include <SyriusUtils/SyriusUtils.hpp>
 #include "../Utils/DebugMacros.hpp"
 
 #include "../../../include/SyriusCore/Window/Event/KeyboardEvent.hpp"

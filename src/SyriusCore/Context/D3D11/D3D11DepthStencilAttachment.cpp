@@ -1,6 +1,6 @@
 #include "D3D11DepthStencilAttachment.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -12,7 +12,7 @@ namespace Syrius{
             case SR_TEXTURE_DEPTH_24_STENCIL_8: return DXGI_FORMAT_R24G8_TYPELESS;
             case SR_TEXTURE_DEPTH_32_STENCIL_8: return DXGI_FORMAT_R32G8X24_TYPELESS;
             default: {
-                SR_CORE_WARNING("Invalid depth stencil buffer format, defaulting to depth 24 stencil 8");
+                SR_LOG_WARNING("D3D11DepthStencilAttachment", "Invalid depth stencil buffer format (%i), defaulting to depth 24 stencil 8", format);
                 return DXGI_FORMAT_R24G8_TYPELESS;
             }
         }
@@ -26,7 +26,7 @@ namespace Syrius{
             case SR_TEXTURE_DEPTH_24_STENCIL_8: return DXGI_FORMAT_D24_UNORM_S8_UINT;
             case SR_TEXTURE_DEPTH_32_STENCIL_8: return DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
             default: {
-                SR_CORE_WARNING("Invalid depth stencil view format, defaulting to depth 24 stencil 8");
+                SR_LOG_WARNING("D3D11DepthStencilAttachment", "Invalid depth stencil view format (%i), defaulting to depth 24 stencil 8", format);
                 return DXGI_FORMAT_D24_UNORM_S8_UINT;
             }
         }
@@ -40,13 +40,13 @@ namespace Syrius{
             case SR_TEXTURE_DEPTH_24_STENCIL_8: return DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
             case SR_TEXTURE_DEPTH_32_STENCIL_8: return DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
             default: {
-                SR_CORE_WARNING("Invalid depth stencil view format, defaulting to depth 24 stencil 8");
+                SR_LOG_WARNING("D3D11DepthStencilAttachment", "Invalid depth stencil shader resource view format (%i), defaulting to depth 24 stencil 8", format);
                 return DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
             }
         }
     }
 
-    D3D11DepthStencilAttachment::D3D11DepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext):
+    D3D11DepthStencilAttachment::D3D11DepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext):
     DepthStencilAttachment(desc, deviceLimits),
     m_Device(device),
     m_Context(deviceContext),
@@ -73,8 +73,8 @@ namespace Syrius{
         m_Context->OMSetDepthStencilState(nullptr, 1);
     }
 
-    void D3D11DepthStencilAttachment::bindShaderResource(uint32 slot) {
-        SR_CORE_PRECONDITION(m_EnableShaderAccess, "Shader access is not enabled for this depth stencil attachment");
+    void D3D11DepthStencilAttachment::bindShaderResource(u32 slot) {
+        SR_PRECONDITION(m_EnableShaderAccess, "Shader access is not enabled for this (%p) depth stencil attachment", this);
 
         m_Context->PSSetShaderResources(slot, 1, &m_ShaderResourceView);
     }
@@ -83,7 +83,7 @@ namespace Syrius{
         m_Context->ClearDepthStencilView(m_View, m_ClearFlag, m_ClearDepth, m_ClearStencil);
     }
 
-    void D3D11DepthStencilAttachment::onResize(uint32 width, uint32 height) {
+    void D3D11DepthStencilAttachment::onResize(u32 width, u32 height) {
         destroyBufferAndView();
 
         m_Width = width;
@@ -93,12 +93,12 @@ namespace Syrius{
         createBufferAndView();
     }
 
-    Resource<Image> D3D11DepthStencilAttachment::getData() {
-        return Resource<Image>();
+    UP<Image> D3D11DepthStencilAttachment::getData() {
+        return {};
     }
 
-    uint64 D3D11DepthStencilAttachment::getIdentifier() const {
-        return reinterpret_cast<uint64>(m_State);
+    u64 D3D11DepthStencilAttachment::getIdentifier() const {
+        return reinterpret_cast<u64>(m_State);
     }
 
     void D3D11DepthStencilAttachment::enableDepthTest(bool enable) {
@@ -126,7 +126,7 @@ namespace Syrius{
     }
 
     void D3D11DepthStencilAttachment::setClearFlag() {
-        uint32 flags = 0;
+        u32 flags = 0;
         if (m_EnableDepthTest){
             flags |= D3D11_CLEAR_DEPTH;
         }

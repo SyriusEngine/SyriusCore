@@ -1,10 +1,10 @@
 #include "D3D11FrameBuffer.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
-    D3D11FrameBuffer::D3D11FrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext):
+    D3D11FrameBuffer::D3D11FrameBuffer(const ResourceView<FrameBufferLayout> &desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext):
     FrameBuffer(desc, deviceLimits),
     m_Device(device),
     m_DeviceContext(deviceContext),
@@ -29,7 +29,7 @@ namespace Syrius{
 
         if (!desc->getDepthStencilAttachmentDesc().empty()){
             m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back(), m_DeviceLimits, m_Device, m_DeviceContext);
-            m_DepthStencilAttachment = Resource<DepthStencilAttachment>(m_D3D11DepthStencilAttachment);
+            m_DepthStencilAttachment = UP<DepthStencilAttachment>(m_D3D11DepthStencilAttachment);
             m_DepthStencilView = m_D3D11DepthStencilAttachment->getDepthStencilView();
         }
         else{
@@ -40,7 +40,7 @@ namespace Syrius{
             dummyDesc.enableDepthTest = false;
             dummyDesc.enableStencilTest = false;
             m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(dummyDesc, m_DeviceLimits, m_Device, m_DeviceContext);
-            m_DepthStencilAttachment = Resource<DepthStencilAttachment>(m_D3D11DepthStencilAttachment);
+            m_DepthStencilAttachment = UP<DepthStencilAttachment>(m_D3D11DepthStencilAttachment);
             m_DepthStencilView = m_D3D11DepthStencilAttachment->getDepthStencilView();
         }
     }
@@ -64,7 +64,7 @@ namespace Syrius{
         m_DeviceContext->OMSetRenderTargets(m_RenderTargetViews.size(), &m_NullableRenderTargetViews[0], nullptr);
     }
 
-    void D3D11FrameBuffer::onResize(uint32 width, uint32 height) {
+    void D3D11FrameBuffer::onResize(u32 width, u32 height) {
         unbind();
         for (auto& viewport : m_Viewports){
             viewport->onResize(width, height);
@@ -82,7 +82,7 @@ namespace Syrius{
         m_DepthStencilView = m_D3D11DepthStencilAttachment->getDepthStencilView();
     }
 
-    D3D11DefaultFrameBuffer::D3D11DefaultFrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext, IDXGISwapChain *swapChain):
+    D3D11DefaultFrameBuffer::D3D11DefaultFrameBuffer(const ResourceView<FrameBufferLayout> &desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext, IDXGISwapChain *swapChain):
     FrameBuffer(desc, deviceLimits),
     m_Device(device),
     m_DeviceContext(deviceContext),
@@ -101,7 +101,7 @@ namespace Syrius{
 
         if (!desc->getDepthStencilAttachmentDesc().empty()){
             m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(desc->getDepthStencilAttachmentDesc().back(), m_DeviceLimits, m_Device, m_DeviceContext);
-            m_DepthStencilAttachment = Resource<DepthStencilAttachment>(m_D3D11DepthStencilAttachment);
+            m_DepthStencilAttachment = UP<DepthStencilAttachment>(m_D3D11DepthStencilAttachment);
             m_DepthStencilView = m_D3D11DepthStencilAttachment->getDepthStencilView();
         }
         else{
@@ -112,7 +112,7 @@ namespace Syrius{
             dummyDesc.enableDepthTest = false;
             dummyDesc.enableStencilTest = false;
             m_D3D11DepthStencilAttachment = new D3D11DepthStencilAttachment(dummyDesc, m_DeviceLimits, m_Device, m_DeviceContext);
-            m_DepthStencilAttachment = Resource<DepthStencilAttachment>(m_D3D11DepthStencilAttachment);
+            m_DepthStencilAttachment = UP<DepthStencilAttachment>(m_D3D11DepthStencilAttachment);
             m_DepthStencilView = m_D3D11DepthStencilAttachment->getDepthStencilView();
         }
 
@@ -135,7 +135,7 @@ namespace Syrius{
 
     }
 
-    void D3D11DefaultFrameBuffer::onResize(uint32 width, uint32 height) {
+    void D3D11DefaultFrameBuffer::onResize(u32 width, u32 height) {
         for (auto& viewport : m_Viewports){
             viewport->onResize(width, height);
         }

@@ -7,7 +7,7 @@ namespace Syrius{
     ImageT::ImageT(const ImageDesc &desc):
     Image(desc.width, desc.height, desc.format){
         auto size = desc.width * desc.height * getBytesPerPixel(desc.format);
-        m_Data = Resource<UByte>(new UByte[size]);
+        m_Data = UP<UByte>(new UByte[size]);
         if (desc.data != nullptr){
             memcpy(m_Data.get(), desc.data, desc.width * desc.height * getBytesPerPixel(desc.format));
         }
@@ -19,7 +19,7 @@ namespace Syrius{
         throw std::runtime_error("[ImageT]: Writing to file not implemented");
     }
 
-    void ImageT::resize(uint32 width, uint32 height) {
+    void ImageT::resize(u32 width, u32 height) {
         throw std::runtime_error("[ImageT]: Resizing not implemented");
     }
 
@@ -31,13 +31,13 @@ namespace Syrius{
         return m_Data.get();
     }
 
-    Resource<Image> ImageT::convertToUI8() {
+    UP<Image> ImageT::convertToUI8() {
         ImageUI8Desc desc;
         desc.width = m_Width;
         desc.height = m_Height;
         desc.format = getFormatFromChannelCount(getTextureChannelCount(m_Format), SR_UINT8);
         desc.data = m_Data.get();
-        auto img = createResource<ImageUI8>(desc);
+        auto img = createUP<ImageUI8>(desc);
 
         return img;
     }

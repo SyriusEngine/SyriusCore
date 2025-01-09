@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Utils.hpp"
-#include "../Utils/Resource.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "ShaderModule.hpp"
@@ -29,7 +28,7 @@ namespace Syrius{
 
         virtual void drawBuffers() = 0;
 
-        virtual void drawBuffersInstanced(uint32 instanceCount) = 0;
+        virtual void drawBuffersInstanced(u32 instanceCount) = 0;
 
         [[nodiscard]] SR_DRAW_MODE getDrawMode() const;
 

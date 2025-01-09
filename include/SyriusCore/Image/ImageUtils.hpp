@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Utils/SyriusCoreInclude.hpp"
+#include <SyriusUtils/SyriusUtils.hpp>
 
 typedef enum SR_IMAGE_TYPE {
     SR_IMAGE_PNG    = 0x01,
@@ -15,38 +16,38 @@ namespace Syrius{
         std::string fileName;
         bool flipOnAccess               = true;
         SR_IMAGE_TYPE imgType           = SR_IMAGE_PNG;
-        uint32 requestedChannelCount    = 0; // 0 => all channels available in the image
-        uint64 defaultChannelValue      = 255; // if the image has fewer channels than requested, fill the rest with this value
+        u32 requestedChannelCount    = 0; // 0 => all channels available in the image
+        u64 defaultChannelValue      = 255; // if the image has fewer channels than requested, fill the rest with this value
     };
 
     struct SR_CORE_API ImageDesc{
         void* data                   = nullptr;
-        uint32 width                  = 0;
-        uint32 height                 = 0;
+        u32 width                  = 0;
+        u32 height                 = 0;
         SR_TEXTURE_FORMAT format     = SR_TEXTURE_NONE;
     };
 
     struct SR_CORE_API ImageUI8Desc{
         const UByte* data           = nullptr;
-        uint32 width                 = 0;
-        uint32 height                = 0;
+        u32 width                 = 0;
+        u32 height                = 0;
         SR_TEXTURE_FORMAT format    = SR_TEXTURE_RGBA_UI8;
-        uint8 defaultChannelValue   = 255;
+        u8 defaultChannelValue   = 255;
     };
 
     struct SR_CORE_API ImageUI16Desc{
-        const uint16* data          = nullptr;
-        uint32 width                 = 0;
-        uint32 height                = 0;
+        const u16* data          = nullptr;
+        u32 width                 = 0;
+        u32 height                = 0;
         SR_TEXTURE_FORMAT format    = SR_TEXTURE_RGBA_UI16;
-        uint16 defaultChannelValue  = 65535;
+        u16 defaultChannelValue  = 65535;
 
     };
 
     struct SR_CORE_API ImageF32Desc{
         const float* data           = nullptr;
-        uint32 width                 = 0;
-        uint32 height                = 0;
+        u32 width                 = 0;
+        u32 height                = 0;
         SR_TEXTURE_FORMAT format    = SR_TEXTURE_RGBA_F32;
         float defaultChannelValue   = 1.0f;
     };

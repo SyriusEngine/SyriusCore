@@ -1,15 +1,15 @@
 #include "Win32Utils.hpp"
 #include "../Utils/DebugMacros.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius {
 
     SR_KEYBOARD_KEY convertVirtualKey(WPARAM key, LPARAM flags){
         switch (key) {
             case VK_SHIFT: {
-                unsigned int lshift = MapVirtualKeyW(VK_LSHIFT, MAPVK_VK_TO_VSC);
-                auto scancode = static_cast<unsigned int>((flags & (0xFF << 16)) >> 16);
+                u32 lshift = MapVirtualKeyW(VK_LSHIFT, MAPVK_VK_TO_VSC);
+                auto scancode = static_cast<u32>((flags & (0xFF << 16)) >> 16);
                 if (scancode == lshift){
                     return SR_KEY_LEFT_SHIFT;
                 }

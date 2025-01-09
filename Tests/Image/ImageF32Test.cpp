@@ -28,7 +28,7 @@ TEST_F(ImageF32Test, CreateImageFromFileF32){
     auto data = reinterpret_cast<float*>(img->getData());
     auto epsilon = 0.01f;
     bool correct = true;
-    for (uint32 i = 0; i < width * height * channelCount; i += channelCount){
+    for (u32 i = 0; i < width * height * channelCount; i += channelCount){
         if (data[i] - 1.0f > epsilon or data[i + 1] > epsilon or data[i + 2] > epsilon){
             correct = false;
             break;
@@ -55,7 +55,7 @@ TEST_F(ImageF32Test, CreateImageFromFileF32RequestMoreChannels){
     auto data = reinterpret_cast<float*>(img->getData());
     auto epsilon = 0.01f;
     bool correct = true;
-    for (uint32 i = 0; i < width * height * channelCount; i += channelCount){
+    for (u32 i = 0; i < width * height * channelCount; i += channelCount){
         if (data[i] - 1.0f > epsilon or data[i + 1] > epsilon or data[i + 2] > epsilon){
             correct = false;
             break;
@@ -82,7 +82,7 @@ TEST_F(ImageF32Test, CreateImageFromFileF32RequestFewerChannels){
     auto data = reinterpret_cast<float*>(img->getData());
     auto epsilon = 0.01f;
     bool correct = true;
-    for (uint32 i = 0; i < width * height * channelCount; i += channelCount){
+    for (u32 i = 0; i < width * height * channelCount; i += channelCount){
         if (data[i] - 1.0f > epsilon){
             correct = false;
             break;
@@ -114,7 +114,7 @@ TEST_F(ImageF32Test, CreateImageFromMemoryF32WithData){
 
     auto imgData = reinterpret_cast<float*>(img->getData());
     bool correct = true;
-    for (uint32 i = 0; i < width * height * channelCount; i += channelCount){
+    for (u32 i = 0; i < width * height * channelCount; i += channelCount){
         if (imgData[i] != data[i]){
             correct = false;
             break;
@@ -141,7 +141,7 @@ TEST_F(ImageF32Test, CreateImageFromMemoryF32NoData){
 
     auto imgData = reinterpret_cast<float*>(img->getData());
     bool correct = true;
-    for (uint32 i = 0; i < width * height * channelCount; i += channelCount){
+    for (u32 i = 0; i < width * height * channelCount; i += channelCount){
         if (imgData[i] != desc.defaultChannelValue){
             correct = false;
             break;
@@ -194,7 +194,7 @@ TEST_F(ImageF32Test, UpscaleImageF32){
     auto data = reinterpret_cast<float*>(img->getData());
     auto epsilon = 0.1f;
     bool correct = true;
-    for (uint32 i = 0; i < newWidth * newHeight * channelCount; i += channelCount){
+    for (u32 i = 0; i < newWidth * newHeight * channelCount; i += channelCount){
         if (data[i] - 1.0f > epsilon or data[i + 1] > epsilon or data[i + 2] > epsilon){
             correct = false;
             break;
@@ -221,7 +221,7 @@ TEST_F(ImageF32Test, DownscaleImageF32){
     auto data = reinterpret_cast<float*>(img->getData());
     auto epsilon = 0.1f;
     bool correct = true;
-    for (uint32 i = 0; i < newWidth * newHeight * channelCount; i += channelCount){
+    for (u32 i = 0; i < newWidth * newHeight * channelCount; i += channelCount){
         if (data[i] - 1.0f > epsilon or data[i + 1] > epsilon or data[i + 2] > epsilon){
             correct = false;
             break;

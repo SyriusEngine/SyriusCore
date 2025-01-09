@@ -1,10 +1,10 @@
 #include "WglContext.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
-    uint32 WglContext::m_ContextCount = 0;
+    u32 WglContext::m_ContextCount = 0;
 
     WglContext::WglContext(HWND &hwnd, const ContextDesc& desc):
     GlContext(desc),
@@ -46,9 +46,8 @@ namespace Syrius{
                 0
         };
 
-        int32 tempPixelFormat = ChoosePixelFormat(m_HardwareDeviceContext, &pixelDesc);
+        i32 tempPixelFormat = ChoosePixelFormat(m_HardwareDeviceContext, &pixelDesc);
         bool pfRes = SetPixelFormat(m_HardwareDeviceContext, tempPixelFormat, &pixelDesc);
-        SR_CORE_ASSERT(pfRes, "Failed to set pixel format");
 
         //create a throwaway context to get the function pointers
         HGLRC tempContext = wglCreateContext(m_HardwareDeviceContext);
@@ -79,9 +78,7 @@ namespace Syrius{
             UINT numFormats;
 
             BOOL result = wglChoosePixelFormatARB(m_HardwareDeviceContext, attribList, nullptr, 1, &pixelFormat, &numFormats);
-            if (!result){
-                SR_CORE_WARNING("Failed to choose pixel format")
-            }
+            SR_LOG_WARNING_IF_FALSE(result, "WglContext", "Failed to choose pixel format");
             int attributes[] =
                     {
                             WGL_CONTEXT_MAJOR_VERSION_ARB,	4,
@@ -96,20 +93,19 @@ namespace Syrius{
             // delete the throwaway context
             wglDeleteContext(tempContext);
 
-            SR_CORE_MESSAGE("Created OpenGL context with version: " + std::to_string(attributes[1]) + "." + std::to_string(attributes[3]));
+            SR_LOG_INFO("WglContext", "Created OpenGL context with version: %s.%s", attributes[1], attributes[3]);
         }
         else{
             // use the throwaway context as the actual context
             m_Context = tempContext;
-            SR_CORE_MESSAGE("OpenGL context created without extensions");
+            SR_LOG_INFO("WglContext", "OpenGL context created without extensions");
         }
-
 
         loadExtensions();
         initGl(desc);
 
-        SR_CORE_POSTCONDITION(m_HardwareDeviceContext, "Failed to create hardware device context")
-        SR_CORE_POSTCONDITION(m_Context, "Failed to create context")
+        SR_POSTCONDITION(m_HardwareDeviceContext, "Failed to create hardware device context")
+        SR_POSTCONDITION(m_Context, "Failed to create context")
     }
 
     WglContext::~WglContext() {
@@ -131,14 +127,14 @@ namespace Syrius{
     }
 
     void WglContext::setVerticalSynchronisation(bool enable) {
-        SR_CORE_PRECONDITION(wglSwapIntervalEXT != nullptr, "Cannot set vertical synchronisation, extension not supported")
+        SR_PRECONDITION(wglSwapIntervalEXT != nullptr, "Cannot set vertical synchronisation, extension not supported")
 
         m_VerticalSync = enable;
         wglSwapIntervalEXT(m_VerticalSync);
     }
 
     void WglContext::createImGuiContext() {
-        SR_CORE_PRECONDITION(!m_ImGuiContext, "There exists already an ImGui context")
+        SR_PRECONDITION(!m_ImGuiContext, "There exists already an ImGui context")
 
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
@@ -149,11 +145,11 @@ namespace Syrius{
 
         m_ImGuiContext = ImGui::GetCurrentContext();
 
-        SR_CORE_PRECONDITION(m_ImGuiContext, "Failed to create ImGui context");
+        SR_POSTCONDITION(m_ImGuiContext, "Failed to create ImGui context");
     }
 
     void WglContext::destroyImGuiContext() {
-        SR_CORE_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
 
         ImGui::SetCurrentContext(m_ImGuiContext);
         ImGui_ImplOpenGL3_Shutdown();
@@ -165,7 +161,7 @@ namespace Syrius{
     }
 
     void WglContext::onImGuiBegin() {
-        SR_CORE_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
 
         ImGui::SetCurrentContext(m_ImGuiContext);
         ImGui_ImplOpenGL3_NewFrame();
@@ -174,7 +170,7 @@ namespace Syrius{
     }
 
     void WglContext::onImGuiEnd() {
-        SR_CORE_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -198,7 +194,7 @@ namespace Syrius{
             wglGetSwapIntervalEXT = (PFNWGLGETSWAPINTERVALEXTPROC) wglGetProcAddress("wglGetSwapIntervalEXT");
         }
         else{
-            SR_CORE_WARNING("extension: <WGL_EXT_swap_control> is not supported")
+            SR_LOG_WARNING("WglContext", "extension: <WGL_EXT_swap_control> is not supported")
 
         }
     }
@@ -215,8 +211,8 @@ namespace Syrius{
     void WglContext::initWGL() {
         if (m_ContextCount == 0){
             m_WGLVersion = gladLoaderLoadWGL(m_HardwareDeviceContext);
-            SR_CORE_ASSERT(m_WGLVersion > 0, "Failed to initialize WGL");
-            SR_CORE_MESSAGE("Initialized WGL version: %i", m_WGLVersion);
+            SR_ASSERT(m_WGLVersion > 0, "Failed to initialize WGL");
+            SR_LOG_INFO("WglContext", "Initialized WGL version: %i", m_WGLVersion);
         }
         m_ContextCount++;
 

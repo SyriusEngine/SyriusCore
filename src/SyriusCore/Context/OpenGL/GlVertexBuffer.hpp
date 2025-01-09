@@ -7,22 +7,22 @@ namespace Syrius{
 
     class GlVertexBuffer : public VertexBuffer{
     public:
-        GlVertexBuffer(const VertexBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        GlVertexBuffer(const VertexBufferDesc& desc, const UP<DeviceLimits>& deviceLimits);
 
         ~GlVertexBuffer() override;
 
         void bind() override;
 
-        void setData(const void* data, uint32 count) override;
+        void setData(const void* data, u32 count) override;
 
         void copyFrom(const ResourceView<VertexBuffer>& other) override;
 
-        [[nodiscard]] Resource<UByte[]> getData() const override;
+        [[nodiscard]] UP<UByte[]> getData() const override;
 
-        [[nodiscard]] uint64 getIdentifier() const override;
+        [[nodiscard]] u64 getIdentifier() const override;
 
     private:
-        uint32 m_BufferID;
+        u32 m_BufferID;
 
     };
 }

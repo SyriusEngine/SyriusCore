@@ -6,13 +6,13 @@
 #include "D3D11ColorAttachment.hpp"
 #include "D3D11DepthStencilAttachment.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
     class D3D11FrameBuffer : public FrameBuffer{
     public:
-        D3D11FrameBuffer(const ResourceView<FrameBufferLayout>& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+        D3D11FrameBuffer(const ResourceView<FrameBufferLayout>& desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
         ~D3D11FrameBuffer() override;
 
@@ -20,7 +20,7 @@ namespace Syrius{
 
         void unbind() override;
 
-        void onResize(uint32 width, uint32 height) override;
+        void onResize(u32 width, u32 height) override;
 
     private:
         ID3D11Device* m_Device;
@@ -37,7 +37,7 @@ namespace Syrius{
 
     class D3D11DefaultFrameBuffer : public FrameBuffer{
     public:
-        D3D11DefaultFrameBuffer(const ResourceView<FrameBufferLayout>& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* swapChain);
+        D3D11DefaultFrameBuffer(const ResourceView<FrameBufferLayout>& desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext, IDXGISwapChain* swapChain);
 
         ~D3D11DefaultFrameBuffer() override;
 
@@ -45,7 +45,7 @@ namespace Syrius{
 
         void unbind() override;
 
-        void onResize(uint32 width, uint32 height) override;
+        void onResize(u32 width, u32 height) override;
 
     private:
         ID3D11Device* m_Device;

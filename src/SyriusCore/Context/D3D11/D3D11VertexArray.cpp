@@ -1,6 +1,6 @@
 #include "D3D11VertexArray.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -12,8 +12,8 @@ namespace Syrius{
     m_D3d11DrawMode(getD3d11DrawMode(desc.drawMode)){
         std::vector<D3D11_INPUT_ELEMENT_DESC> elements;
 
-        uint32 index = 0;
-        uint32 offset = 0;
+        u32 index = 0;
+        u32 offset = 0;
         for (const auto& attr: m_VertexBuffer->getLayout()->getAttributes()){
             D3D11_INPUT_ELEMENT_DESC element;
             element.SemanticName = attr.name.c_str();
@@ -64,7 +64,7 @@ namespace Syrius{
         SR_CORE_DXGI_GET_MESSAGES()
     }
 
-    void D3D11VertexArray::drawBuffersInstanced(uint32 instanceCount) {
+    void D3D11VertexArray::drawBuffersInstanced(u32 instanceCount) {
         m_VertexBuffer->bind();
         m_Context->IASetInputLayout(m_InputLayout);
         m_Context->IASetPrimitiveTopology(m_D3d11DrawMode);
@@ -86,8 +86,8 @@ namespace Syrius{
     m_D3d11DrawMode(getD3d11DrawMode(desc.drawMode)){
         std::vector<D3D11_INPUT_ELEMENT_DESC> elements;
 
-        uint32 index = 0;
-        uint32 offset = 0;
+        u32 index = 0;
+        u32 offset = 0;
         for (const auto& attr: m_VertexBuffer->getLayout()->getAttributes()){
             D3D11_INPUT_ELEMENT_DESC element;
             element.SemanticName = attr.name.c_str();
@@ -138,7 +138,7 @@ namespace Syrius{
         m_Context->DrawIndexed(m_IndexBuffer->getCount(), 0, 0);
     }
 
-    void D3D11VertexArrayIndexed::drawBuffersInstanced(uint32 instanceCount) {
+    void D3D11VertexArrayIndexed::drawBuffersInstanced(u32 instanceCount) {
         m_VertexBuffer->bind();
         m_IndexBuffer->bind();
         m_Context->IASetInputLayout(m_InputLayout);

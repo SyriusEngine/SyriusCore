@@ -19,7 +19,7 @@ TEST_F(IndexBufferTest, CreateIndexBuffer) {
 
     EXPECT_NE(ib, nullptr);
     EXPECT_EQ(ib->getCount(), 3);
-    EXPECT_EQ(ib->getSize(), sizeof(uint32) * s_TriangleIndices.size());
+    EXPECT_EQ(ib->getSize(), sizeof(u32) * s_TriangleIndices.size());
     EXPECT_EQ(ib->getUsage(), SR_BUFFER_USAGE_DEFAULT);
     EXPECT_EQ(ib->getDataType(), SR_UINT32);
 }
@@ -79,9 +79,9 @@ TEST_F(IndexBufferTest, ReadIndexBuffer){
     EXPECT_NE(data, nullptr);
 
     // check if the data has changed
-    auto uint32Data = reinterpret_cast<uint32*>(data.get());
+    auto u32Data = reinterpret_cast<u32*>(data.get());
     for (int i = 0; i < s_TriangleIndices.size(); i++){
-        EXPECT_EQ(uint32Data[i], s_TriangleIndices[i]);
+        EXPECT_EQ(u32Data[i], s_TriangleIndices[i]);
     }
 }
 
@@ -100,9 +100,9 @@ TEST_F(IndexBufferTest, UpdateIndexBuffer){
     EXPECT_NE(data, nullptr);
 
     // check if the data has changed
-    auto uint32Data = reinterpret_cast<uint32*>(data.get());
+    auto u32Data = reinterpret_cast<u32*>(data.get());
     for (int i = 0; i < s_TriangleIndices2.size(); i++){
-        EXPECT_EQ(uint32Data[i], s_TriangleIndices2[i]);
+        EXPECT_EQ(u32Data[i], s_TriangleIndices2[i]);
     }
 }
 
@@ -148,8 +148,8 @@ TEST_F(IndexBufferTest, CopyIndexBuffer){
     EXPECT_NE(data, nullptr);
 
     // check if the data has changed
-    auto uint32Data = reinterpret_cast<uint32*>(data.get());
+    auto u32Data = reinterpret_cast<u32*>(data.get());
     for (int i = 0; i < s_TriangleIndices.size(); i++){
-        EXPECT_EQ(uint32Data[i], s_TriangleIndices[i]);
+        EXPECT_EQ(u32Data[i], s_TriangleIndices[i]);
     }
 }

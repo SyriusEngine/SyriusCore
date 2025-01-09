@@ -9,8 +9,8 @@ void CubeMapLayoutTest::TearDown() {
 }
 
 TEST_F(CubeMapLayoutTest, CreateCubeMapLayout){
-    const uint32 width = 512;
-    const uint32 height = 512;
+    const u32 width = 512;
+    const u32 height = 512;
     const SR_TEXTURE_FORMAT format = SR_TEXTURE_RGBA_UI8;
 
     auto res = TestEnvironment::m_Context->createCubeMapLayout(width, height, format);
@@ -25,13 +25,13 @@ TEST_F(CubeMapLayoutTest, CreateCubeMapLayout){
 }
 
 TEST_F(CubeMapLayoutTest, CreateCubeMapLayoutAddFace){
-    const uint32 width = 512;
-    const uint32 height = 512;
+    const u32 width = 512;
+    const u32 height = 512;
     const SR_TEXTURE_FORMAT format = SR_TEXTURE_RGBA_UI8;
 
     auto res = TestEnvironment::m_Context->createCubeMapLayout(width, height, format);
 
-    std::vector<uint8> data(width * height * 4, 255);
+    std::vector<u8> data(width * height * 4, 255);
     ImageUI8Desc desc;
     desc.width = width;
     desc.height = height;
@@ -52,13 +52,13 @@ TEST_F(CubeMapLayoutTest, CreateCubeMapLayoutAddFace){
 }
 
 TEST_F(CubeMapLayoutTest, CreateCubeMapAddFaceInvalidLayout){
-    const uint32 width = 512;
-    const uint32 height = 512;
+    const u32 width = 512;
+    const u32 height = 512;
     const SR_TEXTURE_FORMAT format = SR_TEXTURE_RGBA_UI8;
 
     auto res = TestEnvironment::m_Context->createCubeMapLayout(width, height, format);
 
-    std::vector<uint8> data(width * height * 3, 255);
+    std::vector<u8> data(width * height * 3, 255);
     ImageUI8Desc desc;
     desc.width = width;
     desc.height = height;
@@ -74,13 +74,13 @@ TEST_F(CubeMapLayoutTest, CreateCubeMapAddFaceInvalidLayout){
 }
 
 TEST_F(CubeMapLayoutTest, CreateCubeMapAddFaceOtherDimensions){
-    const uint32 width = 512;
-    const uint32 height = 512;
+    const u32 width = 512;
+    const u32 height = 512;
     const SR_TEXTURE_FORMAT format = SR_TEXTURE_RGBA_UI8;
 
     auto res = TestEnvironment::m_Context->createCubeMapLayout(width, height, format);
 
-    std::vector<uint8> data((width / 2) * (height / 1) * 4, 255);
+    std::vector<u8> data((width / 2) * (height / 1) * 4, 255);
     ImageUI8Desc desc;
     desc.width = width / 2;
     desc.height = height / 2;

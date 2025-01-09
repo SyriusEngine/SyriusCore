@@ -8,15 +8,15 @@ namespace Syrius{
     struct SR_CORE_API VertexAttribute{
         std::string name;
         SR_SCALAR_TYPE type;
-        uint8 size;
-        uint8 elementCount;
+        u8 size;
+        u8 elementCount;
 
-        VertexAttribute(const std::string& name, SR_SCALAR_TYPE type, uint8 size, uint8 elementCount);
+        VertexAttribute(const std::string& name, SR_SCALAR_TYPE type, u8 size, u8 elementCount);
     };
 
     class SR_CORE_API VertexLayout{
     public:
-        explicit VertexLayout(const Resource<DeviceLimits>& deviceLimits);
+        explicit VertexLayout(const UP<DeviceLimits>& deviceLimits);
 
         ~VertexLayout();
 
@@ -28,21 +28,21 @@ namespace Syrius{
 
         VertexAttribute& operator[](const std::string& name);
 
-        const VertexAttribute& operator[](uint32 index) const;
+        const VertexAttribute& operator[](u32 index) const;
 
-        VertexAttribute& operator[](uint32 index);
+        VertexAttribute& operator[](u32 index);
 
-        [[nodiscard]] uint32 getStride() const;
+        [[nodiscard]] u32 getStride() const;
 
         [[nodiscard]] const std::vector<VertexAttribute>& getAttributes() const;
 
-        [[nodiscard]] uint32 getAttributeCount() const;
+        [[nodiscard]] u32 getAttributeCount() const;
 
     private:
-        const Resource<DeviceLimits>& m_DeviceLimits;
+        const UP<DeviceLimits>& m_DeviceLimits;
 
-        uint32 m_Stride;
-        uint32 m_AttributeCount;
+        u32 m_Stride;
+        u32 m_AttributeCount;
         std::vector<VertexAttribute> m_Attributes;
 
     };

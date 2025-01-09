@@ -6,7 +6,7 @@ namespace Syrius{
     Context::Context(const ContextDesc& desc):
     m_VerticalSync(false),
     m_Type(desc.api){
-        SR_CORE_MESSAGE("Created context with backend: %s", getAPIName(m_Type).c_str());
+        SR_LOG_INFO("Context", "Creating context with backend: %s", getAPIName(m_Type).c_str());
     }
 
     Context::~Context() = default;
@@ -33,13 +33,13 @@ namespace Syrius{
         return createResourceView(m_FrameBufferDescriptions.back());
     }
 
-    ResourceView<CubeMapLayout> Context::createCubeMapLayout(uint32 width, uint32 height, SR_TEXTURE_FORMAT format){
+    ResourceView<CubeMapLayout> Context::createCubeMapLayout(u32 width, u32 height, SR_TEXTURE_FORMAT format){
         m_CubeMapLayouts.emplace_back(new CubeMapLayout(width, height, format));
         return createResourceView(m_CubeMapLayouts.back());
     }
 
-    void Context::onResize(uint32 width, uint32 height) {
-        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+    void Context::onResize(u32 width, u32 height) {
+        SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
 
         m_FrameBuffers[0]->onResize(width, height);
     }
@@ -50,7 +50,7 @@ namespace Syrius{
     }
 
     void Context::beginRenderPass() {
-        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+        SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
 
         m_FrameBuffers[0]->bind();
         m_FrameBuffers[0]->clear();
@@ -61,25 +61,25 @@ namespace Syrius{
     }
 
     void Context::endRenderPass() {
-        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+        SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
 
         m_FrameBuffers[0]->unbind();
     }
 
     void Context::clear() {
-        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+        SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
 
         m_FrameBuffers[0]->clear();
     }
 
     void Context::setClearColor(float r, float g, float b, float a) {
-        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+        SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
 
         m_FrameBuffers[0]->getColorAttachment(0)->setClearColor(r, g, b, a);
     }
 
     float* Context::getClearColor() {
-        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+        SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
 
         return m_FrameBuffers[0]->getColorAttachment(0)->getClearColor();
     }
@@ -88,33 +88,33 @@ namespace Syrius{
         vertexArray->drawBuffers();
     }
 
-    void Context::drawInstanced(const ResourceView<VertexArray> &vertexArray, uint32 instanceCount) {
+    void Context::drawInstanced(const ResourceView<VertexArray> &vertexArray, u32 instanceCount) {
         vertexArray->drawBuffersInstanced(instanceCount);
     }
 
-    const Resource<DeviceLimits>& Context::getDeviceLimits() const {
+    const UP<DeviceLimits>& Context::getDeviceLimits() const {
         return m_DeviceLimits;
     }
 
-    uint32 Context::getWidth() const {
-        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+    u32 Context::getWidth() const {
+        SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
 
         return m_FrameBuffers[0]->getColorAttachment(0)->getWidth();
     }
 
-    uint32 Context::getHeight() const {
-        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+    u32 Context::getHeight() const {
+        SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
         return m_FrameBuffers[0]->getColorAttachment(0)->getHeight();;
     }
 
     void Context::enableDepthTest(bool enable) {
-        SR_CORE_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
+        SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
         m_FrameBuffers[0]->enableDepthTest(enable);
     }
 
     template<typename T>
-    inline void removeResource(std::vector<Resource<T>>& resources, const ResourceView<T>& resource){
-        resources.erase(std::remove_if(resources.begin(), resources.end(), [&resource](const Resource<T>& res){
+    inline void removeResource(std::vector<UP<T>>& resources, const ResourceView<T>& resource){
+        resources.erase(std::remove_if(resources.begin(), resources.end(), [&resource](const UP<T>& res){
             return res.get() == resource.get();
         }), resources.end());
     }

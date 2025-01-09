@@ -5,7 +5,7 @@
 
 #include "Win32Utils.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -28,9 +28,9 @@ namespace Syrius{
 
         void close() override;
 
-        void setPosition(int32 posX, int32 posY) override;
+        void setPosition(i32 posX, i32 posY) override;
 
-        void resize(uint32 newWidth, uint32 newHeight) override;
+        void resize(u32 newWidth, u32 newHeight) override;
 
         void requestFocus() override;
 
@@ -44,17 +44,17 @@ namespace Syrius{
 
         void setTitle(const std::string& newTitle) override;
 
-        void setIcon(const ImageFileDesc& desc, uint32 icons) override;
+        void setIcon(const ImageFileDesc& desc, u32 icons) override;
 
-        void setIcon(const Resource<Image>& image, uint32 icons) override;
+        void setIcon(const UP<Image>& image, u32 icons) override;
 
         void pollEvents() override;
 
-        void setMousePosition(int32 mousePosX, int32 mousePosY) override;
+        void setMousePosition(i32 mousePosX, i32 mousePosY) override;
 
-        int32 getMousePositionX() override;
+        i32 getMousePositionX() override;
 
-        int32 getMousePositionY() override;
+        i32 getMousePositionY() override;
 
         void hideMouse() override;
 
@@ -91,7 +91,7 @@ namespace Syrius{
         void setProcessDPIAwareness();
 
     private:
-        static uint32 m_WindowCount;
+        static u32 m_WindowCount;
 
         HWND m_Hwnd;
         LONG_PTR m_Callback;

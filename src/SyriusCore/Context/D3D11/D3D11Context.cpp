@@ -1,6 +1,6 @@
 #include "D3D11Context.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -65,7 +65,7 @@ namespace Syrius{
             defaultFbDesc->addDepthStencilAttachmentDesc(dsaDesc);
         }
 
-        m_DeviceLimits = createResource<D3D11DeviceLimits>(m_Device, m_DeviceContext, m_D3DVersion);
+        m_DeviceLimits = createUP<D3D11DeviceLimits>(m_Device, m_DeviceContext, m_D3DVersion);
 
         auto ptr = new D3D11DefaultFrameBuffer(defaultFbDesc, m_DeviceLimits, m_Device, m_DeviceContext, m_SwapChain);
         m_FrameBuffers.emplace_back(ptr);
@@ -85,11 +85,11 @@ namespace Syrius{
         SR_CORE_D3D11_CALL(m_Device->CreateRasterizerState(&rasterizerDesc, &m_RasterizerState));
         m_DeviceContext->RSSetState(m_RasterizerState);
 
-        SR_CORE_POSTCONDITION(m_Device != nullptr, "DeviceLimits is null");
-        SR_CORE_POSTCONDITION(m_DeviceContext != nullptr, "DeviceContext is null");
-        SR_CORE_POSTCONDITION(m_SwapChain != nullptr, "SwapChain is null");
-        SR_CORE_POSTCONDITION(m_DeviceLimits.get() != nullptr, "DeviceLimits is null");
-        SR_CORE_POSTCONDITION(m_FrameBuffers.size() > 0, "Default framebuffer not present");
+        SR_POSTCONDITION(m_Device != nullptr, "DeviceLimits is null");
+        SR_POSTCONDITION(m_DeviceContext != nullptr, "DeviceContext is null");
+        SR_POSTCONDITION(m_SwapChain != nullptr, "SwapChain is null");
+        SR_POSTCONDITION(m_DeviceLimits.get() != nullptr, "DeviceLimits is null");
+        SR_POSTCONDITION(m_FrameBuffers.size() > 0, "Default framebuffer not present");
     }
 
     D3D11Context::~D3D11Context() {
@@ -119,11 +119,11 @@ namespace Syrius{
     }
 
     void D3D11Context::swapBuffers() {
-        SR_CORE_PRECONDITION(m_SwapChain != nullptr, "SwapChain is nullptr");
+        SR_PRECONDITION(m_SwapChain != nullptr, "SwapChain is nullptr");
 
         SR_CORE_DXGI_GET_MESSAGES();
 
-        SR_CORE_D3D11_CHECK_DEVICE_REMOVED(m_SwapChain->Present(m_VerticalSync, 0), m_Device);
+        SR_CORE_DXGI_CHECK_DEVICE_REMOVED(m_SwapChain->Present(m_VerticalSync, 0), m_Device);
     }
 
     void D3D11Context::setVerticalSynchronisation(bool enable) {
@@ -150,7 +150,7 @@ namespace Syrius{
     }
 
     void D3D11Context::onImGuiBegin() {
-        SR_CORE_PRECONDITION(m_ImGuiContext != nullptr, "ImGui context is nullptr");
+        SR_PRECONDITION(m_ImGuiContext != nullptr, "ImGui context is nullptr");
 
         ImGui::SetCurrentContext(m_ImGuiContext);
         ImGui_ImplDX11_NewFrame();
@@ -159,7 +159,7 @@ namespace Syrius{
     }
 
     void D3D11Context::onImGuiEnd() {
-        SR_CORE_PRECONDITION(m_ImGuiContext != nullptr, "ImGui context is nullptr");
+        SR_PRECONDITION(m_ImGuiContext != nullptr, "ImGui context is nullptr");
 
         ImGui::Render();
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -219,7 +219,7 @@ namespace Syrius{
             case SR_SHADER_FRAGMENT:    ptr = new D3D11ConstantBufferPixel(desc, m_DeviceLimits, m_Device, m_DeviceContext); break;
             case SR_SHADER_GEOMETRY:    ptr = new D3D11ConstantBufferGeometry(desc, m_DeviceLimits, m_Device, m_DeviceContext); break;
             default: {
-                SR_CORE_THROW("Unsupported shader stage for constant buffer");
+                SR_LOG_THROW("D3D11Context", "Unsupported shader stage for constant buffer");
             }
         }
         m_ConstantBuffers.emplace_back(ptr);

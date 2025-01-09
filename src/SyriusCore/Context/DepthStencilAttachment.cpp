@@ -3,7 +3,7 @@
 
 namespace Syrius{
 
-    DepthStencilAttachment::DepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    DepthStencilAttachment::DepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const UP<DeviceLimits>& deviceLimits):
     m_DeviceLimits(deviceLimits),
     m_Width(desc.width),
     m_Height(desc.height),
@@ -29,11 +29,11 @@ namespace Syrius{
 
     }
 
-    uint32 DepthStencilAttachment::getWidth() const {
+    u32 DepthStencilAttachment::getWidth() const {
         return m_Width;
     }
 
-    uint32 DepthStencilAttachment::getHeight() const {
+    u32 DepthStencilAttachment::getHeight() const {
         return m_Height;
     }
 
@@ -65,11 +65,11 @@ namespace Syrius{
         return m_StencilFunc;
     }
 
-    uint32 DepthStencilAttachment::getClearStencil() const {
+    u32 DepthStencilAttachment::getClearStencil() const {
         return m_ClearStencil;
     }
 
-    uint32 DepthStencilAttachment::getStencilMask() const {
+    u32 DepthStencilAttachment::getStencilMask() const {
         return m_StencilMask;
     }
 

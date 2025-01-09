@@ -3,12 +3,10 @@
 
 namespace Syrius{
 
-    FrameBuffer::FrameBuffer(const ResourceView<FrameBufferLayout> &desc, const Resource<DeviceLimits>& deviceLimits):
+    FrameBuffer::FrameBuffer(const ResourceView<FrameBufferLayout> &desc, const UP<DeviceLimits>& deviceLimits):
     m_DeviceLimits(deviceLimits),
     m_DepthStencilAttachment(nullptr){
-        if (!desc->isValid()){
-            SR_CORE_THROW("[FrameBuffer]: Framebuffer layout (%p) is not valid", desc.get());
-        }
+        SR_LOG_THROW_IF_FALSE(desc->isValid(), "FrameBuffer", "Framebuffer layout (%p) is not valid", desc.get());
     }
 
     FrameBuffer::~FrameBuffer() {
@@ -28,7 +26,7 @@ namespace Syrius{
         m_DepthStencilAttachment->clear();
     }
 
-    void FrameBuffer::onResize(uint32 width, uint32 height) {
+    void FrameBuffer::onResize(u32 width, u32 height) {
         for (auto& viewport : m_Viewports){
             viewport->onResize(width, height);
         }
@@ -42,16 +40,16 @@ namespace Syrius{
         m_DepthStencilAttachment->enableDepthTest(enable);
     }
 
-    ResourceView<Viewport> FrameBuffer::getViewport(uint32 index) {
-        SR_CORE_PRECONDITION(m_Viewports.size() > 0, "No viewport was added to the framebuffer");
-        SR_CORE_PRECONDITION(index < m_Viewports.size(), "Index: %i is out of bounds for viewport", index);
+    ResourceView<Viewport> FrameBuffer::getViewport(u32 index) {
+        SR_PRECONDITION(m_Viewports.size() > 0, "No viewport was added to the framebuffer");
+        SR_PRECONDITION(index < m_Viewports.size(), "Index: %i is out of bounds for viewport", index);
 
         return createResourceView(m_Viewports[index]);
     }
 
-    ResourceView<ColorAttachment> FrameBuffer::getColorAttachment(uint32 index) {
-        SR_CORE_PRECONDITION(m_ColorAttachments.size() > 0, "No color attachment was added to the framebuffer");
-        SR_CORE_PRECONDITION(index < m_ColorAttachments.size(), "Index: %i is out of bounds for color attachment", index);
+    ResourceView<ColorAttachment> FrameBuffer::getColorAttachment(u32 index) {
+        SR_PRECONDITION(m_ColorAttachments.size() > 0, "No color attachment was added to the framebuffer");
+        SR_PRECONDITION(index < m_ColorAttachments.size(), "Index: %i is out of bounds for color attachment", index);
 
         return createResourceView(m_ColorAttachments[index]);
     }

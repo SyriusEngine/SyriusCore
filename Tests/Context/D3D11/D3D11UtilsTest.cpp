@@ -1,7 +1,7 @@
 #include "D3D11UtilsTest.hpp"
 #include "../../../src/SyriusCore/Context/D3D11/D3D11Utils.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 using namespace Syrius;
 

@@ -6,11 +6,6 @@
 
 namespace Syrius{
 
-    inline uint64 generateID(){
-        static uint64 id = 1;
-        return id++;
-    }
-
     GLenum getGlDrawType(SR_DRAW_MODE type);
 
     GLenum getGlDataType(SR_TYPE type);

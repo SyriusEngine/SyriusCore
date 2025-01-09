@@ -1,6 +1,6 @@
 #include "D3D11DeviceLimits.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -37,65 +37,65 @@ namespace Syrius{
         return "HLSL 5.0";
     }
 
-    uint32 D3D11DeviceLimits::getMaxFramebufferWidth() const {
+    u32 D3D11DeviceLimits::getMaxFramebufferWidth() const {
         return D3D11_REQ_RENDER_TO_BUFFER_WINDOW_WIDTH;
     }
 
-    uint32 D3D11DeviceLimits::getMaxFramebufferHeight() const {
+    u32 D3D11DeviceLimits::getMaxFramebufferHeight() const {
         return D3D11_REQ_RENDER_TO_BUFFER_WINDOW_WIDTH;
     }
 
-    uint32 D3D11DeviceLimits::getMaxFramebufferColorAttachments() const {
+    u32 D3D11DeviceLimits::getMaxFramebufferColorAttachments() const {
         return D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT;
     }
 
-    uint32 D3D11DeviceLimits::getMaxViewportWidth() const {
+    u32 D3D11DeviceLimits::getMaxViewportWidth() const {
         return D3D11_VIEWPORT_BOUNDS_MAX;
     }
 
-    uint32 D3D11DeviceLimits::getMaxViewportHeight() const {
+    u32 D3D11DeviceLimits::getMaxViewportHeight() const {
         return D3D11_VIEWPORT_BOUNDS_MAX;
     }
 
-    uint32 D3D11DeviceLimits::getMaxTextureSlots() const {
+    u32 D3D11DeviceLimits::getMaxTextureSlots() const {
         return D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT;
     }
 
-    uint32 D3D11DeviceLimits::getMaxTextureSize() const {
+    u32 D3D11DeviceLimits::getMaxTextureSize() const {
         return D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION;
     }
 
-    uint32 D3D11DeviceLimits::getMaxSSSBOSlots() const {
+    u32 D3D11DeviceLimits::getMaxSSSBOSlots() const {
         return D3D11_PS_CS_UAV_REGISTER_COUNT;
     }
 
-    uint32 D3D11DeviceLimits::getMaxConstantBufferSize() const {
+    u32 D3D11DeviceLimits::getMaxConstantBufferSize() const {
         return 65536; // https://learn.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-resources-limits
     }
 
-    uint32 D3D11DeviceLimits::getMaxConstantBufferSlots() const {
+    u32 D3D11DeviceLimits::getMaxConstantBufferSlots() const {
         return D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT;
     }
 
-    uint32 D3D11DeviceLimits::getMaxDepthBufferBits() const {
+    u32 D3D11DeviceLimits::getMaxDepthBufferBits() const {
         return 32;
     }
 
-    uint32 D3D11DeviceLimits::getMaxVertexAttributes() const {
+    u32 D3D11DeviceLimits::getMaxVertexAttributes() const {
         return 32; // https://learn.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-resources-limits
     }
 
-    uint64 D3D11DeviceLimits::getMaxVertexCount() const {
+    u64 D3D11DeviceLimits::getMaxVertexCount() const {
         auto maxVertexCount = std::pow(2, D3D11_REQ_DRAW_VERTEX_COUNT_2_TO_EXP);
-        return static_cast<uint64>(maxVertexCount);
+        return static_cast<u64>(maxVertexCount);
     }
 
-    uint64 D3D11DeviceLimits::getMaxIndexCount() const {
+    u64 D3D11DeviceLimits::getMaxIndexCount() const {
         auto maxIndexCount =  std::pow(2, D3D11_REQ_DRAWINDEXED_INDEX_COUNT_2_TO_EXP);
-        return static_cast<uint64>(maxIndexCount);
+        return static_cast<u64>(maxIndexCount);
     }
 
-    uint64 D3D11DeviceLimits::getMaxIndex() const {
+    u64 D3D11DeviceLimits::getMaxIndex() const {
         return 0;
     }
 

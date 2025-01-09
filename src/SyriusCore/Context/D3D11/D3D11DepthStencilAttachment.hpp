@@ -3,13 +3,13 @@
 #include "../../../../include/SyriusCore/Context/DepthStencilAttachment.hpp"
 #include "D3D11Utils.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
     class D3D11DepthStencilAttachment : public DepthStencilAttachment{
     public:
-        D3D11DepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+        D3D11DepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
         ~D3D11DepthStencilAttachment() override;
 
@@ -17,11 +17,11 @@ namespace Syrius{
 
         void unbind() override;
 
-        void bindShaderResource(uint32 slot) override;
+        void bindShaderResource(u32 slot) override;
 
         void clear() override;
 
-        void onResize(uint32 width, uint32 height) override;
+        void onResize(u32 width, u32 height) override;
 
         void enableDepthTest(bool enable) override;
 
@@ -29,9 +29,9 @@ namespace Syrius{
 
         void setDepthMask(SR_DEPTH_MASK mask) override;
 
-        [[nodiscard]] Resource<Image> getData() override;
+        [[nodiscard]] UP<Image> getData() override;
 
-        [[nodiscard]] uint64 getIdentifier() const override;
+        [[nodiscard]] u64 getIdentifier() const override;
 
         [[nodiscard]] ID3D11DepthStencilView* getDepthStencilView() const;
 

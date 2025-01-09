@@ -18,7 +18,7 @@ namespace Syrius{
             case SR_SHADER_COMPUTE:
                 return "Compute Shader";
             default: {
-                SR_CORE_WARNING("Unknown usage given to converter");
+                SR_LOG_WARNING("Utils", "Unknown usage given to converter");
                 return "";
             }
         }

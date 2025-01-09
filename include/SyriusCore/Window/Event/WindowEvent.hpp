@@ -16,12 +16,12 @@ namespace Syrius{
 
     class SR_CORE_API WindowMovedEvent: public WindowEvent{
     public:
-        WindowMovedEvent(int32_t posX, int32_t posY);
+        WindowMovedEvent(i32 posX, i32 posY);
     };
 
     class SR_CORE_API WindowResizedEvent: public WindowEvent{
     public:
-        WindowResizedEvent(int32_t width, int32_t height);
+        WindowResizedEvent(i32 width, i32 height);
     };
 
     class SR_CORE_API WindowOpenedEvent: public WindowEvent{

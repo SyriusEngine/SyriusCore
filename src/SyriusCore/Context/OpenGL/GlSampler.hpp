@@ -11,7 +11,7 @@ namespace Syrius{
 
         ~GlSampler() override;
 
-        void bindShaderResource(uint32 slot) override;
+        void bindShaderResource(u32 slot) override;
 
         void setFilter(SR_TEXTURE_FILTER minFilter, SR_TEXTURE_FILTER magFilter) override;
 
@@ -23,10 +23,10 @@ namespace Syrius{
 
         void setLOD(float minLOD, float maxLOD, float LODBias) override;
 
-        [[nodiscard]] uint64 getIdentifier() override;
+        [[nodiscard]] u64 getIdentifier() override;
 
     private:
-        uint32 m_SamplerID;
+        u32 m_SamplerID;
     };
 
 }

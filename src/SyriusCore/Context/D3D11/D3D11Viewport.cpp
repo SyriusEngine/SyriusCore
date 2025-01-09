@@ -1,10 +1,10 @@
 #include "D3D11Viewport.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
-    D3D11Viewport::D3D11Viewport(const ViewportDesc &desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext) :
+    D3D11Viewport::D3D11Viewport(const ViewportDesc &desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device *device, ID3D11DeviceContext *deviceContext) :
     Viewport(desc, deviceLimits),
     m_Device(device),
     m_DeviceContext(deviceContext) {

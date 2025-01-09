@@ -3,13 +3,13 @@
 #include "../../../../include/SyriusCore/Context/Viewport.hpp"
 #include "D3D11Utils.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
     class D3D11Viewport : public Viewport{
     public:
-        D3D11Viewport(const ViewportDesc& desc, const Resource<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+        D3D11Viewport(const ViewportDesc& desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
         ~D3D11Viewport() override;
 

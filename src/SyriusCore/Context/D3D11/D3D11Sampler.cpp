@@ -1,6 +1,6 @@
 #include "D3D11Sampler.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -18,7 +18,7 @@ namespace Syrius{
         }
     }
 
-    void D3D11Sampler::bindShaderResource(uint32 slot) {
+    void D3D11Sampler::bindShaderResource(u32 slot) {
         m_Context->PSSetSamplers(slot, 1, &m_Sampler);
     }
 
@@ -55,8 +55,8 @@ namespace Syrius{
         createResources();
     }
 
-    uint64 D3D11Sampler::getIdentifier() {
-        return reinterpret_cast<uint64>(m_Sampler);
+    u64 D3D11Sampler::getIdentifier() {
+        return reinterpret_cast<u64>(m_Sampler);
     }
 
     void D3D11Sampler::createResources() {

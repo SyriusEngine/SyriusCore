@@ -1,88 +1,91 @@
-#include "DebugMessageHandler.hpp"
+#include "CoreLogger.hpp"
 
 namespace Syrius{
-
-    void defaultMessageHandler(const Message& msg){
-        std::string message = "[Syrius: " + msg.function + "]: severity = " + getMessageSeverityString(msg.severity) + ", usage = " +
-                              getMessageTypeString(msg.messageType) + "\n";
-        message += "File = " + msg.file + ", line = " + std::to_string(msg.line) + "\n";
-        message += "Message = " + msg.message + "\n";
-        std::cerr << message;
-        std::cerr << "\n\n--------------------------------------------------------------------------------\n";
-    }
-
-    handleDebugMessageFunc DebugMessageHandler::m_MessageHandler = defaultMessageHandler;
+    
 #if defined(SR_COMPILER_MSVC)
     uint64 DebugMessageHandler::m_DxgiMessageIndex = 0;
     IDXGIInfoQueue* DebugMessageHandler::m_DxgiInfoQueue = nullptr;
 #endif
 
-    void DebugMessageHandler::setDebugMessageHandler(handleDebugMessageFunc newHandler) {
-        m_MessageHandler = newHandler;
-    }
-
-    void DebugMessageHandler::pushOpenGLMessageCallback(GLenum source, uint32 type, uint32 id, uint32 severity, int32 length, const char* message, const void* userParam) {
-        std::string msg = "usage = ";
+    void CoreLogger::openGLMessageCallback(GLenum source, u32 type, u32 id, u32 severity, i32 length, const char* message, const void* userParam) {
+        Message msg;
+        msg.message = "usage = ";
         switch (type) {
-            case GL_DEBUG_TYPE_ERROR:               msg += "Error"; break;
-            case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: msg += "Deprecated Behaviour"; break;
-            case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  msg += "Undefined Behaviour"; break;
-            case GL_DEBUG_TYPE_PORTABILITY:         msg += "Portability"; break;
-            case GL_DEBUG_TYPE_PERFORMANCE:         msg += "Performance"; break;
-            case GL_DEBUG_TYPE_MARKER:              msg += "Marker"; break;
-            case GL_DEBUG_TYPE_PUSH_GROUP:          msg += "Push Group"; break;
-            case GL_DEBUG_TYPE_POP_GROUP:           msg += "Pop Group"; break;
-            case GL_DEBUG_TYPE_OTHER:               msg += "Other"; break;
-            default:                                msg += "UNKNOWN TYPE"; break;
+            case GL_DEBUG_TYPE_ERROR:               msg.message += "Error"; break;
+            case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: msg.message += "Deprecated Behaviour"; break;
+            case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  msg.message += "Undefined Behaviour"; break;
+            case GL_DEBUG_TYPE_PORTABILITY:         msg.message += "Portability"; break;
+            case GL_DEBUG_TYPE_PERFORMANCE:         msg.message += "Performance"; break;
+            case GL_DEBUG_TYPE_MARKER:              msg.message += "Marker"; break;
+            case GL_DEBUG_TYPE_PUSH_GROUP:          msg.message += "Push Group"; break;
+            case GL_DEBUG_TYPE_POP_GROUP:           msg.message += "Pop Group"; break;
+            case GL_DEBUG_TYPE_OTHER:               msg.message += "Other"; break;
+            default:                                msg.message += "UNKNOWN TYPE"; break;
         }
-        msg += " (" + std::to_string(type) + ")\nsource = ";
+        msg.message += " (" + std::to_string(type) + ")\nsource = ";
         switch (source) {
-            case GL_DEBUG_SOURCE_API:               msg += "API"; break;
-            case GL_DEBUG_SOURCE_WINDOW_SYSTEM:     msg += "Window System"; break;
-            case GL_DEBUG_SOURCE_SHADER_COMPILER:   msg += "Shader Compiler"; break;
-            case GL_DEBUG_SOURCE_THIRD_PARTY:       msg += "Third Party"; break;
-            case GL_DEBUG_SOURCE_APPLICATION:       msg += "Application"; break;
-            case GL_DEBUG_SOURCE_OTHER:             msg += "Other"; break;
-            default:                                msg += "UNKNOWN SOURCE"; break;
+            case GL_DEBUG_SOURCE_API:               msg.message += "API"; break;
+            case GL_DEBUG_SOURCE_WINDOW_SYSTEM:     msg.message += "Window System"; break;
+            case GL_DEBUG_SOURCE_SHADER_COMPILER:   msg.message += "Shader Compiler"; break;
+            case GL_DEBUG_SOURCE_THIRD_PARTY:       msg.message += "Third Party"; break;
+            case GL_DEBUG_SOURCE_APPLICATION:       msg.message += "Application"; break;
+            case GL_DEBUG_SOURCE_OTHER:             msg.message += "Other"; break;
+            default:                                msg.message += "UNKNOWN SOURCE"; break;
         }
-        msg += " (" + std::to_string(source) + ")\n";
-        msg += "Message length = " + std::to_string(length) + "\n";
-        msg += "ID = " + std::to_string(id) + "\n";
-        std::string sep = message;
-        msg += "Message = " + sep + "\n";
-        SR_CORE_MESSAGE_SEVERITY sev;
+        msg.message += " (" + std::to_string(source) + ")\n";
+        msg.message += "Message length = " + std::to_string(length) + "\n";
+        msg.message += "ID = " + std::to_string(id) + "\n";
+        msg.message += "Message = " + std::string(message) + "\n";
+        msg.source = "OpenGLCallback";
         switch (severity) {
-            case GL_DEBUG_SEVERITY_LOW:             sev = SR_CORE_MESSAGE_SEVERITY_LOW; break;
-            case GL_DEBUG_SEVERITY_MEDIUM:          sev = SR_CORE_MESSAGE_SEVERITY_MEDIUM; break;
-            case GL_DEBUG_SEVERITY_HIGH:            sev = SR_CORE_MESSAGE_SEVERITY_HIGH; break;
-            case GL_DEBUG_SEVERITY_NOTIFICATION:    sev = SR_CORE_MESSAGE_SEVERITY_INFO; break;
-            default:                                sev = SR_CORE_MESSAGE_SEVERITY_INFO; break;
+            case GL_DEBUG_SEVERITY_LOW:             msg.severity = SR_MESSAGE_SEVERITY_LOW; break;
+            case GL_DEBUG_SEVERITY_MEDIUM:          msg.severity = SR_MESSAGE_SEVERITY_MEDIUM; break;
+            case GL_DEBUG_SEVERITY_HIGH:            msg.severity = SR_MESSAGE_SEVERITY_HIGH; break;
+            case GL_DEBUG_SEVERITY_NOTIFICATION:    msg.severity = SR_MESSAGE_SEVERITY_INFO; break;
+            default:                                msg.severity = SR_MESSAGE_SEVERITY_INFO; break;
         }
 
-        pushMessage(sev, SR_CORE_MESSAGE_OPENGL, "OpenGLCallback", "", 0, msg);
+        Logger::logMessage(msg);
     }
 
-    void DebugMessageHandler::pushOpenGlError(GLenum error, const std::string &function, const std::string &file,
-                                              uint32 line) {
-        std::string msg = "OpenGL encountered a state error = ";
+    void CoreLogger::openGLError(GLenum error, const std::string &function, const std::string &file, u32 line) {
+        Message msg;
+        msg.message = "OpenGL encountered a state error = ";
         switch (error) {
-            case GL_INVALID_ENUM:                   msg += "INVALID_ENUM"; break;
-            case GL_INVALID_VALUE:                  msg += "INVALID_VALUE"; break;
-            case GL_INVALID_OPERATION:              msg += "INVALID_OPERATION"; break;
-            case GL_STACK_OVERFLOW:                 msg += "STACK_OVERFLOW"; break;
-            case GL_STACK_UNDERFLOW:                msg += "STACK_UNDERFLOW"; break;
-            case GL_OUT_OF_MEMORY:                  msg += "OUT_OF_MEMORY"; break;
-            case GL_INVALID_FRAMEBUFFER_OPERATION:  msg += "INVALID_FRAMEBUFFER_OPERATION"; break;
-            case GL_CONTEXT_LOST:                   msg += "CONTEXT_LOST"; break;
-            case GL_TABLE_TOO_LARGE:                msg += "TABLE_TOO_LARGE"; break;
-            default:                                msg += "UNKNOWN ERROR"; break;
+            case GL_INVALID_ENUM:                   msg.message += "INVALID_ENUM"; break;
+            case GL_INVALID_VALUE:                  msg.message += "INVALID_VALUE"; break;
+            case GL_INVALID_OPERATION:              msg.message += "INVALID_OPERATION"; break;
+            case GL_STACK_OVERFLOW:                 msg.message += "STACK_OVERFLOW"; break;
+            case GL_STACK_UNDERFLOW:                msg.message += "STACK_UNDERFLOW"; break;
+            case GL_OUT_OF_MEMORY:                  msg.message += "OUT_OF_MEMORY"; break;
+            case GL_INVALID_FRAMEBUFFER_OPERATION:  msg.message += "INVALID_FRAMEBUFFER_OPERATION"; break;
+            case GL_CONTEXT_LOST:                   msg.message += "CONTEXT_LOST"; break;
+            case GL_TABLE_TOO_LARGE:                msg.message += "TABLE_TOO_LARGE"; break;
+            default:                                msg.message += "UNKNOWN ERROR"; break;
         }
-        msg += " (" + std::to_string(error) + ")";
-        pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE_OPENGL, function, file, line, msg);
+        msg.message += " (" + std::to_string(error) + ")";
+        msg.source = "OpenGL";
+        msg.severity = SR_MESSAGE_SEVERITY_HIGH;
+        msg.function = function;
+        msg.file = file;
+        msg.line = line;
+        Logger::logMessage(msg);
     }
 
-#if defined(SR_CORE_PLATFORM_WIN64)
-    void DebugMessageHandler::formatHresultMessage(HRESULT hr, const std::string& function, const std::string& file, uint32 line){
+    void CoreLogger::openGLClearError(const std::string& function, const std::string& file, u32 line) {
+        GLenum error;
+        while ((error = glGetError()) != GL_NO_ERROR) {
+            openGLError(error, function, file, line);
+        }
+    }
+
+    void CoreLogger::openGLClearErrorNoLog() {
+        GLenum error;
+        while ((error = glGetError()) != GL_NO_ERROR) {}
+    }
+
+#if defined(SR_PLATFORM_WIN64)
+    void CoreLogger::formatHresultMessage(HRESULT hr, const std::string& function, const std::string& file, u32 line){
         LPTSTR errorText = nullptr;
         FormatMessage(
                 FORMAT_MESSAGE_FROM_SYSTEM
@@ -96,18 +99,21 @@ namespace Syrius{
                 NULL);
 
         if (nullptr != errorText) {
-            std::string msg = "Code = " + std::to_string(hr) + ", message = " + std::string(errorText);
+            Message msg;
+            msg.message = "Code = " + std::to_string(hr) + ", message = " + std::string(errorText);
 
             LocalFree(errorText);
             errorText = nullptr;
-
-            pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE_HRESULT, function, file, line, msg);
+            msg.severity = SR_MESSAGE_SEVERITY_UNKNOWN;
+            msg.source = "HRESULT";
+            msg.function = function;
+            msg.file = file;
+            msg.line = line;
+            Logger::logMessage(msg);
         }
     }
 
-    void
-    DebugMessageHandler::d3d11DeviceRemovedHandler(HRESULT hr, const std::string &function, const std::string &file,
-                                                   uint32 line) {
+    void CoreLogger::dxgiLogDeviceRemoved(HRESULT hr, const std::string &function, const std::string &file, u32 line) {
         LPTSTR errorText = nullptr;
         FormatMessage(
                 FORMAT_MESSAGE_FROM_SYSTEM
@@ -121,15 +127,19 @@ namespace Syrius{
                 NULL);
 
         if (nullptr != errorText) {
-            std::string msg = "The application has thrown a DXGI_DEVICE_REMOVED exception. This indicates a driver crash"
-                              "(or the graphics device is pulled away from the system). Detailed info: "
+            Message msg;
+            msg.message = "The application has thrown a DXGI_DEVICE_REMOVED exception. This indicates a driver crash"
+                              "(or less likely that the graphics device is pulled away from the system). Detailed info: "
                               "Code = " + std::to_string(hr) + " msg = " + std::string(errorText);
 
             LocalFree(errorText);
             errorText = nullptr;
-
-            pushMessage(SR_CORE_MESSAGE_SEVERITY_HIGH, SR_CORE_MESSAGE_HRESULT, function, file, line, msg);
-
+            msg.source = "DXGI";
+            msg.severity = SR_MESSAGE_SEVERITY_FATAL; //DXGI_ERROR_DEVICE_REMOVED is always fatal
+            msg.function = function;
+            msg.file = file;
+            msg.line = line;
+            Logger::logMessage(msg);
         }
     }
 

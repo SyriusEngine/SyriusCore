@@ -9,8 +9,8 @@ void FrameBufferTest::TearDown() {
     Test::TearDown();
 }
 
-constexpr uint32 s_Width = 50;
-constexpr uint32 s_Height = 50;
+constexpr u32 s_Width = 50;
+constexpr u32 s_Height = 50;
 
 ResourceView<FrameBuffer> FrameBufferTest::createFrameBuffer1CA() {
     auto fbLayout = TestEnvironment::m_Context->createFrameBufferLayout();
@@ -192,7 +192,7 @@ TEST_F(FrameBufferTest, ClearFrameBuffer2ColorAttachments){
     EXPECT_EQ(img2->getFormat(), SR_TEXTURE_RGBA_UI8);
 
     EXPECT_TRUE(isPixelCorrect<float>(img1, 1.0f, 0.0f, 0.0f, 1.0f));
-    EXPECT_TRUE(isPixelCorrect<uint8>(img2, 0, 255, 0, 255));
+    EXPECT_TRUE(isPixelCorrect<u8>(img2, 0, 255, 0, 255));
 }
 
 TEST_F(FrameBufferTest, GetColorAttachmentOutOfBounds){
@@ -232,5 +232,5 @@ TEST_F(FrameBufferTest, DrawFrameBuffer2CA){
 
     auto ca2 = fb->getColorAttachment(1);
     auto img2 = ca2->getData();
-    EXPECT_TRUE(isPixelCorrect<uint8>(img2, 0, 255, 0, 255));
+    EXPECT_TRUE(isPixelCorrect<u8>(img2, 0, 255, 0, 255));
 }

@@ -8,7 +8,7 @@ namespace Syrius{
 
     class SR_CORE_API FrameBufferLayout{
     public:
-        explicit FrameBufferLayout(const Resource<DeviceLimits>& deviceLimits);
+        explicit FrameBufferLayout(const UP<DeviceLimits>& deviceLimits);
 
         ~FrameBufferLayout();
 
@@ -27,7 +27,7 @@ namespace Syrius{
         [[nodiscard]] const std::vector<DepthStencilAttachmentDesc>& getDepthStencilAttachmentDesc() const;
 
     private:
-        const Resource<DeviceLimits>& m_DeviceLimits;
+        const UP<DeviceLimits>& m_DeviceLimits;
 
         std::vector<ViewportDesc> m_ViewportDesc;
         std::vector<ColorAttachmentDesc> m_ColorAttachmentDesc;

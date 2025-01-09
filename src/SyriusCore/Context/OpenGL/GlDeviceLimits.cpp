@@ -18,67 +18,67 @@ namespace Syrius{
         return getGlConstantStr(GL_SHADING_LANGUAGE_VERSION);
     }
 
-    uint32 GlDeviceLimits::getMaxFramebufferWidth() const {
+    u32 GlDeviceLimits::getMaxFramebufferWidth() const {
         return getGlConstantInt(GL_MAX_FRAMEBUFFER_WIDTH);
     }
 
-    uint32 GlDeviceLimits::getMaxFramebufferHeight() const {
+    u32 GlDeviceLimits::getMaxFramebufferHeight() const {
         return getGlConstantInt(GL_MAX_FRAMEBUFFER_HEIGHT);
     }
 
-    uint32 GlDeviceLimits::getMaxFramebufferColorAttachments() const {
+    u32 GlDeviceLimits::getMaxFramebufferColorAttachments() const {
         return getGlConstantInt(GL_MAX_COLOR_ATTACHMENTS);
     }
 
-    uint32 GlDeviceLimits::getMaxViewportWidth() const {
-        int32 retVal[2];
+    u32 GlDeviceLimits::getMaxViewportWidth() const {
+        i32 retVal[2];
         glGetIntegerv(GL_MAX_VIEWPORT_DIMS, retVal);
         return retVal[0];
     }
 
-    uint32 GlDeviceLimits::getMaxViewportHeight() const {
-        int32 retVal[2];
+    u32 GlDeviceLimits::getMaxViewportHeight() const {
+        i32 retVal[2];
         glGetIntegerv(GL_MAX_VIEWPORT_DIMS, retVal);
         return retVal[1];
     }
 
-    uint32 GlDeviceLimits::getMaxTextureSlots() const {
+    u32 GlDeviceLimits::getMaxTextureSlots() const {
         return getGlConstantInt(GL_MAX_TEXTURE_IMAGE_UNITS);
     }
 
-    uint32 GlDeviceLimits::getMaxTextureSize() const {
+    u32 GlDeviceLimits::getMaxTextureSize() const {
         return getGlConstantInt(GL_MAX_TEXTURE_SIZE);
     }
 
-    uint32 GlDeviceLimits::getMaxSSSBOSlots() const {
+    u32 GlDeviceLimits::getMaxSSSBOSlots() const {
         return getGlConstantInt(GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS);
     }
 
-    uint32 GlDeviceLimits::getMaxConstantBufferSize() const {
+    u32 GlDeviceLimits::getMaxConstantBufferSize() const {
         return getGlConstantInt(GL_MAX_UNIFORM_BLOCK_SIZE);
     }
 
-    uint32 GlDeviceLimits::getMaxConstantBufferSlots() const {
+    u32 GlDeviceLimits::getMaxConstantBufferSlots() const {
         return getGlConstantInt(GL_MAX_UNIFORM_BUFFER_BINDINGS);
     }
 
-    uint32 GlDeviceLimits::getMaxDepthBufferBits() const {
+    u32 GlDeviceLimits::getMaxDepthBufferBits() const {
         return getGlConstantInt(GL_DEPTH_BITS);
     }
 
-    uint32 GlDeviceLimits::getMaxVertexAttributes() const {
+    u32 GlDeviceLimits::getMaxVertexAttributes() const {
         return getGlConstantInt(GL_MAX_VERTEX_ATTRIBS);
     }
 
-    uint64 GlDeviceLimits::getMaxVertexCount() const {
+    u64 GlDeviceLimits::getMaxVertexCount() const {
         return getGlConstantInt(GL_MAX_ELEMENTS_VERTICES);
     }
 
-    uint64 GlDeviceLimits::getMaxIndexCount() const {
+    u64 GlDeviceLimits::getMaxIndexCount() const {
         return getGlConstantInt(GL_MAX_ELEMENTS_INDICES);
     }
 
-    uint64 GlDeviceLimits::getMaxIndex() const {
+    u64 GlDeviceLimits::getMaxIndex() const {
         return getGlConstantInt(GL_MAX_ELEMENT_INDEX);
     }
 
@@ -93,8 +93,8 @@ namespace Syrius{
         return retVal;
     }
 
-    uint32 GlDeviceLimits::getGlConstantInt(GLenum constant) {
-        int32 retVal = 0;
+    u32 GlDeviceLimits::getGlConstantInt(GLenum constant) {
+        i32 retVal = 0;
         glGetIntegerv(constant, &retVal);
         return retVal;
     }

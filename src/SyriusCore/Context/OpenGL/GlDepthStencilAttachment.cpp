@@ -10,13 +10,13 @@ namespace Syrius{
             case SR_TEXTURE_DEPTH_24_STENCIL_8: return GL_DEPTH24_STENCIL8;
             case SR_TEXTURE_DEPTH_32_STENCIL_8: return GL_DEPTH32F_STENCIL8;
             default: {
-                SR_CORE_WARNING("Invalid depth stencil format (%i), defaulting to depth 24 stencil 8", format);
+                SR_LOG_WARNING("GlDepthStencilAttachment", "Invalid depth stencil format (%i), defaulting to depth 24 stencil 8", format);
                 return GL_DEPTH24_STENCIL8;
             }
         }
     }
 
-    GlDepthStencilAttachment::GlDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID):
+    GlDepthStencilAttachment::GlDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const UP<DeviceLimits>& deviceLimits, u32 framebufferID):
     DepthStencilAttachment(desc, deviceLimits),
     m_GlDepthFunc(getGlComparisonFunc(desc.depthFunc)),
     m_GlStencilFunc(getGlComparisonFunc(desc.stencilFunc)),
@@ -68,11 +68,11 @@ namespace Syrius{
         }
     }
 
-    Resource<Image> GlDepthStencilAttachment::getData() {
-        return Resource<Image>();
+    UP<Image> GlDepthStencilAttachment::getData() {
+        return UP<Image>();
     }
 
-    uint64 GlDepthStencilAttachment::getIdentifier() const {
+    u64 GlDepthStencilAttachment::getIdentifier() const {
         return m_BufferID;
     }
 
@@ -89,7 +89,7 @@ namespace Syrius{
         m_DepthMask = mask;
     }
 
-    GlDepthStencilAttachmentRenderBuffer::GlDepthStencilAttachmentRenderBuffer(const DepthStencilAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID):
+    GlDepthStencilAttachmentRenderBuffer::GlDepthStencilAttachmentRenderBuffer(const DepthStencilAttachmentDesc &desc, const UP<DeviceLimits>& deviceLimits, u32 framebufferID):
     GlDepthStencilAttachment(desc, deviceLimits, framebufferID) {
         m_GlInternalFormat = getGlRenderBufferFormat(desc.format);
         glCreateRenderbuffers(1, &m_BufferID);
@@ -113,20 +113,20 @@ namespace Syrius{
         GlDepthStencilAttachment::unbind();
     }
 
-    void GlDepthStencilAttachmentRenderBuffer::bindShaderResource(uint32 slot) {
-        SR_CORE_PRECONDITION(m_EnableShaderAccess, "[GlDepthStencilAttachment]: This attachment was created with shader "
+    void GlDepthStencilAttachmentRenderBuffer::bindShaderResource(u32 slot) {
+        SR_PRECONDITION(m_EnableShaderAccess, "[GlDepthStencilAttachment]: This attachment was created with shader "
                                                    "access disabled (enableShaderAccess = %i). The implementation picked"
                                                    "a renderbuffer object which is faster when direct access (through shaders)"
                                                    " is not needed.", m_EnableShaderAccess);
     }
 
-    void GlDepthStencilAttachmentRenderBuffer::onResize(uint32 width, uint32 height) {
+    void GlDepthStencilAttachmentRenderBuffer::onResize(u32 width, u32 height) {
         m_Width = width;
         m_Height = height;
         glNamedRenderbufferStorage(m_BufferID, m_GlInternalFormat, m_Width, m_Height);
     }
 
-    GlDepthStencilAttachmentTexture::GlDepthStencilAttachmentTexture(const DepthStencilAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits, uint32 framebufferID) :
+    GlDepthStencilAttachmentTexture::GlDepthStencilAttachmentTexture(const DepthStencilAttachmentDesc &desc, const UP<DeviceLimits>& deviceLimits, u32 framebufferID) :
     GlDepthStencilAttachment(desc, deviceLimits, framebufferID) {
         m_GlInternalFormat = getGlRenderBufferFormat(desc.format);
 
@@ -149,42 +149,42 @@ namespace Syrius{
         GlDepthStencilAttachment::unbind();
     }
 
-    void GlDepthStencilAttachmentTexture::bindShaderResource(uint32 slot) {
-        SR_CORE_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[GlDepthStencilAttachment]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
+    void GlDepthStencilAttachmentTexture::bindShaderResource(u32 slot) {
+        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[GlDepthStencilAttachment]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
 
         glBindTextureUnit(slot, m_BufferID);
     }
 
-    void GlDepthStencilAttachmentTexture::onResize(uint32 width, uint32 height) {
+    void GlDepthStencilAttachmentTexture::onResize(u32 width, u32 height) {
         m_Width = width;
         m_Height = height;
         glTextureStorage2D(m_BufferID, 1, m_GlInternalFormat, m_Width, m_Height);
     }
 
-    GlDefaultDepthStencilAttachment::GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const Resource<DeviceLimits>& deviceLimits):
+    GlDefaultDepthStencilAttachment::GlDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const UP<DeviceLimits>& deviceLimits):
     GlDepthStencilAttachment(desc, deviceLimits, 0){
 
     }
 
     GlDefaultDepthStencilAttachment::~GlDefaultDepthStencilAttachment() = default;
 
-    void GlDefaultDepthStencilAttachment::bindShaderResource(uint32 slot) {
-        SR_CORE_WARNING("[GlDefaultDepthStencilAttachment]: Attempted to bind default depth stencil attachment (%p) as shader resource at slot %i, this is not supported", this, slot)
+    void GlDefaultDepthStencilAttachment::bindShaderResource(u32 slot) {
+        SR_LOG_WARNING("GlDefaultDepthStencilAttachment", "Attempted to bind default depth stencil attachment (%p) as shader resource at slot %i, this is not supported", this, slot)
     }
 
-    void GlDefaultDepthStencilAttachment::onResize(uint32 width, uint32 height) {
+    void GlDefaultDepthStencilAttachment::onResize(u32 width, u32 height) {
         m_Width = width;
         m_Height = height;
 
         // this is handled by the swapchain
     }
 
-    Resource<Image> GlDefaultDepthStencilAttachment::getData() {
-        SR_CORE_WARNING("[GlDefaultDepthStencilAttachment]: Attempted to get data from default depth stencil attachment (%p), this is not supported", this)
+    UP<Image> GlDefaultDepthStencilAttachment::getData() {
+        SR_LOG_WARNING("GlDefaultDepthStencilAttachment", "Attempted to get data from default depth stencil attachment (%p), this is not supported", this)
         return nullptr;
     }
 
-    uint64 GlDefaultDepthStencilAttachment::getIdentifier() const {
+    u64 GlDefaultDepthStencilAttachment::getIdentifier() const {
         return 0;
     }
 

@@ -5,7 +5,7 @@
 #include "../../../include/SyriusCore/Window/SyriusWindow.hpp"
 #include "../../../include/SyriusCore/Window/Event/KeyboardEvent.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 #include "../../../include/SyriusCore/Dependencies/imgui/imgui.h"
 
@@ -16,9 +16,9 @@ namespace Syrius{
 
     SR_KEYBOARD_KEY convertVirtualKey(WPARAM key, LPARAM flags);
 
-    DWORD decodeWindowStyle(uint32_t srWinStyle);
+    DWORD decodeWindowStyle(u32 srWinStyle);
 
-    DWORD decodeExtendedWindowStyle(uint32_t srWinStyle);
+    DWORD decodeExtendedWindowStyle(u32 srWinStyle);
 
     std::string wideToNormalString(const wchar_t* source);
 

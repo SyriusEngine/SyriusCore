@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Utils/SyriusCoreInclude.hpp"
-#include "../Utils/Resource.hpp"
 #include "DeviceLimits.hpp"
 #include "ShaderModule.hpp"
 #include "Shader.hpp"
@@ -25,22 +24,22 @@ namespace Syrius{
     class SyriusWindow;
 
     struct SR_CORE_API ContextDesc{
-        uint8 depthBits        = 24;
-        uint8 stencilBits      = 8;
-        uint8 redBits          = 8;
-        uint8 blueBits         = 8;
-        uint8 greenBits        = 8;
-        uint8 alphaBits        = 8;
-        uint32 backBufferWidth = 0; // if 0, will be set to window width
-        uint32 backBufferHeight= 0; // if 0, will be set to window height
+        u8 depthBits        = 24;
+        u8 stencilBits      = 8;
+        u8 redBits          = 8;
+        u8 blueBits         = 8;
+        u8 greenBits        = 8;
+        u8 alphaBits        = 8;
+        u32 backBufferWidth = 0; // if 0, will be set to window width
+        u32 backBufferHeight= 0; // if 0, will be set to window height
         bool enableDepthTest   = false;
         bool enableStencilTest = false;
         SR_SUPPORTED_API api   = SR_API_OPENGL;
     };
 
     struct SR_CORE_API FramebufferSize{
-        uint32 m_Width  = 0;
-        uint32 m_Height = 0;
+        u32 m_Width  = 0;
+        u32 m_Height = 0;
     };
 
     class SR_CORE_API Context{
@@ -190,7 +189,7 @@ namespace Syrius{
          * @param format the format of the cubemap
          * @return a resource view to the created CubeMapLayout object
          */
-        ResourceView<CubeMapLayout> createCubeMapLayout(uint32 width, uint32 height, SR_TEXTURE_FORMAT format);
+        ResourceView<CubeMapLayout> createCubeMapLayout(u32 width, u32 height, SR_TEXTURE_FORMAT format);
 
         /**
          * @brief: Creates a new CubeMap object. A CubeMap is a collection of 6 textures that are used to create a cube,
@@ -200,7 +199,7 @@ namespace Syrius{
          */
         virtual ResourceView<CubeMap> createCubeMap(const ResourceView<CubeMapLayout>& desc) = 0;
 
-        void onResize(uint32 width, uint32 height);
+        void onResize(u32 width, u32 height);
 
         virtual void beginRenderPass(const ResourceView<FrameBuffer>& frameBuffer);
 
@@ -246,7 +245,7 @@ namespace Syrius{
          * @param vertexArray
          * @param instanceCount - the number of instances to draw.
          */
-        void drawInstanced(const ResourceView<VertexArray>& vertexArray, uint32 instanceCount);
+        void drawInstanced(const ResourceView<VertexArray>& vertexArray, u32 instanceCount);
 
         /**
          * @brief: Enables or disables depth testing for the default framebuffer. When enabled, the depth buffer will be
@@ -260,11 +259,11 @@ namespace Syrius{
          *       context is running on. This information can be used to determine the maximum number of textures that
          *       can be bound to a shader, the maximum number of vertex attributes that can be used, etc.
          */
-        [[nodiscard]] const Resource<DeviceLimits>& getDeviceLimits() const;
+        [[nodiscard]] const UP<DeviceLimits>& getDeviceLimits() const;
 
-        [[nodiscard]] uint32 getWidth() const;
+        [[nodiscard]] u32 getWidth() const;
 
-        [[nodiscard]] uint32 getHeight() const;
+        [[nodiscard]] u32 getHeight() const;
 
         void destroyShaderModule(const ResourceView<ShaderModule>& shaderModule);
 
@@ -312,7 +311,7 @@ namespace Syrius{
 
         bool m_VerticalSync;
 
-        Resource<DeviceLimits> m_DeviceLimits;
+        UP<DeviceLimits> m_DeviceLimits;
 
         /*
          * The Context class is responsible for managing the lifetime of the created resources. This is because a lot
@@ -322,19 +321,19 @@ namespace Syrius{
          * be left with dangling pointers to the API specific objects and will cause a crash when trying to use them.
          * Therefore, the context is responsible for destroying all the resources that were created using it.
          */
-        std::vector<Resource<ShaderModule>> m_ShaderModules;
-        std::vector<Resource<Shader>> m_Shaders;
-        std::vector<Resource<VertexLayout>> m_VertexDescriptions;
-        std::vector<Resource<VertexBuffer>> m_VertexBuffers;
-        std::vector<Resource<IndexBuffer>> m_IndexBuffers;
-        std::vector<Resource<VertexArray>> m_VertexArrays;
-        std::vector<Resource<ConstantBuffer>> m_ConstantBuffers;
-        std::vector<Resource<Texture2D>> m_Textures2D;
-        std::vector<Resource<Sampler>> m_Samplers;
-        std::vector<Resource<FrameBufferLayout>> m_FrameBufferDescriptions;
-        std::vector<Resource<FrameBuffer>> m_FrameBuffers; // framebuffer at location 0 is the default framebuffer
-        std::vector<Resource<CubeMapLayout>> m_CubeMapLayouts;
-        std::vector<Resource<CubeMap>> m_CubeMaps;
+        std::vector<UP<ShaderModule>> m_ShaderModules;
+        std::vector<UP<Shader>> m_Shaders;
+        std::vector<UP<VertexLayout>> m_VertexDescriptions;
+        std::vector<UP<VertexBuffer>> m_VertexBuffers;
+        std::vector<UP<IndexBuffer>> m_IndexBuffers;
+        std::vector<UP<VertexArray>> m_VertexArrays;
+        std::vector<UP<ConstantBuffer>> m_ConstantBuffers;
+        std::vector<UP<Texture2D>> m_Textures2D;
+        std::vector<UP<Sampler>> m_Samplers;
+        std::vector<UP<FrameBufferLayout>> m_FrameBufferDescriptions;
+        std::vector<UP<FrameBuffer>> m_FrameBuffers; // framebuffer at location 0 is the default framebuffer
+        std::vector<UP<CubeMapLayout>> m_CubeMapLayouts;
+        std::vector<UP<CubeMap>> m_CubeMaps;
 
 
     private:

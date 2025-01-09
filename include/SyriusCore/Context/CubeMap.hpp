@@ -11,33 +11,33 @@ namespace Syrius{
     public:
         CubeMap() = delete;
 
-        CubeMap(const ResourceView<CubeMapLayout>& desc, const Resource<DeviceLimits>& deviceLimits);
+        CubeMap(const ResourceView<CubeMapLayout>& desc, const UP<DeviceLimits>& deviceLimits);
 
         virtual ~CubeMap();
 
         virtual void bind() = 0;
 
-        virtual void bindShaderResource(uint32 slot) = 0;
+        virtual void bindShaderResource(u32 slot) = 0;
 
         virtual void copyFrom(const ResourceView<Texture2D>& other, SR_CUBEMAP_FACE destinationFace) = 0;
 
         virtual void copyFrom(const ResourceView<ColorAttachment>& other, SR_CUBEMAP_FACE destinationFace) = 0;
 
-        virtual Resource<Image> getData(SR_CUBEMAP_FACE destinationFace) = 0;
+        virtual UP<Image> getData(SR_CUBEMAP_FACE destinationFace) = 0;
 
-        [[nodiscard]] virtual uint64 getIdentifier() const = 0;
+        [[nodiscard]] virtual u64 getIdentifier() const = 0;
 
-        [[nodiscard]] uint32 getWidth() const;
+        [[nodiscard]] u32 getWidth() const;
 
-        [[nodiscard]] uint32 getHeight() const;
+        [[nodiscard]] u32 getHeight() const;
 
         [[nodiscard]] SR_TEXTURE_FORMAT getFormat() const;
 
     protected:
-        const Resource<DeviceLimits>& m_DeviceLimits;
+        const UP<DeviceLimits>& m_DeviceLimits;
 
-        const uint32 m_Width;
-        const uint32 m_Height;
+        const u32 m_Width;
+        const u32 m_Height;
         const SR_TEXTURE_FORMAT m_Format;
 
 

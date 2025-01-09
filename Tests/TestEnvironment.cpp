@@ -1,6 +1,6 @@
 #include "TestEnvironment.hpp"
 
-Resource<SyriusWindow> TestEnvironment::m_Window;
+UP<SyriusWindow> TestEnvironment::m_Window;
 ResourceView<Context> TestEnvironment::m_Context;
 SR_SUPPORTED_API TestEnvironment::m_API = SR_API_NONE;
 bool TestEnvironment::m_ExportImages = false;

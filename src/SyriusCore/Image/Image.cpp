@@ -15,24 +15,24 @@
 
 namespace Syrius{
 
-    Resource<Image> createImage(const ImageFileDesc& desc){
-        SR_CORE_ASSERT(std::filesystem::exists(desc.fileName), "File: %s does not exist!", desc.fileName.c_str());
+    UP<Image> createImage(const ImageFileDesc& desc){
+        SR_LOG_THROW_IF_FALSE(std::filesystem::exists(desc.fileName), "Image", "File: %s does not exist!", desc.fileName.c_str());
 
         if (stbi_is_hdr(desc.fileName.c_str())){
             auto img = new ImageF32(desc);
-            return Resource<Image>(img);
+            return UP<Image>(img);
         }
         else if (stbi_is_16_bit(desc.fileName.c_str())){
             auto img = new ImageUI16(desc);
-            return Resource<Image>(img);
+            return UP<Image>(img);
         }
         else{
             auto img = new ImageUI8(desc);
-            return Resource<Image>(img);
+            return UP<Image>(img);
         }
     }
 
-    Resource<Image> createImage(const ImageDesc& desc){
+    UP<Image> createImage(const ImageDesc& desc){
         auto formatType = getTextureDataType(desc.format);
         switch (formatType) {
             case SR_UINT8:{
@@ -41,15 +41,15 @@ namespace Syrius{
                 imgDesc.width = desc.width;
                 imgDesc.height = desc.height;
                 imgDesc.format = desc.format;
-                return Resource<Image>(new ImageUI8(imgDesc));
+                return UP<Image>(new ImageUI8(imgDesc));
             }
             case SR_UINT16:{
                 ImageUI16Desc imgDesc;
-                imgDesc.data = reinterpret_cast<const uint16*>(desc.data);
+                imgDesc.data = reinterpret_cast<const u16*>(desc.data);
                 imgDesc.width = desc.width;
                 imgDesc.height = desc.height;
                 imgDesc.format = desc.format;
-                return Resource<Image>(new ImageUI16(imgDesc));
+                return UP<Image>(new ImageUI16(imgDesc));
             }
             case SR_FLOAT32:{
                 ImageF32Desc imgDesc;
@@ -57,27 +57,27 @@ namespace Syrius{
                 imgDesc.width = desc.width;
                 imgDesc.height = desc.height;
                 imgDesc.format = desc.format;
-                return Resource<Image>(new ImageF32(imgDesc));
+                return UP<Image>(new ImageF32(imgDesc));
             }
             default:{
-                return createResource<ImageT>(desc);
+                return createUP<ImageT>(desc);
             }
         }
     }
 
-    Resource<Image> createImage(const ImageF32Desc& desc){
+    UP<Image> createImage(const ImageF32Desc& desc){
         auto img = new ImageF32(desc);
-        return Resource<Image>(img);
+        return UP<Image>(img);
     }
 
-    Resource<Image> createImage(const ImageUI16Desc& desc){
+    UP<Image> createImage(const ImageUI16Desc& desc){
         auto img = new ImageUI16(desc);
-        return Resource<Image>(img);
+        return UP<Image>(img);
     }
 
-    Resource<Image> createImage(const ImageUI8Desc& desc){
+    UP<Image> createImage(const ImageUI8Desc& desc){
         auto img = new ImageUI8(desc);
-        return Resource<Image>(img);
+        return UP<Image>(img);
     }
 
 }

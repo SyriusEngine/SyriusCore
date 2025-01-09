@@ -63,7 +63,7 @@ TEST_F(FrameBufferLayoutTest, CreateFrameBufferLayoutTooManyColorAttachments){
      * 32 is an arbitrary number that is guaranteed to be greater than the maximum supported number of color attachments.
      * Unless hardware advances to support more than 32 color attachments, this test should always pass.
      */
-    for (uint32 i = 0; i < 32; i++){
+    for (u32 i = 0; i < 32; i++){
         ColorAttachmentDesc ca;
         ca.width = 800;
         ca.height = 600;

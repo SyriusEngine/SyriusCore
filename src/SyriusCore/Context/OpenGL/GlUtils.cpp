@@ -9,7 +9,7 @@ namespace Syrius{
             case SR_BUFFER_USAGE_STATIC:  return GL_STATIC_DRAW;
             case SR_BUFFER_USAGE_COPY:    return GL_STREAM_COPY;
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid usage (%i) given to converter, return default: GL_DYNAMIC_DRAW", type);
+                SR_LOG_WARNING("GlUtils", "Invalid usage (%i) given to converter, return default: GL_DYNAMIC_DRAW", type);
                 return GL_STATIC_DRAW;
             }
         }
@@ -29,7 +29,7 @@ namespace Syrius{
             case SR_FLOAT32:    return GL_FLOAT;
             case SR_FLOAT64:    return GL_DOUBLE;
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid data type (%i) given to converter, return default: GL_FLOAT", type);
+                SR_LOG_WARNING("GlUtils", "Invalid data type (%i) given to converter, return default: GL_FLOAT", type);
                 return GL_FLOAT;
             }
         }
@@ -44,7 +44,7 @@ namespace Syrius{
             case SR_SHADER_TESSELATION_EVALUATION:  return GL_TESS_EVALUATION_SHADER;
             case SR_SHADER_COMPUTE:                 return GL_COMPUTE_SHADER;
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid shader type (%i) given to converter, return default: GL_VERTEX_SHADER", type);
+                SR_LOG_WARNING("GlUtils", "Invalid shader type (%i) given to converter, return default: GL_VERTEX_SHADER", type);
                 return GL_VERTEX_SHADER;
             }
         }
@@ -58,7 +58,7 @@ namespace Syrius{
             case SR_DRAW_TRIANGLES:         return GL_TRIANGLES;
             case SR_DRAW_TRIANGLE_STRIP:    return GL_TRIANGLE_STRIP;
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid draw type (%i) given to converter, return default: GL_TRIANGLES", type);
+                SR_LOG_WARNING("GlUtils", "Invalid draw type (%i) given to converter, return default: GL_TRIANGLES", type);
                 return GL_TRIANGLES;
             }
         }
@@ -72,7 +72,7 @@ namespace Syrius{
             case 3:     return GL_RGB;
             case 4:    return GL_RGBA;
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid channel type (%i) given to converter, return default: GL_RGBA", type);
+                SR_LOG_WARNING("GlUtils", "Invalid channel type (%i) given to converter, return default: GL_RGBA", type);
                 return GL_RGBA;
             }
         }
@@ -118,7 +118,7 @@ namespace Syrius{
             case SR_TEXTURE_DEPTH_24_STENCIL_8: return GL_DEPTH24_STENCIL8;
             case SR_TEXTURE_DEPTH_32_STENCIL_8: return GL_DEPTH32F_STENCIL8;
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, return default: GL_RGBA8", format);
+                SR_LOG_WARNING("GlUtils", "Invalid texture format (%i) given to converter, return default: GL_RGBA8", format);
                 return GL_RGBA8UI;
             }
         }
@@ -137,7 +137,7 @@ namespace Syrius{
                     case 3: return GL_RGB8;
                     case 4: return GL_RGBA8;
                     default: {
-                        SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_RGBA8", format);
+                        SR_LOG_WARNING("GlUtils", "Invalid texture format (%i) given to converter, defaulting to GL_RGBA8", format);
                         return GL_RGBA8;
                     }
                 }
@@ -149,7 +149,7 @@ namespace Syrius{
                     case 3: return GL_RGB16;
                     case 4: return GL_RGBA16;
                     default: {
-                        SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_RGBA16", format);
+                        SR_LOG_WARNING("GlUtils", "Invalid texture format (%i) given to converter, defaulting to GL_RGBA16", format);
                         return GL_RGBA16;
                     }
                 }
@@ -160,12 +160,12 @@ namespace Syrius{
                     case 3: return GL_RGB32F;
                     case 4: return GL_RGBA32F;
                     default: {
-                        SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_RGBA32F", format);
+                        SR_LOG_WARNING("GlUtils", "Invalid texture format (%i) given to converter, defaulting to GL_RGBA32F", format);
                         return GL_RGBA32F;
                     }
                 }
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_RGBA8", format);
+                SR_LOG_WARNING("GlUtils", "Invalid texture format (%i) given to converter, defaulting to GL_RGBA8", format);
                 return GL_RGBA8;
             }
         }
@@ -184,7 +184,7 @@ namespace Syrius{
             case SR_FLOAT16:    return GL_HALF_FLOAT;
             case SR_FLOAT32:    return GL_FLOAT;
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid texture format (%i) given to converter, defaulting to GL_UNSIGNED_BYTE", format);
+                SR_LOG_WARNING("GlUtils", "Invalid texture format (%i) given to converter, defaulting to GL_UNSIGNED_BYTE", format);
                 return GL_UNSIGNED_BYTE;
             }
         }
@@ -201,7 +201,7 @@ namespace Syrius{
             case SR_COMPARISON_FUNC_GREATER_EQUAL:   return GL_GEQUAL;
             case SR_COMPARISON_FUNC_ALWAYS:          return GL_ALWAYS;
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid depth func (%i) given to converter, defaulting to GL_LESS", func);
+                SR_LOG_WARNING("GlUtils", "Invalid depth func (%i) given to converter, defaulting to GL_LESS", func);
                 return GL_LESS;
             }
         }
@@ -212,7 +212,7 @@ namespace Syrius{
             case SR_TEXTURE_FILTER_LINEAR:  return GL_LINEAR;
             case SR_TEXTURE_FILTER_POINT:   return GL_NEAREST;
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid texture filter (%i) given to converter, defaulting to GL_LINEAR", filter);
+                SR_LOG_WARNING("GlUtils", "Invalid texture filter (%i) given to converter, defaulting to GL_LINEAR", filter);
                 return GL_LINEAR;
             }
         }
@@ -225,7 +225,7 @@ namespace Syrius{
             case SR_TEXTURE_WRAP_CLAMP_EDGE:    return GL_CLAMP_TO_EDGE;
             case SR_TEXTURE_WRAP_CLAMP_BORDER:  return GL_CLAMP_TO_BORDER;
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid texture wrap (%i) given to converter, defaulting to GL_REPEAT", wrap);
+                SR_LOG_WARNING("GlUtils", "Invalid texture wrap (%i) given to converter, defaulting to GL_REPEAT", wrap);
                 return GL_REPEAT;
             }
         }
@@ -242,7 +242,7 @@ namespace Syrius{
             case SR_STENCIL_FUNC_DECR_WRAP: return GL_DECR_WRAP;
             case SR_STENCIL_FUNC_INVERT:    return GL_INVERT;
             default: {
-                SR_CORE_WARNING("[GLUtils]: Invalid stencil function (%i) given to converter, defaulting to GL_KEEP", func);
+                SR_LOG_WARNING("GlUtils", "Invalid stencil function (%i) given to converter, defaulting to GL_KEEP", func);
                 return GL_KEEP;
             }
         }

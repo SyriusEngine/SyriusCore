@@ -26,7 +26,7 @@ namespace Syrius{
         glDeleteSamplers(1, &m_SamplerID);
     }
 
-    void GlSampler::bindShaderResource(uint32 slot) {
+    void GlSampler::bindShaderResource(u32 slot) {
         glBindSampler(slot, m_SamplerID);
     }
 
@@ -68,7 +68,7 @@ namespace Syrius{
         glSamplerParameterf(m_SamplerID, GL_TEXTURE_LOD_BIAS, m_LODBias);
     }
 
-    uint64 GlSampler::getIdentifier() {
+    u64 GlSampler::getIdentifier() {
         return m_SamplerID;
     }
 }

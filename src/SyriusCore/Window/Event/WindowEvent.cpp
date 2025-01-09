@@ -7,13 +7,13 @@ namespace Syrius{
 
     }
 
-    WindowMovedEvent::WindowMovedEvent(int32_t posX, int32_t posY)
+    WindowMovedEvent::WindowMovedEvent(i32 posX, i32 posY)
     : WindowEvent(SR_EVENT_WINDOW_MOVED){
         windowPosX = posX;
         windowPosY = posY;
     }
 
-    WindowResizedEvent::WindowResizedEvent(int32_t width, int32_t height)
+    WindowResizedEvent::WindowResizedEvent(i32 width, i32 height)
     : WindowEvent(SR_EVENT_WINDOW_RESIZED){
         windowWidth = width;
         windowHeight = height;

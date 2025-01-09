@@ -7,22 +7,22 @@ namespace Syrius{
 
     class GlIndexBuffer : public IndexBuffer{
     public:
-        GlIndexBuffer(const IndexBufferDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        GlIndexBuffer(const IndexBufferDesc& desc, const UP<DeviceLimits>& deviceLimits);
 
         ~GlIndexBuffer() override;
 
         void bind() override;
 
-        void setData(const void* data, uint32 count) override;
+        void setData(const void* data, u32 count) override;
 
         void copyFrom(const ResourceView<IndexBuffer>& other) override;
 
-        [[nodiscard]] Resource<UByte[]> getData() const override;
+        [[nodiscard]] UP<UByte[]> getData() const override;
 
-        [[nodiscard]] uint64 getIdentifier() const override;
+        [[nodiscard]] u64 getIdentifier() const override;
 
     private:
-        uint32 m_BufferID;
+        u32 m_BufferID;
     };
 }
 

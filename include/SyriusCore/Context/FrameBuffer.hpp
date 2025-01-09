@@ -11,7 +11,7 @@ namespace Syrius{
 
     class SR_CORE_API FrameBuffer{
     public:
-        FrameBuffer(const ResourceView<FrameBufferLayout>& desc, const Resource<DeviceLimits>& deviceLimits);
+        FrameBuffer(const ResourceView<FrameBufferLayout>& desc, const UP<DeviceLimits>& deviceLimits);
 
         virtual ~FrameBuffer();
 
@@ -21,7 +21,7 @@ namespace Syrius{
 
         void clear();
 
-        virtual void onResize(uint32 width, uint32 height);
+        virtual void onResize(u32 width, u32 height);
 
         void enableDepthTest(bool enable);
 
@@ -29,18 +29,18 @@ namespace Syrius{
 
         void setDepthMask(SR_DEPTH_MASK mask);
 
-        ResourceView<Viewport> getViewport(uint32 index = 0);
+        ResourceView<Viewport> getViewport(u32 index = 0);
 
-        [[nodiscard]] ResourceView<ColorAttachment> getColorAttachment(uint32 index);
+        [[nodiscard]] ResourceView<ColorAttachment> getColorAttachment(u32 index);
 
         ResourceView<DepthStencilAttachment> getDepthStencilAttachment();
 
     protected:
-        const Resource<DeviceLimits>& m_DeviceLimits;
+        const UP<DeviceLimits>& m_DeviceLimits;
 
-        std::vector<Resource<Viewport>> m_Viewports;
-        std::vector<Resource<ColorAttachment>> m_ColorAttachments;
-        Resource<DepthStencilAttachment> m_DepthStencilAttachment;
+        std::vector<UP<Viewport>> m_Viewports;
+        std::vector<UP<ColorAttachment>> m_ColorAttachments;
+        UP<DepthStencilAttachment> m_DepthStencilAttachment;
 
     };
 

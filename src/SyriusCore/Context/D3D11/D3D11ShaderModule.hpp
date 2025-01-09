@@ -3,7 +3,7 @@
 #include "../../../../include/SyriusCore/Context/ShaderModule.hpp"
 #include "D3D11Utils.hpp"
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -15,7 +15,7 @@ namespace Syrius{
 
         ~D3D11ShaderModule() override;
 
-        [[nodiscard]] uint64 getIdentifier() const override;
+        [[nodiscard]] u64 getIdentifier() const override;
 
     private:
 

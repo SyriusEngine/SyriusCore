@@ -7,7 +7,7 @@ namespace Syrius{
 
     class GlViewport : public Viewport{
     public:
-        GlViewport(const ViewportDesc& desc, const Resource<DeviceLimits>& deviceLimits);
+        GlViewport(const ViewportDesc& desc, const UP<DeviceLimits>& deviceLimits);
 
         ~GlViewport() override;
 

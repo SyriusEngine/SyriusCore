@@ -5,7 +5,7 @@
 #include "D3D11ShaderModule.hpp"
 #include <unordered_map>
 
-#if defined(SR_CORE_PLATFORM_WIN64)
+#if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{
 
@@ -17,7 +17,7 @@ namespace Syrius{
 
         void bind() override;
 
-        [[nodiscard]] uint64 getIdentifier() const override;
+        [[nodiscard]] u64 getIdentifier() const override;
 
     public:
         ID3D11Device* m_Device;

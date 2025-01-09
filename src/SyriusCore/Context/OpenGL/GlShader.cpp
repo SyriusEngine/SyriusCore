@@ -10,13 +10,13 @@ namespace Syrius{
         glAttachShader(m_ShaderID, desc.vertexShader->getIdentifier());
         glAttachShader(m_ShaderID, desc.fragmentShader->getIdentifier());
 
-        int32 success;
+        i32 success;
         char infoLog[512];
         glLinkProgram(m_ShaderID);
         glGetProgramiv(m_ShaderID, GL_LINK_STATUS, &success);
         if (!success) {
             glGetProgramInfoLog(m_ShaderID, 512, nullptr, infoLog);
-            SR_CORE_THROW("[GlShader]: Failed to link shader program, error: %s", infoLog);
+            SR_LOG_THROW("GlShader", "Failed to link shader program, error: %s", infoLog);
         }
     }
 
@@ -28,7 +28,7 @@ namespace Syrius{
         glUseProgram(m_ShaderID);
     }
 
-    uint64 GlShader::getIdentifier() const {
+    u64 GlShader::getIdentifier() const {
         return m_ShaderID;
     }
 }

@@ -15,13 +15,13 @@ namespace Syrius{
 
         void writeToFile(const ImageFileDesc& writeDesc) const override;
 
-        void resize(uint32 width, uint32 height) override;
+        void resize(u32 width, u32 height) override;
 
         void extendAlpha() override;
 
         [[nodiscard]] void* getData() override;
 
-        [[nodiscard]] Resource<Image> convertToUI8() override;
+        [[nodiscard]] UP<Image> convertToUI8() override;
 
     private:
         std::vector<UByte> m_Data;
