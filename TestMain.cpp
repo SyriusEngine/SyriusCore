@@ -5,41 +5,21 @@ class TestDebugMessageHandler{
 public:
     static void init(const std::string& debugOutput){
         m_File = std::ofstream(debugOutput);
-//        setDebugMessageCallback(TestDebugMessageHandler::messageCallback);
+        Logger::setDebugCallback(TestDebugMessageHandler::messageCallback);
     }
 
     static void terminate(){
         m_File.close();
     }
 
-    static void messageCallback(const Message& msg){
-        std::string severity;
-//        switch (msg.severity){
-//            case SR_CORE_MESSAGE_SEVERITY_INFO:     severity = "INFO";  break;
-//            case SR_CORE_MESSAGE_SEVERITY_LOW:      severity = "LOW";   break;
-//            case SR_CORE_MESSAGE_SEVERITY_MEDIUM:   severity = "MEDIUM";break;
-//            case SR_CORE_MESSAGE_SEVERITY_HIGH:     severity = "HIGH";  break;
-//        }
-//
-//        std::string source;
-//        switch (msg.messageType){
-//            case SR_CORE_MESSAGE: source = "MESSAGE"; break;
-//            case SR_CORE_MESSAGE_OPENGL: source = "OPENGL"; break;
-//            case SR_CORE_MESSAGE_VULKAN: source = "VULKAN"; break;
-//            case SR_CORE_MESSAGE_D3D11: source = "D3D11"; break;
-//            case SR_CORE_MESSAGE_HRESULT: source = "HRESULT"; break;
-//            case SR_CORE_MESSAGE_DXGI: source = "DXGI"; break;
-//            case SR_CORE_MESSAGE_WIN32: source = "WIN32"; break;
-//            case SR_CORE_MESSAGE_X11: source = "X11"; break;
-//            case SR_CORE_MESSAGE_PRECONDITION: source = "PRECONDITION"; break;
-//            case SR_CORE_MESSAGE_POSTCONDITION: source = "POSTCONDITION"; break;
-//            case SR_CORE_MESSAGE_ASSERTION: source = "ASSERTION"; break;
-//        }
-//        auto message = msg.message;
-//        message.erase(remove(message.begin(), message.end(), '\n'), message.end());
-//        std::string final = "[" + msg.file + " : " + msg.function + " : " + std::to_string(msg.line) + "][" + source + " : " + severity + "]: " + message + "\n";
+    static void messageCallback(const Message& message){
+        std::string msg = "[Syrius::Logger]";
+        msg += " [" + message.file + " : " + message.function + " : " + std::to_string(message.line) + "] ";
+        msg += "[" + getMessageSeverityString(message.severity) + "] ";
+        msg += "[" + message.source + "]: ";
+        msg += message.message + "\n";
 
-//        m_File << final;
+        m_File << msg;
     }
 
 private:
