@@ -4,7 +4,7 @@
 
 class SamplerLayer: public Layer{
 public:
-    SamplerLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    SamplerLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~SamplerLayer() override;
 

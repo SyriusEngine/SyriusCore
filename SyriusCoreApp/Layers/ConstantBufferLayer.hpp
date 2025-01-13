@@ -9,7 +9,7 @@ struct ColorData{
 
 class ConstantBufferLayer: public Layer{
 public:
-    ConstantBufferLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    ConstantBufferLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~ConstantBufferLayer() override;
 

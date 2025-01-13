@@ -1,6 +1,6 @@
 #include "CubeMapLayer.hpp"
 
-CubeMapLayer::CubeMapLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config) :
+CubeMapLayer::CubeMapLayer(ResourceView<Context> &context, const UP<SyriusWindow> &window, EasyIni::Configuration &config) :
 Layer(context, window, config),
 m_Camera(0.1f, 0.01f, context),
 m_Projection(context, window->getWidth(), window->getHeight()){

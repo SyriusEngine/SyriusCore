@@ -13,5 +13,5 @@ public:
 private:
     ResourceView<Context> m_Context;
     std::string m_LibraryPath;
-    std::vector<Resource<Shader>> m_Shaders;
+    std::vector<UP<Shader>> m_Shaders;
 };

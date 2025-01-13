@@ -1,6 +1,6 @@
 #include "VertexArrayLayer.hpp"
 
-VertexArrayLayer::VertexArrayLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
+VertexArrayLayer::VertexArrayLayer(ResourceView<Context> &context, const UP<SyriusWindow> &window,
                                    EasyIni::Configuration &config) : Layer(context, window, config) {
     m_ShaderProgram = m_ShaderLibrary.loadShader("VertexBuffer");
 

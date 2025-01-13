@@ -88,7 +88,7 @@ void Camera::mouseMoved(float mousePosX, float mousePosY) {
     updateCameraData();
 }
 
-void Camera::move(int32 keyPressed, time_t deltaTime) {
+void Camera::move(i32 keyPressed, time_t deltaTime) {
     float velocity = static_cast<float>(deltaTime) * m_Speed;
     switch (keyPressed) {
         case SR_KEY_W:  m_Position += m_Front * velocity; break;
@@ -102,7 +102,7 @@ void Camera::move(int32 keyPressed, time_t deltaTime) {
     updateCameraData();
 }
 
-void Camera::bind(uint32 slot) {
+void Camera::bind(u32 slot) {
     m_CameraData->bind(slot);
 }
 

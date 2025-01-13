@@ -1,6 +1,6 @@
 #include "ImGuiLayer.hpp"
 
-ImGuiLayer::ImGuiLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config) :
+ImGuiLayer::ImGuiLayer(ResourceView<Context> &context, const UP<SyriusWindow> &window, EasyIni::Configuration &config) :
 Layer(context, window, config) {
 
 }

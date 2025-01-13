@@ -1,6 +1,6 @@
 #include "SamplerLayer.hpp"
 
-SamplerLayer::SamplerLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
+SamplerLayer::SamplerLayer(ResourceView<Context> &context, const UP<SyriusWindow> &window,
                            EasyIni::Configuration &config) : Layer(context, window, config) {
     m_ShaderProgram = m_ShaderLibrary.loadShader("Texture");
 

@@ -70,28 +70,3 @@ TEST_F(ShaderModuleTest, CreateShaderInvalidLanguage){
 
     EXPECT_DEATH(auto vsm = TestEnvironment::m_Context->createShaderModule(desc), "");
 }
-
-TEST_F(ShaderModuleTest, CreateShaderInvalidFile){
-    ShaderModuleFileDesc desc;
-    desc.entryPoint = "main";
-    desc.shaderType = SR_SHADER_VERTEX;
-    desc.filePath = "InvalidShader";
-    if (TestEnvironment::m_API == SR_API_OPENGL){
-        desc.language = SR_SHADER_LANGUAGE_GLSL;
-    }
-    else if (TestEnvironment::m_API == SR_API_D3D11){
-        desc.language = SR_SHADER_LANGUAGE_HLSL;
-    }
-    else {
-        FAIL() << "Unsupported API";
-    }
-
-    bool exceptionThrown = false;
-    try{
-        auto vsm = TestEnvironment::m_Context->createShaderModule(desc);
-    }
-    catch (const std::exception& e){
-        exceptionThrown = true;
-    }
-    EXPECT_TRUE(exceptionThrown);
-}

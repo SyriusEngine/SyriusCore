@@ -15,7 +15,7 @@ struct TextureParameters{
 
 class Layer{
 public:
-    Layer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    Layer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     virtual ~Layer();
 
@@ -53,12 +53,12 @@ protected:
 
     void imGuiCameraPanel(Camera& camera);
 
-    void imGuiFrameBufferPanel(ResourceView<FrameBuffer>& frameBuffer, int32& selectedTexture);
+    void imGuiFrameBufferPanel(ResourceView<FrameBuffer>& frameBuffer, i32& selectedTexture);
 
 protected:
     ResourceView<Context>& m_Context;
     EasyIni::Configuration& m_Config;
-    const Resource<SyriusWindow>& m_Window;
+    const UP<SyriusWindow>& m_Window;
     ShaderLibrary m_ShaderLibrary;
 
     double m_DeltaTime;

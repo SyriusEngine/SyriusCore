@@ -8,7 +8,7 @@
 
 class FrameBufferLayer: public Layer{
 public:
-    FrameBufferLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    FrameBufferLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~FrameBufferLayer() override;
 
@@ -35,5 +35,5 @@ private:
     Camera m_Camera;
     Projection m_Projection;
 
-    int32 m_SelectedTexture;
+    i32 m_SelectedTexture;
 };

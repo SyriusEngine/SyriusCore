@@ -1,6 +1,6 @@
 #include "IndexBufferLayer.hpp"
 
-IndexBufferLayer::IndexBufferLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
+IndexBufferLayer::IndexBufferLayer(ResourceView<Context> &context, const UP<SyriusWindow> &window,
                                    EasyIni::Configuration &config) : Layer(context, window, config) {
     m_ShaderProgram = m_ShaderLibrary.loadShader("VertexBuffer");
 

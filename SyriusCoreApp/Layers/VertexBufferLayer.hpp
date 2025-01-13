@@ -4,7 +4,7 @@
 
 class VertexBufferLayer: public Layer{
 public:
-    VertexBufferLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    VertexBufferLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~VertexBufferLayer() override;
 

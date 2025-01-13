@@ -1,6 +1,6 @@
 #include "Projection.hpp"
 
-Projection::Projection(ResourceView<Context> &context, uint32 width, uint32 height, float fov, float near, float far):
+Projection::Projection(ResourceView<Context> &context, u32 width, u32 height, float fov, float near, float far):
 m_Context(context),
 m_Width(static_cast<float>(width)),
 m_Height(static_cast<float>(height)),
@@ -24,11 +24,11 @@ Projection::~Projection() {
 
 }
 
-void Projection::bind(uint32 slot) {
+void Projection::bind(u32 slot) {
     m_Resource->bind(slot);
 }
 
-void Projection::onResize(uint32 width, uint32 height) {
+void Projection::onResize(u32 width, u32 height) {
     m_Width = static_cast<float>(width);
     m_Height = static_cast<float>(height);
     m_ProjectionData.m_Perspective = glm::perspective(glm::radians(m_Fov), m_Width / m_Height, m_Near, m_Far);

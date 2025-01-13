@@ -7,7 +7,7 @@
 
 class DepthTestLayer: public Layer{
 public:
-    DepthTestLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    DepthTestLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~DepthTestLayer() override;
 

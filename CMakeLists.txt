@@ -26,10 +26,6 @@ set(SYRIUS_UTILS_DIR)
 include_or_fetch(SyriusUtils SYRIUS_UTILS_DIR)
 message("SyriusUtils found in ${SYRIUS_UTILS_DIR}")
 
-# Then, if we are on Windows, copy and paste it into the current bin dir
-# Nifty trick to get the name of the build folder of the other dir
-get_filename_component(BUILD_FOLDER_NAME ${CMAKE_BINARY_DIR} NAME)
-
 if (WIN32)
     if (MINGW)
         set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
@@ -41,10 +37,7 @@ if (WIN32)
             -lopenGL32
             -ld3d11
             -ld3dcompiler_47
-            SyriusUtils
             )
-
-        set(SYRIUS_UTILS_DLL "${SYRIUS_UTILS_DIR}/${BUILD_FOLDER_NAME}/libSyriusUtils.dll")
 
     elseif(MSVC)
         set(SYRIUS_CORE_LIBS
@@ -56,7 +49,6 @@ if (WIN32)
             openGL32
             d3d11
             d3dcompiler)
-        set(SYRIUS_UTILS_DLL "${SYRIUS_UTILS_DIR}/${BUILD_FOLDER_NAME}/SyriusUtils.dll")
     endif()
 
 elseif(UNIX)
@@ -65,12 +57,6 @@ elseif(UNIX)
         -ldl
         -lGL)
 endif()
-
-add_custom_target(CopySyriusUtilsDLL ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SYRIUS_UTILS_DLL} ${CMAKE_CURRENT_BINARY_DIR}
-    DEPENDS ${SYRIUS_UTILS_DLL}
-    COMMENT "Copying ${SYRIUS_UTILS_DLL} to build tree")
-add_dependencies(CopySyriusUtilsDLL SyriusUtils)
 
 add_compile_definitions(SR_CORE_DEBUG)
 add_compile_definitions(SR_CORE_EXPORT_DLL)
@@ -191,11 +177,10 @@ set(SYRIUS_CORE_SRC
     src/SyriusCore/Context/OpenGL/GlDeviceLimits.cpp
     )
 
-
 add_library(SyriusCore SHARED ${SYRIUS_CORE_SRC})
-add_dependencies(SyriusCore CopySyriusUtilsDLL)
 target_include_directories(SyriusCore PUBLIC include)
-target_link_libraries(SyriusCore ${SYRIUS_CORE_LIBS})
+target_link_libraries(SyriusCore PUBLIC SyriusUtils)
+target_link_libraries(SyriusCore PRIVATE ${SYRIUS_CORE_LIBS})
 
 ################### Syrius Core App ###################
 
@@ -229,12 +214,7 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
 
 add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
 add_dependencies(SyriusCoreApp SyriusCore)
-
-if (MSVC)
-    target_link_libraries(SyriusCoreApp SyriusCore)
-else()
-    target_link_libraries(SyriusCoreApp -lSyriusCore)
-endif()
+target_link_libraries(SyriusCoreApp SyriusCore)
 
 ################### Testing ###################
 set(SR_CORE_TEST_SRC
@@ -262,26 +242,15 @@ set(SR_CORE_TEST_SRC
 
 if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTS)
     # Add GTest
-    set(GTEST_DIR "${CMAKE_CURRENT_LIST_DIR}/Dependencies/gtest")
-    if (NOT EXISTS ${GTEST_DIR})
-        message("GTest not found, cloning from git...")
-        execute_process(COMMAND git clone https://github.com/google/googletest ${GTEST_DIR}
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            RESULT_VARIABLE result)
-        if(result)
-            message(FATAL_ERROR "Failed to download GTest")
-        endif()
-    else()
-        message(STATUS "GTest found!")
-    endif ()
-    add_subdirectory(${GTEST_DIR})
+    FETCH_GTEST()
 
     message(STATUS "Building tests")
 
     add_executable(SyriusCoreTest ${SYRIUS_CORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)
     add_dependencies(SyriusCoreTest gtest)
 
-    target_link_libraries(SyriusCoreTest  ${SYRIUS_CORE_LIBS} GTest::gtest)
+    target_link_libraries(SyriusCoreTest PUBLIC SyriusUtils)
+    target_link_libraries(SyriusCoreTest PRIVATE ${SYRIUS_CORE_LIBS} GTest::gtest)
 endif ()
 
 

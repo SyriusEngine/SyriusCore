@@ -1,7 +1,7 @@
 #include "Layer.hpp"
 #include <chrono>
 
-Layer::Layer(ResourceView<Context>& context, const Resource<SyriusWindow> &window, EasyIni::Configuration& config):
+Layer::Layer(ResourceView<Context>& context, const UP<SyriusWindow> &window, EasyIni::Configuration& config):
 m_Context(context),
 m_Window(window),
 m_Config(config),
@@ -88,17 +88,17 @@ void Layer::imGuiDebugPanel(ResourceView<Context>& context) {
     ImGui::ColorPicker3("Background Color", context->getDefaultFrameBuffer()->getColorAttachment(0)->getClearColor());
 
     ImGui::Columns(2, "Memory Allocation Tracker");
-    ImGui::Separator();
-    ImGui::Text("Total Allocated"); ImGui::NextColumn();
-    ImGui::Text("%d bytes", getAllocatedMemory()); ImGui::NextColumn();
-    ImGui::Separator();
-    ImGui::Text("Total Freed"); ImGui::NextColumn();
-    ImGui::Text("%d bytes", getFreedMemory()); ImGui::NextColumn();
-    ImGui::Separator();
-    ImGui::Text("Usage"); ImGui::NextColumn();
-    ImGui::Text("%d bytes", getMemoryUsage()); ImGui::NextColumn();
-    ImGui::Separator();
-    ImGui::Columns(1);
+//    ImGui::Separator();
+//    ImGui::Text("Total Allocated"); ImGui::NextColumn();
+//    ImGui::Text("%d bytes", getAllocatedMemory()); ImGui::NextColumn();
+//    ImGui::Separator();
+//    ImGui::Text("Total Freed"); ImGui::NextColumn();
+//    ImGui::Text("%d bytes", getFreedMemory()); ImGui::NextColumn();
+//    ImGui::Separator();
+//    ImGui::Text("Usage"); ImGui::NextColumn();
+//    ImGui::Text("%d bytes", getMemoryUsage()); ImGui::NextColumn();
+//    ImGui::Separator();
+//    ImGui::Columns(1);
     imGuiEndPanel();
 }
 
@@ -118,9 +118,9 @@ void Layer::imGuiIndexBufferPanel(ResourceView<IndexBuffer> & indexBuffer) {
     }
     if (ImGui::Button("Read Data")){
         auto pData = indexBuffer->getData();
-        auto uint32Data = reinterpret_cast<uint32*>(pData.get());
+        auto u32Data = reinterpret_cast<u32*>(pData.get());
         for(int i = 0; i < indexBuffer->getCount(); i++){
-            std::cout << uint32Data[i];
+            std::cout << u32Data[i];
             if (i != indexBuffer->getCount() - 1){
                 std::cout << ", ";
             }
@@ -284,12 +284,12 @@ void Layer::imGuiTextureParametersPanel(ResourceView<ConstantBuffer> &constantBu
 
 void Layer::imGuiTexturePanel(ResourceView<Texture2D> &texture) {
     static float checkerBoardColor[4] = {1.0f, 0.0f, 1.0f, 1.0f};
-    const uint32 checkerBoardMaxWidth = 512;
-    const uint32 checkerBoardMaxHeight = 512;
-    static uint32 checkerBoardStartX = 0;
-    static uint32 checkerBoardStartY = 0;
-    static uint32 checkerBoardWidth = 256;
-    static uint32 checkerBoardHeight = 256;
+    const u32 checkerBoardMaxWidth = 512;
+    const u32 checkerBoardMaxHeight = 512;
+    static u32 checkerBoardStartX = 0;
+    static u32 checkerBoardStartY = 0;
+    static u32 checkerBoardWidth = 256;
+    static u32 checkerBoardHeight = 256;
 
     auto updateTexture = [&]{
         auto color = createCheckerBoard(checkerBoardColor, checkerBoardWidth, checkerBoardHeight);
@@ -371,7 +371,7 @@ void Layer::imGuiEndPanel() {
     }
 }
 
-void Layer::imGuiFrameBufferPanel(ResourceView<FrameBuffer> &frameBuffer, int32& selectedTexture) {
+void Layer::imGuiFrameBufferPanel(ResourceView<FrameBuffer> &frameBuffer, i32& selectedTexture) {
     static bool depthTest = false;
     static std::vector<std::string> sampleFrom = {"Normal Color", "Inverted Color", "Depth Stencil Attachment"};
     static int sampleFromIndex  = 0;

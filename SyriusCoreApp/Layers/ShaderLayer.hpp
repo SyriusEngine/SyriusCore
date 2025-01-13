@@ -11,7 +11,7 @@ struct Parameters{
 
 class ShaderLayer: public Layer{
 public:
-    ShaderLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    ShaderLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~ShaderLayer() override;
 

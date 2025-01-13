@@ -4,7 +4,7 @@
 
 class VertexArrayLayer: public Layer{
 public:
-    VertexArrayLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    VertexArrayLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~VertexArrayLayer() override;
 

@@ -9,13 +9,13 @@ struct ProjectionData{
 
 class Projection{
 public:
-    Projection(ResourceView<Context>& context, uint32 width, uint32 height, float fov = 45.0f, float near = 0.1f, float far = 100.0f);
+    Projection(ResourceView<Context>& context, u32 width, u32 height, float fov = 45.0f, float near = 0.1f, float far = 100.0f);
 
     ~Projection();
 
-    void bind(uint32 slot);
+    void bind(u32 slot);
 
-    void onResize(uint32 width, uint32 height);
+    void onResize(u32 width, u32 height);
 
 private:
     ResourceView<Context>& m_Context;

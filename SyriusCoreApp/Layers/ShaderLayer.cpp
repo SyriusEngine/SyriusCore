@@ -1,7 +1,7 @@
 #include <chrono>
 #include "ShaderLayer.hpp"
 
-ShaderLayer::ShaderLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
+ShaderLayer::ShaderLayer(ResourceView<Context> &context, const UP<SyriusWindow> &window,
                          EasyIni::Configuration &config) : Layer(context, window, config), m_Params(),
                          m_StartTime(static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::system_clock::now().time_since_epoch())

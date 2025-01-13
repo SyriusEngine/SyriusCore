@@ -1,6 +1,6 @@
 #include "ConstantBufferLayer.hpp"
 
-ConstantBufferLayer::ConstantBufferLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
+ConstantBufferLayer::ConstantBufferLayer(ResourceView<Context> &context, const UP<SyriusWindow> &window,
                                          EasyIni::Configuration &config) : Layer(context, window, config){
     m_ShaderProgram = m_ShaderLibrary.loadShader("ConstantBuffer");
 

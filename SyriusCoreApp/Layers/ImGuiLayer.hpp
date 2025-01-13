@@ -4,7 +4,7 @@
 
 class ImGuiLayer: public Layer{
 public:
-    ImGuiLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    ImGuiLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~ImGuiLayer() override;
 

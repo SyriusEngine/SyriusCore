@@ -11,7 +11,7 @@ public:
 
     void update(const Event& event, float deltaTime);
 
-    void bind(uint32 slot);
+    void bind(u32 slot);
 
     void setPosition(const glm::vec3& position);
 
@@ -23,7 +23,7 @@ private:
 
     void mouseMoved(float mousePosX, float mousePosY);
 
-    void move(int32 keyPressed, time_t deltaTime);
+    void move(i32 keyPressed, time_t deltaTime);
 
 private:
     bool m_Enable;

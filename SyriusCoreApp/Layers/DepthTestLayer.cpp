@@ -1,6 +1,6 @@
 #include "DepthTestLayer.hpp"
 
-DepthTestLayer::DepthTestLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
+DepthTestLayer::DepthTestLayer(ResourceView<Context> &context, const UP<SyriusWindow> &window,
                                EasyIni::Configuration &config) :
 Layer(context, window, config),
 m_Camera(0.1f, 0.01f, context),

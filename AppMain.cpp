@@ -89,9 +89,9 @@ int main(int argc, char** argv) {
         std::cerr << "Unknown Error" << std::endl;
     }
 
-    printf("Allocated Memory: %zu\n", getAllocatedMemory());
-    printf("Freed Memory: %zu\n", getFreedMemory());
-    printf("Memory Usage: %zu\n", getMemoryUsage());
+//    printf("Allocated Memory: %zu\n", getAllocatedMemory());
+//    printf("Freed Memory: %zu\n", getFreedMemory());
+//    printf("Memory Usage: %zu\n", getMemoryUsage());
 
     return 0;
 }

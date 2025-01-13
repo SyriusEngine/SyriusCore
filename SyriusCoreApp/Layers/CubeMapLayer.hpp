@@ -7,7 +7,7 @@
 
 class CubeMapLayer: public Layer{
 public:
-    CubeMapLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    CubeMapLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~CubeMapLayer() override;
 

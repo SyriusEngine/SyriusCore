@@ -4,7 +4,7 @@
 
 class IndexBufferLayer: public Layer{
 public:
-    IndexBufferLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    IndexBufferLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~IndexBufferLayer() override;
 

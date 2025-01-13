@@ -12,7 +12,7 @@ struct Vertex{
 
 struct Mesh{
     std::vector<Vertex> vertices;
-    std::vector<uint32> indices;
+    std::vector<u32> indices;
 };
 
 struct ShaderProgram{
@@ -43,7 +43,7 @@ Mesh createRectangle(float size = 0.5f);
 
 Mesh createScreenRectangle();
 
-Mesh createSphere(uint32 rings, uint32 sectors);
+Mesh createSphere(u32 rings, u32 sectors);
 
 Mesh createCube();
 
@@ -59,4 +59,4 @@ std::string filterToString(SR_TEXTURE_FILTER mode);
 
 std::string wrapModeToString(SR_TEXTURE_WRAP mode);
 
-std::vector<uint8> createCheckerBoard(const float* color, uint32 width, uint32 height);
+std::vector<u8> createCheckerBoard(const float* color, u32 width, u32 height);

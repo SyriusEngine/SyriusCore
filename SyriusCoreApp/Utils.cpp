@@ -77,11 +77,11 @@ Mesh createScreenRectangle(){
 #define M_PI_2 1.57079632679489661923
 #endif
 
-Mesh createSphere(uint32 rings, uint32 sectors){
+Mesh createSphere(u32 rings, u32 sectors){
     Mesh mesh;
     float const R = 1.0f/(float)(rings-1);
     float const S = 1.0f/(float)(sectors-1);
-    uint32 r, s;
+    u32 r, s;
 
     for(r = 0; r < rings; r++) for(s = 0; s < sectors; s++) {
             float const y = sin( -M_PI_2 + M_PI * r * R );
@@ -345,17 +345,17 @@ std::string wrapModeToString(SR_TEXTURE_WRAP mode){
     }
 }
 
-std::vector<uint8> createCheckerBoard(const float* color, uint32 width, uint32 height){
-    std::vector<uint8> data;
+std::vector<u8> createCheckerBoard(const float* color, u32 width, u32 height){
+    std::vector<u8> data;
     data.resize(width * height * 4);
-    for (uint32 y = 0; y < height; y++) {
-        for (uint32 x = 0; x < width; x++) {
-            uint32 pixelIndex = (y * width + x);
-            uint32 index = pixelIndex * 4;
+    for (u32 y = 0; y < height; y++) {
+        for (u32 x = 0; x < width; x++) {
+            u32 pixelIndex = (y * width + x);
+            u32 index = pixelIndex * 4;
             if (pixelIndex % 2 == 0) {
-                data[index] = (uint8) (color[0] * 255);
-                data[index + 1] = (uint8) (color[1] * 255);
-                data[index + 2] = (uint8) (color[2] * 255);
+                data[index] = (u8) (color[0] * 255);
+                data[index + 1] = (u8) (color[1] * 255);
+                data[index + 2] = (u8) (color[2] * 255);
                 data[index + 3] = 255;
             } else {
                 data[index] = 255;

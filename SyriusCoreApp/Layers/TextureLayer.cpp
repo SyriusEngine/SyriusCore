@@ -1,6 +1,6 @@
 #include "TextureLayer.hpp"
 
-TextureLayer::TextureLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window,
+TextureLayer::TextureLayer(ResourceView<Context> &context, const UP<SyriusWindow> &window,
                            EasyIni::Configuration &config) : Layer(context, window, config) {
     m_ShaderProgram = m_ShaderLibrary.loadShader("Texture");
 

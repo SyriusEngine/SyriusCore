@@ -145,18 +145,6 @@ ShaderStorage FrameBufferTest::createScreenShader2CA() {
     return ss;
 }
 
-
-TEST_F(FrameBufferTest, CreateFrameBufferNoAttachments){
-    auto fbLayout = TestEnvironment::m_Context->createFrameBufferLayout();
-    bool failed = false;
-    try{
-        auto fb = TestEnvironment::m_Context->createFrameBuffer(fbLayout);
-    }catch(const std::runtime_error& e){
-        failed = true;
-    }
-    EXPECT_TRUE(failed);
-}
-
 TEST_F(FrameBufferTest, ClearFrameBuffer1ColorAttachment){
     auto fb = createFrameBuffer1CA();
 

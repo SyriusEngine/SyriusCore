@@ -4,7 +4,7 @@
 
 class TextureLayer: public Layer{
 public:
-    TextureLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    TextureLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~TextureLayer() override;
 

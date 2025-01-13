@@ -4,7 +4,7 @@
 
 class TextureAtlasLayer: public Layer{
 public:
-    TextureAtlasLayer(ResourceView<Context>& context, const Resource<SyriusWindow>& window, EasyIni::Configuration& config);
+    TextureAtlasLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config);
 
     ~TextureAtlasLayer() override;
 

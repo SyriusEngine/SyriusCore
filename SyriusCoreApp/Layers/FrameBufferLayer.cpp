@@ -1,6 +1,6 @@
 #include "FrameBufferLayer.hpp"
 
-FrameBufferLayer::FrameBufferLayer(ResourceView<Context> &context, const Resource<SyriusWindow> &window, EasyIni::Configuration &config) :
+FrameBufferLayer::FrameBufferLayer(ResourceView<Context> &context, const UP<SyriusWindow> &window, EasyIni::Configuration &config) :
 Layer(context, window, config),
 m_Camera(0.1f, 0.01f, context),
 m_SelectedTexture(0),

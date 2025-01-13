@@ -4,7 +4,7 @@
 SyriusCoreDev::SyriusCoreDev(const std::string &iniFile, const std::string& windowTitle):
 m_Config(iniFile){
     ContextDesc cDesc;
-    cDesc.api = static_cast<SR_SUPPORTED_API>(m_Config["Context"]["API"].getOrDefault<uint32>(SR_API_OPENGL));
+    cDesc.api = static_cast<SR_SUPPORTED_API>(m_Config["Context"]["API"].getOrDefault<u32>(SR_API_OPENGL));
     cDesc.enableDepthTest = m_Config["Context"]["EnableDepthTest"].getOrDefault<bool>(false);
 
     std::string windowName = windowTitle;
@@ -19,8 +19,8 @@ m_Config(iniFile){
     }
     WindowDesc wDesc;
     wDesc.title = windowName;
-    wDesc.width = m_Config["Window"]["Width"].getOrDefault<uint32>(1280);
-    wDesc.height = m_Config["Window"]["Height"].getOrDefault<uint32>(720);
+    wDesc.width = m_Config["Window"]["Width"].getOrDefault<u32>(1280);
+    wDesc.height = m_Config["Window"]["Height"].getOrDefault<u32>(720);
 
     m_Window = createWindow(wDesc);
 
