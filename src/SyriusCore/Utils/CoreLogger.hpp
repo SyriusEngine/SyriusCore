@@ -31,7 +31,7 @@ namespace Syrius{
 
     private:
 #if defined(SR_COMPILER_MSVC)
-        static uint64 m_DxgiMessageIndex;
+        static u64 m_DxgiMessageIndex;
         static struct IDXGIInfoQueue* m_DxgiInfoQueue;
 #endif
 

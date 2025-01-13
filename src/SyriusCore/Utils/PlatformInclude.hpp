@@ -19,16 +19,17 @@
 #include "../Dependencies/glad/glad/gl.h"
 
 #if defined(SR_PLATFORM_WIN64)
-#include <windows.h>
-#include <dshow.h>
-#include <commdlg.h>
-#include <comdef.h>
+    #define NOMINMAX
+    #include <windows.h>
+    #include <dshow.h>
+    #include <commdlg.h>
+    #include <comdef.h>
 
-#include <d3d11.h>
-#include <dxgi.h>
-#include <d3dcompiler.h>
-#include <dxgiformat.h>
-#include <dxgidebug.h>
+    #include <d3d11.h>
+    #include <dxgi.h>
+    #include <d3dcompiler.h>
+    #include <dxgiformat.h>
+    #include <dxgidebug.h>
 
 #include "../Dependencies/glad/glad/wgl.h"
 

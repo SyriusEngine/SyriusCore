@@ -20,7 +20,7 @@
                     HRESULT _hr = x;\
                     if (FAILED(_hr)){ \
                         CoreLogger::formatHresultMessage(_hr, #x, SR_FILE, SR_LINE); \
-                        CoreLogger::dxgiGetMessages() \
+                        CoreLogger::dxgiGetMessages(); \
                     } \
                 } while (0);
 
@@ -28,7 +28,7 @@
                 do { \
                     HRESULT _hr = x; \
                     if (FAILED(_hr)){                            \
-                        CoreLogger::dxgiGetMessages() \
+                        CoreLogger::dxgiGetMessages(); \
                         if (_hr == DXGI_ERROR_DEVICE_REMOVED){ \
                             CoreLogger::dxgiLogDeviceRemoved((device)->GetDeviceRemovedReason(), #x, SR_FILE, SR_LINE); \
                         } \

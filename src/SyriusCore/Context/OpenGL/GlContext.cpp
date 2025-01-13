@@ -150,7 +150,7 @@ namespace Syrius{
                 glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
                 #if defined(SR_COMPILER_MSVC)
-                    auto func = (GLDEBUGPROC) CoreLogger::openGLMessageCallbackk;
+                    auto func = (GLDEBUGPROC) CoreLogger::openGLMessageCallback;
                     glDebugMessageCallback(func, nullptr);
                 #else
                     glDebugMessageCallback(CoreLogger::openGLMessageCallback, nullptr);

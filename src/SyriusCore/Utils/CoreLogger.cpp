@@ -3,8 +3,8 @@
 namespace Syrius{
     
 #if defined(SR_COMPILER_MSVC)
-    uint64 DebugMessageHandler::m_DxgiMessageIndex = 0;
-    IDXGIInfoQueue* DebugMessageHandler::m_DxgiInfoQueue = nullptr;
+    u64 CoreLogger::m_DxgiMessageIndex = 0;
+    IDXGIInfoQueue* CoreLogger::m_DxgiInfoQueue = nullptr;
 #endif
 
     void CoreLogger::openGLMessageCallback(GLenum source, u32 type, u32 id, u32 severity, i32 length, const char* message, const void* userParam) {
@@ -144,14 +144,14 @@ namespace Syrius{
     }
 
 #if defined(SR_COMPILER_MSVC)
-    SR_CORE_MESSAGE_SEVERITY getSrMessageSeverity(DXGI_INFO_QUEUE_MESSAGE_SEVERITY severity){
+    SR_MESSAGE_SEVERITY getSrMessageSeverity(DXGI_INFO_QUEUE_MESSAGE_SEVERITY severity){
         switch (severity) {
-            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_INFO:         return SR_CORE_MESSAGE_SEVERITY_INFO;
-            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_MESSAGE:      return SR_CORE_MESSAGE_SEVERITY_LOW;
-            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING:      return SR_CORE_MESSAGE_SEVERITY_MEDIUM;
-            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR:        return SR_CORE_MESSAGE_SEVERITY_HIGH;
-            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION:   return SR_CORE_MESSAGE_SEVERITY_HIGH;
-            default:                                            return SR_CORE_MESSAGE_SEVERITY_HIGH;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_INFO:         return SR_MESSAGE_SEVERITY_INFO;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_MESSAGE:      return SR_MESSAGE_SEVERITY_LOW;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_WARNING:      return SR_MESSAGE_SEVERITY_MEDIUM;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR:        return SR_MESSAGE_SEVERITY_HIGH;
+            case DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION:   return SR_MESSAGE_SEVERITY_FATAL;
+            default:                                            return SR_MESSAGE_SEVERITY_INFO;
         }
     }
 
@@ -174,7 +174,7 @@ namespace Syrius{
         }
     }
 
-    void DebugMessageHandler::dxgiGetMessages(){
+    void CoreLogger::dxgiGetMessages(){
         static bool libLoaded = false;
         if (!libLoaded) {
             typedef HRESULT (WINAPI* DXGIGetDebugInterface)(REFIID, void**);
@@ -184,28 +184,27 @@ namespace Syrius{
                 if (dxgiGetDebugInterface){
                     HRESULT hr = dxgiGetDebugInterface(__uuidof(IDXGIInfoQueue), reinterpret_cast<void**>(&m_DxgiInfoQueue));
                     libLoaded = true;
-                    formatHresultMessage(hr, "DXGIGetDebugInterface", SR_CORE_FILE, SR_CORE_LINE);
+                    formatHresultMessage(hr, "DXGIGetDebugInterface", SR_FILE, SR_LINE);
                 }
             }
         }
 
         const auto end = m_DxgiInfoQueue->GetNumStoredMessages(DXGI_DEBUG_ALL);
-        for (uint64 i = m_DxgiMessageIndex; i < end; i++){
+        for (u64 i = m_DxgiMessageIndex; i < end; i++){
             Size messageLength = 0;
             m_DxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, nullptr, reinterpret_cast<SIZE_T *>(&messageLength));
             std::vector<byte> buffer(messageLength);
             auto message = reinterpret_cast<DXGI_INFO_QUEUE_MESSAGE*>(&buffer[0]);
             m_DxgiInfoQueue->GetMessage(DXGI_DEBUG_ALL, i, message, reinterpret_cast<SIZE_T *>(&messageLength));
 
-            Message msgStruct;
-            msgStruct.messageType = SR_CORE_MESSAGE_DXGI;
-            msgStruct.severity = getSrMessageSeverity(message->Severity);
-            msgStruct.message = "Code = " + std::to_string(message->ID) + ", Category = " + getDxgiCategoryAsString(message->Category) + ",\n message = " + std::string(message->pDescription);;
-            msgStruct.function = "DXGI_DEBUG_ALL";
-            msgStruct.file = "";
-            msgStruct.line = 0;
-            m_MessageHandler(msgStruct);
-
+            Message msg;
+            msg.source = "DXGI";
+            msg.severity = getSrMessageSeverity(message->Severity);
+            msg.message = "Code = " + std::to_string(message->ID) + ", Category = " + getDxgiCategoryAsString(message->Category) + ",\n message = " + std::string(message->pDescription);;
+            msg.function = "DXGI_DEBUG_ALL";
+            msg.file = "";
+            msg.line = 0;
+            Logger::logMessage(msg);
         }
         m_DxgiMessageIndex = end;
     }
