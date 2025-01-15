@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../../../include/SyriusCore/Window/SyriusWindow.hpp"
+#include <mutex>
 
-#include <GLFW/glfw3.h>
+#include "../../../include/SyriusCore/Window/SyriusWindow.hpp"
+#include "../Utils/PlatformInclude.hpp"
 
 #if !defined(SR_PLATFORM_WIN64)
 
@@ -13,6 +14,8 @@ namespace Syrius {
         explicit SyriusWindowGlfw3Impl(const WindowDesc& desc);
 
         ~SyriusWindowGlfw3Impl() override;
+
+        Event getNextEvent() override;
 
         void close() override;
 
@@ -61,6 +64,27 @@ namespace Syrius {
         std::string saveFileDialog(const std::string& fileName, const std::string& filter) override;
 
         ResourceView<Context> createContext(ContextDesc& desc) override;
+
+    private:
+
+        static void initGlfw();
+
+        static void positionCallback(GLFWwindow* window, int xpos, int ypos);
+
+        static void resizeCallback(GLFWwindow* window, int width, int height);
+
+        static void closeCallback(GLFWwindow* window);
+
+        static void refreshCallback(GLFWwindow* window);
+
+        static void focusCallback(GLFWwindow* window, int focused);
+
+    private:
+        // needed to check if we need to init/terminate glfw
+        static u64 m_GlfwWindowCount;
+        GLFWwindow* m_Window = nullptr;
+
+        std::mutex m_EventQueueMutex;
 
     };
 

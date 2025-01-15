@@ -44,4 +44,10 @@ namespace Syrius{
         droppedFilePath = filePath;
     }
 
+    WindowRefreshedEvent::WindowRefreshedEvent():
+    WindowEvent(SR_EVENT_WINDOW_REFRESHED){
+
+    }
+
+
 }

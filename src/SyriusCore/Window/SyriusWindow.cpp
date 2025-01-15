@@ -67,12 +67,6 @@ namespace Syrius{
         return !m_EventQueue.empty();
     }
 
-    Event SyriusWindow::getEvent() {
-        auto event = m_EventQueue[0];
-        m_EventQueue.pop_front();
-        return event;
-    }
-
     void SyriusWindow::createImGuiContext() {
         SR_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to create an ImGui context")
         SR_PRECONDITION(!m_UseImGui, "There exists already an ImGui context")
@@ -116,6 +110,12 @@ namespace Syrius{
             this->destroyImGuiContext();
         }
         m_Context.reset();
+    }
+
+    Event SyriusWindow::getNextEvent() {
+        auto event = m_EventQueue[0];
+        m_EventQueue.pop_front();
+        return event;
     }
 
 }

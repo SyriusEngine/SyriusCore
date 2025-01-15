@@ -53,7 +53,7 @@ void SyriusCoreDev::run() {
 void SyriusCoreDev::processEvents() {
     m_Window->pollEvents();
     while (m_Window->hasEvent()){
-        auto event = m_Window->getEvent();
+        auto event = m_Window->getNextEvent();
         if (m_Config["Window"]["PrintEventInfo"].getOrDefault<bool>(false)){
             printEventInfo(event);
         }

@@ -33,10 +33,9 @@
 
 #include "../Dependencies/glad/glad/wgl.h"
 
-#elif defined(SR_PLATFORM_LINUX)
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/keysym.h>
+#else
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
 #include <cstring>
 

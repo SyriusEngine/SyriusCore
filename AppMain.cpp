@@ -40,8 +40,26 @@ void runAllTests(const std::string& iniFile){
     runTest<CubeMapLayer>(iniFile, "CubeMap");
 }
 
+void quickAndDirty() {
+    WindowDesc wDesc;
+    wDesc.width = SR_DEFAULT_WIDTH;
+    wDesc.height = SR_DEFAULT_HEIGHT;
+    auto window = Syrius::createWindow(wDesc);
+
+    while (window->isOpen()) {
+        window->pollEvents();
+        while (window->hasEvent()) {
+            auto event = window->getNextEvent();
+            printEventInfo(event);
+
+        }
+    }
+}
+
 int main(int argc, char** argv) {
     try {
+        quickAndDirty();
+        return 0;
         if (argc < 2) {
             std::cerr << "Usage: " << argv[0] << " <config file>" << std::endl;
             return 1;

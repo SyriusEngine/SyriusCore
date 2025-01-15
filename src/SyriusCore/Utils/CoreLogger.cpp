@@ -1,5 +1,7 @@
 #include "CoreLogger.hpp"
 
+#include <sstream>
+
 namespace Syrius{
     
 #if defined(SR_COMPILER_MSVC)
@@ -9,7 +11,7 @@ namespace Syrius{
 
     void CoreLogger::openGLMessageCallback(GLenum source, u32 type, u32 id, u32 severity, i32 length, const char* message, const void* userParam) {
         Message msg;
-        msg.message = "usage = ";
+        msg.message = "Error Group = ";
         switch (type) {
             case GL_DEBUG_TYPE_ERROR:               msg.message += "Error"; break;
             case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: msg.message += "Deprecated Behaviour"; break;
@@ -209,6 +211,36 @@ namespace Syrius{
         m_DxgiMessageIndex = end;
     }
 #endif
+
+#else
+    void CoreLogger::glfwCallback(const int code, const char *description) {
+        std::stringstream ss;
+        ss << "Error = ";
+        switch (code) {
+            case GLFW_NO_ERROR:             ss << "GLFW_NO_ERROR";              break;
+            case GLFW_NOT_INITIALIZED:      ss << "GLFW_NOT_INITIALIZED";       break;
+            case GLFW_NO_CURRENT_CONTEXT:   ss << "GLFW_NO_CURRENT_CONTEXT";    break;
+            case GLFW_INVALID_ENUM:         ss << "GLFW_INVALID_ENUM";          break;
+            case GLFW_INVALID_VALUE:        ss << "GLFW_INVALID_VALUE";         break;
+            case GLFW_OUT_OF_MEMORY:        ss << "GLFW_OUT_OF_MEMORY";         break;
+            case GLFW_API_UNAVAILABLE:      ss << "GLFW_API_UNAVAILABLE";       break;
+            case GLFW_VERSION_UNAVAILABLE:  ss << "GLFW_VERSION_UNAVAILABLE";   break;
+            case GLFW_PLATFORM_ERROR:       ss << "GLFW_PLATFORM_ERROR";        break;
+            case GLFW_FORMAT_UNAVAILABLE:   ss << "GLFW_FORMAT_UNAVAILABLE";    break;
+            case GLFW_NO_WINDOW_CONTEXT:    ss << "GLFW_NO_WINDOW_CONTEXT";     break;
+            default:                        ss << "GLFW_UNKNOWN_ERROR";         break;
+        }
+        ss << " Code = " << code << " (0x" << std::hex << std::to_string(code) << ") ";
+        ss << "Description = " << description;
+
+        Message msg;
+        msg.source = "GLFW";
+        msg.message = ss.str();
+        msg.function = "glfwCallback";
+        msg.line = 0;
+        Logger::logMessage(msg);
+    }
+
 
 
 #endif

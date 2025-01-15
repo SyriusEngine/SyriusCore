@@ -1,14 +1,231 @@
 #include "SyriusWindowGlfw3Impl.hpp"
 
+#include "../Utils/CoreLogger.hpp"
+
 #if !defined(SR_PLATFORM_WIN64)
 
 namespace Syrius {
 
+    u64 SyriusWindowGlfw3Impl::m_GlfwWindowCount = 0;
+
     SyriusWindowGlfw3Impl::SyriusWindowGlfw3Impl(const WindowDesc &desc):
     SyriusWindow(desc){
+        initGlfw();
+
+        m_Window = glfwCreateWindow(desc.width, desc.height, desc.title.c_str(), nullptr, nullptr);
+        SR_LOG_THROW_IF_FALSE(m_Window != nullptr, "SyriusWindowGlfw3Impl", "Failed to create window: %s", desc.title.c_str());
+        m_Open = true;
+        glfwShowWindow(m_Window);
+        m_Focused = true;
+
+        /*
+         * Store a pointer to our window on the GLFW3 side.
+         * This pointer is used to forward events to the correct SyriusWindow.
+         */
+        glfwSetWindowUserPointer(m_Window, this);
+
+        // Fire WindowOpenedEvent
+        std::lock_guard lock(m_EventQueueMutex);
+        const WindowOpenedEvent event;
+        dispatchEvent(event);
+
+        // Then, set all window callbacks
+        glfwSetWindowPosCallback(m_Window, positionCallback);
+        glfwSetWindowSizeCallback(m_Window, resizeCallback);
+        glfwSetWindowCloseCallback(m_Window, closeCallback);
+        glfwSetWindowRefreshCallback(m_Window, refreshCallback);
+        glfwSetWindowFocusCallback(m_Window, focusCallback);
+
+        SR_POSTCONDITION(m_Window != nullptr, "Window creation failed!");
+        SR_POSTCONDITION(glfwGetWindowUserPointer(m_Window) == this, "Failed to store pointer to client window!");
+    }
+
+    SyriusWindowGlfw3Impl::~SyriusWindowGlfw3Impl() {
+        m_GlfwWindowCount--;
+        glfwDestroyWindow(m_Window);
+
+        if (m_GlfwWindowCount == 0) {
+            glfwTerminate();
+        }
+    }
+
+    Event SyriusWindowGlfw3Impl::getNextEvent() {
+        std::lock_guard lock(m_EventQueueMutex);
+
+        auto event = m_EventQueue[0];
+        m_EventQueue.pop_front();
+        return event;
+    }
+
+
+    void SyriusWindowGlfw3Impl::close() {
+        glfwWindowShouldClose(m_Window);
+    }
+
+    void SyriusWindowGlfw3Impl::setPosition(const i32 posX, const i32 posY) {
+        glfwSetWindowPos(m_Window, posX, posY);
+        m_PosX = posX;
+        m_PosY = posY;
+    }
+
+    void SyriusWindowGlfw3Impl::resize(const u32 newWidth, const u32 newHeight) {
+        glfwSetWindowSize(m_Window, static_cast<int>(newWidth), static_cast<int>(newHeight));
+    }
+
+    void SyriusWindowGlfw3Impl::requestFocus() {
+        glfwRequestWindowAttention(m_Window);
+    }
+
+    void SyriusWindowGlfw3Impl::enableFullscreen() {
 
     }
 
+    void SyriusWindowGlfw3Impl::disableFullscreen() {
+
+    }
+
+    void SyriusWindowGlfw3Impl::show() {
+        glfwShowWindow(m_Window);
+        m_Focused = true;
+    }
+
+    void SyriusWindowGlfw3Impl::hide() {
+        glfwHideWindow(m_Window);
+        m_Focused = false;
+    }
+
+    void SyriusWindowGlfw3Impl::setTitle(const std::string &newTitle) {
+        glfwSetWindowTitle(m_Window, newTitle.c_str());
+        m_Title = newTitle;
+    }
+
+    void SyriusWindowGlfw3Impl::setIcon(const ImageFileDesc &desc, u32 icons) {
+
+    }
+
+    void SyriusWindowGlfw3Impl::setIcon(const UP<Image> &image, u32 icons) {
+
+    }
+
+    void SyriusWindowGlfw3Impl::pollEvents() {
+        glfwPollEvents();
+    }
+
+    void SyriusWindowGlfw3Impl::setMousePosition(i32 mousePosX, i32 mousePosY) {
+
+    }
+
+    i32 SyriusWindowGlfw3Impl::getMousePositionX() {
+        return 0;
+    }
+
+    i32 SyriusWindowGlfw3Impl::getMousePositionY() {
+        return 0;
+    }
+
+    void SyriusWindowGlfw3Impl::hideMouse() {
+
+    }
+
+    void SyriusWindowGlfw3Impl::showMouse() {
+
+    }
+
+    void SyriusWindowGlfw3Impl::grabMouse() {
+
+    }
+
+    void SyriusWindowGlfw3Impl::releaseMouse() {
+
+    }
+
+    void SyriusWindowGlfw3Impl::centerWindow() {
+
+    }
+
+    void SyriusWindowGlfw3Impl::centerMouse() {
+
+    }
+
+    std::string SyriusWindowGlfw3Impl::openFileDialog(const std::string &filter) {
+        SR_LOG_WARNING("SyriusWindowGlfw3Impl", "Not Implemented");
+        return {};
+    }
+
+    std::string SyriusWindowGlfw3Impl::saveFileDialog(const std::string &fileName, const std::string &filter) {
+        SR_LOG_WARNING("SyriusWindowGlfw3Impl", "Not Implemented");
+        return {};
+    }
+
+    ResourceView<Context> SyriusWindowGlfw3Impl::createContext(ContextDesc &desc) {
+        return {};
+    }
+
+    void SyriusWindowGlfw3Impl::initGlfw() {
+        if (m_GlfwWindowCount == 0) {
+            SR_LOG_THROW_IF_FALSE(glfwInit(), "SyriusWindowGlfw3Impl", "Failed to initialize GLFW");
+
+            glfwSetErrorCallback(CoreLogger::glfwCallback);
+
+            // Log version
+            int major;
+            int minor;
+            int revision;
+            glfwGetVersion(&major, &minor, &revision);
+            SR_LOG_INFO("SyriusWindowGlfw3Impl", "GLFW3 initialised with version: %i.%i.%i", major, minor, revision);
+        }
+        m_GlfwWindowCount++;
+    }
+
+    void SyriusWindowGlfw3Impl::positionCallback(GLFWwindow *window, const int xpos, const int ypos) {
+        const auto syriusWindow = static_cast<SyriusWindowGlfw3Impl*>(glfwGetWindowUserPointer(window));
+        std::lock_guard lock(syriusWindow->m_EventQueueMutex);
+
+        const WindowMovedEvent event(xpos, ypos);
+        syriusWindow->dispatchEvent(event);
+    }
+
+    void SyriusWindowGlfw3Impl::resizeCallback(GLFWwindow *window, int width, int height) {
+        const auto syriusWindow = static_cast<SyriusWindowGlfw3Impl*>(glfwGetWindowUserPointer(window));
+        std::lock_guard lock(syriusWindow->m_EventQueueMutex);
+
+        syriusWindow->m_Width = width;
+        syriusWindow->m_Height = height;
+        const WindowResizedEvent event(width, height);
+        syriusWindow->dispatchEvent(event);
+
+    }
+
+    void SyriusWindowGlfw3Impl::closeCallback(GLFWwindow *window) {
+        const auto syriusWindow = static_cast<SyriusWindowGlfw3Impl*>(glfwGetWindowUserPointer(window));
+        std::lock_guard lock(syriusWindow->m_EventQueueMutex);
+
+        const WindowClosedEvent event;
+        syriusWindow->dispatchEvent(event);
+        syriusWindow->m_Open = false;
+    }
+
+    void SyriusWindowGlfw3Impl::refreshCallback(GLFWwindow *window) {
+        const auto syriusWindow = static_cast<SyriusWindowGlfw3Impl*>(glfwGetWindowUserPointer(window));
+        std::lock_guard lock(syriusWindow->m_EventQueueMutex);
+
+        const WindowRefreshedEvent event;
+        syriusWindow->dispatchEvent(event);
+    }
+
+    void SyriusWindowGlfw3Impl::focusCallback(GLFWwindow *window, const int focused) {
+        const auto syriusWindow = static_cast<SyriusWindowGlfw3Impl*>(glfwGetWindowUserPointer(window));
+        std::lock_guard lock(syriusWindow->m_EventQueueMutex);
+
+        if (focused == GLFW_TRUE) {
+            const WindowGainedFocusEvent event;
+            syriusWindow->dispatchEvent(event);
+        }
+        else {
+            const WindowLostFocusEvent event;
+            syriusWindow->dispatchEvent(event);
+        }
+    }
 
 }
 

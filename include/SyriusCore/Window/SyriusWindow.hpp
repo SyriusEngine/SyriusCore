@@ -63,8 +63,6 @@ namespace Syrius{
 
         [[nodiscard]] bool hasEvent() const;
 
-        Event getEvent();
-
         void createImGuiContext();
 
         void destroyImGuiContext();
@@ -74,6 +72,8 @@ namespace Syrius{
         void onImGuiEnd();
 
         void destroyContext();
+
+        virtual Event getNextEvent();
 
         virtual void close() = 0;
 
@@ -150,7 +150,6 @@ namespace Syrius{
 
         UP<Context> m_Context;
 
-    private:
         std::deque<Event> m_EventQueue;
     };
 

@@ -2,6 +2,10 @@
 
 #include "CoreLoggerDefs.hpp"
 
+#if !defined(SR_PLATFORM_WIN64)
+#include <GLFW/glfw3.h>
+#endif
+
 namespace Syrius{
 
     class CoreLogger{
@@ -24,6 +28,9 @@ namespace Syrius{
 #if defined(SR_COMPILER_MSVC)
         static void dxgiGetMessages();
 #endif
+
+#else
+        static void glfwCallback(int code, const char* description);
 
 #endif
 

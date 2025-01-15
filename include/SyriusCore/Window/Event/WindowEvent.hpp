@@ -49,5 +49,10 @@ namespace Syrius{
         explicit WindowFileDroppedEvent(const std::string& filePath);
     };
 
+    class SR_CORE_API WindowRefreshedEvent: public WindowEvent {
+    public:
+        WindowRefreshedEvent();
+    };
+
 }
 
