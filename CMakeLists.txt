@@ -52,10 +52,13 @@ if (WIN32)
     endif()
 
 elseif(UNIX)
+    # On UNIX, because X11 and Wayland are way more effort to implement, we use GLFW for this.
+    fetch_glfw()
+
     set(SYRIUS_CORE_LIBS
-        -lX11
-        -ldl
-        -lGL)
+        -lGL
+        glfw
+    )
 endif()
 
 add_compile_definitions(SR_CORE_DEBUG)
@@ -94,15 +97,12 @@ if (WIN32)
 
 elseif(UNIX)
     set(SYRIUS_CORE_PLATFORM_SRC
-        src/SyriusCore/Dependencies/glad/src/glx.c
-
         src/SyriusCore/Dependencies/imgui/imgui_impl_opengl3.cpp
 
-        src/SyriusCore/Window/SyriusWindowX11Impl.cpp
-        src/SyriusCore/Window/X11Utils.cpp
-
         src/SyriusCore/Context/OpenGL/Internal/GlxContext.cpp
-        )
+        src/SyriusCore/Window/SyriusWindowGlfw3Impl.cpp
+        src/SyriusCore/Window/SyriusWindowGlfw3Impl.hpp
+    )
 
 endif()
 
@@ -178,6 +178,7 @@ set(SYRIUS_CORE_SRC
     )
 
 add_library(SyriusCore SHARED ${SYRIUS_CORE_SRC})
+add_dependencies(SyriusCore glfw)
 target_include_directories(SyriusCore PUBLIC include)
 target_link_libraries(SyriusCore PUBLIC SyriusUtils)
 target_link_libraries(SyriusCore PRIVATE ${SYRIUS_CORE_LIBS})

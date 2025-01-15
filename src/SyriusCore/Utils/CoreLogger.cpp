@@ -210,19 +210,6 @@ namespace Syrius{
     }
 #endif
 
-#elif defined(SR_CORE_PLATFORM_LINUX)
-    int32 DebugMessageHandler::x11ErrorHandler(Display* display, XErrorEvent* event){
-        char buffer[1024];
-        XGetErrorText(display, event->error_code, buffer, sizeof(buffer));
-        Message msgStruct;
-        msgStruct.messageType = SR_CORE_MESSAGE_X11;
-        msgStruct.severity = SR_CORE_MESSAGE_SEVERITY_MEDIUM;
-        msgStruct.message = buffer;
-        msgStruct.function = "X11";
-        msgStruct.file = "";
-        msgStruct.line = 0;
-        m_MessageHandler(msgStruct);
-    }
 
 #endif
 

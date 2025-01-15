@@ -2,7 +2,7 @@
 #include "Utils/CoreLogger.hpp"
 
 #include "Window/SyriusWindowWin32Impl.hpp"
-#include "Window/SyriusWindowX11Impl.hpp"
+#include "Window/SyriusWindowGlfw3Impl.hpp"
 
 namespace Syrius {
 
@@ -10,9 +10,9 @@ namespace Syrius {
 #if defined(SR_PLATFORM_WIN64)
         auto ptr = new SyriusWindowWin32Impl(windowDesc);
         return UP<SyriusWindow>(ptr);
-#elif defined(SR_PLATFORM_LINUX)
-        auto ptr = new SyriusWindowX11Impl(windowDesc);
-        return Resource<SyriusWindow>(ptr);
+#else
+        // We fall back to the GLFW3 implementation
+        return createUP<SyriusWindowGlfw3Impl>(windowDesc);
 #endif
     }
 }
