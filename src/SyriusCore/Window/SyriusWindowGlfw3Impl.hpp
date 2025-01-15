@@ -69,6 +69,8 @@ namespace Syrius {
 
         static void initGlfw();
 
+        static void setWindowStyleHints(SR_WINDOW_STYLE style);
+
         static void positionCallback(GLFWwindow* window, int xpos, int ypos);
 
         static void resizeCallback(GLFWwindow* window, int width, int height);

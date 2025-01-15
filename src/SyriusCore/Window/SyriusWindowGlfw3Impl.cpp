@@ -11,6 +11,7 @@ namespace Syrius {
     SyriusWindowGlfw3Impl::SyriusWindowGlfw3Impl(const WindowDesc &desc):
     SyriusWindow(desc){
         initGlfw();
+        setWindowStyleHints(desc.style);
 
         m_Window = glfwCreateWindow(desc.width, desc.height, desc.title.c_str(), nullptr, nullptr);
         SR_LOG_THROW_IF_FALSE(m_Window != nullptr, "SyriusWindowGlfw3Impl", "Failed to create window: %s", desc.title.c_str());
@@ -177,6 +178,21 @@ namespace Syrius {
         m_GlfwWindowCount++;
     }
 
+    void SyriusWindowGlfw3Impl::setWindowStyleHints(const SR_WINDOW_STYLE style) {
+        if (style == SR_WINDOW_STYLE_DEFAULT) {
+            return; // don't set anything since this defaults to GLFW's default style
+        }
+        if (style == SR_WINDOW_STYLE_POPUP) {
+            glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+            return;
+        }
+
+        if (!(style & SR_WINDOW_STYLE_RESIZE)) {
+            glfwWindowHint(	GLFW_RESIZABLE, GLFW_FALSE);
+        }
+    }
+
+
     void SyriusWindowGlfw3Impl::positionCallback(GLFWwindow *window, const int xpos, const int ypos) {
         const auto syriusWindow = static_cast<SyriusWindowGlfw3Impl*>(glfwGetWindowUserPointer(window));
         std::lock_guard lock(syriusWindow->m_EventQueueMutex);
@@ -193,7 +209,6 @@ namespace Syrius {
         syriusWindow->m_Height = height;
         const WindowResizedEvent event(width, height);
         syriusWindow->dispatchEvent(event);
-
     }
 
     void SyriusWindowGlfw3Impl::closeCallback(GLFWwindow *window) {

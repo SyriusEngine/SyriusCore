@@ -44,6 +44,7 @@ void quickAndDirty() {
     WindowDesc wDesc;
     wDesc.width = SR_DEFAULT_WIDTH;
     wDesc.height = SR_DEFAULT_HEIGHT;
+    // wDesc.style = SR_WINDOW_STYLE_DEFAULT;
     auto window = Syrius::createWindow(wDesc);
 
     while (window->isOpen()) {
