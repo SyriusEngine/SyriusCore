@@ -7,6 +7,8 @@
 
 #if !defined(SR_PLATFORM_WIN64)
 
+#include "../Context/OpenGL/Internal/Glfw3glContext.hpp"
+
 namespace Syrius {
 
     class SyriusWindowGlfw3Impl: public SyriusWindow {
@@ -69,7 +71,9 @@ namespace Syrius {
 
         void createGlfwWindow();
 
-        void destroyGlfwWindow();
+        void destroyGlfwWindow() const;
+
+        void createOpenGLContext(ContextDesc& desc);
 
         static void initGlfw();
 

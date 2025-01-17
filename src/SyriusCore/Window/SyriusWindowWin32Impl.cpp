@@ -317,7 +317,9 @@ namespace Syrius{
                 break;
 
             default:
-                SR_LOG_WARNING("SyriusWindowWin32Impl", "cannot create context: unsupported API (%i)", desc.api);
+                SR_LOG_WARNING("SyriusWindowWin32Impl", "cannot create context: unsupported API (%i), fallback to OpenGL!", desc.api);
+                m_Context = UP<Context>(new WglContext(m_Hwnd, desc));
+                break;
         }
         return createResourceView(m_Context);
 

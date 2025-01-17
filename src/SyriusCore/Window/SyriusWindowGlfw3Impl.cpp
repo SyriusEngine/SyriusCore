@@ -143,7 +143,28 @@ namespace Syrius {
     }
 
     ResourceView<Context> SyriusWindowGlfw3Impl::createContext(ContextDesc &desc) {
-        return {};
+        /*
+         * Since GLFW does not allow for context creation AFTER window creation.
+         * We simply destroy the window and recreate it with the new context.
+         * This is not ideal, but it is the only way to do it with GLFW.
+         * Can cause flickering.
+         */
+        int width = 0;
+        int height = 0;
+        glfwGetFramebufferSize(m_Window, &width, &height);
+        desc.backBufferWidth = desc.backBufferWidth == 0 ? width : desc.backBufferWidth;
+        desc.backBufferHeight = desc.backBufferHeight == 0 ? height : desc.backBufferHeight;
+        switch (desc.api) {
+            case SR_API_OPENGL: {
+                Glfw3glContext::setGlfw3glContextHints(desc);
+
+            }
+            default: {
+                SR_LOG_WARNING("SyriusWindowGlfw3Impl", "cannot create context: unsupported API (%i), fallback to OpenGL!", desc.api);
+
+            }
+        }
+        return createResourceView(m_Context);
     }
 
     void SyriusWindowGlfw3Impl::createGlfwWindow() {
@@ -179,8 +200,20 @@ namespace Syrius {
         glfwSetScrollCallback(m_Window, mouseScrollCallback);
     }
 
-    void SyriusWindowGlfw3Impl::destroyGlfwWindow() {
+    void SyriusWindowGlfw3Impl::destroyGlfwWindow() const {
         glfwDestroyWindow(m_Window);
+    }
+
+    void SyriusWindowGlfw3Impl::createOpenGLContext(ContextDesc& desc) {
+        SR_PRECONDITION(desc.api == SR_API_OPENGL, "SyriusWindowGlfw3Impl", "Cannot create OpenGL context for api: %i", desc.api);
+
+        Glfw3glContext::setGlfw3glContextHints(desc);
+        int width = 0;
+        int height = 0;
+        glfwGetFramebufferSize(m_Window, &width, &height);
+        desc.backBufferWidth = desc.backBufferWidth == 0 ? width : desc.backBufferWidth;
+        desc.backBufferHeight = desc.backBufferHeight == 0 ? height : desc.backBufferHeight;
+        m_Context = createUP<Glfw3glContext>(m_Window, desc);
     }
 
     void SyriusWindowGlfw3Impl::initGlfw() {

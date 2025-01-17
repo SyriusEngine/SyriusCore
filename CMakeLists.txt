@@ -104,6 +104,8 @@ elseif(UNIX)
         src/SyriusCore/Window/SyriusWindowGlfw3Impl.hpp
         src/SyriusCore/Window/Glfw3Utils.cpp
         src/SyriusCore/Window/Glfw3Utils.hpp
+        src/SyriusCore/Context/OpenGL/Internal/Glfw3glContext.cpp
+        src/SyriusCore/Context/OpenGL/Internal/Glfw3glContext.hpp
     )
 
 endif()
