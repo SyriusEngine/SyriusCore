@@ -67,7 +67,13 @@ namespace Syrius {
 
     private:
 
+        void createGlfwWindow();
+
+        void destroyGlfwWindow();
+
         static void initGlfw();
+
+        static void terminateGlfw();
 
         static void setWindowStyleHints(SR_WINDOW_STYLE style);
 
@@ -80,6 +86,16 @@ namespace Syrius {
         static void refreshCallback(GLFWwindow* window);
 
         static void focusCallback(GLFWwindow* window, int focused);
+
+        static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+        static void keyTypedCallback(GLFWwindow* window, unsigned int codepoint);
+
+        static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+
+        static void mousePositionCallback(GLFWwindow* window, double xpos, double ypos);
+
+        static void mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 
     private:
         // needed to check if we need to init/terminate glfw

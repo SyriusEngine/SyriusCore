@@ -2,10 +2,6 @@
 
 #include "CoreLoggerDefs.hpp"
 
-#if !defined(SR_PLATFORM_WIN64)
-#include <GLFW/glfw3.h>
-#endif
-
 namespace Syrius{
 
     class CoreLogger{
