@@ -57,7 +57,6 @@ void quickAndDirty() {
         while (window->hasEvent()) {
             auto event = window->getNextEvent();
             printEventInfo(event);
-
         }
         context->setClearColor(glm::sin(t), glm::cos(t), 0.5);
         t += 0.1f;
