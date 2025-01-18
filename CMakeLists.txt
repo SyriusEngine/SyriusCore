@@ -98,10 +98,14 @@ if (WIN32)
 elseif(UNIX)
     set(SYRIUS_CORE_PLATFORM_SRC
         src/SyriusCore/Dependencies/imgui/imgui_impl_opengl3.cpp
+        src/SyriusCore/Dependencies/imgui/imgui_impl_glfw.cpp
+
+        src/SyriusCore/Window/SyriusWindowGlfw3Impl.cpp
+        src/SyriusCore/Window/Glfw3Utils.cpp
 
         src/SyriusCore/Context/OpenGL/Internal/GlxContext.cpp
-        src/SyriusCore/Window/SyriusWindowGlfw3Impl.cpp
-        src/SyriusCore/Window/SyriusWindowGlfw3Impl.hpp
+        src/SyriusCore/Context/OpenGL/Internal/Glfw3glContext.cpp
+        src/SyriusCore/Context/OpenGL/Internal/Glfw3glContext.hpp
     )
 
 endif()

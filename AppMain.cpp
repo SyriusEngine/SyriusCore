@@ -40,8 +40,46 @@ void runAllTests(const std::string& iniFile){
     runTest<CubeMapLayer>(iniFile, "CubeMap");
 }
 
+void quickAndDirty() {
+    WindowDesc wDesc;
+    wDesc.width = SR_DEFAULT_WIDTH;
+    wDesc.height = SR_DEFAULT_HEIGHT;
+    // wDesc.style = SR_WINDOW_STYLE_DEFAULT;
+    auto window = Syrius::createWindow(wDesc);
+    ContextDesc cDesc;
+    cDesc.api = SR_API_OPENGL;
+    auto context = window->createContext(cDesc);
+    context->setVerticalSynchronisation(true);
+
+    window->createImGuiContext();
+
+    float t = 0.0;
+    while (window->isOpen()) {
+        window->pollEvents();
+        while (window->hasEvent()) {
+            auto event = window->getNextEvent();
+            printEventInfo(event);
+        }
+        context->setClearColor(glm::sin(t), glm::cos(t), 0.5);
+        t += 0.1f;
+        context->clear();
+
+        window->onImGuiBegin();
+
+        ImGui::Begin("Debug");
+        ImGui::Text("Hello, world!");
+        ImGui::End();
+
+        window->onImGuiEnd();
+
+        context->swapBuffers();
+    }
+}
+
 int main(int argc, char** argv) {
     try {
+        quickAndDirty();
+        return 0;
         if (argc < 2) {
             std::cerr << "Usage: " << argv[0] << " <config file>" << std::endl;
             return 1;

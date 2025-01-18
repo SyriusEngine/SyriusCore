@@ -92,7 +92,7 @@ typedef int            stbrp_coord;
 // Mostly for internal use, but this is the maximum supported coordinate value.
 
 STBRP_DEF int stbrp_pack_rects (stbrp_context *context, stbrp_rect *rects, int num_rects);
-// Assign packed locations to rectangles. The rectangles are of usage
+// Assign packed locations to rectangles. The rectangles are of type
 // 'stbrp_rect' defined below, stored in the array 'rects', and there
 // are 'num_rects' many of them.
 //

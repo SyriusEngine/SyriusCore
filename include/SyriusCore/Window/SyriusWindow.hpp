@@ -146,8 +146,6 @@ namespace Syrius{
         bool m_KeyRepeat;
         bool m_UseImGui;
 
-        static u32 m_ImGuiInstances;
-
         UP<Context> m_Context;
 
         std::deque<Event> m_EventQueue;

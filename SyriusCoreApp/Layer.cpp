@@ -300,7 +300,8 @@ void Layer::imGuiTexturePanel(ResourceView<Texture2D> &texture) {
 
 
     imGuiBeginPanel("Texture Panel");
-    ImGui::Image((void*)(intptr_t)texture->getIdentifier(), ImVec2(64, 64));
+    // TODO: This broke when updating ImGui
+    // ImGui::Image((void*)(intptr_t)texture->getIdentifier(), ImVec2(64, 64));
     ImGui::ColorPicker4("Checkerboard Color", checkerBoardColor);
     if (ImGui::SliderInt("Start X", (int*)&checkerBoardStartX, 0, checkerBoardMaxWidth)){
         if (checkerBoardStartX + checkerBoardWidth <= checkerBoardMaxWidth){
