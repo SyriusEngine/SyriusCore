@@ -156,12 +156,12 @@ namespace Syrius {
         desc.backBufferHeight = desc.backBufferHeight == 0 ? height : desc.backBufferHeight;
         switch (desc.api) {
             case SR_API_OPENGL: {
-                Glfw3glContext::setGlfw3glContextHints(desc);
-
+                createOpenGLContext(desc);
+                break;
             }
             default: {
                 SR_LOG_WARNING("SyriusWindowGlfw3Impl", "cannot create context: unsupported API (%i), fallback to OpenGL!", desc.api);
-
+                createOpenGLContext(desc);
             }
         }
         return createResourceView(m_Context);
@@ -200,14 +200,20 @@ namespace Syrius {
         glfwSetScrollCallback(m_Window, mouseScrollCallback);
     }
 
-    void SyriusWindowGlfw3Impl::destroyGlfwWindow() const {
+    void SyriusWindowGlfw3Impl::destroyGlfwWindow() {
         glfwDestroyWindow(m_Window);
+        m_Window = nullptr; // Sanity
     }
 
     void SyriusWindowGlfw3Impl::createOpenGLContext(ContextDesc& desc) {
         SR_PRECONDITION(desc.api == SR_API_OPENGL, "SyriusWindowGlfw3Impl", "Cannot create OpenGL context for api: %i", desc.api);
 
+        // To create a new OpenGL context with the desired parameters from desc.
+        // We first destroy the old window, set our window creation hints
+        // Which includes OpenGL context hints, then create the window followed with our context creation.
+        destroyGlfwWindow();
         Glfw3glContext::setGlfw3glContextHints(desc);
+        createGlfwWindow();
         int width = 0;
         int height = 0;
         glfwGetFramebufferSize(m_Window, &width, &height);

@@ -71,7 +71,7 @@ namespace Syrius {
 
         void createGlfwWindow();
 
-        void destroyGlfwWindow() const;
+        void destroyGlfwWindow();
 
         void createOpenGLContext(ContextDesc& desc);
 

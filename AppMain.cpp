@@ -46,7 +46,12 @@ void quickAndDirty() {
     wDesc.height = SR_DEFAULT_HEIGHT;
     // wDesc.style = SR_WINDOW_STYLE_DEFAULT;
     auto window = Syrius::createWindow(wDesc);
+    ContextDesc cDesc;
+    cDesc.api = SR_API_OPENGL;
+    auto context = window->createContext(cDesc);
+    context->setVerticalSynchronisation(true);
 
+    float t = 0.0;
     while (window->isOpen()) {
         window->pollEvents();
         while (window->hasEvent()) {
@@ -54,6 +59,12 @@ void quickAndDirty() {
             printEventInfo(event);
 
         }
+        context->setClearColor(glm::sin(t), glm::cos(t), 0.5);
+        t += 0.1f;
+        context->clear();
+
+
+        context->swapBuffers();
     }
 }
 

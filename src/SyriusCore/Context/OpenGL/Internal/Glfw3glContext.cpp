@@ -7,12 +7,13 @@ namespace Syrius {
     Glfw3glContext::Glfw3glContext(GLFWwindow *window, const ContextDesc &desc):
     GlContext(desc),
     m_Window(window){
+        Glfw3glContext::makeCurrent();
         initGl(desc);
     }
 
     Glfw3glContext::~Glfw3glContext() {
         if (m_ImGuiContext){
-            destroyImGuiContext();
+            Glfw3glContext::destroyImGuiContext();
         }
         terminateGl();
 
@@ -20,7 +21,7 @@ namespace Syrius {
 
     void Glfw3glContext::setGlfw3glContextHints(const ContextDesc &desc) {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
         glfwWindowHint(GLFW_RED_BITS, desc.redBits);
