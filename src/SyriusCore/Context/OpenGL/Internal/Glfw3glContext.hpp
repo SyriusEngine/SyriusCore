@@ -2,7 +2,6 @@
 
 #include "../GlContext.hpp"
 #include "../../../../../include/SyriusCore/Dependencies/imgui/imgui.h"
-#include "../../../Dependencies/imgui/imgui_impl_opengl3.h"
 
 #if !defined(SR_PLATFORM_WIN64)
 

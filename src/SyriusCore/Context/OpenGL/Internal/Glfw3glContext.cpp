@@ -1,5 +1,8 @@
 #include "Glfw3glContext.hpp"
 
+#include "../../../Dependencies/imgui/imgui_impl_glfw.h"
+#include "../../../Dependencies/imgui/imgui_impl_opengl3.h"
+
 #if !defined(SR_PLATFORM_WIN64)
 
 namespace Syrius {
@@ -58,19 +61,48 @@ namespace Syrius {
     }
 
     void Glfw3glContext::createImGuiContext() {
+        SR_PRECONDITION(!m_ImGuiContext, "There exists already an ImGui context")
 
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+        ImGui::CreateContext();
+        ImGui::StyleColorsDark();
+        ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
+        ImGui_ImplOpenGL3_Init("#version 150");
+
+        m_ImGuiContext = ImGui::GetCurrentContext();
+
+        SR_POSTCONDITION(m_ImGuiContext, "Failed to create ImGui context");
     }
 
     void Glfw3glContext::destroyImGuiContext() {
+        SR_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
 
+        ImGui::SetCurrentContext(m_ImGuiContext);
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
+
+        m_ImGuiContext = nullptr;
     }
 
     void Glfw3glContext::onImGuiBegin() {
+        SR_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
 
+        ImGui::SetCurrentContext(m_ImGuiContext);
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
     }
 
     void Glfw3glContext::onImGuiEnd() {
+        SR_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
 
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 
 }

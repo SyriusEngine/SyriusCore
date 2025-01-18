@@ -51,6 +51,8 @@ void quickAndDirty() {
     auto context = window->createContext(cDesc);
     context->setVerticalSynchronisation(true);
 
+    window->createImGuiContext();
+
     float t = 0.0;
     while (window->isOpen()) {
         window->pollEvents();
@@ -62,6 +64,13 @@ void quickAndDirty() {
         t += 0.1f;
         context->clear();
 
+        window->onImGuiBegin();
+
+        ImGui::Begin("Debug");
+        ImGui::Text("Hello, world!");
+        ImGui::End();
+
+        window->onImGuiEnd();
 
         context->swapBuffers();
     }

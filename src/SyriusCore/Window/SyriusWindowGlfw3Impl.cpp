@@ -21,7 +21,13 @@ namespace Syrius {
     }
 
     SyriusWindowGlfw3Impl::~SyriusWindowGlfw3Impl() {
-        glfwDestroyWindow(m_Window);
+        destroyGlfwWindow();
+        if (m_Context) {
+            if (m_UseImGui){
+                destroyImGuiContext();
+            }
+            m_Context.reset(); // Destroy context BEFORE glfwTerminate
+        }
         terminateGlfw();
     }
 

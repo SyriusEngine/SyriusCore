@@ -68,6 +68,9 @@ namespace Syrius{
     }
 
     SyriusWindowWin32Impl::~SyriusWindowWin32Impl() {
+      	if (m_UseImGui){
+            destroyImGuiContext();
+        }
         if (m_Hwnd){
             DestroyWindow(m_Hwnd);
             m_Hwnd = nullptr;

@@ -3,32 +3,28 @@
 
 namespace Syrius{
 
-    u32 SyriusWindow::m_ImGuiInstances = 0;
-
-    SyriusWindow::SyriusWindow(const WindowDesc &desc)
-    : m_PosX(desc.xPos),
-      m_PosY(desc.yPos),
-      m_Width(desc.width),
-      m_Height(desc.height),
-      m_Title(desc.title),
-      m_Open(false),
-      m_Focused(false),
-      m_Moving(false),
-      m_Resizing(false),
-      m_MouseGrabbed(false),
-      m_MouseVisible(true),
-      m_Fullscreen(false),
-      m_MouseInside(false),
-      m_KeyRepeat(true),
-      m_UseImGui(false),
-      m_Context(nullptr){
+    SyriusWindow::SyriusWindow(const WindowDesc &desc):
+    m_PosX(desc.xPos),
+    m_PosY(desc.yPos),
+    m_Width(desc.width),
+    m_Height(desc.height),
+    m_Title(desc.title),
+    m_Open(false),
+    m_Focused(false),
+    m_Moving(false),
+    m_Resizing(false),
+    m_MouseGrabbed(false),
+    m_MouseVisible(true),
+    m_Fullscreen(false),
+    m_MouseInside(false),
+    m_KeyRepeat(true),
+    m_UseImGui(false),
+    m_Context(nullptr){
 
     }
 
     SyriusWindow::~SyriusWindow() {
-        if (m_UseImGui){
-            this->destroyImGuiContext();
-        }
+
     }
 
     i32 SyriusWindow::getPosX() const {
@@ -68,12 +64,17 @@ namespace Syrius{
     }
 
     void SyriusWindow::createImGuiContext() {
-        SR_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to create an ImGui context")
         SR_PRECONDITION(!m_UseImGui, "There exists already an ImGui context")
+
+        if (m_Context == nullptr){
+            SR_LOG_WARNING("SyriusWindow", "There is no context created, creating a default OpenGL context");
+            ContextDesc desc;
+            desc.api = SR_API_OPENGL;
+            createContext(desc);
+        }
 
         m_Context->createImGuiContext();
         m_UseImGui = true;
-        m_ImGuiInstances++;
     }
 
     void SyriusWindow::destroyImGuiContext() {
@@ -82,7 +83,6 @@ namespace Syrius{
 
         m_Context->destroyImGuiContext();
         m_UseImGui = false;
-        m_ImGuiInstances--;
     }
 
     void SyriusWindow::onImGuiBegin() {
