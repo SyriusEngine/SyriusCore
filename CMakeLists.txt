@@ -62,7 +62,6 @@ elseif(UNIX)
 endif()
 
 add_compile_definitions(SR_CORE_DEBUG)
-add_compile_definitions(SR_CORE_EXPORT_DLL)
 
 if (WIN32)
     set(SYRIUS_CORE_PLATFORM_SRC
@@ -189,40 +188,6 @@ target_include_directories(SyriusCore PUBLIC include)
 target_link_libraries(SyriusCore PUBLIC SyriusUtils)
 target_link_libraries(SyriusCore PRIVATE ${SYRIUS_CORE_LIBS})
 
-################### Syrius Core App ###################
-
-include_directories(/include/)
-include_directories(/glm/)
-link_directories(${CMAKE_CURRENT_BINARY_DIR})
-
-set(SYRIUS_CORE_APP_SRC
-    SyriusCoreApp/SyriusCoreDev.cpp
-    SyriusCoreApp/ShaderLibrary.cpp
-    SyriusCoreApp/Utils.cpp
-    SyriusCoreApp/Camera.cpp
-    SyriusCoreApp/Layer.cpp
-    SyriusCoreApp/Projection.cpp)
-
-set(SYRIUS_CORE_APP_LAYERS_SRC
-    ${SYRIUS_CORE_APP_SRC}
-    SyriusCoreApp/Layers/ImGuiLayer.cpp
-    SyriusCoreApp/Layers/VertexBufferLayer.cpp
-    SyriusCoreApp/Layers/IndexBufferLayer.cpp
-    SyriusCoreApp/Layers/VertexArrayLayer.cpp
-    SyriusCoreApp/Layers/ConstantBufferLayer.cpp
-    SyriusCoreApp/Layers/SamplerLayer.cpp
-    SyriusCoreApp/Layers/TextureLayer.cpp
-    SyriusCoreApp/Layers/DepthTestLayer.cpp
-    SyriusCoreApp/Layers/TextureAtlasLayer.cpp
-    SyriusCoreApp/Layers/FrameBufferLayer.cpp
-    SyriusCoreApp/Layers/ShaderLayer.cpp
-    SyriusCoreApp/Layers/CubeMapLayer.cpp
-)
-
-add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
-add_dependencies(SyriusCoreApp SyriusCore)
-target_link_libraries(SyriusCoreApp SyriusCore)
-
 ################### Testing ###################
 set(SR_CORE_TEST_SRC
     Tests/Utils/ConversionsTest.cpp
@@ -249,7 +214,7 @@ set(SR_CORE_TEST_SRC
 
 if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTS)
     # Add GTest
-    FETCH_GTEST()
+    fetch_gtest()
 
     message(STATUS "Building tests")
 
@@ -259,5 +224,40 @@ if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTS)
     target_link_libraries(SyriusCoreTest PUBLIC SyriusUtils)
     target_link_libraries(SyriusCoreTest PRIVATE ${SYRIUS_CORE_LIBS} GTest::gtest)
 endif ()
+
+################### Syrius Core App ###################
+
+set(SYRIUS_CORE_APP_SRC
+    SyriusCoreApp/SyriusCoreDev.cpp
+    SyriusCoreApp/ShaderLibrary.cpp
+    SyriusCoreApp/Utils.cpp
+    SyriusCoreApp/Camera.cpp
+    SyriusCoreApp/Layer.cpp
+    SyriusCoreApp/Projection.cpp)
+
+set(SYRIUS_CORE_APP_LAYERS_SRC
+    ${SYRIUS_CORE_APP_SRC}
+    SyriusCoreApp/Layers/ImGuiLayer.cpp
+    SyriusCoreApp/Layers/VertexBufferLayer.cpp
+    SyriusCoreApp/Layers/IndexBufferLayer.cpp
+    SyriusCoreApp/Layers/VertexArrayLayer.cpp
+    SyriusCoreApp/Layers/ConstantBufferLayer.cpp
+    SyriusCoreApp/Layers/SamplerLayer.cpp
+    SyriusCoreApp/Layers/TextureLayer.cpp
+    SyriusCoreApp/Layers/DepthTestLayer.cpp
+    SyriusCoreApp/Layers/TextureAtlasLayer.cpp
+    SyriusCoreApp/Layers/FrameBufferLayer.cpp
+    SyriusCoreApp/Layers/ShaderLayer.cpp
+    SyriusCoreApp/Layers/CubeMapLayer.cpp
+    )
+
+if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_APP)
+    fetch_glm()
+    message(STATUS "Building example App")
+    add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
+    add_dependencies(SyriusCoreApp SyriusCore)
+    target_link_libraries(SyriusCoreApp SyriusCore glm::glm)
+endif()
+
 
 
