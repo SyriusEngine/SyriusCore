@@ -178,7 +178,9 @@ set(SYRIUS_CORE_SRC
     )
 
 add_library(SyriusCore SHARED ${SYRIUS_CORE_SRC})
-add_dependencies(SyriusCore glfw)
+if (UNIX)
+    add_dependencies(SyriusCore glfw)
+endif()
 target_include_directories(SyriusCore PUBLIC include)
 target_link_libraries(SyriusCore PUBLIC SyriusUtils)
 target_link_libraries(SyriusCore PRIVATE ${SYRIUS_CORE_LIBS})
