@@ -61,8 +61,6 @@ elseif(UNIX)
     )
 endif()
 
-add_compile_definitions(SR_CORE_DEBUG)
-
 if (WIN32)
     set(SYRIUS_CORE_PLATFORM_SRC
         src/SyriusCore/Dependencies/glad/src/wgl.c

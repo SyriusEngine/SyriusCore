@@ -139,7 +139,7 @@ namespace Syrius{
 
             SR_LOG_THROW_IF_FALSE(version != 0, "GlContext", "Failed to initialize Glad")
 
-            #if defined(SR_CORE_DEBUG)
+            #if defined(SR_DEBUG)
                 const i32 major = GLAD_VERSION_MAJOR(version);
                 const i32 minor = GLAD_VERSION_MINOR(version);
                 SR_LOG_INFO("GlContext", "Glad Initialized for OpenGL %i.%i", major, minor)

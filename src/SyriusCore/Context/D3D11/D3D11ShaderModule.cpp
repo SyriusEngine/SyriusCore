@@ -59,7 +59,7 @@ namespace Syrius{
 
         u32 flags = D3DCOMPILE_ENABLE_STRICTNESS;
 
-#if defined(SR_CORE_DEBUG)
+#if defined(SR_DEBUG)
         flags |= D3DCOMPILE_DEBUG | D3DCOMPILE_WARNINGS_ARE_ERRORS;
 #else
         flags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
