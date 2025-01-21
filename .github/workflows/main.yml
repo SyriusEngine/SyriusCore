@@ -1,0 +1,47 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build-unix:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: sudo apt-get install -y cmake git
+
+    - name: Set up ${{ matrix.compiler }}
+      uses: rlalik/setup-cpp-compiler@master
+      with:
+        compiler: ${{ matrix.compiler }}
+
+    - name: Compile with ${{ matrix.compiler }}
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DBUILD_TESTS=on -DCMAKE_C_COMPILER=${{ matrix.compiler }}
+        make
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: choco install cmake git
+
+    - name: Compile with MSVC
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DBUILD_TESTS=on
+        cmake --build . --config Release
