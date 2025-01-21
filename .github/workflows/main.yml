@@ -26,7 +26,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake .. -DBUILD_TESTS=on -DCMAKE_C_COMPILER=${{ matrix.compiler }}
+        cmake .. -DBUILD_TESTS=on -DCMAKE_C_COMPILER=${{ matrix.compiler }} -DGLFW_USE_WAYLAND=off -DGLFW_BUILD_EXAMPLES=off -DGLFW_BUILD_TESTS=off -DGLFW_BUILD_DOCS=off -DGLFW_LIBRARY_TYPE=HEADLESS
         make
 
   build-windows:
