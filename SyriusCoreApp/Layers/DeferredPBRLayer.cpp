@@ -117,6 +117,8 @@ void DeferredPBRLayer::onUpdate() {
     m_GBuffer->getColorAttachment(3)->bindShaderResource(3);
     m_Context->draw(m_ScreenRectangle);
 
+    m_Context->endRenderPass();
+
     renderImGui();
 }
 
@@ -130,6 +132,11 @@ void DeferredPBRLayer::imGuiGBufferPanel() {
     if (ImGui::Checkbox("Depth Test", &depthTest)){
         m_GBuffer->enableDepthTest(depthTest);
     }
+    auto positionClearColor = m_GBuffer->getColorAttachment(0)->getClearColor();
+    if (ImGui::ColorPicker3("Positions Color", positionClearColor)){
+        m_GBuffer->getColorAttachment(0)->setClearColor(positionClearColor[0], positionClearColor[1], positionClearColor[2], 1.0f);
+    }
+
 
     imGuiEndPanel();
 }

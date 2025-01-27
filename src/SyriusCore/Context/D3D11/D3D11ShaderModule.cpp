@@ -80,7 +80,7 @@ namespace Syrius{
 
         if (exceptionBlob){
             auto msg = static_cast<const char*>(exceptionBlob->GetBufferPointer());
-            SR_LOG_WARNING("D3D11ShaderModule", "Failed to compile shader, type = %S, error = %s", getShaderTypeString(m_ShaderType).c_str(), msg);
+            SR_LOG_WARNING("D3D11ShaderModule", "Failed to compile shader, type = %s, error = %s", getShaderTypeString(m_ShaderType).c_str(), msg);
 
             exceptionBlob->Release();
         }

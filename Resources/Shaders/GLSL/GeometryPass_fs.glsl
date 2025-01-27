@@ -24,10 +24,10 @@ layout(std140, binding = 4) uniform TextureParameters {
 };
 
 void main() {
-    vec4 albedo = texture(albedoTex, fs_in.texCoords  * scale);
-    vec4 normalTexel = texture(normalTex, fs_in.texCoords  * scale);
-    vec4 metallic = texture(metallicTex, fs_in.texCoords  * scale);
-    vec4 roughness = texture(roughnessTex, fs_in.texCoords  * scale);
+    vec4 albedo = texture(albedoTex, fs_in.texCoords * scale);
+    vec4 normalTexel = texture(normalTex, fs_in.texCoords * scale);
+    vec4 metallic = texture(metallicTex, fs_in.texCoords * scale);
+    vec4 roughness = texture(roughnessTex, fs_in.texCoords * scale);
     vec4 ao = texture(aoTex, fs_in.texCoords  * scale);
 
     vec3 transformedNormal = normalTexel.xyz * 2.0 - 1.0;
