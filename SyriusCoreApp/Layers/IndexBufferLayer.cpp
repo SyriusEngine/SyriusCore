@@ -45,6 +45,7 @@ IndexBufferLayer::~IndexBufferLayer() = default;
 void IndexBufferLayer::onUpdate() {
     Layer::onUpdate();
 
+    m_Context->clear();
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();

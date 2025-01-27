@@ -64,6 +64,7 @@ DepthTestLayer::~DepthTestLayer() = default;
 
 void DepthTestLayer::onUpdate() {
     // render
+    m_Context->clear();
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();

@@ -42,41 +42,44 @@ void runAllTests(const std::string& iniFile){
 
 int main(int argc, char** argv) {
     try {
+        std::string configFile = "config.ini";
         if (argc < 2) {
             std::cerr << "Usage: " << argv[0] << " <config file>" << std::endl;
-            return 1;
+        }
+        else{
+            configFile = argv[1];
         }
         if (argc == 2){
-            runAllTests(argv[1]);
+            runAllTests(configFile);
         }
         for (int i = 2; i < argc; ++i) {
             std::string arg = argv[i];
             if (arg == "ImGui") {
-                runTest<ImGuiLayer>(argv[1], arg);
+                runTest<ImGuiLayer>(configFile, arg);
             } else if (arg == "VertexBuffer") {
-                runTest<VertexBufferLayer>(argv[1], arg);
+                runTest<VertexBufferLayer>(configFile, arg);
             } else if (arg == "IndexBuffer") {
-                runTest<IndexBufferLayer>(argv[1], arg);
+                runTest<IndexBufferLayer>(configFile, arg);
             } else if (arg == "VertexArray") {
-                runTest<VertexArrayLayer>(argv[1], arg);
+                runTest<VertexArrayLayer>(configFile, arg);
             } else if (arg == "Shader") {
-                runTest<ShaderLayer>(argv[1], arg);
+                runTest<ShaderLayer>(configFile, arg);
             } else if (arg == "ConstantBuffer") {
-                runTest<ConstantBufferLayer>(argv[1], arg);
+                runTest<ConstantBufferLayer>(configFile, arg);
             } else if (arg == "Sampler") {
-                runTest<SamplerLayer>(argv[1], arg);
+                runTest<SamplerLayer>(configFile, arg);
             } else if (arg == "Texture") {
-                runTest<TextureLayer>(argv[1], arg);
+                runTest<TextureLayer>(configFile, arg);
             } else if (arg == "DepthTest") {
-                runTest<DepthTestLayer>(argv[1], arg);
+                runTest<DepthTestLayer>(configFile, arg);
             } else if (arg == "TextureAtlas") {
-                runTest<TextureAtlasLayer>(argv[1], arg);
+                runTest<TextureAtlasLayer>(configFile, arg);
             } else if (arg == "FrameBuffer") {
-                runTest<FrameBufferLayer>(argv[1], arg);
+                runTest<FrameBufferLayer>(configFile, arg);
             } else if (arg == "CubeMap") {
-                runTest<CubeMapLayer>(argv[1], arg);
+                runTest<CubeMapLayer>(configFile, arg);
             } else if (arg == "All") {
-                runAllTests(argv[1]);
+                runAllTests(configFile);
             }
             else {
                 std::cerr << "Unknown test: " << arg << std::endl;

@@ -53,6 +53,7 @@ void ShaderLayer::onUpdate() {
     }
     m_ParameterBuffer->setData(&m_Params, sizeof(Parameters));
 
+    m_Context->clear();
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();

@@ -48,6 +48,7 @@ void CubeMapLayer::onUpdate() {
     Layer::onUpdate();
 
     // render
+    m_Context->clear();
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();

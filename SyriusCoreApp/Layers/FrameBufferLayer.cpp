@@ -95,6 +95,7 @@ void FrameBufferLayer::onUpdate() {
     Layer::onUpdate();
 
     // render pass 1
+    m_FrameBuffer->clear();
     m_Context->beginRenderPass(m_FrameBuffer);
 
     m_ShaderProgram.shaderProgram->bind();
@@ -110,6 +111,7 @@ void FrameBufferLayer::onUpdate() {
     m_Context->endRenderPass(m_FrameBuffer);
 
     // render pass 2
+    m_Context->clear();
     m_Context->beginRenderPass();
     switch (m_SelectedTexture) {
         case 0: m_FrameBuffer->getColorAttachment(0)->bindShaderResource(0); break;
