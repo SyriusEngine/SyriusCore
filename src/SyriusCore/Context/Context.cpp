@@ -46,14 +46,12 @@ namespace Syrius{
 
     void Context::beginRenderPass(const ResourceView<FrameBuffer> &frameBuffer) {
         frameBuffer->bind();
-        frameBuffer->clear();
     }
 
     void Context::beginRenderPass() {
         SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
 
         m_FrameBuffers[0]->bind();
-        m_FrameBuffers[0]->clear();
     }
 
     void Context::endRenderPass(const ResourceView<FrameBuffer> &frameBuffer) {
