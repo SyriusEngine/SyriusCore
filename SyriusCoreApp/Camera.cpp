@@ -30,7 +30,7 @@ m_Enable(false){
 
 Camera::~Camera() = default;
 
-void Camera::update(const Event &event, float deltaTime) {
+void Camera::update(const Event &event, double deltaTime) {
     switch (event.type) {
         case SR_EVENT_RAW_MOUSE_MOVED: {
             auto xPos = static_cast<float>(event.mousePosX);
@@ -88,7 +88,7 @@ void Camera::mouseMoved(float mousePosX, float mousePosY) {
     updateCameraData();
 }
 
-void Camera::move(i32 keyPressed, time_t deltaTime) {
+void Camera::move(i32 keyPressed, double deltaTime) {
     float velocity = static_cast<float>(deltaTime) * m_Speed;
     switch (keyPressed) {
         case SR_KEY_W:  m_Position += m_Front * velocity; break;

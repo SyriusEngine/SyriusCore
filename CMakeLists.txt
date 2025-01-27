@@ -231,7 +231,7 @@ set(SYRIUS_CORE_APP_SRC
     SyriusCoreApp/Utils.cpp
     SyriusCoreApp/Camera.cpp
     SyriusCoreApp/Layer.cpp
-    SyriusCoreApp/Projection.cpp)
+    SyriusCoreApp/Projection.cpp SyriusCoreApp/Material.cpp SyriusCoreApp/Material.hpp)
 
 set(SYRIUS_CORE_APP_LAYERS_SRC
     ${SYRIUS_CORE_APP_SRC}
@@ -247,7 +247,7 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
     SyriusCoreApp/Layers/FrameBufferLayer.cpp
     SyriusCoreApp/Layers/ShaderLayer.cpp
     SyriusCoreApp/Layers/CubeMapLayer.cpp
-    )
+    SyriusCoreApp/Layers/DeferredPBRLayer.cpp)
 
 if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_APP)
     fetch_glm()

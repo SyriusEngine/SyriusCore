@@ -11,6 +11,7 @@
 #include "SyriusCoreApp/Layers/FrameBufferLayer.hpp"
 #include "SyriusCoreApp/Layers/ShaderLayer.hpp"
 #include "SyriusCoreApp/Layers/CubeMapLayer.hpp"
+#include "SyriusCoreApp/Layers/DeferredPBRLayer.hpp"
 
 template<typename T>
 void runTest(const std::string& iniFile, const std::string& windowTitle){
@@ -38,6 +39,7 @@ void runAllTests(const std::string& iniFile){
     runTest<TextureAtlasLayer>(iniFile, "TextureAtlas");
     runTest<FrameBufferLayer>(iniFile, "FrameBuffer");
     runTest<CubeMapLayer>(iniFile, "CubeMap");
+    runTest<DeferredPBRLayer>(iniFile, "DeferredPBR");
 }
 
 int main(int argc, char** argv) {
@@ -80,6 +82,8 @@ int main(int argc, char** argv) {
                 runTest<CubeMapLayer>(configFile, arg);
             } else if (arg == "All") {
                 runAllTests(configFile);
+            } else if (arg == "DeferredPBR") {
+                runTest<DeferredPBRLayer>(configFile, arg);
             }
             else {
                 std::cerr << "Unknown test: " << arg << std::endl;

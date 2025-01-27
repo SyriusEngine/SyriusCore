@@ -63,6 +63,8 @@ m_Projection(context, window->getWidth(), window->getHeight()){
 DepthTestLayer::~DepthTestLayer() = default;
 
 void DepthTestLayer::onUpdate() {
+    Layer::onUpdate();
+
     // render
     m_Context->clear();
     m_Context->beginRenderPass();

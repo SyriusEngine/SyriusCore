@@ -9,7 +9,7 @@ public:
 
     ~Camera();
 
-    void update(const Event& event, float deltaTime);
+    void update(const Event& event, double deltaTime);
 
     void bind(u32 slot);
 
@@ -23,7 +23,7 @@ private:
 
     void mouseMoved(float mousePosX, float mousePosY);
 
-    void move(i32 keyPressed, time_t deltaTime);
+    void move(i32 keyPressed, double deltaTime);
 
 private:
     bool m_Enable;
