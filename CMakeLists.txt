@@ -236,13 +236,11 @@ set(SYRIUS_CORE_APP_SRC
     SyriusCoreApp/Projection.cpp)
 
 set(SYRIUS_CORE_APP_COMPONENTS
-    SyriusCoreApp/Components/DebugInfo.cpp)
+    SyriusCoreApp/Components/DebugInfo.cpp
+    SyriusCoreApp/Components/RectangleVBO.cpp
+    SyriusCoreApp/Components/RectangleVAO.cpp )
 
 set(SYRIUS_CORE_APP_LAYERS_SRC
-    SyriusCoreApp/Layers/ImGuiLayer.cpp
-    SyriusCoreApp/Layers/VertexBufferLayer.cpp
-    SyriusCoreApp/Layers/IndexBufferLayer.cpp
-    SyriusCoreApp/Layers/VertexArrayLayer.cpp
     SyriusCoreApp/Layers/ConstantBufferLayer.cpp
     SyriusCoreApp/Layers/SamplerLayer.cpp
     SyriusCoreApp/Layers/TextureLayer.cpp

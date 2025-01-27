@@ -46,17 +46,21 @@ void SyriusCoreApp::run() {
         processEvents();
 
         m_Context->clear();
+        m_Context->beginRenderPass();
         for (const auto& component: m_Components) {
             component->onRender();
         }
+        m_Context->endRenderPass();
 
         if (m_EnableImGui){
+            m_Context->beginRenderPass();
             ImGuiSizeData sizeData;
             m_Window->onImGuiBegin();
             for (const auto& component: m_Components) {
                 component->onImGuiRender(sizeData);
             }
             m_Window->onImGuiEnd();
+            m_Context->endRenderPass();
         }
 
         m_Context->swapBuffers();

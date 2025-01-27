@@ -9,6 +9,12 @@ struct ImGuiSizeData{
     float nextHeight = 0.0f;
 };
 
+struct Drawable{
+    ResourceView<VertexArray> vertexArray;
+    ResourceView<VertexBuffer> vertexBuffer;
+    ResourceView<IndexBuffer> indexBuffer;
+};
+
 class AppComponent{
 public:
     AppComponent() = delete;
@@ -24,7 +30,7 @@ public:
 protected:
     AppComponent(UP<SyriusWindow>& window, ResourceView<Context>& context);
 
-    ResourceView<VertexArray> loadMesh(Mesh &mesh, ShaderProgram &program);
+    Drawable loadMesh(Mesh &mesh, ShaderProgram &program, SR_BUFFER_USAGE usage = SR_BUFFER_USAGE_DEFAULT);
 
     ShaderProgram loadShader(const std::string& vertexShader, const std::string& fragmentShader = "");
 

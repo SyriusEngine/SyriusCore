@@ -18,7 +18,8 @@ m_Window(window){
 
 }
 
-ResourceView<VertexArray> AppComponent::loadMesh(Mesh &mesh, ShaderProgram &program) {
+Drawable AppComponent::loadMesh(Mesh &mesh, ShaderProgram &program, SR_BUFFER_USAGE usage) {
+    Drawable drawable;
     auto layout = m_Context->createVertexLayout();
     layout->addAttribute("Position", SR_FLOAT32_3);
     layout->addAttribute("Color", SR_FLOAT32_3);
@@ -27,27 +28,27 @@ ResourceView<VertexArray> AppComponent::loadMesh(Mesh &mesh, ShaderProgram &prog
     layout->addAttribute("TexCoord", SR_FLOAT32_2);
 
     VertexBufferDesc vboDesc;
-    vboDesc.usage = SR_BUFFER_USAGE_DEFAULT;
+    vboDesc.usage = usage;
     vboDesc.data = &mesh.vertices[0];
     vboDesc.layout = layout;
     vboDesc.count = mesh.vertices.size();
-    auto vbo = m_Context->createVertexBuffer(vboDesc);
+    drawable.vertexBuffer = m_Context->createVertexBuffer(vboDesc);
 
     IndexBufferDesc iboDesc;
     iboDesc.data = &mesh.indices[0];
     iboDesc.count = mesh.indices.size();
-    iboDesc.usage = SR_BUFFER_USAGE_DEFAULT;
+    iboDesc.usage = usage;
     iboDesc.dataType = SR_UINT32;
-    auto ibo = m_Context->createIndexBuffer(iboDesc);
+    drawable.indexBuffer = m_Context->createIndexBuffer(iboDesc);
 
     VertexArrayDesc vaoDesc;
     vaoDesc.drawMode = SR_DRAW_TRIANGLES;
     vaoDesc.vertexShader = program.vertexShader;
-    vaoDesc.vertexBuffer = vbo;
-    vaoDesc.indexBuffer = ibo;
-    auto vao = m_Context->createVertexArray(vaoDesc);
+    vaoDesc.vertexBuffer = drawable.vertexBuffer;
+    vaoDesc.indexBuffer = drawable.indexBuffer;
+    drawable.vertexArray = m_Context->createVertexArray(vaoDesc);
 
-    return vao;
+    return drawable;
 }
 
 ShaderProgram AppComponent::loadShader(const std::string& vertexShader, const std::string& fragmentShader){
