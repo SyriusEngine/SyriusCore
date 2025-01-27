@@ -226,15 +226,19 @@ endif ()
 ################### Syrius Core App ###################
 
 set(SYRIUS_CORE_APP_SRC
+    SyriusCoreApp/SyriusCoreApp.cpp
     SyriusCoreApp/SyriusCoreDev.cpp
     SyriusCoreApp/ShaderLibrary.cpp
+    SyriusCoreApp/AppComponent.cpp
     SyriusCoreApp/Utils.cpp
     SyriusCoreApp/Camera.cpp
     SyriusCoreApp/Layer.cpp
     SyriusCoreApp/Projection.cpp)
 
+set(SYRIUS_CORE_APP_COMPONENTS
+    SyriusCoreApp/Components/DebugInfo.cpp)
+
 set(SYRIUS_CORE_APP_LAYERS_SRC
-    ${SYRIUS_CORE_APP_SRC}
     SyriusCoreApp/Layers/ImGuiLayer.cpp
     SyriusCoreApp/Layers/VertexBufferLayer.cpp
     SyriusCoreApp/Layers/IndexBufferLayer.cpp
@@ -252,7 +256,7 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
 if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_APP)
     fetch_glm()
     message(STATUS "Building example App")
-    add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
+    add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_SRC} ${SYRIUS_CORE_APP_LAYERS_SRC} ${SYRIUS_CORE_APP_COMPONENTS})
     add_dependencies(SyriusCoreApp SyriusCore)
     target_link_libraries(SyriusCoreApp SyriusCore glm::glm)
 endif()

@@ -102,11 +102,16 @@ namespace Syrius{
 
         if (nullptr != errorText) {
             Message msg;
-            msg.message = "Code = " + std::to_string(hr) + ", message = " + std::string(errorText);
 
+            msg.message = "Code = " + std::to_string(hr) + ", message = " + std::string(errorText);
             LocalFree(errorText);
             errorText = nullptr;
-            msg.severity = SR_MESSAGE_SEVERITY_UNKNOWN;
+            if (hr == 0) {
+                msg.severity = SR_MESSAGE_SEVERITY_INFO;
+            }
+            else {
+                msg.severity = SR_MESSAGE_SEVERITY_UNKNOWN; // If HR is not null, we know that something went wrong, but to what extend?
+            }
             msg.source = "HRESULT";
             msg.function = function;
             msg.file = file;
