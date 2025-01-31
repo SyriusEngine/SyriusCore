@@ -1,5 +1,7 @@
 #include "DeferredPBRLayer.hpp"
 
+static bool depthTest = true;
+
 DeferredPBRLayer::DeferredPBRLayer(ResourceView<Context>& context, const UP<SyriusWindow>& window, EasyIni::Configuration& config) :
 Layer(context, window, config),
 m_Material(context, "chipped-paint-metal"),
@@ -54,6 +56,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     dsDesc.width = m_Context->getWidth();
     dsDesc.height = m_Context->getHeight();
     dsDesc.clearDepth = 1.0f;
+    dsDesc.enableDepthTest = depthTest;
     fbLayout->addDepthStencilAttachmentDesc(dsDesc);
     m_GBuffer = m_Context->createFrameBuffer(fbLayout);
 
@@ -119,7 +122,7 @@ void DeferredPBRLayer::onUpdate() {
 
     m_Context->endRenderPass();
 
-    renderImGui();
+   // renderImGui();
 }
 
 void DeferredPBRLayer::onEvent(const Event &event) {
@@ -127,7 +130,6 @@ void DeferredPBRLayer::onEvent(const Event &event) {
 }
 
 void DeferredPBRLayer::imGuiGBufferPanel() {
-    static bool depthTest = false;
     imGuiBeginPanel("GBuffer");
     if (ImGui::Checkbox("Depth Test", &depthTest)){
         m_GBuffer->enableDepthTest(depthTest);

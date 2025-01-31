@@ -28,7 +28,6 @@ Texture2D aoTex: register(t4);
 
 PS_OUT main(PS_IN psIn){
     float2 texCoords = psIn.texCoords * scale;
-    texCoords.y = 1.0f - texCoords.y;
 
     float4 albedo = albedoTex.Sample(splr, texCoords);
     float4 normalTexel = normalTex.Sample(splr, texCoords);

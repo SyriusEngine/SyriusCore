@@ -19,6 +19,7 @@ cbuffer TransformData: register(b0){
 
 cbuffer CameraData: register(b1){
     matrix<float, 4, 4> view;
+    float4 cameraPos;
 };
 
 cbuffer ProjectionData: register(b2){

@@ -50,16 +50,15 @@ float geometrySmith(float3 normal, float3 viewDir, float3 lightDir, float roughn
 // Fresnel Equation (Used to describe ratio of reflected and refracted light)
 float3 fresnelSchlick(float cosTheta, float3 f0)
 {
-    return f0 + (1.0f - f0) * pow(abs(1.0f - cosTheta), 5.0f);
+    return f0 + (1.0f - f0) * pow(1.0f - cosTheta, 5.0f);
 }
 
 PS_OUT main(PS_IN psIn) {
     float2 texCoord = psIn.texCoords;
-    texCoord.y = 1.0 - texCoord.y;
 
     float4 mraoTexel = mrao.Sample(splr, texCoord);
     if (mraoTexel.a < 0.1f) { // if the a channel is lower than 1.0f, discard the pixel as this contains garbage data
-            discard;
+        discard;
     }
 
     float metallic = mraoTexel.r;
@@ -74,7 +73,7 @@ PS_OUT main(PS_IN psIn) {
 
     float3 viewDir = normalize(psIn.cameraPos.xyz - position);
 
-    float3 F0 = lerp(float3(0.4f, 0.4f, 0.4f), albedoTexel.rgb, metallic);
+    float3 F0 = lerp(float3(0.04f, 0.4f, 0.4f), albedoTexel.rgb, metallic);
 
     float3 result = float3(0.0, 0.0, 0.0);
     for (uint i = 0; i < lightCount.x; i++) {
@@ -105,6 +104,6 @@ PS_OUT main(PS_IN psIn) {
     color = color / (color + float3(1.0, 1.0, 1.0));
     color = pow(abs(color), float3(1.0 / 2.2, 1.0 / 2.2, 1.0 / 2.2));
 
-    psOut.color = float4(color, 1.0);
+    psOut.color = float4(position, 1.0);
     return psOut;
 }

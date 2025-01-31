@@ -34,9 +34,11 @@ namespace Syrius{
     void GlVertexArray::bind() {
         /*
          * Thanks to DSA we don't need to bind the vertex buffer.
-         * But we explicitly bind it anyway, because RenderDoc gives us a bunch of warnings that are obviously false.
+         * But in debug mode, we explicitly bind these since RenderDoc gives us a bunch of Incorrect API usage warnings.
          */
+        #if defined(SR_DEBUG)
         m_VertexBuffer->bind();
+        #endif
         glBindVertexArray(m_ArrayID);
     }
 
@@ -45,8 +47,7 @@ namespace Syrius{
     }
 
     void GlVertexArray::drawBuffers() {
-        glBindVertexArray(m_ArrayID);
-        m_VertexBuffer->bind();
+        GlVertexArray::bind();
         SR_CORE_OPENGL_CALL(glDrawArrays(m_GlDrawMode, 0, m_VertexBuffer->getCount()));
         glBindVertexArray(0);
     }
@@ -100,11 +101,12 @@ namespace Syrius{
     void GlVertexArrayIndexed::bind() {
         /*
          * Thanks to DSA we don't need to bind the vertex buffer.
-         * But we explicitly bind it anyway, because RenderDoc gives us a bunch of warnings that are obviously false.
-         * Same goes for the index buffer.
+         * But in debug mode, we explicitly bind these since RenderDoc gives us a bunch of Incorrect API usage warnings.
          */
+        #if defined(SR_DEBUG)
         m_VertexBuffer->bind();
         m_IndexBuffer->bind();
+        #endif
         glBindVertexArray(m_ArrayID);
     }
 
@@ -113,15 +115,13 @@ namespace Syrius{
     }
 
     void GlVertexArrayIndexed::drawBuffers() {
-        glBindVertexArray(m_ArrayID);
+        GlVertexArrayIndexed::bind();
         SR_CORE_OPENGL_CALL(glDrawElements(m_GlDrawMode, m_IndexBuffer->getCount(), m_IndexDataType, nullptr));
         glBindVertexArray(0);
     }
 
     void GlVertexArrayIndexed::drawBuffersInstanced(u32 instanceCount) {
-        glBindVertexArray(m_ArrayID);
-        m_VertexBuffer->bind();
-        m_IndexBuffer->bind();
+        GlVertexArrayIndexed::bind();
         SR_CORE_OPENGL_CALL(glDrawElementsInstanced(m_GlDrawMode, m_IndexBuffer->getCount(), m_IndexDataType, nullptr, instanceCount));
         glBindVertexArray(0);
     }
