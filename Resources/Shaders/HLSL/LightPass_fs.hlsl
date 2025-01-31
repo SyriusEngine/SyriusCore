@@ -55,11 +55,9 @@ float3 fresnelSchlick(float cosTheta, float3 f0)
 
 PS_OUT main(PS_IN psIn) {
     float2 texCoord = psIn.texCoords;
+    texCoord.y = 1.0f - texCoord.y;
 
     float4 mraoTexel = mrao.Sample(splr, texCoord);
-    if (mraoTexel.a < 0.1f) { // if the a channel is lower than 1.0f, discard the pixel as this contains garbage data
-        discard;
-    }
 
     float metallic = mraoTexel.r;
     float roughness = mraoTexel.g;
@@ -104,6 +102,6 @@ PS_OUT main(PS_IN psIn) {
     color = color / (color + float3(1.0, 1.0, 1.0));
     color = pow(abs(color), float3(1.0 / 2.2, 1.0 / 2.2, 1.0 / 2.2));
 
-    psOut.color = float4(position, 1.0);
+    psOut.color = float4(color, 1.0);
     return psOut;
 }

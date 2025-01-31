@@ -12,7 +12,7 @@ struct PS_OUT{
     float4 gMrao : SV_TARGET3;
 };
 
-cbuffer ColorData: register(b4){
+cbuffer TextureParameters: register(b4){
     float lerpFactor;
     float scale;
     float2 offset[2];
@@ -28,6 +28,7 @@ Texture2D aoTex: register(t4);
 
 PS_OUT main(PS_IN psIn){
     float2 texCoords = psIn.texCoords * scale;
+    texCoords.y = 1.0f - texCoords.y;
 
     float4 albedo = albedoTex.Sample(splr, texCoords);
     float4 normalTexel = normalTex.Sample(splr, texCoords);

@@ -50,9 +50,6 @@ vec3 fresnelSchlick(float cosTheta, vec3 f0){
 
 void main(){
     vec4 mraoTexel = texture(gMetallicRoughnessAO, fsIn.texCoords);
-    if (mraoTexel.a < 0.1){
-        discard;
-    }
 
     float metallic = mraoTexel.r;
     float roughness = mraoTexel.g;
