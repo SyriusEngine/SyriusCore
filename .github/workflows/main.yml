@@ -3,45 +3,53 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build-unix:
+  build-gnu:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        compiler: [gcc, clang]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: sudo apt-get install -y cmake git g++
+
+      - name: Compile with g++
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DBUILD_TESTS=on -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DGLFW_BUILD_X11=0 -DGLFW_BUILD_WAYLAND=0
+          make
+
+  build-clang:
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Install dependencies
-      run: sudo apt-get install -y cmake git
+      - name: Install dependencies
+        run: sudo apt-get install -y cmake git clang
 
-    - name: Set up ${{ matrix.compiler }}
-      uses: rlalik/setup-cpp-compiler@master
-      with:
-        compiler: ${{ matrix.compiler }}
-
-    - name: Compile with ${{ matrix.compiler }}
-      run: |
-        mkdir build
-        cd build
-        cmake .. -DBUILD_TESTS=on -DCMAKE_C_COMPILER=${{ matrix.compiler }} -DGLFW_BUILD_EXAMPLES=off -DGLFW_BUILD_TESTS=off -DGLFW_BUILD_DOCS=off -DGLFW_LIBRARY_TYPE=HEADLESS
-        make
+      - name: Compile with clang
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DBUILD_TESTS=on -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DGLFW_BUILD_X11=0 -DGLFW_BUILD_WAYLAND=0
+          make
 
   build-windows:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Install dependencies
-      run: choco install cmake git
+      - name: Install dependencies
+        run: choco install cmake git
 
-    - name: Compile with MSVC
-      run: |
-        mkdir build
-        cd build
-        cmake .. -DBUILD_TESTS=on
-        cmake --build . --config Release
+      - name: Compile with MSVC
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DBUILD_TESTS=on
+          cmake --build . --config Release

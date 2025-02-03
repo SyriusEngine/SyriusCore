@@ -122,7 +122,7 @@ void DeferredPBRLayer::onUpdate() {
 
     m_Context->endRenderPass();
 
-   // renderImGui();
+   renderImGui();
 }
 
 void DeferredPBRLayer::onEvent(const Event &event) {
