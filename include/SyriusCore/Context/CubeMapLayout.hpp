@@ -17,9 +17,9 @@ namespace Syrius{
 
         void addFace(SR_CUBEMAP_FACE faceID, UP<Image>& image);
 
-        void addFaceFromFile(SR_CUBEMAP_FACE faceID, const ImageFileDesc& desc);
+        void addFaceFromImage(SR_CUBEMAP_FACE faceID, const ImageFileDesc& desc);
 
-        void addFaceFromFile(SR_CUBEMAP_FACE faceID, const std::string& file);
+        void addFaceFromFile(SR_CUBEMAP_FACE faceID, const fs::path& file);
 
         [[nodiscard]] u32 getWidth() const;
 

@@ -16,13 +16,13 @@
 namespace Syrius{
 
     UP<Image> createImage(const ImageFileDesc& desc){
-        SR_LOG_THROW_IF_FALSE(std::filesystem::exists(desc.fileName), "Image", "File: %s does not exist!", desc.fileName.c_str());
+        checkFile(desc.fileName);
 
-        if (stbi_is_hdr(desc.fileName.c_str())){
+        if (stbi_is_hdr(desc.fileName.string().c_str())){
             auto img = new ImageF32(desc);
             return UP<Image>(img);
         }
-        else if (stbi_is_16_bit(desc.fileName.c_str())){
+        else if (stbi_is_16_bit(desc.fileName.string().c_str())){
             auto img = new ImageUI16(desc);
             return UP<Image>(img);
         }

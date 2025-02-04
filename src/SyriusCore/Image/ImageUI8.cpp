@@ -14,7 +14,7 @@ namespace Syrius{
     m_Data(){
         stbi_set_flip_vertically_on_load(desc.flipOnAccess);
         i32 channelCount, width, height;
-        UByte* pData = stbi_load(desc.fileName.c_str(), &width, &height, &channelCount, 0);
+        UByte* pData = stbi_load(desc.fileName.string().c_str(), &width, &height, &channelCount, 0);
         if (!pData){
             SR_LOG_WARNING("ImageUI8", "Image: %s failed to load", desc.fileName.c_str());
             return;
@@ -38,8 +38,8 @@ namespace Syrius{
 
         stbi_image_free(pData);
 
-        SR_POSTCONDITION(m_Width > 0, "[ImageUI8]: Image: %s has a width of 0", desc.fileName.c_str());
-        SR_POSTCONDITION(m_Height > 0, "[ImageUI8]: Image: %s has a height of 0", desc.fileName.c_str());
+        SR_POSTCONDITION(m_Width > 0, "[ImageUI8]: Image: %s has a width of 0", desc.fileName.string().c_str());
+        SR_POSTCONDITION(m_Height > 0, "[ImageUI8]: Image: %s has a height of 0", desc.fileName.string().c_str());
     }
 
     ImageUI8::ImageUI8(const ImageUI8Desc &desc):
@@ -64,19 +64,19 @@ namespace Syrius{
 
         switch (desc.imgType) {
             case SR_IMAGE_PNG: {
-                stbi_write_png(desc.fileName.c_str(), width, height, channelCount, &m_Data[0], width * channelCount);
+                stbi_write_png(desc.fileName.string().c_str(), width, height, channelCount, &m_Data[0], width * channelCount);
                 break;
             }
             case SR_IMAGE_JPG: {
-                stbi_write_jpg(desc.fileName.c_str(), width, height, channelCount, &m_Data[0], 100); // last parameter is the quality, 100 is the highest quality
+                stbi_write_jpg(desc.fileName.string().c_str(), width, height, channelCount, &m_Data[0], 100); // last parameter is the quality, 100 is the highest quality
                 break;
             }
             case SR_IMAGE_BMP: {
-                stbi_write_bmp(desc.fileName.c_str(), width, height, channelCount, &m_Data[0]);
+                stbi_write_bmp(desc.fileName.string().c_str(), width, height, channelCount, &m_Data[0]);
                 break;
             }
             default: {
-                SR_LOG_WARNING("ImageUI8", "Image: %s cannot be written to file type: %d", desc.fileName.c_str(), desc.imgType);
+                SR_LOG_WARNING("ImageUI8", "Image: %s cannot be written to file type: %d", desc.fileName.string().c_str(), desc.imgType);
                 break;
             }
         }

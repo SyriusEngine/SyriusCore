@@ -13,7 +13,7 @@ typedef enum SR_IMAGE_TYPE {
 namespace Syrius{
 
     struct SR_CORE_API ImageFileDesc{
-        std::string fileName;
+        fs::path fileName;
         bool flipOnAccess               = true;
         SR_IMAGE_TYPE imgType           = SR_IMAGE_PNG;
         u32 requestedChannelCount    = 0; // 0 => all channels available in the image

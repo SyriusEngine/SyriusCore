@@ -12,11 +12,11 @@ namespace Syrius{
     ImageF32::ImageF32(const ImageFileDesc &desc):
     Image(),
     m_Data(){
-        SR_PRECONDITION(stbi_is_hdr(desc.fileName.c_str()), "[ImageF32]: Image: %s is not a HDR image", desc.fileName.c_str());
+        SR_PRECONDITION(stbi_is_hdr(desc.fileName.string().c_str()), "[ImageF32]: Image: %s is not a HDR image", desc.fileName.c_str());
 
         stbi_set_flip_vertically_on_load(desc.flipOnAccess);
         i32 channelCount, width, height;
-        float* pData = stbi_loadf(desc.fileName.c_str(), &width, &height, &channelCount, 0);
+        float* pData = stbi_loadf(desc.fileName.string().c_str(), &width, &height, &channelCount, 0);
         if (!pData){
             SR_LOG_WARNING("ImageF32", "Image: %s failed to load", desc.fileName.c_str());
             return;
@@ -62,7 +62,7 @@ namespace Syrius{
         i32 channelCount = getTextureChannelCount(m_Format);
         switch (desc.imgType){
             case SR_IMAGE_HDR: {
-                if (!stbi_write_hdr(desc.fileName.c_str(), width, height, channelCount, &m_Data[0])){
+                if (!stbi_write_hdr(desc.fileName.string().c_str(), width, height, channelCount, &m_Data[0])){
                     SR_LOG_WARNING("ImageF32", "Image: %s failed to write", desc.fileName.c_str());
                 }
                 break;

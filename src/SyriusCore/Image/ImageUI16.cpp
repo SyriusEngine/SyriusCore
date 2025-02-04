@@ -14,7 +14,7 @@ namespace Syrius{
     m_Data(){
         stbi_set_flip_vertically_on_load(desc.flipOnAccess);
         i32 width, height, channels;
-        u16* pData = stbi_load_16(desc.fileName.c_str(), &width, &height, &channels, desc.requestedChannelCount);
+        u16* pData = stbi_load_16(desc.fileName.string().c_str(), &width, &height, &channels, desc.requestedChannelCount);
         if (!pData){
             SR_LOG_WARNING("ImageUI16", "Image: %s failed to load", desc.fileName.c_str());
             return;

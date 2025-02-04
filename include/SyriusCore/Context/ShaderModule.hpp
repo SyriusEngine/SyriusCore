@@ -12,7 +12,7 @@ namespace Syrius{
     };
 
     struct SR_CORE_API ShaderModuleFileDesc{
-        std::string filePath;
+        fs::path filePath;
         SR_SHADER_TYPE shaderType           = SR_SHADER_NONE;
         std::string entryPoint              = "main";
         SR_SHADER_LANGUAGE_TYPE language    = SR_SHADER_LANGUAGE_NONE;
@@ -34,9 +34,9 @@ namespace Syrius{
 
     protected:
 
-        static std::string readFile(const std::string& fileName);
+        static std::string readFile(const fs::path& fileName);
 
-        static std::string readFileBinary(const std::string& fileName);
+        static std::string readFileBinary(const fs::path& fileName);
 
     protected:
         const SR_SHADER_TYPE m_ShaderType;

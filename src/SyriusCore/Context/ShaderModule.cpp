@@ -25,8 +25,8 @@ namespace Syrius{
         return m_EntryPoint;
     }
 
-    std::string ShaderModule::readFile(const std::string &fileName) {
-        SR_LOG_THROW_IF_FALSE(std::filesystem::exists(fileName), "ShaderModule", "File does not exist: %s", fileName.c_str());
+    std::string ShaderModule::readFile(const fs::path &fileName) {
+        checkFile(fileName);
 
         std::string code;
         std::string line;
@@ -47,8 +47,8 @@ namespace Syrius{
         return code;
     }
 
-    std::string ShaderModule::readFileBinary(const std::string &fileName) {
-        SR_LOG_THROW_IF_FALSE(std::filesystem::exists(fileName), "ShaderModule", "File does not exist: %s", fileName.c_str());
+    std::string ShaderModule::readFileBinary(const fs::path &fileName) {
+        checkFile(fileName);
 
         std::string byteCode;
         std::ifstream file(fileName, std::ios::ate | std::ios::binary);

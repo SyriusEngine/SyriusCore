@@ -1,7 +1,7 @@
 #pragma once
 
-#include <SyriusCore/Window/Event/KeyboardEvent.hpp>
-#include <SyriusCore/Window/Event/MouseEvent.hpp>
+#include "../../../include/SyriusCore/Window/Event/KeyboardEvent.hpp"
+#include "../../../include/SyriusCore/Window/Event/MouseEvent.hpp"
 
 #include "../Utils/PlatformInclude.hpp"
 #include "../Utils/DebugMacros.hpp"
