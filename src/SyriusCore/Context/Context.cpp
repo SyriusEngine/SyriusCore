@@ -1,6 +1,8 @@
 #include "../../../include/SyriusCore/Context/Context.hpp"
 #include "../Utils/DebugMacros.hpp"
 
+#include <algorithm>
+
 namespace Syrius{
 
     Context::Context(const ContextDesc& desc):

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <deque>
+
 #include "Event/Event.hpp"
 #include "Event/KeyboardEvent.hpp"
 #include "Event/MouseEvent.hpp"

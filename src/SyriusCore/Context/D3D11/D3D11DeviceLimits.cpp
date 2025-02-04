@@ -1,5 +1,7 @@
 #include "D3D11DeviceLimits.hpp"
 
+#include <cmath>
+
 #if defined(SR_PLATFORM_WIN64)
 
 namespace Syrius{

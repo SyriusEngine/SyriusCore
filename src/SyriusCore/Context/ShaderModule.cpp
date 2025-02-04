@@ -1,6 +1,8 @@
 #include "../../../include/SyriusCore/Context/ShaderModule.hpp"
 #include "../Utils/DebugMacros.hpp"
 
+#include <fstream>
+
 namespace Syrius{
 
     ShaderModule::ShaderModule(const ShaderModuleDesc& desc):

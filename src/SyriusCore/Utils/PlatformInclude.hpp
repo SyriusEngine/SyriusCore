@@ -1,25 +1,14 @@
 #pragma once
 
-#include <optional>
-#include <set>
-#include <limits>
-#include <algorithm>
-#include <sstream>
-#include <fstream>
-#include <utility>
-#include <iostream>
-#include <chrono>
-#include <random>
-#include <filesystem>
-#include <map>
-
 #include "../../../include/SyriusCore/Utils/SyriusCoreInclude.hpp"
 #include <SyriusUtils/SyriusUtils.hpp>
 
 #include "../Dependencies/glad/glad/gl.h"
 
 #if defined(SR_PLATFORM_WIN64)
+#if !defined(NOMINMAX)
     #define NOMINMAX
+#endif
     #include <windows.h>
     #include <dshow.h>
     #include <commdlg.h>
