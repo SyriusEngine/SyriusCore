@@ -7,6 +7,4 @@ protected:
     void SetUp() override;
 
     void TearDown() override;
-
-    static ShaderModuleFileDesc createShaderModuleDescFromFileVS(const std::string& file);
 };

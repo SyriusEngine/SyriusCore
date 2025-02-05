@@ -9,11 +9,17 @@ struct VSin{
 struct VSOut{
     float4 position: SV_Position;
     float4 color: Color;
+    float3 normal: Normal;
+    float3 tangent: Tangent;
+    float2 texCoord: TexCoord;
 };
 
 VSOut main(VSin input){
     VSOut output;
     output.position = float4(input.lPosition, 1.0f);
     output.color = float4(input.lColor, 1.0f);
+    output.normal = input.lNormal;
+    output.tangent = input.lTangent;
+    output.texCoord = input.lTexCoord;
     return output;
 }

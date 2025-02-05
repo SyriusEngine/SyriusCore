@@ -208,7 +208,8 @@ set(SR_CORE_TEST_SRC
 
     Tests/Image/ImageUI8Test.cpp
     Tests/Image/ImageF32Test.cpp
-    Tests/Image/ImageUtilsTest.cpp)
+    Tests/Image/ImageUtilsTest.cpp
+        Tests/Context/ShaderTest.cpp)
 
 if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTS)
     # Add GTest

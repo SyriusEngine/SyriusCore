@@ -16,6 +16,10 @@ public:
 
     static void teardown();
 
+    static ShaderModuleFileDesc createShaderModuleDescFromFileVS(const std::string &file);
+
+    static ShaderModuleFileDesc createShaderModuleDescFromFileFS(const std::string &file);
+
 public:
     static UP<SyriusWindow> m_Window;
     static ResourceView<Context> m_Context;

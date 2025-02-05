@@ -25,3 +25,51 @@ void TestEnvironment::teardown() {
     m_Window.reset();
     m_Window = nullptr;
 }
+
+ShaderModuleFileDesc TestEnvironment::createShaderModuleDescFromFileVS(const std::string &file) {
+    ShaderModuleFileDesc desc;
+    desc.entryPoint = "main";
+    desc.shaderType = SR_SHADER_VERTEX;
+    desc.filePath = fs::current_path() / "TestResources" / "Shaders";
+    if (m_API == SR_API_OPENGL){
+        desc.language = SR_SHADER_LANGUAGE_GLSL;
+        const std::string full_file = file + std::string("_vs.glsl");
+        desc.filePath /= "GLSL";
+        desc.filePath /= full_file;
+    }
+    else if (m_API == SR_API_D3D11){
+        desc.language = SR_SHADER_LANGUAGE_HLSL;
+        const std::string full_file = file + std::string("_vs.hlsl");
+        desc.filePath /= "HLSL";
+        desc.filePath /= full_file;
+    }
+    else {
+        throw std::runtime_error("Unsupported API");
+    }
+    return desc;
+}
+
+ShaderModuleFileDesc TestEnvironment::createShaderModuleDescFromFileFS(const std::string &file) {
+    ShaderModuleFileDesc desc;
+    desc.entryPoint = "main";
+    desc.shaderType = SR_SHADER_FRAGMENT;
+    desc.filePath = fs::current_path() / "TestResources" / "Shaders";
+    if (m_API == SR_API_OPENGL){
+        desc.language = SR_SHADER_LANGUAGE_GLSL;
+        const std::string full_file = file + std::string("_fs.glsl");
+        desc.filePath /= "GLSL";
+        desc.filePath /= full_file;
+    }
+    else if (m_API == SR_API_D3D11){
+        desc.language = SR_SHADER_LANGUAGE_HLSL;
+        const std::string full_file = file + std::string("_fs.hlsl");
+        desc.filePath /= "HLSL";
+        desc.filePath /= full_file;
+    }
+    else {
+        throw std::runtime_error("Unsupported API");
+    }
+    return desc;
+}
+
+

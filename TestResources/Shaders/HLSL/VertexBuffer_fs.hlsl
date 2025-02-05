@@ -1,6 +1,9 @@
 struct FSin{
     float4 position: SV_Position;
     float4 color: Color;
+    float3 normal: Normal;
+    float3 tangent: Tangent;
+    float2 texCoord: TexCoord;
 };
 
 struct FSout{

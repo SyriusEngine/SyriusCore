@@ -1,0 +1,43 @@
+#include <gtest/gtest.h>
+#include "../TestEnvironment.hpp"
+
+class ShaderTest: public ::testing::Test {
+protected:
+    void SetUp() override {
+    }
+
+    void TearDown() override {
+    }
+};
+
+TEST_F(ShaderTest, CreateBasicShader) {
+    /*
+     * Create a basic shader with a vertex and fragment shader
+     */
+    auto vDesc = TestEnvironment::createShaderModuleDescFromFileVS("VertexBuffer");
+    auto fDesc = TestEnvironment::createShaderModuleDescFromFileFS("VertexBuffer");
+
+    ShaderDesc desc;
+    desc.vertexShader = TestEnvironment::m_Context->createShaderModule(vDesc);
+    desc.fragmentShader = TestEnvironment::m_Context->createShaderModule(fDesc);
+
+    auto shader = TestEnvironment::m_Context->createShader(desc);
+    EXPECT_FALSE(shader == nullptr);
+}
+
+TEST_F(ShaderTest, CreateShaderLinkError) {
+    /*
+     * Try to create a shader from 2 modules that compiled but don't match
+     */
+    if (TestEnvironment::m_API == SR_API_D3D11) { // There is no link stage in D3D11
+        GTEST_SKIP();
+    }
+
+    auto vDesc = TestEnvironment::createShaderModuleDescFromFileVS("VertexBuffer");
+    auto fDesc = TestEnvironment::createShaderModuleDescFromFileFS("LinkError");
+
+    ShaderDesc desc;
+    desc.vertexShader = TestEnvironment::m_Context->createShaderModule(vDesc);
+    desc.fragmentShader = TestEnvironment::m_Context->createShaderModule(fDesc);
+    EXPECT_THROW(TestEnvironment::m_Context->createShader(desc), std::runtime_error);
+}
