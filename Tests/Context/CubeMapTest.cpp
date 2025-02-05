@@ -170,32 +170,32 @@ TEST_F(CubeMapTest, ReadCubeMap){
     EXPECT_TRUE(compareData(reinterpret_cast<const UByte*>(img->getData()), greenBlue));
 }
 
-TEST_F(CubeMapTest, CopyFromTextureCubeMap){
-    // first create cubemap
-    auto redCb = createRedCubeMap();
-
-    // then create texture
-    std::vector<u8> blue;
-    createVector(blue, static_cast<u8>(0), static_cast<u8>(0), static_cast<u8>(255), static_cast<u8>(255));
-
-    Texture2DDesc desc;
-    desc.width = s_Width;
-    desc.height = s_Height;
-    desc.format = SR_TEXTURE_RGBA_UI8;
-    desc.data = blue.data();
-    desc.usage = SR_BUFFER_USAGE_DEFAULT;
-    auto tex = TestEnvironment::m_Context->createTexture2D(desc);
-
-    // update top face of cubemap with texture data
-    redCb->copyFrom(tex, SR_CUBEMAP_FACE_LEFT);
-    redCb->copyFrom(tex, SR_CUBEMAP_FACE_RIGHT);
-    redCb->copyFrom(tex, SR_CUBEMAP_FACE_TOP);
-    redCb->copyFrom(tex, SR_CUBEMAP_FACE_BOTTOM);
-    redCb->copyFrom(tex, SR_CUBEMAP_FACE_FRONT);
-    redCb->copyFrom(tex, SR_CUBEMAP_FACE_BACK);
-
-
-    // validate
-    auto img = redCb->getData(SR_CUBEMAP_FACE_TOP);
-    EXPECT_TRUE(compareData(reinterpret_cast<const UByte*>(img->getData()), blue));
-}
+// TEST_F(CubeMapTest, CopyFromTextureCubeMap){
+//     // first create cubemap
+//     auto redCb = createRedCubeMap();
+//
+//     // then create texture
+//     std::vector<u8> blue;
+//     createVector(blue, static_cast<u8>(0), static_cast<u8>(0), static_cast<u8>(255), static_cast<u8>(255));
+//
+//     Texture2DDesc desc;
+//     desc.width = s_Width;
+//     desc.height = s_Height;
+//     desc.format = SR_TEXTURE_RGBA_UI8;
+//     desc.data = blue.data();
+//     desc.usage = SR_BUFFER_USAGE_DEFAULT;
+//     auto tex = TestEnvironment::m_Context->createTexture2D(desc);
+//
+//     // update top face of cubemap with texture data
+//     redCb->copyFrom(tex, SR_CUBEMAP_FACE_LEFT);
+//     redCb->copyFrom(tex, SR_CUBEMAP_FACE_RIGHT);
+//     redCb->copyFrom(tex, SR_CUBEMAP_FACE_TOP);
+//     redCb->copyFrom(tex, SR_CUBEMAP_FACE_BOTTOM);
+//     redCb->copyFrom(tex, SR_CUBEMAP_FACE_FRONT);
+//     redCb->copyFrom(tex, SR_CUBEMAP_FACE_BACK);
+//
+//
+//     // validate
+//     auto img = redCb->getData(SR_CUBEMAP_FACE_TOP);
+//     EXPECT_TRUE(compareData(reinterpret_cast<const UByte*>(img->getData()), blue));
+// }

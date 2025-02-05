@@ -213,6 +213,7 @@ set(SR_CORE_TEST_SRC
 if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTS)
     # Add GTest
     fetch_gtest()
+    enable_testing()
 
     message(STATUS "Building tests")
 
@@ -221,6 +222,13 @@ if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTS)
 
     target_link_libraries(SyriusCoreTest PUBLIC SyriusUtils)
     target_link_libraries(SyriusCoreTest PRIVATE ${SYRIUS_CORE_LIBS} GTest::gtest)
+
+    add_test(NAME CTestSyriusCoreOpenGL COMMAND ${PROOT} $<TARGET_FILE:SyriusCoreTest> OpenGL)
+    set_tests_properties(CTestSyriusCoreOpenGL PROPERTIES
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+    add_test(NAME CTestSyriusCoreD3D11 COMMAND ${PROOT} $<TARGET_FILE:SyriusCoreTest> D3D11)
+    set_tests_properties(CTestSyriusCoreD3D11 PROPERTIES
+            WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif ()
 
 ################### Syrius Core App ###################

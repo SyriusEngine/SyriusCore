@@ -62,7 +62,7 @@ namespace Syrius{
 #if defined(SR_DEBUG)
         flags |= D3DCOMPILE_DEBUG | D3DCOMPILE_WARNINGS_ARE_ERRORS;
 #else
-        flags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
+        flags |= D3DCOMPILE_OPTIMIZATION_LEVEL2;
 #endif
         ID3DBlob* exceptionBlob = nullptr;
         SR_CORE_D3D11_CALL(D3DCompile(
@@ -79,10 +79,9 @@ namespace Syrius{
                 &exceptionBlob));
 
         if (exceptionBlob){
-            auto msg = static_cast<const char*>(exceptionBlob->GetBufferPointer());
-            SR_LOG_WARNING("D3D11ShaderModule", "Failed to compile shader, type = %s, error = %s", getShaderTypeString(m_ShaderType).c_str(), msg);
-
-            exceptionBlob->Release();
+            const auto msg = createUP<char[]>(exceptionBlob->GetBufferSize() + 1);
+            memcpy(msg.get(), exceptionBlob->GetBufferPointer(), exceptionBlob->GetBufferSize());
+            SR_LOG_THROW("D3D11ShaderModule", "Failed to compile shader, type = %s, error = %s", getShaderTypeString(m_ShaderType).c_str(), msg.get());
         }
     }
 

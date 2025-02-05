@@ -9,6 +9,30 @@ void ShaderModuleTest::TearDown() {
 
 }
 
+ShaderModuleFileDesc ShaderModuleTest::createShaderModuleDescFromFileVS(const std::string &file) {
+    ShaderModuleFileDesc desc;
+    desc.entryPoint = "main";
+    desc.shaderType = SR_SHADER_VERTEX;
+    desc.filePath = fs::current_path() / "TestResources" / "Shaders";
+    if (TestEnvironment::m_API == SR_API_OPENGL){
+        desc.language = SR_SHADER_LANGUAGE_GLSL;
+        const std::string full_file = file + std::string("_vs.glsl");
+        desc.filePath /= "GLSL";
+        desc.filePath /= full_file;
+    }
+    else if (TestEnvironment::m_API == SR_API_D3D11){
+        desc.language = SR_SHADER_LANGUAGE_HLSL;
+        const std::string full_file = file + std::string("_vs.hlsl");
+        desc.filePath /= "HLSL";
+        desc.filePath /= full_file;
+    }
+    else {
+        throw std::runtime_error("Unsupported API");
+    }
+    return desc;
+}
+
+
 TEST_F(ShaderModuleTest, CreateShaderModule) {
     ShaderModuleDesc desc;
     desc.entryPoint = "main";
@@ -25,7 +49,7 @@ TEST_F(ShaderModuleTest, CreateShaderModule) {
         FAIL() << "Unsupported API";
     }
 
-    auto vsm = TestEnvironment::m_Context->createShaderModule(desc);
+    const auto vsm = TestEnvironment::m_Context->createShaderModule(desc);
 
     EXPECT_NE(vsm, nullptr);
     EXPECT_EQ(vsm->getShaderModuleType(), SR_SHADER_VERTEX);
@@ -33,22 +57,9 @@ TEST_F(ShaderModuleTest, CreateShaderModule) {
 }
 
 TEST_F(ShaderModuleTest, CreateShaderModuleFile){
-    ShaderModuleFileDesc desc;
-    desc.entryPoint = "main";
-    desc.shaderType = SR_SHADER_VERTEX;
-    if (TestEnvironment::m_API == SR_API_OPENGL){
-        desc.language = SR_SHADER_LANGUAGE_GLSL;
-        desc.filePath = "Resources/Shaders/GLSL/VertexBuffer_vs.glsl";
-    }
-    else if (TestEnvironment::m_API == SR_API_D3D11){
-        desc.language = SR_SHADER_LANGUAGE_HLSL;
-        desc.filePath = "Resources/Shaders/HLSL/VertexBuffer_vs.hlsl";
-    }
-    else {
-        FAIL() << "Unsupported API";
-    }
+    const auto desc = createShaderModuleDescFromFileVS("VertexBuffer");
 
-    auto vsm = TestEnvironment::m_Context->createShaderModule(desc);
+    const auto vsm = TestEnvironment::m_Context->createShaderModule(desc);
 
     EXPECT_NE(vsm, nullptr);
     EXPECT_EQ(vsm->getShaderModuleType(), SR_SHADER_VERTEX);
@@ -69,4 +80,10 @@ TEST_F(ShaderModuleTest, CreateShaderInvalidLanguage){
     }
 
     EXPECT_DEATH(auto vsm = TestEnvironment::m_Context->createShaderModule(desc), "");
+}
+
+TEST_F(ShaderModuleTest, CompilationError) {
+    const auto desc = createShaderModuleDescFromFileVS("CompilationError");
+
+   EXPECT_THROW(TestEnvironment::m_Context->createShaderModule(desc), std::runtime_error);
 }
