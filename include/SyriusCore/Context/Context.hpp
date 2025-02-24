@@ -49,7 +49,7 @@ namespace Syrius{
 
         ResourceView<FrameBuffer> getDefaultFrameBuffer();
 
-        void onResize(u32 width, u32 height);
+        void onResize(i32 width, i32 height) const;
 
         /**
          * @brief: Clears the back buffer with the color specified in the clear color. The clear color is set using the

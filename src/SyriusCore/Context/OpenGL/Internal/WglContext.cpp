@@ -15,9 +15,9 @@ namespace Syrius{
     m_WGLVersion(0){
         m_HardwareDeviceContext = GetDC(m_Hwnd);
 
-        uint8_t pixelType = desc.redBits + desc.greenBits + desc.blueBits + desc.alphaBits;
+        const u8 pixelType = desc.redBits + desc.greenBits + desc.blueBits + desc.alphaBits;
 
-        DWORD pixelFormatFlags = PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_DOUBLEBUFFER;
+        const DWORD pixelFormatFlags = PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_DOUBLEBUFFER;
         PIXELFORMATDESCRIPTOR pixelDesc = {
                 sizeof(pixelDesc),
                 1,
@@ -46,7 +46,7 @@ namespace Syrius{
                 0
         };
 
-        i32 tempPixelFormat = ChoosePixelFormat(m_HardwareDeviceContext, &pixelDesc);
+        const i32 tempPixelFormat = ChoosePixelFormat(m_HardwareDeviceContext, &pixelDesc);
         bool pfRes = SetPixelFormat(m_HardwareDeviceContext, tempPixelFormat, &pixelDesc);
 
         //create a throwaway context to get the function pointers
@@ -114,7 +114,7 @@ namespace Syrius{
 
     WglContext::~WglContext() {
         if (m_ImGuiContext){
-            destroyImGuiContext();
+            WglContext::destroyImGuiContext();
         }
 
         terminateGl();
@@ -182,7 +182,7 @@ namespace Syrius{
 
     bool WglContext::isExtensionSupported(const std::string &extName) {
         PFNWGLGETEXTENSIONSSTRINGEXTPROC _wglGetExtensionsStringEXT = nullptr;
-        _wglGetExtensionsStringEXT = (PFNWGLGETEXTENSIONSSTRINGEXTPROC) wglGetProcAddress("wglGetExtensionsStringEXT");
+        _wglGetExtensionsStringEXT = reinterpret_cast<PFNWGLGETEXTENSIONSSTRINGEXTPROC>(wglGetProcAddress("wglGetExtensionsStringEXT"));
 
         if (strstr(_wglGetExtensionsStringEXT(), extName.c_str()) == nullptr) {
             return false;
@@ -194,8 +194,8 @@ namespace Syrius{
 
     void WglContext::loadExtensions() {
         if (isExtensionSupported("WGL_EXT_swap_control")) {
-            wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC) wglGetProcAddress("wglSwapIntervalEXT");
-            wglGetSwapIntervalEXT = (PFNWGLGETSWAPINTERVALEXTPROC) wglGetProcAddress("wglGetSwapIntervalEXT");
+            wglSwapIntervalEXT = reinterpret_cast<PFNWGLSWAPINTERVALEXTPROC>(wglGetProcAddress("wglSwapIntervalEXT"));
+            wglGetSwapIntervalEXT = reinterpret_cast<PFNWGLGETSWAPINTERVALEXTPROC>(wglGetProcAddress("wglGetSwapIntervalEXT"));
         }
         else{
             SR_LOG_WARNING("WglContext", "extension: <WGL_EXT_swap_control> is not supported")

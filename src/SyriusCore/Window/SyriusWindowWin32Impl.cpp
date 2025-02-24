@@ -302,7 +302,6 @@ namespace Syrius{
     }
 
     ResourceView<Context> SyriusWindowWin32Impl::createContext(ContextDesc& desc) {
-        // the client space is the window size minus the window borders
         switch (desc.api) {
             case SR_API_OPENGL: m_Context = createUP<WglContext>(m_Hwnd, desc);     break;
             case SR_API_D3D11:  m_Context = createUP<D3D11Context>(m_Hwnd, desc);   break;

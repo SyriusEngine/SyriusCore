@@ -1,5 +1,7 @@
 #include "GlViewport.hpp"
 
+#include <iostream>
+
 namespace Syrius{
 
     GlViewport::GlViewport(const ViewportDesc &desc, const UP<DeviceLimits>& deviceLimits):

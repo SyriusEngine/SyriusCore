@@ -41,7 +41,7 @@ namespace Syrius{
         return createResourceView(m_CubeMapLayouts.back());
     }
 
-    void Context::onResize(u32 width, u32 height) {
+    void Context::onResize(const i32 width, i32 const height) const {
         SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
 
         m_FrameBuffers[0]->onResize(width, height);

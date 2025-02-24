@@ -48,8 +48,8 @@ namespace Syrius {
 
         u32 m_WGLVersion;
 
-        PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = NULL;
-        PFNWGLGETSWAPINTERVALEXTPROC wglGetSwapIntervalEXT = NULL;
+        PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = nullptr;
+        PFNWGLGETSWAPINTERVALEXTPROC wglGetSwapIntervalEXT = nullptr;
 
         HWND &m_Hwnd;
         HDC m_HardwareDeviceContext;
