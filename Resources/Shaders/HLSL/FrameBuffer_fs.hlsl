@@ -1,5 +1,6 @@
 struct FSin{
     float4 position: SV_Position;
+    float4 color: Color;
     float2 texCoord: Texcoord;
 };
 
