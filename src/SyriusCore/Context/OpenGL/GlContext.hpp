@@ -58,7 +58,9 @@ namespace Syrius{
     protected:
         explicit GlContext(const ContextDesc& desc);
         
-        void initGl(const ContextDesc& desc);
+        void initGl();
+
+        void createDefaultFrameBuffer(i32 width, i32 height, const ContextDesc& desc) override;
 
         void terminateGl();
 

@@ -15,7 +15,7 @@ public:
 
     void bind(u32 slot);
 
-    void onResize(u32 width, u32 height);
+    void onEvent(const Event& event);
 
 private:
     ResourceView<Context>& m_Context;

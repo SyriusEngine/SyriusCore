@@ -280,9 +280,7 @@ namespace Syrius{
         if (GetOpenFileNameA(&ofn) == TRUE){
             return ofn.lpstrFile;
         }
-        else{
-            return "";
-        }
+        return "";
     }
 
     std::string SyriusWindowWin32Impl::saveFileDialog(const std::string &fileName, const std::string &filter) {
@@ -300,32 +298,20 @@ namespace Syrius{
         if (GetSaveFileNameA(&ofn) == TRUE){
             return ofn.lpstrFile;
         }
-        else{
-            return "";
-        }
+        return "";
     }
 
     ResourceView<Context> SyriusWindowWin32Impl::createContext(ContextDesc& desc) {
         // the client space is the window size minus the window borders
-        RECT clientSpace = {0, 0, 0, 0};
-        GetClientRect(m_Hwnd, &clientSpace);
-        desc.backBufferWidth = desc.backBufferWidth == 0 ? clientSpace.right : desc.backBufferWidth;
-        desc.backBufferHeight = desc.backBufferHeight == 0 ? clientSpace.bottom : desc.backBufferHeight;
         switch (desc.api) {
-            case SR_API_OPENGL:
-                m_Context = UP<Context>(new WglContext(m_Hwnd, desc));
-                break;
-            case SR_API_D3D11:
-                m_Context = UP<Context>(new D3D11Context(m_Hwnd, desc));
-                break;
-
+            case SR_API_OPENGL: m_Context = createUP<WglContext>(m_Hwnd, desc);     break;
+            case SR_API_D3D11:  m_Context = createUP<D3D11Context>(m_Hwnd, desc);   break;
             default:
                 SR_LOG_WARNING("SyriusWindowWin32Impl", "cannot create context: unsupported API (%i), fallback to OpenGL!", desc.api);
-                m_Context = UP<Context>(new WglContext(m_Hwnd, desc));
+                m_Context = createUP<WglContext>(m_Hwnd, desc);
                 break;
         }
         return createResourceView(m_Context);
-
     }
 
     const HWND &SyriusWindowWin32Impl::getHwnd() const {
@@ -385,6 +371,12 @@ namespace Syrius{
                     m_Height = newHeight;
                     WindowResizedEvent event(newWidth, newHeight);
                     dispatchEvent(event);
+                    // If a context is present, get the new framebuffer size and update the context
+                    if (m_Context) {
+                        RECT clientSpace = {0, 0, 0, 0};
+                        GetClientRect(m_Hwnd, &clientSpace);
+                        m_Context->onResize(clientSpace.right, clientSpace.bottom);
+                    }
                 }
                 break;
             }
@@ -521,8 +513,8 @@ namespace Syrius{
             }
             case WM_MOUSEMOVE: {
                 if (m_CaptureMouseAndKeyboardEvents){
-                    auto mouseX = static_cast<i32>(GET_X_LPARAM(lparam));
-                    auto mouseY = static_cast<i32>(GET_Y_LPARAM(lparam));
+                    auto mouseX = GET_X_LPARAM(lparam);
+                    auto mouseY = GET_Y_LPARAM(lparam);
                     RECT window;
                     GetClientRect(m_Hwnd, &window);
                     if ((wparam & (MK_LBUTTON | MK_MBUTTON | MK_RBUTTON | MK_XBUTTON1 | MK_XBUTTON2)) == 0){
@@ -571,38 +563,34 @@ namespace Syrius{
                 if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lparam), RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == -1){
                     break;
                 }
-                else{
-                    std::vector<u8> buffer(size);
-                    if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lparam), RID_INPUT, buffer.data(), &size, sizeof(RAWINPUTHEADER)) != size){
+                std::vector<u8> buffer(size);
+                if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lparam), RID_INPUT, buffer.data(), &size, sizeof(RAWINPUTHEADER)) != size){
+                    break;
+                }
+                auto raw = reinterpret_cast<RAWINPUT*>(buffer.data());
+                switch (raw->header.dwType) {
+                    case RIM_TYPEMOUSE: {
+                        if (m_MouseInside and m_CaptureMouseAndKeyboardEvents){
+                            if (raw->data.mouse.lLastX != 0 and raw->data.mouse.lLastY != 0 ){
+                                RawMouseMovedEvent event(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
+                                dispatchEvent(event);
+                            }
+                        }
                         break;
                     }
-                    else{
-                        auto raw = reinterpret_cast<RAWINPUT*>(buffer.data());
-                        switch (raw->header.dwType) {
-                            case RIM_TYPEMOUSE: {
-                                if (m_MouseInside and m_CaptureMouseAndKeyboardEvents){
-                                    if (raw->data.mouse.lLastX != 0 and raw->data.mouse.lLastY != 0 ){
-                                        RawMouseMovedEvent event(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
-                                        dispatchEvent(event);
-                                    }
-                                }
-                                break;
-                            }
-                            case RIM_TYPEKEYBOARD: {
-                                auto key = convertVirtualKey(raw->data.keyboard.VKey, raw->data.keyboard.Flags);
-                                if (raw->data.keyboard.Flags & RI_KEY_BREAK){
-                                    RawKeyPressedEvent event(key);
-                                    dispatchEvent(event);
-                                }
-                                else{
-                                    RawKeyReleasedEvent event(key);
-                                    dispatchEvent(event);
-                                }
-                                break;
-                            }
-                            default: break;
+                    case RIM_TYPEKEYBOARD: {
+                        auto key = convertVirtualKey(raw->data.keyboard.VKey, raw->data.keyboard.Flags);
+                        if (raw->data.keyboard.Flags & RI_KEY_BREAK){
+                            RawKeyPressedEvent event(key);
+                            dispatchEvent(event);
                         }
+                        else{
+                            RawKeyReleasedEvent event(key);
+                            dispatchEvent(event);
+                        }
+                        break;
                     }
+                    default: break;
                 }
                 break;
             }
@@ -623,7 +611,7 @@ namespace Syrius{
         }
     }
 
-    void SyriusWindowWin32Impl::mouseTracker(bool enableTracking) {
+    void SyriusWindowWin32Impl::mouseTracker(bool enableTracking) const {
         TRACKMOUSEEVENT mouseEvent;
         mouseEvent.cbSize = sizeof(TRACKMOUSEEVENT);
         if (enableTracking){
@@ -647,7 +635,7 @@ namespace Syrius{
         wndClass.hInstance = GetModuleHandleW(nullptr);
         wndClass.hIcon = nullptr;
         wndClass.hCursor = nullptr;
-        wndClass.hbrBackground = 0;
+        wndClass.hbrBackground = nullptr;
         wndClass.lpszMenuName = L"SYRIUS_CORE";
         wndClass.lpszClassName = s_SyriusWindowClass;
         wndClass.hIconSm = nullptr;
@@ -690,9 +678,7 @@ namespace Syrius{
             typedef BOOL (WINAPI* SetProcessDPIAwareFuncType)(void);
             auto setProcessDPIAwareFunc = reinterpret_cast<SetProcessDPIAwareFuncType>(GetProcAddress(user32Dll, "SetProcessDPIAware"));
             if (setProcessDPIAwareFunc){
-                if (!setProcessDPIAwareFunc()){
-                    SR_LOG_WARNING("SyriusWindowWin32Impl", "Failed to set process DPI awareness");
-                }
+                SR_LOG_WARNING_IF_FALSE(setProcessDPIAwareFunc(), "SyriusWindowWin32Impl", "Failed to set process DPI awareness");
             }
             FreeLibrary(user32Dll);
 

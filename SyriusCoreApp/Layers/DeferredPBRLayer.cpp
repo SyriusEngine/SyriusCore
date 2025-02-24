@@ -127,6 +127,10 @@ void DeferredPBRLayer::onUpdate() {
 
 void DeferredPBRLayer::onEvent(const Event &event) {
     m_Camera.update(event, m_DeltaTime);
+    m_Projection.onEvent(event);
+    if (event.type == SR_EVENT_WINDOW_RESIZED) {
+        m_GBuffer->onResize(event.windowWidth, event.windowHeight);
+    }
 }
 
 void DeferredPBRLayer::imGuiGBufferPanel() {

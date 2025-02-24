@@ -34,8 +34,6 @@ namespace Syrius{
 
         void setVerticalSynchronisation(bool enable) override;
 
-        FramebufferSize getFramebufferSize() override;
-
         ResourceView<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) override;
 
         ResourceView<ShaderModule> createShaderModule(const ShaderModuleFileDesc& desc) override;
@@ -69,6 +67,8 @@ namespace Syrius{
         void onImGuiBegin() override;
 
         void onImGuiEnd() override;
+
+        void createDefaultFrameBuffer(i32 width, i32 height, const ContextDesc &desc) override;
 
     private:
         HWND& m_Hwnd;

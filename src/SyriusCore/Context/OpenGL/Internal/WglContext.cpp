@@ -57,35 +57,33 @@ namespace Syrius{
 
         if (wglCreateContextAttribsARB != nullptr){
             // create the actual context
-            const int attribList[] =
-                {
-                    WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
-                    WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
-                    WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
+            const int attribList[] = {
+                WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
+                WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
+                WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
 #if defined(SR_DEBUG)
-                    WGL_CONTEXT_DEBUG_BIT_ARB,		GL_TRUE,
+                WGL_CONTEXT_DEBUG_BIT_ARB,		GL_TRUE,
 #else
-                    WGL_CONTEXT_DEBUG_BIT_ARB,		GL_FALSE,
+                WGL_CONTEXT_DEBUG_BIT_ARB,		GL_FALSE,
 #endif
-                    WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
-                    WGL_COLOR_BITS_ARB, pixelType,
-                    WGL_DEPTH_BITS_ARB, desc.depthBits,
-                    WGL_STENCIL_BITS_ARB, desc.stencilBits,
-                    0, // End
-                };
+                WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
+                WGL_COLOR_BITS_ARB, pixelType,
+                WGL_DEPTH_BITS_ARB, desc.depthBits,
+                WGL_STENCIL_BITS_ARB, desc.stencilBits,
+                0, // End
+            };
 
             int pixelFormat;
             UINT numFormats;
 
             BOOL result = wglChoosePixelFormatARB(m_HardwareDeviceContext, attribList, nullptr, 1, &pixelFormat, &numFormats);
             SR_LOG_WARNING_IF_FALSE(result, "WglContext", "Failed to choose pixel format");
-            int attributes[] =
-                    {
-                            WGL_CONTEXT_MAJOR_VERSION_ARB,	4,
-                            WGL_CONTEXT_MINOR_VERSION_ARB,	6,
-                            WGL_CONTEXT_PROFILE_MASK_ARB,	WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-                            0 // End of attributes
-                    };
+            int attributes[] ={
+                WGL_CONTEXT_MAJOR_VERSION_ARB,	4,
+                WGL_CONTEXT_MINOR_VERSION_ARB,	6,
+                WGL_CONTEXT_PROFILE_MASK_ARB,	WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+                0 // End of attributes
+            };
             m_Context = wglCreateContextAttribsARB(m_HardwareDeviceContext, nullptr, attributes);
             // set the actual context as the current context
             wglMakeCurrent(m_HardwareDeviceContext, m_Context);
@@ -102,7 +100,13 @@ namespace Syrius{
         }
 
         loadExtensions();
-        initGl(desc);
+        initGl();
+        m_DeviceLimits = createUP<GlDeviceLimits>();
+        RECT clientSpace = {0, 0, 0, 0};
+        GetClientRect(m_Hwnd, &clientSpace);
+        const i32 width = clientSpace.right;
+        const i32 height = clientSpace.bottom;
+        GlContext::createDefaultFrameBuffer(width, height, desc);
 
         SR_POSTCONDITION(m_HardwareDeviceContext, "Failed to create hardware device context")
         SR_POSTCONDITION(m_Context, "Failed to create context")
@@ -197,15 +201,6 @@ namespace Syrius{
             SR_LOG_WARNING("WglContext", "extension: <WGL_EXT_swap_control> is not supported")
 
         }
-    }
-
-    FramebufferSize WglContext::getFramebufferSize() {
-        RECT area;
-        GetClientRect(m_Hwnd, &area);
-        FramebufferSize size;
-        size.m_Width = area.right;
-        size.m_Height = area.bottom;
-        return size;
     }
 
     void WglContext::initWGL() {

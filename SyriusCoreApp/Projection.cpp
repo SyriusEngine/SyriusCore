@@ -28,11 +28,13 @@ void Projection::bind(u32 slot) {
     m_Resource->bind(slot);
 }
 
-void Projection::onResize(u32 width, u32 height) {
-    m_Width = static_cast<float>(width);
-    m_Height = static_cast<float>(height);
-    m_ProjectionData.m_Perspective = glm::perspective(glm::radians(m_Fov), m_Width / m_Height, m_Near, m_Far);
-    m_ProjectionData.m_Orthographic = glm::ortho(0.0f, m_Width, 0.0f, m_Height, m_Near, m_Far);
-    m_Resource->setData(&m_ProjectionData, sizeof(ProjectionData));
+void Projection::onEvent(const Event& event) {
+    if (event.type == SR_EVENT_WINDOW_RESIZED) {
+        m_Width = static_cast<float>(event.windowWidth);
+        m_Height = static_cast<float>(event.windowHeight);
+        m_ProjectionData.m_Perspective = glm::perspective(glm::radians(m_Fov), m_Width / m_Height, m_Near, m_Far);
+        m_ProjectionData.m_Orthographic = glm::ortho(0.0f, m_Width, 0.0f, m_Height, m_Near, m_Far);
+        m_Resource->setData(&m_ProjectionData, sizeof(ProjectionData));
+    }
 }
 

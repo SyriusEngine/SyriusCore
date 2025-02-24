@@ -30,16 +30,9 @@ namespace Syrius{
         u8 blueBits         = 8;
         u8 greenBits        = 8;
         u8 alphaBits        = 8;
-        u32 backBufferWidth = 0; // if 0, will be set to window width
-        u32 backBufferHeight= 0; // if 0, will be set to window height
         bool enableDepthTest   = false;
         bool enableStencilTest = false;
         SR_SUPPORTED_API api   = SR_API_OPENGL;
-    };
-
-    struct SR_CORE_API FramebufferSize{
-        u32 m_Width  = 0;
-        u32 m_Height = 0;
     };
 
     class SR_CORE_API Context{
@@ -50,30 +43,69 @@ namespace Syrius{
 
         virtual ~Context();
 
-        /**
-         * @brief: Commands the swap chain to present a back buffer to the screen. If multiple back buffers are used,
-         *         this function will swap the back buffer that was last presented to the screen with the front buffer.
-         */
-        virtual void swapBuffers() = 0;
-
-        /**
-         * @brief: Enables or disables vertical synchronisation. When enabled, the swap chain will wait for the
-         *        vertical blanking period before presenting the back buffer to the screen. This will prevent screen
-         *        tearing but will also limit the frame rate to the refresh rate of the monitor.
-         * @param enable - true to enable vertical synchronisation, false to disable it.
-         * @note: This function is not supported on all APIs. If the API does not support vertical synchronisation, this
-         *        function will do nothing. In case of OpenGL, the necessary extensions must be available on your device
-         *        for this function to work.
-         */
-        virtual void setVerticalSynchronisation(bool enable) = 0;
-
         [[nodiscard]] SR_SUPPORTED_API getType() const;
 
         [[nodiscard]] bool isVerticalSyncEnabled() const;
 
         ResourceView<FrameBuffer> getDefaultFrameBuffer();
 
-        virtual FramebufferSize getFramebufferSize() = 0;
+        void onResize(u32 width, u32 height);
+
+        /**
+         * @brief: Clears the back buffer with the color specified in the clear color. The clear color is set using the
+         *       setClearColor function.
+         */
+        void clear();
+
+        /**
+         * @brief: Sets the clear color of the back buffer. The clear color is used when the clear function is called.
+         * @param r - the red component of the clear color.
+         * @param g - the green component of the clear color.
+         * @param b - the blue component of the clear color.
+         * @param a - the alpha component of the clear color. Default is 1.0f.
+         */
+        void setClearColor(float r, float g, float b, float a = 1.0f);
+
+        /**
+         * @brief: Retrieves the clear color of the back buffer. This is a 4 element array where the first element is the
+         *       red component, the second element is the green component, the third element is the blue component, and
+         *       the fourth element is the alpha component.
+         * @return: a pointer to the clear color array.
+         */
+        float* getClearColor();
+
+        /**
+         * @brief: Given a valid vertex array, this function will send the necessary commands to the graphics device
+         *        to draw the data stored in the array. The data will be drawn using the currently bound shader.
+         * @param vertexArray
+         */
+        void draw(const ResourceView<VertexArray>& vertexArray);
+
+        /**
+         * @brief: Similar to the draw function, but this function will draw multiple instances of the data stored in the
+         *       vertex array. The number of instances to draw is specified by the instanceCount parameter.
+         * @param vertexArray
+         * @param instanceCount - the number of instances to draw.
+         */
+        void drawInstanced(const ResourceView<VertexArray>& vertexArray, u32 instanceCount);
+
+        /**
+         * @brief: Enables or disables depth testing for the default framebuffer. When enabled, the depth buffer will be
+         * used to determine which fragments should be drawn and which should be discarded.
+         * @param enable - true to enable depth testing, false to disable it.
+         */
+        void enableDepthTest(bool enable);
+
+        /**
+         * @brief: The DeviceLimits object contains information about the capabilities of the graphics device that the
+         *       context is running on. This information can be used to determine the maximum number of textures that
+         *       can be bound to a shader, the maximum number of vertex attributes that can be used, etc.
+         */
+        [[nodiscard]] const UP<DeviceLimits>& getDeviceLimits() const;
+
+        [[nodiscard]] u32 getWidth() const;
+
+        [[nodiscard]] u32 getHeight() const;
 
         /**
          * @brief: Creates a new shader module. The description includes a field that should contain the shader code.
@@ -199,8 +231,6 @@ namespace Syrius{
          */
         virtual ResourceView<CubeMap> createCubeMap(const ResourceView<CubeMapLayout>& desc) = 0;
 
-        void onResize(u32 width, u32 height);
-
         virtual void beginRenderPass(const ResourceView<FrameBuffer>& frameBuffer);
 
         virtual void beginRenderPass();
@@ -208,62 +238,6 @@ namespace Syrius{
         virtual void endRenderPass(const ResourceView<FrameBuffer>& frameBuffer);
 
         virtual void endRenderPass();
-
-        /**
-         * @brief: Clears the back buffer with the color specified in the clear color. The clear color is set using the
-         *       setClearColor function.
-         */
-        void clear();
-
-        /**
-         * @brief: Sets the clear color of the back buffer. The clear color is used when the clear function is called.
-         * @param r - the red component of the clear color.
-         * @param g - the green component of the clear color.
-         * @param b - the blue component of the clear color.
-         * @param a - the alpha component of the clear color. Default is 1.0f.
-         */
-        void setClearColor(float r, float g, float b, float a = 1.0f);
-
-        /**
-         * @brief: Retrieves the clear color of the back buffer. This is a 4 element array where the first element is the
-         *       red component, the second element is the green component, the third element is the blue component, and
-         *       the fourth element is the alpha component.
-         * @return: a pointer to the clear color array.
-         */
-        float* getClearColor();
-
-        /**
-         * @brief: Given a valid vertex array, this function will send the necessary commands to the graphics device
-         *        to draw the data stored in the array. The data will be drawn using the currently bound shader.
-         * @param vertexArray
-         */
-        void draw(const ResourceView<VertexArray>& vertexArray);
-
-        /**
-         * @brief: Similar to the draw function, but this function will draw multiple instances of the data stored in the
-         *       vertex array. The number of instances to draw is specified by the instanceCount parameter.
-         * @param vertexArray
-         * @param instanceCount - the number of instances to draw.
-         */
-        void drawInstanced(const ResourceView<VertexArray>& vertexArray, u32 instanceCount);
-
-        /**
-         * @brief: Enables or disables depth testing for the default framebuffer. When enabled, the depth buffer will be
-         * used to determine which fragments should be drawn and which should be discarded.
-         * @param enable - true to enable depth testing, false to disable it.
-         */
-        void enableDepthTest(bool enable);
-
-        /**
-         * @brief: The DeviceLimits object contains information about the capabilities of the graphics device that the
-         *       context is running on. This information can be used to determine the maximum number of textures that
-         *       can be bound to a shader, the maximum number of vertex attributes that can be used, etc.
-         */
-        [[nodiscard]] const UP<DeviceLimits>& getDeviceLimits() const;
-
-        [[nodiscard]] u32 getWidth() const;
-
-        [[nodiscard]] u32 getHeight() const;
 
         void destroyShaderModule(const ResourceView<ShaderModule>& shaderModule);
 
@@ -291,9 +265,28 @@ namespace Syrius{
 
         void destroyCubeMap(const ResourceView<CubeMap>& cubeMap);
 
+        /**
+        * @brief: Commands the swap chain to present a back buffer to the screen. If multiple back buffers are used,
+        *         this function will swap the back buffer that was last presented to the screen with the front buffer.
+        */
+        virtual void swapBuffers() = 0;
+
+        /**
+         * @brief: Enables or disables vertical synchronisation. When enabled, the swap chain will wait for the
+         *        vertical blanking period before presenting the back buffer to the screen. This will prevent screen
+         *        tearing but will also limit the frame rate to the refresh rate of the monitor.
+         * @param enable - true to enable vertical synchronisation, false to disable it.
+         * @note: This function is not supported on all APIs. If the API does not support vertical synchronisation, this
+         *        function will do nothing. In case of OpenGL, the necessary extensions must be available on your device
+         *        for this function to work.
+         */
+        virtual void setVerticalSynchronisation(bool enable) = 0;
+
     protected:
 
         explicit Context(const ContextDesc& desc);
+
+        virtual void createDefaultFrameBuffer(i32 width, i32 height, const ContextDesc& desc) = 0;
 
         virtual void createImGuiContext() = 0;
 

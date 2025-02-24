@@ -10,10 +10,14 @@ namespace Syrius{
     m_DeviceContext(nullptr),
     m_Device(nullptr),
     m_SwapChain(nullptr){
+        RECT clientSpace = {0, 0, 0, 0};
+        GetClientRect(m_Hwnd, &clientSpace);
+        const i32 width = clientSpace.right;
+        const i32 height = clientSpace.bottom;
 
         DXGI_SWAP_CHAIN_DESC scDesc = { 0 };
-        scDesc.BufferDesc.Width = desc.backBufferWidth;
-        scDesc.BufferDesc.Height = desc.backBufferHeight;
+        scDesc.BufferDesc.Width = width;
+        scDesc.BufferDesc.Height = height;
         scDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;  // DWM uses BGRA format, this is supposed to be slightly faster than RGBA
         scDesc.BufferDesc.RefreshRate.Numerator = 0;
         scDesc.BufferDesc.RefreshRate.Denominator = 0;
@@ -43,32 +47,9 @@ namespace Syrius{
                 &m_DeviceContext
                 ));
 
-
-        auto defaultFbDesc = createFrameBufferLayout();
-
-        ViewportDesc viewportDesc;
-        viewportDesc.width = desc.backBufferWidth;
-        viewportDesc.height = desc.backBufferHeight;
-        defaultFbDesc->addViewportDesc(viewportDesc);
-
-        ColorAttachmentDesc colorAttachmentDesc;
-        colorAttachmentDesc.width = desc.backBufferWidth;
-        colorAttachmentDesc.height = desc.backBufferHeight;
-        defaultFbDesc->addColorAttachmentDesc(colorAttachmentDesc);
-
-        if (desc.enableDepthTest or desc.enableStencilTest){
-            DepthStencilAttachmentDesc dsaDesc;
-            dsaDesc.width = desc.backBufferWidth;
-            dsaDesc.height = desc.backBufferHeight;
-            dsaDesc.enableDepthTest = desc.enableDepthTest;
-            dsaDesc.enableStencilTest = desc.enableStencilTest;
-            defaultFbDesc->addDepthStencilAttachmentDesc(dsaDesc);
-        }
-
         m_DeviceLimits = createUP<D3D11DeviceLimits>(m_Device, m_DeviceContext, m_D3DVersion);
 
-        auto ptr = new D3D11DefaultFrameBuffer(defaultFbDesc, m_DeviceLimits, m_Device, m_DeviceContext, m_SwapChain);
-        m_FrameBuffers.emplace_back(ptr);
+        D3D11Context::createDefaultFrameBuffer(width, height, desc);
 
         D3D11_RASTERIZER_DESC rasterizerDesc = {};
         rasterizerDesc.FillMode = D3D11_FILL_SOLID;
@@ -165,15 +146,6 @@ namespace Syrius{
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
     }
 
-    FramebufferSize D3D11Context::getFramebufferSize() {
-        RECT area;
-        GetClientRect(m_Hwnd, &area);
-        FramebufferSize size{};
-        size.m_Width = area.right;
-        size.m_Height = area.bottom;
-        return size;
-    }
-
     ResourceView<ShaderModule> D3D11Context::createShaderModule(const ShaderModuleDesc &desc) {
         m_ShaderModules.emplace_back(new D3D11ShaderModule(desc, m_Device, m_DeviceContext));
         return createResourceView(m_ShaderModules.back());
@@ -250,6 +222,33 @@ namespace Syrius{
         m_CubeMaps.emplace_back(new D3D11CubeMap(desc, m_DeviceLimits, m_Device, m_DeviceContext));
         return createResourceView(m_CubeMaps.back());
     }
+
+    void D3D11Context::createDefaultFrameBuffer(const i32 width, const  i32 height, const ContextDesc &desc) {
+        auto defaultFbDesc = createFrameBufferLayout();
+
+        ViewportDesc viewportDesc;
+        viewportDesc.width = width;
+        viewportDesc.height = height;
+        defaultFbDesc->addViewportDesc(viewportDesc);
+
+        ColorAttachmentDesc colorAttachmentDesc;
+        colorAttachmentDesc.width = width;
+        colorAttachmentDesc.height = height;
+        defaultFbDesc->addColorAttachmentDesc(colorAttachmentDesc);
+
+        if (desc.enableDepthTest or desc.enableStencilTest){
+            DepthStencilAttachmentDesc dsaDesc;
+            dsaDesc.width = width;
+            dsaDesc.height = height;
+            dsaDesc.enableDepthTest = desc.enableDepthTest;
+            dsaDesc.enableStencilTest = desc.enableStencilTest;
+            defaultFbDesc->addDepthStencilAttachmentDesc(dsaDesc);
+        }
+
+        auto ptr = new D3D11DefaultFrameBuffer(defaultFbDesc, m_DeviceLimits, m_Device, m_DeviceContext, m_SwapChain);
+        m_FrameBuffers.emplace_back(ptr);
+    }
+
 
 }
 

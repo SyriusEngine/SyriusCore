@@ -97,37 +97,37 @@ namespace Syrius{
         return createResourceView(m_CubeMaps.back());
     }
 
-    void GlContext::initGl(const ContextDesc& desc) {
+    void GlContext::initGl() {
         initGlad();
+    }
 
+    void GlContext::createDefaultFrameBuffer(i32 width, i32 height, const ContextDesc &desc) {
         auto defaultFbDesc = createFrameBufferLayout();
-
         ViewportDesc viewportDesc;
-        viewportDesc.width = desc.backBufferWidth;
-        viewportDesc.height = desc.backBufferHeight;
+        viewportDesc.width = width;
+        viewportDesc.height = height;
         defaultFbDesc->addViewportDesc(viewportDesc);
 
         ColorAttachmentDesc colorAttachmentDesc;
-        colorAttachmentDesc.width = desc.backBufferWidth;
-        colorAttachmentDesc.height = desc.backBufferHeight;
+        colorAttachmentDesc.width = width;
+        colorAttachmentDesc.height = height;
         defaultFbDesc->addColorAttachmentDesc(colorAttachmentDesc);
 
         if (desc.enableDepthTest or desc.enableStencilTest){
             DepthStencilAttachmentDesc dsaDesc;
-            dsaDesc.width = desc.backBufferWidth;
-            dsaDesc.height = desc.backBufferHeight;
+            dsaDesc.width = width;
+            dsaDesc.height = height;
             dsaDesc.enableDepthTest = desc.enableDepthTest;
             dsaDesc.enableStencilTest = desc.enableStencilTest;
             defaultFbDesc->addDepthStencilAttachmentDesc(dsaDesc);
         }
-
-        m_DeviceLimits = createUP<GlDeviceLimits>();
 
         auto ptr = new GlDefaultFrameBuffer(defaultFbDesc, m_DeviceLimits);
         m_FrameBuffers.emplace_back(ptr);
 
         SR_PRECONDITION(!m_FrameBuffers.empty(), "Default framebuffer not created");
     }
+
 
     void GlContext::terminateGl() {
         terminateGlad();

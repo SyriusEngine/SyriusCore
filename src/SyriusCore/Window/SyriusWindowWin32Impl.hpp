@@ -82,13 +82,13 @@ namespace Syrius{
 
         void handleEvent(UINT msg, WPARAM wparam, LPARAM lparam);
 
-        void mouseTracker(bool enableTracking);
+        void mouseTracker(bool enableTracking) const;
 
-        void registerWindowClass();
+  static       void registerWindowClass();
 
-        void unregisterWindowClass();
+        static void unregisterWindowClass();
 
-        void setProcessDPIAwareness();
+        static void setProcessDPIAwareness();
 
     private:
         static u32 m_WindowCount;

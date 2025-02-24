@@ -24,8 +24,6 @@ namespace Syrius {
 
         void setVerticalSynchronisation(bool enable) override;
 
-        FramebufferSize getFramebufferSize() override;
-
     protected:
 
         void createImGuiContext() override;

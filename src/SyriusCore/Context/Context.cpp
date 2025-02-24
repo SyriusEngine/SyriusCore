@@ -13,6 +13,7 @@ namespace Syrius{
 
     Context::~Context() = default;
 
+
     SR_SUPPORTED_API Context::getType() const {
         return m_Type;
     }
