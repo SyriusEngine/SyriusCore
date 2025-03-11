@@ -84,7 +84,7 @@ namespace Syrius{
 
         void mouseTracker(bool enableTracking) const;
 
-  static       void registerWindowClass();
+        static void registerWindowClass();
 
         static void unregisterWindowClass();
 
