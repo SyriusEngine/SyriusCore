@@ -10,7 +10,7 @@ namespace Syrius{
     m_GlChannelFormat(getGlChannelFormat(desc.format)),
     m_GlInternalFormat(getGlTextureFormatSized(desc.format)),
     m_GlDataType(getGlTextureDataType(desc.format)){
-        SR_LOG_THROW_IF_FALSE(deviceLimits->texture2DFormatSupported(desc.format), "GlTexture2D", "Texture format (%i) is not supported by the device", desc.format);
+        SR_PRECONDITION(deviceLimits->texture2DFormatSupported(desc.format), "GlTexture2D", "Texture format {} is not supported by the device", desc.format);
 
         createTexture(desc.data);
     }
@@ -22,7 +22,7 @@ namespace Syrius{
     m_GlChannelFormat(getGlChannelFormat(desc.image->getFormat())),
     m_GlInternalFormat(getGlTextureFormatSized(desc.image->getFormat())),
     m_GlDataType(getGlTextureDataType(desc.image->getFormat())){
-        SR_LOG_THROW_IF_FALSE(deviceLimits->texture2DFormatSupported(desc.image->getFormat()), "GlTexture2D", "Texture format (%i) is not supported by the device", desc.image->getFormat());
+        SR_PRECONDITION(deviceLimits->texture2DFormatSupported(desc.image->getFormat()), "GlTexture2D", "Texture format {} is not supported by the device", desc.image->getFormat());
 
         createTexture(desc.image->getData());
     }
@@ -39,17 +39,17 @@ namespace Syrius{
     }
 
     void GlTexture2D::bindShaderResource(u32 slot) {
-        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
+        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot {} is greater than the device number of texture slots {}}", slot, m_DeviceLimits->getMaxTextureSlots());
 
         glBindTextureUnit(slot, m_TextureID);
     }
 
     void GlTexture2D::setData(const void *data, u32 x, u32 y, u32 width, u32 height) {
-        SR_PRECONDITION(data != nullptr, "[GlTexture2D]: Data is nullptr (%p)", data);
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlTexture2D]: Update on texture2D object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
-        SR_PRECONDITION(x + width <= m_Width, "[GlTexture2D]: Width (%i) exceeds the texture width (%i)", width, m_Width);
-        SR_PRECONDITION(y + height <= m_Height, "[GLTexture2D]: Height (%i) exceeds the texture height (%i)", height, m_Height);
-        SR_PRECONDITION(m_PixelUnpackBuffer != 0, "[GlTexture2D]: Pixel unpack buffer is not created for texture object (%p)", this);
+        SR_PRECONDITION(data != nullptr, "[GlTexture2D]: Data is nullptr");
+        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlTexture2D]: Update on texture2D object {} requested, which was created with SR_BUFFER_USAGE_STATIC flag!", m_PixelUnpackBuffer);
+        SR_PRECONDITION(x + width <= m_Width, "[GlTexture2D]: Width {} exceeds the texture width {}", width, m_Width);
+        SR_PRECONDITION(y + height <= m_Height, "[GLTexture2D]: Height {} exceeds the texture height {}", height, m_Height);
+        SR_PRECONDITION(m_PixelUnpackBuffer != 0, "[GlTexture2D]: Pixel unpack buffer is not created for texture object {}", m_PixelUnpackBuffer);
 
         // use the pbo for more efficient data transfer
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_PixelUnpackBuffer);
@@ -66,26 +66,26 @@ namespace Syrius{
     }
 
     void GlTexture2D::copyFrom(const ResourceView<Texture2D> &other) {
-        SR_PRECONDITION(m_Width == other->getWidth(), "[GlTexture2D]: Width of the source texture (%i) does not match the width of the destination texture (%i)", other->getWidth(), m_Width);
-        SR_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
-        SR_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlTexture2D]: Copy on texture object (%p) requested, which has been created with SR_BUFFER_USAGE_STATIC flag!", this);
+        SR_PRECONDITION(m_Width == other->getWidth(), "[GlTexture2D]: Width of the source texture {} does not match the width of the destination texture {}", other->getWidth(), m_Width);
+        SR_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture {} does not match the height of the destination texture {}", other->getHeight(), m_Height);
+        SR_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture {} does not match the format of the destination texture {}", other->getFormat(), m_Format);
+        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlTexture2D]: Copy on texture object {} requested, which has been created with SR_BUFFER_USAGE_STATIC flag!", m_PixelUnpackBuffer);
 
         glCopyImageSubData(other->getIdentifier(), GL_TEXTURE_2D, 0, 0, 0, 0, m_TextureID, GL_TEXTURE_2D, 0, 0, 0, 0, m_Width, m_Height, 1);
 
     }
 
     void GlTexture2D::copyFrom(const ResourceView<ColorAttachment> &other) {
-        SR_PRECONDITION(m_Width == other->getWidth(), "[GlTexture2D]: Width of the source texture (%i) does not match the width of the destination texture (%i)", other->getWidth(), m_Width);
-        SR_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
-        SR_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlTexture2D]: Copy on texture object (%p) requested, which has been created with SR_BUFFER_USAGE_STATIC flag!", this);
+        SR_PRECONDITION(m_Width == other->getWidth(), "[GlTexture2D]: Width of the source texture {} does not match the width of the destination texture {}", other->getWidth(), m_Width);
+        SR_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture {} does not match the height of the destination texture {}", other->getHeight(), m_Height);
+        SR_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture {} does not match the format of the destination texture {}", other->getFormat(), m_Format);
+        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlTexture2D]: Copy on texture object {} requested, which has been created with SR_BUFFER_USAGE_STATIC flag!", m_PixelUnpackBuffer);
 
         glCopyImageSubData(other->getIdentifier(), GL_TEXTURE_2D, 0, 0, 0, 0, m_TextureID, GL_TEXTURE_2D, 0, 0, 0, 0, m_Width, m_Height, 1);
     }
 
     UP<Image> GlTexture2D::getData() {
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlTexture2D]: Update on texture2D object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
+        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlTexture2D]: Update on texture2D object {} requested, which was created with SR_BUFFER_USAGE_STATIC flag!", m_PixelUnpackBuffer);
 
         auto channelCount = getTextureChannelCount(m_Format);
         ImageUI8Desc imgDesc;
@@ -96,7 +96,7 @@ namespace Syrius{
             case 2: imgDesc.format = SR_TEXTURE_RG_UI8; break;
             case 3: imgDesc.format = SR_TEXTURE_RGB_UI8; break;
             case 4: imgDesc.format = SR_TEXTURE_RGBA_UI8; break;
-            default: SR_LOG_THROW("GlTexture2D", "Invalid channel count (%i) for texture object (%p)", channelCount, this);
+            default: SR_LOG_THROW("GlTexture2D", "Invalid channel count {} for texture object {}", channelCount, m_PixelUnpackBuffer);
         }
         auto img = createImage(imgDesc);
         auto size = m_Width * m_Height * channelCount;

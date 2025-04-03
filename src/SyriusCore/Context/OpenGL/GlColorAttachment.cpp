@@ -10,7 +10,7 @@ namespace Syrius{
     m_GlChannelFormat(getGlChannelFormat(desc.format)),
     m_GlInternalFormat(getGlTextureFormat(desc.format)),
     m_GlDataType(getGlTextureDataType(desc.format)){
-        SR_LOG_THROW_IF_FALSE(m_DeviceLimits->texture2DFormatSupported(desc.format), "GlColorAttachment", "Texture format (%i) is not supported by the device", desc.format);
+        SR_PRECONDITION(m_DeviceLimits->texture2DFormatSupported(desc.format), "GlColorAttachment", "Texture format {} is not supported by the device", desc.format);
 
 //        glCreateTextures(GL_TEXTURE_2D, 1, &m_TextureID);
 //        glBindTexture(GL_TEXTURE_2D, m_TextureID);
@@ -34,7 +34,7 @@ namespace Syrius{
     }
 
     void GlColorAttachment::bindShaderResource(u32 slot) {
-        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
+        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot {} is greater than the device number of texture slots {}", slot, m_DeviceLimits->getMaxTextureSlots());
 
         glBindTextureUnit(slot, m_TextureID);
     }
@@ -64,7 +64,7 @@ namespace Syrius{
                 case GL_RG: return GL_RG_INTEGER;
                 case GL_RGB: return GL_RGB_INTEGER;
                 case GL_RGBA: return GL_RGBA_INTEGER;
-                default: SR_LOG_THROW("GlColorAttachment", "Invalid channel format (%i)", channelFormat);
+                default: SR_LOG_THROW("GlColorAttachment", "Invalid channel format {}", channelFormat);
             }
         }
         return channelFormat;
@@ -96,11 +96,16 @@ namespace Syrius{
         // map the pbo
         auto pBuffer = glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
 
-        SR_LOG_THROW_IF_FALSE(pBuffer, "GlColorAttachment", "Failed to map pixel buffer object (%i)", pboID);
+        if (!pBuffer) {
+            SR_LOG_WARNING("GlColorAttachment", "Failed to map pixel buffer object {}", pboID)
+            return std::move(img);
+        }
 
         memcpy(img->getData(), pBuffer, size);
         auto retVal = glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
-        SR_ASSERT(retVal, "[GlColorAttachment]: Failed to unmap pixel buffer object (%i)", pboID);
+        if (retVal == GL_FALSE) {
+            SR_LOG_WARNING("GlColorAttachment", "Failed to unmap pixel buffer object {}", pboID)
+        }
 
         // unbind the pbo
         glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
@@ -127,7 +132,7 @@ namespace Syrius{
     }
 
     void GlDefaultColorAttachment::bindShaderResource(u32 slot) {
-        SR_LOG_WARNING("GlDefaultColorAttachment", "Attempted to bind default color attachment (%p) as shader resource at slot %i, this is not supported", this, slot)
+        SR_LOG_WARNING("GlDefaultColorAttachment", "Attempted to bind default color attachment as shader resource at slot {}, this is not supported", slot)
     }
 
     void GlDefaultColorAttachment::clear() {
@@ -140,7 +145,7 @@ namespace Syrius{
     }
 
     UP<Image> GlDefaultColorAttachment::getData() {
-        SR_LOG_WARNING("GlDefaultColorAttachment", "Attempted to get data from default color attachment (%p), this is not supported", this)
+        SR_LOG_WARNING("GlDefaultColorAttachment", "Attempted to get data from default color attachment which is not supported")
         return nullptr;
     }
 

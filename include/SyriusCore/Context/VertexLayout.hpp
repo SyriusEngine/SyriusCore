@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Utils.hpp"
 #include "DeviceLimits.hpp"
 #include <vector>

@@ -16,7 +16,7 @@ namespace Syrius{
         glGetProgramiv(m_ShaderID, GL_LINK_STATUS, &success);
         if (!success) {
             glGetProgramInfoLog(m_ShaderID, 512, nullptr, infoLog);
-            SR_LOG_THROW("GlShader", "Failed to link shader program, error: %s", infoLog);
+            SR_LOG_THROW("GlShader", "Failed to link shader program, error: {}", infoLog);
         }
     }
 

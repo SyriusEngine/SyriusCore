@@ -8,11 +8,11 @@ namespace Syrius{
     type(type),
     size(size),
     elementCount(elementCount) {
-        SR_PRECONDITION(getScalarComponentCount(type) < 5, "Vertex attribute cannot have more than 4 components (%i)", getScalarComponentCount(type));
-        SR_PRECONDITION(getScalarComponentCount(type) > 0, "Vertex attribute cannot have less than 1 component (%i)", getScalarComponentCount(type));
+        SR_PRECONDITION(getScalarComponentCount(type) < 5, "Vertex attribute cannot have more than 4 components {}", getScalarComponentCount(type));
+        SR_PRECONDITION(getScalarComponentCount(type) > 0, "Vertex attribute cannot have less than 1 component {}", getScalarComponentCount(type));
         SR_PRECONDITION(size > 0, "Vertex attribute size cannot be 0");
         SR_PRECONDITION(elementCount > 0, "Vertex attribute element count cannot be 0");
-        SR_PRECONDITION(size % elementCount == 0, "Vertex attribute size must be divisible by element count (%i)", elementCount);
+        SR_PRECONDITION(size % elementCount == 0, "Vertex attribute size must be divisible by element count {}", elementCount);
         SR_PRECONDITION(!name.empty(), "Vertex attribute name cannot be empty")
 
     }
@@ -28,8 +28,8 @@ namespace Syrius{
     VertexLayout::~VertexLayout() = default;
 
     void VertexLayout::addAttribute(const std::string &name, SR_SCALAR_TYPE dataType) {
-        SR_PRECONDITION(m_AttributeCount < m_DeviceLimits->getMaxVertexAttributes(), "Vertex attribute count cannot exceed %i", m_DeviceLimits->getMaxVertexAttributes());
-        SR_PRECONDITION(!hasAttribute(name), "Vertex attribute with name %s already exists", name.c_str());
+        SR_PRECONDITION(m_AttributeCount < m_DeviceLimits->getMaxVertexAttributes(), "Vertex attribute count cannot exceed {}", m_DeviceLimits->getMaxVertexAttributes());
+        SR_PRECONDITION(!hasAttribute(name), "Vertex attribute with name {} already exists", name.c_str());
 
 
         u8 elementCount = getScalarComponentCount(dataType);
@@ -51,7 +51,7 @@ namespace Syrius{
     }
 
     const VertexAttribute &VertexLayout::operator[](const std::string &name) const {
-        SR_PRECONDITION(hasAttribute(name), "Vertex attribute with name %s does not exist", name.c_str());
+        SR_PRECONDITION(hasAttribute(name), "Vertex attribute with name {} does not exist", name);
 
         for (const auto &attribute : m_Attributes) {
             if (attribute.name == name) {
@@ -62,7 +62,7 @@ namespace Syrius{
     }
 
     VertexAttribute &VertexLayout::operator[](const std::string &name) {
-        SR_PRECONDITION(hasAttribute(name), "Vertex attribute with name %s does not exist", name.c_str());
+        SR_PRECONDITION(hasAttribute(name), "Vertex attribute with name {} does not exist", name);
 
         for (auto &attribute : m_Attributes) {
             if (attribute.name == name) {
@@ -73,13 +73,13 @@ namespace Syrius{
     }
 
     const VertexAttribute &VertexLayout::operator[](u32 index) const {
-        SR_PRECONDITION(index < m_AttributeCount, "Vertex attribute index %i is out of bounds", index);
+        SR_PRECONDITION(index < m_AttributeCount, "Vertex attribute index {} is out of bounds", index);
 
         return m_Attributes[index];
     }
 
     VertexAttribute &VertexLayout::operator[](u32 index) {
-        SR_PRECONDITION(index < m_AttributeCount, "Vertex attribute index %i is out of bounds", index);
+        SR_PRECONDITION(index < m_AttributeCount, "Vertex attribute index {} is out of bounds", index);
 
         return m_Attributes[index];
     }

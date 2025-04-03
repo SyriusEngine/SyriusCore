@@ -20,12 +20,12 @@ namespace Syrius{
 
     void CubeMapLayout::addFace(SR_CUBEMAP_FACE faceID, UP<Image>& image) {
         if (image->getFormat() != m_Format){
-            SR_LOG_WARNING("CubeMapLayout", "Image format (%i) does not match the specified cubemap format (%i), "
+            SR_LOG_WARNING("CubeMapLayout", "Image format {} does not match the specified cubemap format {}, "
                             "the face will not be loaded!", image->getFormat(), m_Format);
             return;
         }
         if (image->getWidth() != m_Width or image->getHeight() != m_Height){
-            SR_LOG_WARNING("CubeMapLayout", "Image dimensions (%ix%i) do not match the specified cubemap dimensions (%ix%i)."
+            SR_LOG_PERFORMANCE("CubeMapLayout", "Image dimensions ({}x{}) do not match the specified cubemap dimensions ({}x{})."
                             "The image will be resized to match the cubemap dimensions! Consider resizing the image before loading it"
                             "to avoid performance issues!", image->getWidth(), image->getHeight(), m_Width, m_Height);
             image->resize(m_Width, m_Height);
@@ -36,7 +36,7 @@ namespace Syrius{
     void CubeMapLayout::addFaceFromImage(SR_CUBEMAP_FACE faceID, const ImageFileDesc &desc) {
         auto image = createImage(desc);
         if (image->getFormat() == SR_TEXTURE_RGB_UI8){
-            SR_LOG_WARNING("CubeMapLayout", "Image format is RGB, extending to RGBA to avoid issues on some GPUs!");
+            SR_LOG_PERFORMANCE("CubeMapLayout", "Image format is RGB, extending to RGBA to avoid issues on some GPUs! Consider using RGBA images instead!");
             image->extendAlpha(); // GPUs dont like 3 channel images (D3D11 in particular)
         }
         addFace(faceID, image);

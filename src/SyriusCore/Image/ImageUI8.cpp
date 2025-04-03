@@ -16,7 +16,7 @@ namespace Syrius{
         i32 channelCount, width, height;
         UByte* pData = stbi_load(desc.fileName.string().c_str(), &width, &height, &channelCount, 0);
         if (!pData){
-            SR_LOG_WARNING("ImageUI8", "Image: %s failed to load", desc.fileName.c_str());
+            SR_LOG_WARNING("ImageUI8", "Image: {} failed to load", desc.fileName.string());
             return;
         }
         if (desc.requestedChannelCount == channelCount or desc.requestedChannelCount == 0){
@@ -38,16 +38,16 @@ namespace Syrius{
 
         stbi_image_free(pData);
 
-        SR_POSTCONDITION(m_Width > 0, "[ImageUI8]: Image: %s has a width of 0", desc.fileName.string().c_str());
-        SR_POSTCONDITION(m_Height > 0, "[ImageUI8]: Image: %s has a height of 0", desc.fileName.string().c_str());
+        SR_POSTCONDITION(m_Width > 0, "[ImageUI8]: Image: {} has a width of 0", desc.fileName.string().c_str());
+        SR_POSTCONDITION(m_Height > 0, "[ImageUI8]: Image: {} has a height of 0", desc.fileName.string().c_str());
     }
 
     ImageUI8::ImageUI8(const ImageUI8Desc &desc):
     Image(desc.width, desc.height, desc.format),
     m_Data(desc.width * desc.height * getTextureChannelCount(desc.format), desc.defaultChannelValue){
-        SR_PRECONDITION(desc.width > 0, "[ImageUI8]: Image: %p cannot be created with a width of 0", this);
-        SR_PRECONDITION(desc.height > 0, "[ImageUI8]: Image: %p cannot be created with a height of 0", this);
-        SR_PRECONDITION(getTextureDataType(desc.format) == SR_UINT8, "[ImageUI8]: Image: %p cannot be created with a format (given = %i) that is not of type uint8", this, desc.format)
+        SR_PRECONDITION(desc.width > 0, "[ImageUI8]: Image cannot be created with a width of 0");
+        SR_PRECONDITION(desc.height > 0, "[ImageUI8]: Image cannot be created with a height of 0");
+        SR_PRECONDITION(getTextureDataType(desc.format) == SR_UINT8, "[ImageUI8]: Image cannot be created with a format (given = %i) that is not of type uint8", desc.format)
 
         if (desc.data != nullptr){
             memcpy(&m_Data[0], desc.data, desc.width * desc.height * getTextureChannelCount(desc.format));
@@ -83,14 +83,14 @@ namespace Syrius{
     }
 
     void ImageUI8::resize(u32 width, u32 height) {
-        SR_PRECONDITION(width > 0, "[ImageUI8]: Image: %p cannot be resized to a width of 0", this);
-        SR_PRECONDITION(height > 0, "[ImageUI8]: Image: %p cannot be resized to a height of 0", this);
+        SR_PRECONDITION(width > 0, "[ImageUI8]: Image cannot be resized to a width of 0");
+        SR_PRECONDITION(height > 0, "[ImageUI8]: Image cannot be resized to a height of 0");
 
         i32 channelCount = getTextureChannelCount(m_Format);
         std::vector<UByte> resizedData(width * height * channelCount);
 
         if (!stbir_resize_uint8(&m_Data[0], m_Width, m_Height, 0, &resizedData[0], width, height, 0, channelCount)){
-            SR_LOG_WARNING("ImageUI8", "Image: %p failed to resize", this);
+            SR_LOG_WARNING("ImageUI8", "Image failed to resize");
             return;
         }
         m_Data = resizedData;

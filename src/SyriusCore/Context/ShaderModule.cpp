@@ -30,6 +30,8 @@ namespace Syrius{
     std::string ShaderModule::readFile(const fs::path &fileName) {
         checkFile(fileName);
 
+        checkFile(fileName);
+
         std::string code;
         std::string line;
         std::ifstream file(fileName);
@@ -44,7 +46,7 @@ namespace Syrius{
             }
         }
         else{
-            SR_LOG_WARNING("ShaderModule", "Failed to open file: %s", fileName.c_str());
+            SR_LOG_WARNING("ShaderModule", "Failed to open file: {}", fileName.string());
         }
         return code;
     }
@@ -62,7 +64,7 @@ namespace Syrius{
             file.close();
         }
         else{
-            SR_LOG_WARNING("ShaderModule", "Failed to open file: %s", fileName.c_str());
+            SR_LOG_WARNING("ShaderModule", "Failed to open file: {}", fileName);
         }
 
         return byteCode;

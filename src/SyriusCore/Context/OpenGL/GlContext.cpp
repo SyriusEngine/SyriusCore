@@ -138,14 +138,16 @@ namespace Syrius{
         if (m_ContextCount == 0) {
             const i32 version = gladLoaderLoadGL();
 
-            SR_LOG_THROW_IF_FALSE(version != 0, "GlContext", "Failed to initialize Glad")
+            if (version == 0) {
+                SR_LOG_THROW("GlContext", "Failed to initialize Glad")
+            }
 
             #if defined(SR_DEBUG)
                 const i32 major = GLAD_VERSION_MAJOR(version);
                 const i32 minor = GLAD_VERSION_MINOR(version);
-                SR_LOG_INFO("GlContext", "Glad Initialized for OpenGL %i.%i", major, minor)
+                SR_LOG_INFO("GlContext", "Glad Initialized for OpenGL {}.{}", major, minor)
                 if (major < 4 || (major == 4 && minor < 6)){
-                    SR_LOG_WARNING("GlContext", "SyriusCore is designed around OpenGL version is 4.6. Some features may not be available with version  %i.%i", major, minor)
+                    SR_LOG_WARNING("GlContext", "SyriusCore is designed around OpenGL version is 4.5. Some features may not be available with version  {}.{}", major, minor)
                 }
                 glEnable(GL_DEBUG_OUTPUT);
                 glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);

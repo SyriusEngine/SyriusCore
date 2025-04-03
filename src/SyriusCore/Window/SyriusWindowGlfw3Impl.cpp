@@ -161,7 +161,7 @@ namespace Syrius {
                 break;
             }
             default: {
-                SR_LOG_WARNING("SyriusWindowGlfw3Impl", "cannot create context: unsupported API (%i), fallback to OpenGL!", desc.api);
+                SR_LOG_WARNING("SyriusWindowGlfw3Impl", "cannot create context: unsupported API ({}), fallback to OpenGL!", desc.api);
                 createOpenGLContext(desc);
             }
         }
@@ -170,7 +170,9 @@ namespace Syrius {
 
     void SyriusWindowGlfw3Impl::createGlfwWindow() {
         m_Window = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), nullptr, nullptr);
-        SR_LOG_THROW_IF_FALSE(m_Window != nullptr, "SyriusWindowGlfw3Impl", "Failed to create window: %s", m_Title.c_str());
+        if (!m_Window) {
+            SR_LOG_THROW("SyriusWindowGlfw3Impl", "Failed to create window: {} ({}x{}", m_Title.c_str(), m_Width, m_Height);
+        }
         m_Open = true;
         glfwShowWindow(m_Window);
         m_Focused = true;
@@ -207,7 +209,7 @@ namespace Syrius {
     }
 
     void SyriusWindowGlfw3Impl::createOpenGLContext(ContextDesc& desc) {
-        SR_PRECONDITION(desc.api == SR_API_OPENGL, "SyriusWindowGlfw3Impl", "Cannot create OpenGL context for api: %i", desc.api);
+        SR_PRECONDITION(desc.api == SR_API_OPENGL, "SyriusWindowGlfw3Impl", "Cannot create OpenGL context for api: {}", desc.api);
 
         // To create a new OpenGL context with the desired parameters from desc.
         // We first destroy the old window, set our window creation hints
@@ -220,16 +222,18 @@ namespace Syrius {
 
     void SyriusWindowGlfw3Impl::initGlfw() {
         if (m_GlfwWindowCount == 0) {
-            SR_LOG_THROW_IF_FALSE(glfwInit(), "SyriusWindowGlfw3Impl", "Failed to initialize GLFW");
-
             glfwSetErrorCallback(CoreLogger::glfwCallback);
+
+            if (!glfwInit()) {
+                SR_LOG_THROW("SyriusWindowGlfw3Impl", "Failed to initialize GLFW")
+            }
 
             // Log version
             int major;
             int minor;
             int revision;
             glfwGetVersion(&major, &minor, &revision);
-            SR_LOG_INFO("SyriusWindowGlfw3Impl", "GLFW3 initialised with version: %i.%i.%i", major, minor, revision);
+            SR_LOG_INFO("SyriusWindowGlfw3Impl", "GLFW3 initialised with version: {}.{}.{}", major, minor, revision);
         }
         m_GlfwWindowCount++;
     }

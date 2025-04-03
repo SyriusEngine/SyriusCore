@@ -8,7 +8,7 @@ namespace Syrius{
     Context::Context(const ContextDesc& desc):
     m_VerticalSync(false),
     m_Type(desc.api){
-        SR_LOG_INFO("Context", "Creating context with backend: %s", getAPIName(m_Type).c_str());
+        SR_LOG_INFO("Context", "Creating context with backend: {}", m_Type);
     }
 
     Context::~Context() = default;

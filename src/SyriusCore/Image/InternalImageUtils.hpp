@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "../../../include/SyriusCore/Image/ImageUtils.hpp"
 #include "../Utils/DebugMacros.hpp"
 #include <vector>
@@ -8,7 +10,7 @@ namespace Syrius{
 
     template<typename T>
     void addAlpha(const std::vector<T>& src, std::vector<T>& dst, u32 width, u32 height, u32 channelCount){
-        SR_PRECONDITION(channelCount == 3, "Invalid channel count: %i", channelCount);
+        SR_PRECONDITION(channelCount == 3, "Invalid channel count: {}", channelCount);
 
         size_t numPixels = src.size() / 3;
 
