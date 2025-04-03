@@ -155,11 +155,6 @@ namespace Syrius {
          * This is not ideal, but it is the only way to do it with GLFW.
          * Can cause flickering.
          */
-        int width = 0;
-        int height = 0;
-        glfwGetFramebufferSize(m_Window, &width, &height);
-        desc.backBufferWidth = desc.backBufferWidth == 0 ? width : desc.backBufferWidth;
-        desc.backBufferHeight = desc.backBufferHeight == 0 ? height : desc.backBufferHeight;
         switch (desc.api) {
             case SR_API_OPENGL: {
                 createOpenGLContext(desc);
@@ -220,11 +215,6 @@ namespace Syrius {
         destroyGlfwWindow();
         Glfw3glContext::setGlfw3glContextHints(desc);
         createGlfwWindow();
-        int width = 0;
-        int height = 0;
-        glfwGetFramebufferSize(m_Window, &width, &height);
-        desc.backBufferWidth = desc.backBufferWidth == 0 ? width : desc.backBufferWidth;
-        desc.backBufferHeight = desc.backBufferHeight == 0 ? height : desc.backBufferHeight;
         m_Context = createUP<Glfw3glContext>(m_Window, desc);
     }
 

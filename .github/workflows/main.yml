@@ -13,13 +13,13 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake git g++ mesa-common-dev
+          sudo apt-get install -y cmake git g++ mesa-common-dev xorg-dev
 
       - name: Compile with g++
         run: |
           mkdir build
           cd build
-          cmake .. -DBUILD_TESTS=on -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DGLFW_BUILD_X11=0 -DGLFW_BUILD_WAYLAND=0
+          cmake .. -DBUILD_TESTS=on -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DGLFW_BUILD_X11=on -DGLFW_BUILD_WAYLAND=off
           make
 
   build-clang:

@@ -11,7 +11,7 @@ namespace Syrius {
     GlContext(desc),
     m_Window(window){
         Glfw3glContext::makeCurrent();
-        initGl(desc);
+        initGl();
     }
 
     Glfw3glContext::~Glfw3glContext() {
@@ -48,16 +48,6 @@ namespace Syrius {
 
     void Glfw3glContext::setVerticalSynchronisation(const bool enable) {
         glfwSwapInterval(enable ? 1 : 0);
-    }
-
-    FramebufferSize Glfw3glContext::getFramebufferSize() {
-        int width = 0;
-        int height = 0;
-        glfwGetFramebufferSize(m_Window, &width, &height);
-        FramebufferSize size;
-        size.m_Width = width;
-        size.m_Height = height;
-        return size;
     }
 
     void Glfw3glContext::createImGuiContext() {
