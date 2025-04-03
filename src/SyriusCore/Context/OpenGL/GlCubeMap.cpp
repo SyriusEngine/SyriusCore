@@ -10,8 +10,8 @@ namespace Syrius{
     m_GlChannelFormat(getGlChannelFormat(desc->getFormat())),
     m_GlInternalFormat(getGlTextureFormatSized(desc->getFormat())),
     m_GlDataType(getGlTextureDataType(desc->getFormat())){
-        SR_LOG_THROW_IF_FALSE(checkFormatSupported(m_GlInternalFormat), "GlCubemap",  "Internal format (%i) not supported", m_GlInternalFormat);
-        SR_LOG_THROW_IF_FALSE(checkFormatSupported(m_GlChannelFormat), "GlCubemap",  "Format (%i) not supported", m_GlChannelFormat);
+        SR_PRECONDITION(checkFormatSupported(m_GlInternalFormat), "GlCubemap", "Internal format {} not supported", m_GlInternalFormat);
+        SR_PRECONDITION(checkFormatSupported(m_GlChannelFormat), "GlCubemap", "Format {} not supported", m_GlChannelFormat);
 
         glGenTextures(1, &m_TextureID);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_TextureID);
@@ -36,15 +36,15 @@ namespace Syrius{
     }
 
     void GlCubeMap::bindShaderResource(u32 slot) {
-        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
+        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot {} is greater than the device number of texture slots {}", slot, m_DeviceLimits->getMaxTextureSlots());
 
         glBindTextureUnit(slot, m_TextureID);
     }
 
     void GlCubeMap::copyFrom(const ResourceView<Texture2D> &other, SR_CUBEMAP_FACE destinationFace) {
-        SR_PRECONDITION(m_Width == other->getWidth(), "[GlTexture2D]: Width of the source texture (%i) does not match the width of the destination texture (%i)", other->getWidth(), m_Width);
-        SR_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
-        SR_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
+        SR_PRECONDITION(m_Width == other->getWidth(), "[GlTexture2D]: Width of the source texture {} does not match the width of the destination texture {}", other->getWidth(), m_Width);
+        SR_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture {} does not match the height of the destination texture {}", other->getHeight(), m_Height);
+        SR_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture {} does not match the format of the destination texture {}", other->getFormat(), m_Format);
 
 //        glCopyImageSubData(other->getIdentifier(), GL_TEXTURE_2D, 0, 0, 0, 0,
 //                           m_TextureID, GL_TEXTURE_CUBE_MAP, 0, 0, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + destinationFace,
@@ -55,9 +55,9 @@ namespace Syrius{
     }
 
     void GlCubeMap::copyFrom(const ResourceView<ColorAttachment> &other, SR_CUBEMAP_FACE destinationFace) {
-        SR_PRECONDITION(m_Width == other->getWidth(), "[GlTexture2D]: Width of the source texture (%i) does not match the width of the destination texture (%i)", other->getWidth(), m_Width);
-        SR_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
-        SR_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
+        SR_PRECONDITION(m_Width == other->getWidth(), "[GlTexture2D]: Width of the source texture {} does not match the width of the destination texture {}", other->getWidth(), m_Width);
+        SR_PRECONDITION(m_Height == other->getHeight(), "[GlTexture2D]: Height of the source texture {} does not match the height of the destination texture {}", other->getHeight(), m_Height);
+        SR_PRECONDITION(m_Format == other->getFormat(), "[GlTexture2D]: Format of the source texture {} does not match the format of the destination texture {}", other->getFormat(), m_Format);
 
 //        glCopyImageSubData(other->getIdentifier(), GL_TEXTURE_2D, 0, 0, 0, 0,
 //                           m_TextureID, GL_TEXTURE_CUBE_MAP, 0, 0, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + destinationFace,
@@ -77,7 +77,7 @@ namespace Syrius{
             case 2: imgDesc.format = SR_TEXTURE_RG_UI8; break;
             case 3: imgDesc.format = SR_TEXTURE_RGB_UI8; break;
             case 4: imgDesc.format = SR_TEXTURE_RGBA_UI8; break;
-            default: SR_LOG_THROW("GlTexture2D", "Invalid channel count (%i) for texture object (%p)", channelCount, this);
+            default: SR_LOG_THROW("GlTexture2D", "Invalid channel count {} for texture object {}", channelCount, m_TextureID);
         }
         auto img = createImage(imgDesc);
 

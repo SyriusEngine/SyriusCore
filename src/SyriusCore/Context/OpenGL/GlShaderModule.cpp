@@ -5,7 +5,7 @@ namespace Syrius{
     GlShaderModule::GlShaderModule(const ShaderModuleDesc &desc):
     ShaderModule(desc),
     m_ModuleID(0){
-        SR_PRECONDITION(desc.language == SR_SHADER_LANGUAGE_SPRIV || desc.language == SR_SHADER_LANGUAGE_GLSL, "[GlShaderModule]: Invalid shader language type (%i), OpenGL only supports GLSL and SPIRV (if version is supported)", desc.language);
+        SR_PRECONDITION(desc.language == SR_SHADER_LANGUAGE_SPRIV || desc.language == SR_SHADER_LANGUAGE_GLSL, "[GlShaderModule]: Invalid shader language type {}, OpenGL only supports GLSL and SPIRV (if version is supported)", desc.language);
 
         if (desc.language == SR_SHADER_LANGUAGE_SPRIV){
             loadSPIRV(desc.code);
@@ -18,9 +18,9 @@ namespace Syrius{
     GlShaderModule::GlShaderModule(const ShaderModuleFileDesc &desc):
     ShaderModule(desc),
     m_ModuleID(0){
-        SR_PRECONDITION(desc.language == SR_SHADER_LANGUAGE_SPRIV || desc.language == SR_SHADER_LANGUAGE_GLSL, "[GlShaderModule]: Invalid shader language type (%i), OpenGL only supports GLSL and SPIRV (if version is supported)", desc.language);
+        SR_PRECONDITION(desc.language == SR_SHADER_LANGUAGE_SPRIV || desc.language == SR_SHADER_LANGUAGE_GLSL, "[GlShaderModule]: Invalid shader language type {}, OpenGL only supports GLSL and SPIRV (if version is supported)", desc.language);
 
-        SR_LOG_THROW_IF_FALSE(std::filesystem::exists(desc.filePath), "GlShaderModule", "Shader file (%s) does not exist", desc.filePath.c_str());
+        checkFile(desc.filePath);
 
         if (desc.language == SR_SHADER_LANGUAGE_SPRIV){
             std::string code = readFileBinary(desc.filePath);
@@ -54,7 +54,7 @@ namespace Syrius{
         glGetShaderiv(m_ModuleID, GL_COMPILE_STATUS, &success);
         if (!success){
             glGetShaderInfoLog(m_ModuleID, 512, nullptr, infoLog);
-            SR_LOG_THROW("GlShaderModule", "Failed to compile shader, type = %s, error = %s", getShaderTypeString(m_ShaderType).c_str(), infoLog);
+            SR_LOG_THROW("GlShaderModule", "Failed to compile shader, type = {}, error = {}", getShaderTypeString(m_ShaderType), infoLog);
         }
     }
 
@@ -71,7 +71,7 @@ namespace Syrius{
         glGetShaderiv(m_ModuleID, GL_COMPILE_STATUS, &success);
         if (!success){
             glGetShaderInfoLog(m_ModuleID, 512, nullptr, infoLog);
-            SR_LOG_THROW("GlShaderModule", "Failed to compile shader, usage = %s, error = %s", getShaderTypeString(m_ShaderType).c_str(), infoLog);
+            SR_LOG_THROW("GlShaderModule", "Failed to compile shader, usage = {}, error = {}", getShaderTypeString(m_ShaderType), infoLog);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Syrius{
 
-    GLint checkFramebuffer(u32 framebuffer){
+    GLenum checkFramebuffer(u32 framebuffer){
         auto status = glCheckNamedFramebufferStatus(framebuffer, GL_FRAMEBUFFER);
         std::string errorStr;
         switch (status){
@@ -17,9 +17,9 @@ namespace Syrius{
             case GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS:       errorStr = "GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS"; break;
             default: errorStr += "Unknown error"; break;
         }
-
-        SR_LOG_THROW_IF_FALSE(status == GL_FRAMEBUFFER_COMPLETE, "GlFrameBuffer", "Framebuffer (%i) is not complete, error: %s", framebuffer, errorStr.c_str());
-        
+        if (status != GL_FRAMEBUFFER_COMPLETE){
+            SR_LOG_WARNING("GlFrameBuffer", "Framebuffer {} is not complete, error: {}", framebuffer, errorStr);
+        }
         return status;
     }
 
@@ -35,7 +35,7 @@ namespace Syrius{
         createColorAttachments(desc);
         createDepthStencilAttachment(desc);
 
-        SR_POSTCONDITION(checkFramebuffer(m_FrameBufferID) == GL_FRAMEBUFFER_COMPLETE, "[GlFrameBuffer]: Framebuffer (%i) creation failed!", m_FrameBufferID);
+        SR_POSTCONDITION(checkFramebuffer(m_FrameBufferID) == GL_FRAMEBUFFER_COMPLETE, "[GlFrameBuffer]: Framebuffer {} creation failed!", m_FrameBufferID);
     }
 
     GlFrameBuffer::~GlFrameBuffer() {
@@ -43,7 +43,7 @@ namespace Syrius{
     }
 
     void GlFrameBuffer::bind() {
-        SR_PRECONDITION(glCheckNamedFramebufferStatus(m_FrameBufferID, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "[GlFrameBuffer]: Framebuffer (%i) cannot be bound because it is incomplete", m_FrameBufferID);
+        SR_PRECONDITION(glCheckNamedFramebufferStatus(m_FrameBufferID, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "[GlFrameBuffer]: Framebuffer {} cannot be bound because it is incomplete", m_FrameBufferID);
 
         glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
 

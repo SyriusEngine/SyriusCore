@@ -6,7 +6,7 @@ namespace Syrius{
     FrameBuffer::FrameBuffer(const ResourceView<FrameBufferLayout> &desc, const UP<DeviceLimits>& deviceLimits):
     m_DeviceLimits(deviceLimits),
     m_DepthStencilAttachment(nullptr){
-        SR_LOG_THROW_IF_FALSE(desc->isValid(), "FrameBuffer", "Framebuffer layout (%p) is not valid", desc.get());
+        SR_PRECONDITION(desc->isValid(), "FrameBuffer", "FrameBuffer layout is not valid");
     }
 
     FrameBuffer::~FrameBuffer() {
@@ -41,15 +41,15 @@ namespace Syrius{
     }
 
     ResourceView<Viewport> FrameBuffer::getViewport(u32 index) {
-        SR_PRECONDITION(m_Viewports.size() > 0, "No viewport was added to the framebuffer");
-        SR_PRECONDITION(index < m_Viewports.size(), "Index: %i is out of bounds for viewport", index);
+        SR_PRECONDITION(!m_Viewports.empty(), "No viewport was added to the framebuffer");
+        SR_PRECONDITION(index < m_Viewports.size(), "Index: {} is out of bounds for viewport", index);
 
         return createResourceView(m_Viewports[index]);
     }
 
     ResourceView<ColorAttachment> FrameBuffer::getColorAttachment(u32 index) {
-        SR_PRECONDITION(m_ColorAttachments.size() > 0, "No color attachment was added to the framebuffer");
-        SR_PRECONDITION(index < m_ColorAttachments.size(), "Index: %i is out of bounds for color attachment", index);
+        SR_PRECONDITION(!m_ColorAttachments.empty(), "No color attachment was added to the framebuffer");
+        SR_PRECONDITION(index < m_ColorAttachments.size(), "Index: {} is out of bounds for color attachment", index);
 
         return createResourceView(m_ColorAttachments[index]);
     }

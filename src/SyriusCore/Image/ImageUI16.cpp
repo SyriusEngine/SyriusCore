@@ -16,7 +16,7 @@ namespace Syrius{
         i32 width, height, channels;
         u16* pData = stbi_load_16(desc.fileName.string().c_str(), &width, &height, &channels, desc.requestedChannelCount);
         if (!pData){
-            SR_LOG_WARNING("ImageUI16", "Image: %s failed to load", desc.fileName.c_str());
+            SR_LOG_WARNING("ImageUI16", "Image {} failed to load", desc.fileName.string());
             return;
         }
         m_Data.resize(width * height * channels);
@@ -27,8 +27,8 @@ namespace Syrius{
 
         stbi_image_free(pData);
 
-        SR_POSTCONDITION(m_Width > 0, "[ImageUI16]: Image: %s has a width of 0", desc.fileName.c_str());
-        SR_POSTCONDITION(m_Height > 0, "[ImageUI16]: Image: %s has a height of 0", desc.fileName.c_str());
+        SR_POSTCONDITION(m_Width > 0, "[ImageUI16]: Image: {} has a width of 0", desc.fileName.string());
+        SR_POSTCONDITION(m_Height > 0, "[ImageUI16]: Image: {} has a height of 0", desc.fileName.string());
     }
 
     ImageUI16::ImageUI16(const ImageUI16Desc &desc):
@@ -54,7 +54,7 @@ namespace Syrius{
                                          channelCount, -1,0,
                                          STBIR_EDGE_CLAMP, STBIR_FILTER_DEFAULT,
                                          STBIR_COLORSPACE_LINEAR, nullptr)){
-            SR_LOG_WARNING("ImageUI16", "Image: %x failed to resize", this);
+            SR_LOG_WARNING("ImageUI16", "Image failed to resize");
             return;
         }
         m_Data = resizedData;

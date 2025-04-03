@@ -11,8 +11,8 @@ namespace Syrius{
     m_YPos(desc.yPos),
     m_MinDepth(desc.minDepth),
     m_MaxDepth(desc.maxDepth){
-        SR_PRECONDITION(desc.width <= m_DeviceLimits->getMaxFramebufferWidth(), "Maximum viewport width is: %i, given width is: %i", m_DeviceLimits->getMaxFramebufferWidth(), desc.width);
-        SR_PRECONDITION(desc.height <= m_DeviceLimits->getMaxFramebufferHeight(), "Maximum viewport height is: %i, given height is: %i", m_DeviceLimits->getMaxFramebufferHeight(), desc.height);
+        SR_PRECONDITION(desc.width <= m_DeviceLimits->getMaxFramebufferWidth(), "Maximum viewport width is: {}, given width is: {}", m_DeviceLimits->getMaxFramebufferWidth(), desc.width);
+        SR_PRECONDITION(desc.height <= m_DeviceLimits->getMaxFramebufferHeight(), "Maximum viewport height is: {}, given height is: {}", m_DeviceLimits->getMaxFramebufferHeight(), desc.height);
         SR_PRECONDITION(desc.width != 0, "Viewport width cannot be 0");
         SR_PRECONDITION(desc.height != 0, "Viewport height cannot be 0");
 
@@ -23,8 +23,8 @@ namespace Syrius{
     }
 
     void Viewport::onResize(u32 width, u32 height) {
-        SR_PRECONDITION(width <= m_DeviceLimits->getMaxFramebufferWidth(), "Maximum viewport width is: %i, given width is: %i", m_DeviceLimits->getMaxFramebufferWidth(), width);
-        SR_PRECONDITION(height <= m_DeviceLimits->getMaxFramebufferHeight(), "Maximum viewport height is: %i, given height is: %i", m_DeviceLimits->getMaxFramebufferHeight(), height);
+        SR_PRECONDITION(width <= m_DeviceLimits->getMaxFramebufferWidth(), "Maximum viewport width is: {}, given width is: {}", m_DeviceLimits->getMaxFramebufferWidth(), width);
+        SR_PRECONDITION(height <= m_DeviceLimits->getMaxFramebufferHeight(), "Maximum viewport height is: {}, given height is: {}", m_DeviceLimits->getMaxFramebufferHeight(), height);
         SR_PRECONDITION(width != 0, "Viewport width cannot be 0");
         SR_PRECONDITION(height != 0, "Viewport height cannot be 0");
 

@@ -24,40 +24,22 @@ include(SyriusBuildUtils/CMakeUtils.cmake)
 # Find the SyriusUtils repo (locally or from git)
 set(SYRIUS_UTILS_DIR)
 include_or_fetch(SyriusUtils SYRIUS_UTILS_DIR)
-message("SyriusUtils found in ${SYRIUS_UTILS_DIR}")
+message(STATUS "SyriusUtils found in ${SYRIUS_UTILS_DIR}")
 
 if (WIN32)
     if (MINGW)
         set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
-        set(SYRIUS_CORE_LIBS
-            -limm32
-            -ldwmapi
-            -luser32
-            -ldxgi
-            -lopenGL32
-            -ld3d11
-            -ld3dcompiler_47
-            )
+        set(SYRIUS_CORE_LIBS -limm32 -ldwmapi -luser32 -ldxgi -lopenGL32 -ld3d11 -ld3dcompiler_47)
 
     elseif(MSVC)
-        set(SYRIUS_CORE_LIBS
-            imm32
-            dwmapi
-            user32
-            dxgi
-            dxguid
-            openGL32
-            d3d11
-            d3dcompiler)
+        set(SYRIUS_CORE_LIBS imm32 dwmapi user32 dxgi dxguid openGL32 d3d11 d3dcompiler)
     endif()
 
 elseif(UNIX)
     # On UNIX, because X11 and Wayland are way more effort to implement, we use GLFW for this.
     fetch_glfw()
 
-    set(SYRIUS_CORE_LIBS
-        -lGL
-        glfw
+    set(SYRIUS_CORE_LIBS -lGL glfw
     )
 endif()
 

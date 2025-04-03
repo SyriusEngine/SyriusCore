@@ -9,10 +9,10 @@ namespace Syrius{
     m_Format(desc.format),
     m_DeviceLimits(deviceLimits),
     m_ClearColor{desc.clearColor[0], desc.clearColor[1], desc.clearColor[2], desc.clearColor[3]}{
-        SR_PRECONDITION(m_Width <= m_DeviceLimits->getMaxFramebufferWidth(), "[ColorAttachment]: Supplied width (%i) exceeds device limit of %i", m_Width, m_DeviceLimits->getMaxFramebufferWidth());
-        SR_PRECONDITION(m_Height <= m_DeviceLimits->getMaxFramebufferHeight(), "[ColorAttachment]: Supplied height (%i) exceeds device limit of %i", m_Height, m_DeviceLimits->getMaxFramebufferHeight());
-        SR_PRECONDITION(m_Width > 0, "[ColorAttachment]: Supplied width (%i) must be greater than 0", m_Width);
-        SR_PRECONDITION(m_Height > 0, "[ColorAttachment]: Supplied height (%i) must be greater than 0", m_Height);
+        SR_PRECONDITION(m_Width <= m_DeviceLimits->getMaxFramebufferWidth(), "[ColorAttachment]: Supplied width {} exceeds device limit of {}", m_Width, m_DeviceLimits->getMaxFramebufferWidth());
+        SR_PRECONDITION(m_Height <= m_DeviceLimits->getMaxFramebufferHeight(), "[ColorAttachment]: Supplied height {} exceeds device limit of {}", m_Height, m_DeviceLimits->getMaxFramebufferHeight());
+        SR_PRECONDITION(m_Width > 0, "[ColorAttachment]: Supplied width {} must be greater than 0", m_Width);
+        SR_PRECONDITION(m_Height > 0, "[ColorAttachment]: Supplied height {} must be greater than 0", m_Height);
 
     }
 

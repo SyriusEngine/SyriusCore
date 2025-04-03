@@ -1,42 +1,38 @@
 # SyriusCore
 ## About
-SyriusCore is a library that abstracts a window manager and a wrapper for different graphics APIs. It is designed to be 
-used in games and other applications that require a window and a graphics context. It is written in C++ and uses CMake 
-as a build system. It is currently in development and is ready for use. It is currently only tested on Windows 10 and
-Linux (Ubuntu 22.04). No support for MacOS is planned at the moment. Both OpenGL and DirectX 11 are supported. Vulkan
-support is planned in the future.
-
-The library is designed to be relatively easy to use. It should be easy to manage a window and draw some basic stuff to 
-the screen, BUT advanced features must still be possible to access if wanted. This way, the library can be used for
-simple applications, but also for more advanced applications. Beginner programmers can use the library to get started
-with graphics programming, while more experienced programmers can use the library to get started with their own
-graphics engine.
-
-The library also comes with ImGui support. ImGui is a library that allows you to create a GUI for your application. It
-is very easy to use and is very useful for debugging and for creating a simple GUI for your application. Both OpenGL
-and DirectX 11 are supported. 
+SyriusCore is the core windows/graphicsAPI wrapper for the Syrius project, but can also be used in other projects.
+The library provides an interface to control a window on Windows or UNIX systems. To draw stuff to a created window,
+the library provides an interface to communicate with the GPU using OpenGL, Direct3D11 or Vulkan. There are a lot of
+very similar libraries out there, this one is designed as a hobby project and to be easy to use within the Syrius 
+engine.
 
 ## Supported platforms
 ### OS
 * Windows: Currently tested on Windows 10 and Windows 11.
-* Linux: tested on Ubuntu 22.04.
+* UNIX: tested on Ubuntu 22.04.
 
 ### Graphics APIs
 * OpenGL
 * Direct3D11
-* Vulkan (In development)
-* Direct3D12 (planned)
-
-### Notes
-* To create a D3D11 Debug context on windows 11, the Graphics Tools feature must be installed. This is not installed by
-  default on windows 11. To install it, go to "Turn Windows features on or off" in the control panel and check the 
-  "Graphics Tools" box. After that, restart your computer. If you only want to use OpenGL or are running in release mode,
-  you don't need to install this feature.
+* Vulkan (planned)
 
 ## Installation
 ### Requirements
 * A C++17 compiler, such as MSVC 2019 or GCC 9.3.0.
 * A CMake build system (version 3.16 or higher)
+
+### Dependencies
+Windows:
+- Only for creating D3D11 debug devices, the Graphics Tools feature must be installed (not installed by default).
+  To install it, go to "Turn Windows features on or off" in the control panel and check the "Graphics Tools" box. 
+  After that, restart your computer.
+
+UNIX:
+- For X11 support, the following packages must be installed:
+  ```
+  sudo apt install mesa-common-dev xorg-dev
+  ```
+
 
 ### Build
 Building the project is handled by CMake. To build the project, run the following commands in the root directory of the
@@ -45,13 +41,12 @@ project:
 mkdir build
 cd build
 cmake ..
-cmake .
+make .
 ```
-This will build the DEBUG version of the library. To build the RELEASE version, remove the following line from the
-CMakeLists.txt file:
-```
-add_compile_definitions(SR_CORE_DEBUG)
-```
+Optional CMake variables
+- `-DBUILD_APP`: Builds an example application demonstrating the different provided objects.
+- `-DBUILD_TESTS`: Builds the tests for the library. The tests are written using GoogleTest.
+
 ### Project integration
 * All headers found in the include directory are public headers. They can be included in your project. For convenience,
   you can add the include directory to your include path. This way, you can include the headers like this:

@@ -8,10 +8,10 @@ namespace Syrius{
     m_DeviceLimits(deviceLimits),
     m_Size(desc.size),
     m_Usage(desc.usage){
-        SR_PRECONDITION(m_Size <= m_DeviceLimits->getMaxConstantBufferSize(), "[ConstantBuffer]: Supplied size (%i) exceeds device limit (%i)", m_Size, m_DeviceLimits->getMaxConstantBufferSize());
+        SR_PRECONDITION(m_Size <= m_DeviceLimits->getMaxConstantBufferSize(), "[ConstantBuffer]: Supplied size {} exceeds device limit {}", m_Size, m_DeviceLimits->getMaxConstantBufferSize());
         SR_PRECONDITION(m_Size != 0, "[ConstantBuffer]: Size cannot be %i", 0);
-        SR_PRECONDITION(desc.name.find(' ') == std::string::npos, "[ConstantBuffer]: Name (%s) cannot contain spaces", desc.name.c_str());
-        SR_PRECONDITION(m_Size % 16 == 0, "[ConstantBuffer]: Alignment must be 16 bytes, size is %i, add padding of size %i", m_Size, m_Size % 16);
+        SR_PRECONDITION(desc.name.find(' ') == std::string::npos, "[ConstantBuffer]: Name {} cannot contain spaces", desc.name.c_str());
+        SR_PRECONDITION(m_Size % 16 == 0, "[ConstantBuffer]: Alignment must be 16 bytes, size is {}, add padding of size {}", m_Size, m_Size % 16);
     }
 
     const std::string &ConstantBuffer::getName() const {
