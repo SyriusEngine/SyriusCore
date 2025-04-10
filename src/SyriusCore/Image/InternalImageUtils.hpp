@@ -2,6 +2,7 @@
 
 #include "../../../include/SyriusCore/Image/ImageUtils.hpp"
 #include "../Utils/DebugMacros.hpp"
+#include <vector>
 
 namespace Syrius{
 

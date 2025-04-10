@@ -2,6 +2,7 @@
 
 #include "Utils.hpp"
 #include "DeviceLimits.hpp"
+#include <vector>
 
 namespace Syrius{
 

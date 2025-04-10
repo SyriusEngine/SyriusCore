@@ -12,6 +12,12 @@ namespace Syrius {
     m_Window(window){
         Glfw3glContext::makeCurrent();
         initGl();
+
+        int width;
+        int height;
+        glfwGetFramebufferSize(window, &width, &height);
+
+        GlContext::createDefaultFrameBuffer(width, height, desc);
     }
 
     Glfw3glContext::~Glfw3glContext() {

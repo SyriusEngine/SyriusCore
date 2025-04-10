@@ -99,6 +99,7 @@ namespace Syrius{
 
     void GlContext::initGl() {
         initGlad();
+        m_DeviceLimits = createUP<GlDeviceLimits>();
     }
 
     void GlContext::createDefaultFrameBuffer(i32 width, i32 height, const ContextDesc &desc) {

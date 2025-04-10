@@ -3,6 +3,7 @@
 #include "Viewport.hpp"
 #include "ColorAttachment.hpp"
 #include "DepthStencilAttachment.hpp"
+#include <vector>
 
 namespace Syrius{
 

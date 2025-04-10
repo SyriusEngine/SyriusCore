@@ -101,7 +101,6 @@ namespace Syrius{
 
         loadExtensions();
         initGl();
-        m_DeviceLimits = createUP<GlDeviceLimits>();
         RECT clientSpace = {0, 0, 0, 0};
         GetClientRect(m_Hwnd, &clientSpace);
         const i32 width = clientSpace.right;
