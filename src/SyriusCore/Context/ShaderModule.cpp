@@ -64,7 +64,7 @@ namespace Syrius{
             file.close();
         }
         else{
-            SR_LOG_WARNING("ShaderModule", "Failed to open file: {}", fileName);
+            SR_LOG_WARNING("ShaderModule", "Failed to open file: {}", fileName.string());
         }
 
         return byteCode;

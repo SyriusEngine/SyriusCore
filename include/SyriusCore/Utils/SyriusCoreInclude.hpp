@@ -27,3 +27,7 @@ namespace Syrius {
     std::string SR_CORE_API getAPIName(SR_SUPPORTED_API api);
 }
 
+template<>
+struct fmt::formatter<SR_SUPPORTED_API> : fmt::ostream_formatter {
+};
+

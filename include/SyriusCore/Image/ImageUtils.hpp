@@ -51,6 +51,9 @@ namespace Syrius{
         SR_TEXTURE_FORMAT format    = SR_TEXTURE_RGBA_F32;
         float defaultChannelValue   = 1.0f;
     };
-
 }
+
+template<>
+struct fmt::formatter<SR_IMAGE_TYPE> : fmt::ostream_formatter {
+};
 

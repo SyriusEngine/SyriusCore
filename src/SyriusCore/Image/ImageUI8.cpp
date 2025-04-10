@@ -76,7 +76,7 @@ namespace Syrius{
                 break;
             }
             default: {
-                SR_LOG_WARNING("ImageUI8", "Image: %s cannot be written to file type: %d", desc.fileName.string().c_str(), desc.imgType);
+                SR_LOG_WARNING("ImageUI8", "Image: {} cannot be written to file type: {}", desc.fileName.string(), desc.imgType);
                 break;
             }
         }

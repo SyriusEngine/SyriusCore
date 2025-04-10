@@ -106,6 +106,48 @@ namespace Syrius{
 
 }
 
+template<>
+struct fmt::formatter<SR_SHADER_TYPE> : fmt::ostream_formatter {
+};
 
+template<>
+struct fmt::formatter<SR_SHADER_LANGUAGE_TYPE> : fmt::ostream_formatter {
+};
+
+template<>
+struct fmt::formatter<SR_BUFFER_USAGE> : fmt::ostream_formatter {
+};
+
+template<>
+struct fmt::formatter<SR_BUFFER_MAP> : fmt::ostream_formatter {
+};
+
+template<>
+struct fmt::formatter<SR_DRAW_MODE> : fmt::ostream_formatter {
+};
+
+template<>
+struct fmt::formatter<SR_COMPARISON_FUNC> : fmt::ostream_formatter {
+};
+
+template<>
+struct fmt::formatter<SR_DEPTH_MASK> : fmt::ostream_formatter {
+};
+
+template<>
+struct fmt::formatter<SR_STENCIL_FUNC> : fmt::ostream_formatter {
+};
+
+template<>
+struct fmt::formatter<SR_TEXTURE_FILTER> : fmt::ostream_formatter {
+};
+
+template<>
+struct fmt::formatter<SR_TEXTURE_WRAP> : fmt::ostream_formatter {
+};
+
+template<>
+struct fmt::formatter<SR_CUBEMAP_FACE> : fmt::ostream_formatter {
+};
 
 

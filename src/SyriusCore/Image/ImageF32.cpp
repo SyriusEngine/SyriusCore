@@ -75,8 +75,8 @@ namespace Syrius{
     }
 
     void ImageF32::resize(u32 width, u32 height) {
-        SR_PRECONDITION(width > 0, "[ImageF32]: Image cannot be resized to a width of 0", this);
-        SR_PRECONDITION(height > 0, "[ImageF32]: Image cannot be resized to a height of 0", this);
+        SR_PRECONDITION(width > 0, "[ImageF32]: Image cannot be resized to a width of 0");
+        SR_PRECONDITION(height > 0, "[ImageF32]: Image cannot be resized to a height of 0");
 
         i32 channelCount = getTextureChannelCount(m_Format);
         std::vector<float> resizedData(width * height * channelCount);
