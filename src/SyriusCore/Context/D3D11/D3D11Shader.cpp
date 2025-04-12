@@ -14,7 +14,10 @@ namespace Syrius{
         auto vsBlob = reinterpret_cast<ID3DBlob*>(desc.vertexShader->getIdentifier());
         auto psBlob = reinterpret_cast<ID3DBlob*>(desc.fragmentShader->getIdentifier());
 
-        SR_LOG_THROW_IF_FALSE(vsBlob != nullptr and psBlob != nullptr, "D3D11Shader", "failed to create, invalid shader module");
+        if (vsBlob == nullptr || psBlob == nullptr) {
+            SR_LOG_ERROR("D3D11Shader", "Failed to create shader, invalid blob");
+            return;
+        }
 
         SR_CORE_D3D11_CALL(m_Device->CreateVertexShader(
                 vsBlob->GetBufferPointer(),

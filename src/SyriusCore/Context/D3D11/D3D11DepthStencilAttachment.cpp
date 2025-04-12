@@ -12,7 +12,7 @@ namespace Syrius{
             case SR_TEXTURE_DEPTH_24_STENCIL_8: return DXGI_FORMAT_R24G8_TYPELESS;
             case SR_TEXTURE_DEPTH_32_STENCIL_8: return DXGI_FORMAT_R32G8X24_TYPELESS;
             default: {
-                SR_LOG_WARNING("D3D11DepthStencilAttachment", "Invalid depth stencil buffer format (%i), defaulting to depth 24 stencil 8", format);
+                SR_LOG_WARNING("D3D11DepthStencilAttachment", "Invalid depth stencil buffer format ({}) , defaulting to depth 24 stencil 8", format);
                 return DXGI_FORMAT_R24G8_TYPELESS;
             }
         }
@@ -26,7 +26,7 @@ namespace Syrius{
             case SR_TEXTURE_DEPTH_24_STENCIL_8: return DXGI_FORMAT_D24_UNORM_S8_UINT;
             case SR_TEXTURE_DEPTH_32_STENCIL_8: return DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
             default: {
-                SR_LOG_WARNING("D3D11DepthStencilAttachment", "Invalid depth stencil view format (%i), defaulting to depth 24 stencil 8", format);
+                SR_LOG_WARNING("D3D11DepthStencilAttachment", "Invalid depth stencil view format ({}) , defaulting to depth 24 stencil 8", format);
                 return DXGI_FORMAT_D24_UNORM_S8_UINT;
             }
         }
@@ -40,7 +40,7 @@ namespace Syrius{
             case SR_TEXTURE_DEPTH_24_STENCIL_8: return DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
             case SR_TEXTURE_DEPTH_32_STENCIL_8: return DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
             default: {
-                SR_LOG_WARNING("D3D11DepthStencilAttachment", "Invalid depth stencil shader resource view format (%i), defaulting to depth 24 stencil 8", format);
+                SR_LOG_WARNING("D3D11DepthStencilAttachment", "Invalid depth stencil shader resource view format ({}) , defaulting to depth 24 stencil 8", format);
                 return DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
             }
         }
@@ -74,7 +74,7 @@ namespace Syrius{
     }
 
     void D3D11DepthStencilAttachment::bindShaderResource(u32 slot) {
-        SR_PRECONDITION(m_EnableShaderAccess, "Shader access is not enabled for this (%p) depth stencil attachment", this);
+        SR_PRECONDITION(m_EnableShaderAccess, "Shader access is not enabled for this  depth stencil attachment");
 
         m_Context->PSSetShaderResources(slot, 1, &m_ShaderResourceView);
     }

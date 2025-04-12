@@ -11,8 +11,10 @@ namespace Syrius{
     m_Context(context),
     m_Texture(nullptr),
     m_TextureView(nullptr){
-        SR_LOG_THROW_IF_FALSE(m_DeviceLimits->texture2DFormatSupported(desc.format), "D3D11Texture2D", "Supplied texture format (%i) is not supported by the device", desc.format);
-
+        if (!m_DeviceLimits->texture2DFormatSupported(desc.format)) {
+            SR_LOG_ERROR("D3D11Texture2D", "Supplied texture format ({}) is not supported by the device", desc.format);
+            return;
+        }
         createResources(desc.data);
     }
 
@@ -22,8 +24,10 @@ namespace Syrius{
     m_Context(context),
     m_Texture(nullptr),
     m_TextureView(nullptr){
-        SR_LOG_THROW_IF_FALSE(m_DeviceLimits->texture2DFormatSupported(desc.image->getFormat()), "D3D11Texture2D", "Supplied texture format (%i) is not supported by the device", desc.image->getFormat());
-
+        if (!m_DeviceLimits->texture2DFormatSupported(desc.image->getFormat())) {
+            SR_LOG_ERROR("D3D11Texture2D", "Supplied texture format ({}) is not supported by the device", desc.image->getFormat());
+            return;
+        }
         createResources(desc.image->getData());
     }
 
@@ -42,17 +46,17 @@ namespace Syrius{
     }
 
     void D3D11Texture2D::bindShaderResource(u32 slot) {
-        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
+        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot ({}) is greater than the device number of texture slots ({})", slot, m_DeviceLimits->getMaxTextureSlots());
 
         m_Context->PSSetShaderResources(slot, 1, &m_TextureView);
     }
 
 
     void D3D11Texture2D::setData(const void *data, u32 x, u32 y, u32 width, u32 height) {
-        SR_PRECONDITION(data != nullptr, "[Texture2D]: Data is nullptr (%p)", data)
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[Texture2D]: Update on texture object (%p) requested, which has been created with SR_BUFFER_USAGE_STATIC flag!", this);
-        SR_PRECONDITION(x + width <= m_Width, "[Texture2D]: Width (%i) exceeds the texture width (%i)", width, m_Width);
-        SR_PRECONDITION(y + height <= m_Height, "[Texture2D]: Height (%i) exceeds the texture height (%i)", height, m_Height);
+        SR_PRECONDITION(data != nullptr, "[Texture2D]: Data is nullptr ({})", data)
+        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[Texture2D]: Update on texture object requested, which has been created with SR_BUFFER_USAGE_STATIC flag!");
+        SR_PRECONDITION(x + width <= m_Width, "[Texture2D]: Width ({}) exceeds the texture width ({})", width, m_Width);
+        SR_PRECONDITION(y + height <= m_Height, "[Texture2D]: Height ({}) exceeds the texture height ({})", height, m_Height);
 
         // TODO: Test this code because dont know if it works
         auto channelCount = getTextureChannelCount(m_Format);
@@ -70,24 +74,24 @@ namespace Syrius{
     }
 
     void D3D11Texture2D::copyFrom(const ResourceView<Texture2D> &other) {
-        SR_PRECONDITION(m_Width == other->getWidth(), "[D3D11Texture2D]: Width of the source texture (%i) does not match the width of the destination texture (%i)", other->getWidth(), m_Width);
-        SR_PRECONDITION(m_Height == other->getHeight(), "[D3D11Texture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
-        SR_PRECONDITION(m_Format == other->getFormat(), "[D3D11Texture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11Texture2D]: Copy on texture object (%p) requested, which has been created with SR_BUFFER_USAGE_STATIC flag!", this);
+        SR_PRECONDITION(m_Width == other->getWidth(), "[D3D11Texture2D]: Width of the source texture ({}) does not match the width of the destination texture ({})", other->getWidth(), m_Width);
+        SR_PRECONDITION(m_Height == other->getHeight(), "[D3D11Texture2D]: Height of the source texture ({}) does not match the height of the destination texture ({})", other->getHeight(), m_Height);
+        SR_PRECONDITION(m_Format == other->getFormat(), "[D3D11Texture2D]: Format of the source texture ({}) does not match the format of the destination texture ({})", other->getFormat(), m_Format);
+        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11Texture2D]: Copy on texture object requested, which has been created with SR_BUFFER_USAGE_STATIC flag!");
 
         auto srcBuffer = dynamic_cast<D3D11Texture2D*>(other.get());
-        SR_ASSERT(srcBuffer, "[D3D11Texture2D]: Copy from buffer object (%p) requested, which is invalid!", other.get());
+        SR_ASSERT(srcBuffer, "[D3D11Texture2D]: Copy from buffer object requested, which is invalid!");
         m_Context->CopyResource(m_Texture, srcBuffer->getTexture());
     }
 
     void D3D11Texture2D::copyFrom(const ResourceView<ColorAttachment> &other) {
-        SR_PRECONDITION(m_Width == other->getWidth(), "[D3D11Texture2D]: Width of the source texture (%i) does not match the width of the destination texture (%i)", other->getWidth(), m_Width);
-        SR_PRECONDITION(m_Height == other->getHeight(), "[D3D11Texture2D]: Height of the source texture (%i) does not match the height of the destination texture (%i)", other->getHeight(), m_Height);
-        SR_PRECONDITION(m_Format == other->getFormat(), "[D3D11Texture2D]: Format of the source texture (%i) does not match the format of the destination texture (%i)", other->getFormat(), m_Format);
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11Texture2D]: Copy on texture object (%p) requested, which has been created with SR_BUFFER_USAGE_STATIC flag!", this);
+        SR_PRECONDITION(m_Width == other->getWidth(), "[D3D11Texture2D]: Width of the source texture ({}) does not match the width of the destination texture ({})", other->getWidth(), m_Width);
+        SR_PRECONDITION(m_Height == other->getHeight(), "[D3D11Texture2D]: Height of the source texture ({}) does not match the height of the destination texture ({})", other->getHeight(), m_Height);
+        SR_PRECONDITION(m_Format == other->getFormat(), "[D3D11Texture2D]: Format of the source texture ({}) does not match the format of the destination texture ({})", other->getFormat(), m_Format);
+        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11Texture2D]: Copy on texture object requested, which has been created with SR_BUFFER_USAGE_STATIC flag!");
 
         auto srcBuffer = dynamic_cast<D3D11ColorAttachment*>(other.get());
-        SR_ASSERT(srcBuffer, "[D3D11Texture2D]: Copy from buffer object (%p) requested, which is invalid!", other.get());
+        SR_ASSERT(srcBuffer, "[D3D11Texture2D]: Copy from buffer object requested, which is invalid!");
         m_Context->CopyResource(m_Texture, srcBuffer->getTexture());
     }
 
@@ -109,7 +113,11 @@ namespace Syrius{
         D3D11_MAPPED_SUBRESOURCE map = { nullptr };
         SR_CORE_D3D11_CALL(m_Context->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &map));
 
-        SR_LOG_THROW_IF_FALSE(map.pData != nullptr, "D3D11Texture2D", "Failed to map staging texture (%p)", stagingTexture);
+        if (!map.pData) {
+            SR_LOG_WARNING("D3D11Texture2D", "Failed to map staging texture");
+            stagingTexture->Release();
+            return nullptr;
+        }
 
         auto* data = static_cast<u8*>(map.pData); // TODO: Data is not always u8
 
@@ -122,7 +130,7 @@ namespace Syrius{
             case 2: imgDesc.format = SR_TEXTURE_RG_UI8; break;
             case 3: imgDesc.format = SR_TEXTURE_RGB_UI8; break;
             case 4: imgDesc.format = SR_TEXTURE_RGBA_UI8; break;
-            default: SR_LOG_THROW("D3D11ColorAttachment", "Invalid channel count %i", channelCount);
+            default: SR_LOG_THROW("D3D11ColorAttachment", "Invalid channel count {}", channelCount);
         }
         imgDesc.data = nullptr;
         auto img = createImage(imgDesc);

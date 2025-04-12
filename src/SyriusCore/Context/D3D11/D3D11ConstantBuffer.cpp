@@ -42,29 +42,32 @@ namespace Syrius{
     }
 
     void D3D11ConstantBufferBase::setData(const void *data, u64 size) {
-        SR_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[ConstantBuffer]: Update on buffer object (%p) requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!", this);
-        SR_PRECONDITION(size <= m_Size, "[ConstantBuffer]: Update on buffer object (%p) requested, which exceeds the current buffer size (%i > %i).", this, size, m_Size);
+        SR_PRECONDITION(m_Usage == SR_BUFFER_USAGE_DYNAMIC, "[ConstantBuffer]: Update on buffer object requested, which has not been created with SR_BUFFER_USAGE_DYNAMIC flag!");
+        SR_PRECONDITION(size <= m_Size, "[ConstantBuffer]: Update on buffer object requested, which exceeds the current buffer size ({} > {}).", size, m_Size);
 
         D3D11_MAPPED_SUBRESOURCE map = { nullptr };
         SR_CORE_D3D11_CALL(m_Context->Map(m_Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &map));
 
-        SR_LOG_THROW_IF_FALSE(map.pData != nullptr, "ConstantBuffer", "Failed to map buffer (%p)", m_Buffer);
+        if (!map.pData) {
+            SR_LOG_WARNING("D3D11ConstantBuffer", "Failed to map buffer");
+            return;
+        }
 
         memcpy(map.pData, data, size);
         m_Context->Unmap(m_Buffer, 0);
     }
 
     void D3D11ConstantBufferBase::copyFrom(const ResourceView<ConstantBuffer> &other) {
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11ConstantBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
+        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11ConstantBuffer]: Update on buffer object requested, which was created with SR_BUFFER_USAGE_STATIC flag!");
 
         if (m_Size >= other->getSize()){
             auto otherBuffer = reinterpret_cast<ID3D11Buffer*>(other->getIdentifier());
-            SR_ASSERT(otherBuffer, "[D3D11ConstantBuffer]: Copy from buffer object (%p) requested, which is invalid!", other.get());
+            SR_ASSERT(otherBuffer, "[D3D11ConstantBuffer]: Copy from buffer object requested, which is invalid!");
             m_Context->CopyResource(m_Buffer, otherBuffer);
         }
         else{
-            SR_LOG_WARNING("D3D11ConstantBuffer", "Copy from buffer object (%p) requested, which exceeds the current "
-                            "buffer size (%i > %i)", this, other->getSize(), m_Size);
+            SR_LOG_WARNING("D3D11ConstantBuffer", "Copy from buffer object requested, which exceeds the current "
+                            "buffer size ({} > {})", other->getSize(), m_Size);
         }
     }
 
@@ -91,7 +94,10 @@ namespace Syrius{
         D3D11_MAPPED_SUBRESOURCE map = { nullptr };
         SR_CORE_D3D11_CALL(m_Context->Map(stagingBuffer, 0, D3D11_MAP_READ, 0, &map));
 
-        SR_LOG_THROW_IF_FALSE(map.pData != nullptr, "ConstantBuffer", "Failed to map buffer (%p)", stagingBuffer);
+        if (!map.pData) {
+            SR_LOG_WARNING("D3D11ConstantBuffer", "Failed to map buffer");
+            return std::move(data);
+        }
 
         memcpy(data.get(), map.pData, m_Size);
         m_Context->Unmap(stagingBuffer, 0);
@@ -112,7 +118,7 @@ namespace Syrius{
     }
 
     void D3D11ConstantBufferVertex::bind(u32 slot) {
-        SR_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot (%i) exceeds the maximum number of constant buffer slots (%i)", slot, m_DeviceLimits->getMaxConstantBufferSlots());
+        SR_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot ({}) exceeds the maximum number of constant buffer slots ({})", slot, m_DeviceLimits->getMaxConstantBufferSlots());
 
         m_Context->VSSetConstantBuffers(slot, 1, &m_Buffer);
     }
@@ -123,7 +129,7 @@ namespace Syrius{
     }
 
     void D3D11ConstantBufferPixel::bind(u32 slot) {
-        SR_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot (%i) exceeds the maximum number of constant buffer slots (%i)", slot, m_DeviceLimits->getMaxConstantBufferSlots());
+        SR_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot ({}) exceeds the maximum number of constant buffer slots ({})", slot, m_DeviceLimits->getMaxConstantBufferSlots());
 
         m_Context->PSSetConstantBuffers(slot, 1, &m_Buffer);
     }
@@ -134,7 +140,7 @@ namespace Syrius{
     }
 
     void D3D11ConstantBufferGeometry::bind(u32 slot) {
-        SR_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot (%i) exceeds the maximum number of constant buffer slots (%i)", slot, m_DeviceLimits->getMaxConstantBufferSlots());
+        SR_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot ({}) exceeds the maximum number of constant buffer slots ({})", slot, m_DeviceLimits->getMaxConstantBufferSlots());
 
         m_Context->GSSetConstantBuffers(slot, 1, &m_Buffer);
     }

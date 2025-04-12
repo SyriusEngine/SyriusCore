@@ -9,7 +9,7 @@ namespace Syrius{
     m_Device(device),
     m_Context(context),
     m_ShaderBlob(nullptr){
-        SR_PRECONDITION(desc.language == SR_SHADER_LANGUAGE_HLSL, "D3D11 shader module only supports HLSL code, provided language %i", desc.language);
+        SR_PRECONDITION(desc.language == SR_SHADER_LANGUAGE_HLSL, "D3D11 shader module only supports HLSL code, provided language {}", desc.language);
 
         loadShader(desc.code);
 
@@ -21,7 +21,7 @@ namespace Syrius{
     m_Device(device),
     m_Context(context),
     m_ShaderBlob(nullptr){
-        SR_PRECONDITION(desc.language == SR_SHADER_LANGUAGE_HLSL, "D3D11 shader module only supports HLSL code, provided language %i", desc.language);
+        SR_PRECONDITION(desc.language == SR_SHADER_LANGUAGE_HLSL, "D3D11 shader module only supports HLSL code, provided language {}", desc.language);
 
         auto code = readFile(desc.filePath);
         loadShader(code);
@@ -46,8 +46,7 @@ namespace Syrius{
             case SR_SHADER_FRAGMENT:
                 return "ps_5_0";
             default: {
-                SR_LOG_THROW("D3D11ShaderModule", "Invalid shader type (%i) given to D3D11 shader", shaderType);
-                return "";
+                SR_LOG_THROW("D3D11ShaderModule", "Invalid shader type ({}) given to D3D11 shader", shaderType);
             }
         }
 
@@ -81,7 +80,7 @@ namespace Syrius{
         if (exceptionBlob){
             const auto msg = createUP<char[]>(exceptionBlob->GetBufferSize() + 1);
             memcpy(msg.get(), exceptionBlob->GetBufferPointer(), exceptionBlob->GetBufferSize());
-            SR_LOG_THROW("D3D11ShaderModule", "Failed to compile shader, type = %s, error = %s", getShaderTypeString(m_ShaderType).c_str(), msg.get());
+            SR_LOG_THROW("D3D11ShaderModule", "Failed to compile shader, type = {}, error = {}", getShaderTypeString(m_ShaderType).c_str(), msg.get());
         }
     }
 

@@ -48,8 +48,8 @@ namespace Syrius{
     }
 
     void D3D11VertexBuffer::setData(const void *data, u32 count){
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11VertexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
-        SR_PRECONDITION(count * m_Layout->getStride() <= m_Size, "[D3D11VertexBuffer]: Update on buffer object (%p) requested, which exceeds the current buffer size (%i > %i).", this, count * m_Layout->getStride(), m_Size);
+        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11VertexBuffer]: Update on buffer object requested, which was created with SR_BUFFER_USAGE_STATIC flag!");
+        SR_PRECONDITION(count * m_Layout->getStride() <= m_Size, "[D3D11VertexBuffer]: Update on buffer object requested, which exceeds the current buffer size ({} > {}).", count * m_Layout->getStride(), m_Size);
 
         u32 copySize = count * m_Layout->getStride();
         m_Count = count;
@@ -57,28 +57,31 @@ namespace Syrius{
         D3D11_MAPPED_SUBRESOURCE map  = { nullptr };
         SR_CORE_D3D11_CALL(m_Context->Map(m_Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &map));
 
-        SR_LOG_THROW_IF_FALSE(map.pData, "D3D11VertexBuffer", "Failed to map buffer (%p)", m_Buffer);
+        if (!map.pData) {
+            SR_LOG_WARNING("D3D11VertexBuffer", "Failed to map buffer");
+            return;
+        }
 
         memcpy(map.pData, data, copySize);
         m_Context->Unmap(m_Buffer, 0);
     }
 
     void D3D11VertexBuffer::copyFrom(const ResourceView<VertexBuffer> &other) {
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11VertexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
+        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D11VertexBuffer]: Update on buffer object requested, which was created with SR_BUFFER_USAGE_STATIC flag!");
 
         if (m_Size >= other->getSize()){
             auto otherBuffer = reinterpret_cast<ID3D11Buffer*>(other->getIdentifier());
-            SR_ASSERT(otherBuffer, "[D3D11VertexBuffer]: Copy from buffer object (%p) requested, which is invalid!", other.get());
+            SR_ASSERT(otherBuffer, "[D3D11VertexBuffer]: Copy from buffer object requested, which is invalid!");
             m_Context->CopyResource(m_Buffer, otherBuffer);
         }
         else{
-            SR_LOG_WARNING("D3D11VertexBuffer", "Copy from buffer object (%p) requested, which exceeds the current "
-                            "buffer size (%i > %i)", this, other->getSize(), m_Size);
+            SR_LOG_WARNING("D3D11VertexBuffer", "Copy from buffer object requested, which exceeds the current "
+                            "buffer size ({} > {})", other->getSize(), m_Size);
         }
     }
 
     UP<UByte[]> D3D11VertexBuffer::getData() const {
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D311VertexBuffer]: Update on buffer object (%p) requested, which was created with SR_BUFFER_USAGE_STATIC flag!", this);
+        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[D3D311VertexBuffer]: Update on buffer object requested, which was created with SR_BUFFER_USAGE_STATIC flag!");
 
         auto data = createUP<UByte[]>(m_Size);;
 
@@ -102,7 +105,10 @@ namespace Syrius{
         D3D11_MAPPED_SUBRESOURCE map = { nullptr };
         SR_CORE_D3D11_CALL(m_Context->Map(stagingBuffer, 0, D3D11_MAP_READ, 0, &map));
 
-        SR_LOG_THROW_IF_FALSE(map.pData, "D3D11VertexBuffer", "Failed to map staging buffer (%p)", stagingBuffer);
+        if (!map.pData) {
+            SR_LOG_WARNING("D3D11VertexBuffer", "Failed to map buffer");
+            return std::move(data);
+        }
 
         memcpy(data.get(), map.pData, m_Size);
         m_Context->Unmap(stagingBuffer, 0);

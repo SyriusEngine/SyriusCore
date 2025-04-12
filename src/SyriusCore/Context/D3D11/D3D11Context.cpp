@@ -191,7 +191,7 @@ namespace Syrius{
             case SR_SHADER_FRAGMENT:    ptr = new D3D11ConstantBufferPixel(desc, m_DeviceLimits, m_Device, m_DeviceContext); break;
             case SR_SHADER_GEOMETRY:    ptr = new D3D11ConstantBufferGeometry(desc, m_DeviceLimits, m_Device, m_DeviceContext); break;
             default: {
-                SR_LOG_THROW("D3D11Context", "Unsupported shader stage for constant buffer");
+                SR_LOG_THROW("D3D11Context", "Unsupported shader stage () for constant buffer", shaderStage);
             }
         }
         m_ConstantBuffers.emplace_back(ptr);

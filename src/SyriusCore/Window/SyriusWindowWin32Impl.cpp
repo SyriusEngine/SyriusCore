@@ -306,7 +306,7 @@ namespace Syrius{
             case SR_API_OPENGL: m_Context = createUP<WglContext>(m_Hwnd, desc);     break;
             case SR_API_D3D11:  m_Context = createUP<D3D11Context>(m_Hwnd, desc);   break;
             default:
-                SR_LOG_WARNING("SyriusWindowWin32Impl", "cannot create context: unsupported API (%i), fallback to OpenGL!", desc.api);
+                SR_LOG_WARNING("SyriusWindowWin32Impl", "cannot create context: unsupported API ({}), fallback to OpenGL!", desc.api);
                 m_Context = createUP<WglContext>(m_Hwnd, desc);
                 break;
         }

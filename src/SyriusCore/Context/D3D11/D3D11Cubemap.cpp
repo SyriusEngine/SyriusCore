@@ -58,7 +58,7 @@ namespace Syrius{
     }
 
     void D3D11CubeMap::bindShaderResource(u32 slot) {
-        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot (%i) is greater than the device number of texture slots (%i)", slot, m_DeviceLimits->getMaxTextureSlots());
+        SR_PRECONDITION(slot < m_DeviceLimits->getMaxTextureSlots(), "[Texture2D]: Supplied slot ({})  is greater than the device number of texture slots ({}) ", slot, m_DeviceLimits->getMaxTextureSlots());
 
         m_Context->PSSetShaderResources(slot, 1, &m_TextureView);
     }
@@ -91,7 +91,11 @@ namespace Syrius{
         D3D11_MAPPED_SUBRESOURCE map = { nullptr };
         SR_CORE_D3D11_CALL(m_Context->Map(stagingTexture, 0, D3D11_MAP_READ, 0, &map));
 
-        SR_LOG_THROW_IF_FALSE(map.pData != nullptr, "D3D11Cubemap", "Failed to map staging texture (%p)", stagingTexture);
+        if (!map.pData) {
+            SR_LOG_WARNING("D3D11CubeMap", "Failed to map staging texture");
+            stagingTexture->Release();
+            return nullptr;
+        }
 
         auto* data = static_cast<u8*>(map.pData); // TODO: Data is not always u8
 
@@ -104,7 +108,7 @@ namespace Syrius{
             case 2: imgDesc.format = SR_TEXTURE_RG_UI8; break;
             case 3: imgDesc.format = SR_TEXTURE_RGB_UI8; break;
             case 4: imgDesc.format = SR_TEXTURE_RGBA_UI8; break;
-            default: SR_LOG_THROW("D3D11ColorAttachment", "Invalid channel count %i", channelCount);
+            default: SR_LOG_THROW("D3D11ColorAttachment", "Invalid channel count {}", channelCount);
         }
         imgDesc.data = nullptr;
         auto img = createImage(imgDesc);
