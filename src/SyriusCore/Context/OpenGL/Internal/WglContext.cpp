@@ -91,7 +91,7 @@ namespace Syrius{
             // delete the throwaway context
             wglDeleteContext(tempContext);
 
-            SR_LOG_INFO("WglContext", "Created OpenGL context with version: %i.%i", attributes[1], attributes[3]);
+            SR_LOG_INFO("WglContext", "Created OpenGL context with version: {}.{}", attributes[1], attributes[3]);
         }
         else{
             // use the throwaway context as the actual context
@@ -206,7 +206,7 @@ namespace Syrius{
         if (m_ContextCount == 0){
             m_WGLVersion = gladLoaderLoadWGL(m_HardwareDeviceContext);
             SR_ASSERT(m_WGLVersion > 0, "Failed to initialize WGL");
-            SR_LOG_INFO("WglContext", "Initialized WGL version: %i", m_WGLVersion);
+            SR_LOG_INFO("WglContext", "Initialized WGL version: {}", m_WGLVersion);
         }
         m_ContextCount++;
 
