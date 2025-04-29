@@ -33,7 +33,7 @@ TEST_F(VertexBufferTest, CreateVertexBufferZeroSize){
     desc.usage = SR_BUFFER_USAGE_DEFAULT;
     desc.layout = m_Layout;
 
-    EXPECT_DEATH(auto vb = TestEnvironment::m_Context->createVertexBuffer(desc), "");
+    EXPECT_THROW(auto vb = TestEnvironment::m_Context->createVertexBuffer(desc), SyriusAssert);
 }
 
 TEST_F(VertexBufferTest, CreateVertexBufferEmptyData){
@@ -56,7 +56,7 @@ TEST_F(VertexBufferTest, CreateVertexBufferInvalidLayout){
     desc.usage = SR_BUFFER_USAGE_DEFAULT;
     desc.layout = ResourceView<VertexLayout>(nullptr);
 
-    EXPECT_DEATH(auto vb = TestEnvironment::m_Context->createVertexBuffer(desc), "");
+    EXPECT_THROW(auto vb = TestEnvironment::m_Context->createVertexBuffer(desc), SyriusAssert);
 }
 
 TEST_F(VertexBufferTest, ReadVertexBuffer){
@@ -108,7 +108,7 @@ TEST_F(VertexBufferTest, UpdateVertexBufferStatic){
 
     auto vb = TestEnvironment::m_Context->createVertexBuffer(desc);
 
-    EXPECT_DEATH(vb->setData(s_TriangleVertices2.data(), 3), "");
+    EXPECT_THROW(vb->setData(s_TriangleVertices2.data(), 3), SyriusAssert);
 }
 
 TEST_F(VertexBufferTest, UpdateVertexBufferLargerData){
@@ -120,7 +120,7 @@ TEST_F(VertexBufferTest, UpdateVertexBufferLargerData){
 
     auto vb = TestEnvironment::m_Context->createVertexBuffer(desc);
 
-    EXPECT_DEATH(vb->setData(s_RectangleVertices.data(), 4), "");
+    EXPECT_THROW(vb->setData(s_RectangleVertices.data(), 4), SyriusAssert);
 }
 
 TEST_F(VertexBufferTest, CopyVertexBuffer){

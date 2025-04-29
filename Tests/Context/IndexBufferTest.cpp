@@ -31,7 +31,7 @@ TEST_F(IndexBufferTest, CreateIndexBufferZeroSize){
     desc.usage = SR_BUFFER_USAGE_DEFAULT;
     desc.dataType = SR_UINT32;
 
-    EXPECT_DEATH(auto ib = TestEnvironment::m_Context->createIndexBuffer(desc), "");
+    EXPECT_THROW(auto ib = TestEnvironment::m_Context->createIndexBuffer(desc), SyriusAssert);
 }
 
 TEST_F(IndexBufferTest, CreateIndexBufferEmptyData){
@@ -54,16 +54,16 @@ TEST_F(IndexBufferTest, CreateIndexBufferInvalidDataType){
     desc.usage = SR_BUFFER_USAGE_DEFAULT;
     desc.dataType = SR_VOID;
 
-    EXPECT_DEATH(auto ibVoid = TestEnvironment::m_Context->createIndexBuffer(desc), "");
+    EXPECT_THROW(auto ibVoid = TestEnvironment::m_Context->createIndexBuffer(desc), SyriusAssert);
 
     desc.dataType = SR_FLOAT16;
-    EXPECT_DEATH(auto ibFloat16 = TestEnvironment::m_Context->createIndexBuffer(desc), "");
+    EXPECT_THROW(auto ibFloat16 = TestEnvironment::m_Context->createIndexBuffer(desc), SyriusAssert);
 
     desc.dataType = SR_FLOAT32;
-    EXPECT_DEATH(auto ibFloat32 = TestEnvironment::m_Context->createIndexBuffer(desc), "");
+    EXPECT_THROW(auto ibFloat32 = TestEnvironment::m_Context->createIndexBuffer(desc), SyriusAssert);
 
     desc.dataType = SR_FLOAT64;
-    EXPECT_DEATH(auto ibFloat64 = TestEnvironment::m_Context->createIndexBuffer(desc), "");
+    EXPECT_THROW(auto ibFloat64 = TestEnvironment::m_Context->createIndexBuffer(desc), SyriusAssert);
 }
 
 TEST_F(IndexBufferTest, ReadIndexBuffer){
@@ -115,7 +115,7 @@ TEST_F(IndexBufferTest, UpdateIndexBufferStatic){
 
     auto ib = TestEnvironment::m_Context->createIndexBuffer(desc);
 
-    EXPECT_DEATH(ib->setData(s_TriangleIndices2.data(), 3), "");
+    EXPECT_THROW(ib->setData(s_TriangleIndices2.data(), 3), SyriusAssert);
 }
 
 TEST_F(IndexBufferTest, UpdateIndexBufferLargerData){
@@ -127,7 +127,7 @@ TEST_F(IndexBufferTest, UpdateIndexBufferLargerData){
 
     auto ib = TestEnvironment::m_Context->createIndexBuffer(desc);
 
-    EXPECT_DEATH(ib->setData(s_RectangleIndices.data(), 4), "");
+    EXPECT_THROW(ib->setData(s_RectangleIndices.data(), 4), SyriusAssert);
 }
 
 TEST_F(IndexBufferTest, CopyIndexBuffer){

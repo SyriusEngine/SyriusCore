@@ -27,7 +27,9 @@ TEST_F(ConstantBufferTest, CreateConstantBufferVertex){
     desc.shaderStage = SR_SHADER_VERTEX;
 
     auto cb = TestEnvironment::m_Context->createConstantBuffer(desc);
-    EXPECT_NE(cb, nullptr);
+    EXPECT_EQ(cb->getName(), desc.name);
+    EXPECT_EQ(cb->getSize(), desc.size);
+    EXPECT_EQ(cb->getUsage(), desc.usage);
 }
 
 TEST_F(ConstantBufferTest, CreateConstantBufferFragment){
@@ -39,7 +41,9 @@ TEST_F(ConstantBufferTest, CreateConstantBufferFragment){
     desc.shaderStage = SR_SHADER_FRAGMENT;
 
     auto cb = TestEnvironment::m_Context->createConstantBuffer(desc);
-    EXPECT_NE(cb, nullptr);
+    EXPECT_EQ(cb->getName(), desc.name);
+    EXPECT_EQ(cb->getSize(), desc.size);
+    EXPECT_EQ(cb->getUsage(), desc.usage);
 }
 
 TEST_F(ConstantBufferTest, CreateConstantBufferZeroSize){
@@ -50,7 +54,7 @@ TEST_F(ConstantBufferTest, CreateConstantBufferZeroSize){
     desc.usage = SR_BUFFER_USAGE_DEFAULT;
     desc.shaderStage = SR_SHADER_VERTEX;
 
-    EXPECT_DEATH(auto cb = TestEnvironment::m_Context->createConstantBuffer(desc), "");
+    EXPECT_THROW(auto cb = TestEnvironment::m_Context->createConstantBuffer(desc), SyriusAssert);
 }
 
 TEST_F(ConstantBufferTest, CreateConstantBufferEmptyData){
@@ -75,7 +79,7 @@ TEST_F(ConstantBufferTest, CreateConstantBufferInvalidAlignment){
     desc.usage = SR_BUFFER_USAGE_DEFAULT;
     desc.shaderStage = SR_SHADER_VERTEX;
 
-    EXPECT_DEATH(auto cb = TestEnvironment::m_Context->createConstantBuffer(desc), "");
+    EXPECT_THROW(auto cb = TestEnvironment::m_Context->createConstantBuffer(desc), SyriusAssert);
 }
 
 TEST_F(ConstantBufferTest, ReadConstantBuffer){
@@ -147,7 +151,7 @@ TEST_F(ConstantBufferTest, UpdateConstantBufferStatic){
 
     auto cb = TestEnvironment::m_Context->createConstantBuffer(desc);
 
-    EXPECT_DEATH(cb->setData(&m_Data, sizeof(CBData)), "");
+    EXPECT_THROW(cb->setData(&m_Data, sizeof(CBData)), SyriusAssert);
 }
 
 TEST_F(ConstantBufferTest, UpdateConstantBufferLargerData){
@@ -163,7 +167,7 @@ TEST_F(ConstantBufferTest, UpdateConstantBufferLargerData){
     CBData newData[2];
     newData[0] = m_Data;
     newData[1] = m_Data;
-    EXPECT_DEATH(cb->setData(newData, sizeof(CBData) * 2), "");
+    EXPECT_THROW(cb->setData(newData, sizeof(CBData) * 2), SyriusAssert);
 }
 
 TEST_F(ConstantBufferTest, CopyConstantBuffer){

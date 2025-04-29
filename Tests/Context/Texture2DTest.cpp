@@ -110,7 +110,7 @@ TEST_F(Texture2DTest, UpdateTexture2DLargerData){
     auto tex = TestEnvironment::m_Context->createTexture2D(desc);
     std::vector<u8> largeData(4 * 4 * 4, 255);
 
-    EXPECT_DEATH(tex->setData(largeData.data(), 0, 0, 3, 3), "");
+    EXPECT_THROW(tex->setData(largeData.data(), 0, 0, 3, 3), SyriusAssert);
 }
 
 TEST_F(Texture2DTest, UpdateTexture2DOutOfRegion){
@@ -123,7 +123,7 @@ TEST_F(Texture2DTest, UpdateTexture2DOutOfRegion){
 
     auto tex = TestEnvironment::m_Context->createTexture2D(desc);
     std::vector<u8> largeData(2 * 2 * 4, 255);
-    EXPECT_DEATH(tex->setData(largeData.data(), 300, 300, 2, 2), "");
+    EXPECT_THROW(tex->setData(largeData.data(), 300, 300, 2, 2), SyriusAssert);
 }
 
 TEST_F(Texture2DTest, CopyTexture2D){

@@ -151,7 +151,7 @@ TEST_F(ImageUI8Test, CreateImageUI8InvalidFormat){
     desc.width = 2;
     desc.height = 2;
     desc.format = SR_TEXTURE_NONE;
-    EXPECT_DEATH(createImage(desc), "");
+    EXPECT_THROW(createImage(desc), SyriusAssert);
 }
 
 TEST_F(ImageUI8Test, CreateImageUI8FromT){

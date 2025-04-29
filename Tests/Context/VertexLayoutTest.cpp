@@ -25,14 +25,14 @@ TEST_F(VertexLayoutTest, CreateVertexLayout) {
 
 TEST_F(VertexLayoutTest, CreateInvalidLayout) {
     auto res =  TestEnvironment::m_Context->createVertexLayout();
-    EXPECT_DEATH(res->addAttribute("Invalid", SR_UINT8_3X3), "");
+    EXPECT_THROW(res->addAttribute("Invalid", SR_UINT8_3X3), SyriusAssert);
 }
 
 TEST_F(VertexLayoutTest, CreateDuplicateAttributes){
     auto res =  TestEnvironment::m_Context->createVertexLayout();
     res->addAttribute("Position", SR_FLOAT32_3);
 
-    EXPECT_DEATH(res->addAttribute("Position", SR_FLOAT32_3), "");
+    EXPECT_THROW(res->addAttribute("Position", SR_FLOAT32_3), SyriusAssert);
 }
 
 TEST_F(VertexLayoutTest, SearchNonExisingAttribute){

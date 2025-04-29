@@ -186,7 +186,7 @@ TEST_F(FrameBufferTest, ClearFrameBuffer2ColorAttachments){
 TEST_F(FrameBufferTest, GetColorAttachmentOutOfBounds){
     auto fb = createFrameBuffer1CA();
 
-    EXPECT_DEATH(auto val = fb->getColorAttachment(1), "");
+    EXPECT_THROW(auto val = fb->getColorAttachment(1), SyriusAssert);
 }
 
 TEST_F(FrameBufferTest, DrawFrameBuffer1CA){

@@ -56,7 +56,7 @@ TEST_F(ShaderModuleTest, CreateShaderInvalidLanguage){
         FAIL() << "Unsupported API";
     }
 
-    EXPECT_DEATH(auto vsm = TestEnvironment::m_Context->createShaderModule(desc), "");
+    EXPECT_THROW(auto vsm = TestEnvironment::m_Context->createShaderModule(desc), SyriusAssert);
 }
 
 TEST_F(ShaderModuleTest, CompilationError) {
