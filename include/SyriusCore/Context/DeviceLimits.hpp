@@ -93,7 +93,7 @@ namespace Syrius{
          *        The supported graphics APIs by SyriusCore guarantee that this value is at least 8.
          * @return u32 containing the maximum number of shader storage buffer slots that can be bound to a shader
          */
-        [[nodiscard]] virtual u32 getMaxSSSBOSlots() const = 0;
+        [[nodiscard]] virtual u32 getMaxShaderStorageBufferSlots() const = 0;
 
         /**
          * @brief Retrieves the maximum size of a constant buffer in bytes.
@@ -144,13 +144,13 @@ namespace Syrius{
         [[nodiscard]] virtual u64 getMaxIndex() const = 0; // largest index value for a draw call
 
         /**
-         * @brief Returns whether or not the graphics device supports double buffering.
+         * @brief Returns whether the graphics device supports double buffering.
          * @return true if the graphics device supports double buffering, false otherwise
          */
         [[nodiscard]] virtual bool isDoubleBuffered() const = 0;
 
         /**
-         * @brief Returns whether or not the graphics device supports the specified texture format.
+         * @brief Returns whether the graphics device supports the specified texture format.
          * @param format The SR_TEXTURE_FORMAT format to check for support
          */
          [[nodiscard]] virtual bool texture2DFormatSupported(SR_TEXTURE_FORMAT format) = 0;
