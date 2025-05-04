@@ -89,13 +89,6 @@ namespace Syrius{
         [[nodiscard]] virtual u32 getMaxTextureSize() const = 0;
 
         /**
-         * @brief Retrieves the maximum number of shader storage buffer slots that can be bound to a shader.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 8.
-         * @return u32 containing the maximum number of shader storage buffer slots that can be bound to a shader
-         */
-        [[nodiscard]] virtual u32 getMaxShaderStorageBufferSlots() const = 0;
-
-        /**
          * @brief Retrieves the maximum size of a constant buffer in bytes.
          *        The supported graphics APIs by SyriusCore guarantee that this value is at least 65536.
          * @return u32 containing the maximum size of a constant buffer in bytes
@@ -108,6 +101,20 @@ namespace Syrius{
          * @return u32 containing the maximum number of constant buffer slots that can be bound to a shader
          */
         [[nodiscard]] virtual u32 getMaxConstantBufferSlots() const = 0;
+
+        /**
+         * @brief Retrieves the maximum size of a shader storage buffer in bytes.
+         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 65536.
+         * @return u32 containing the maximum size of a constant buffer in bytes
+         */
+        [[nodiscard]] virtual u32 getMaxShaderStorageBufferSize() const = 0;
+
+        /**
+         * @brief Retrieves the maximum number of shader storage slots that can be bound to a shader.
+         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 14.
+         * @return u32 containing the maximum number of constant buffer slots that can be bound to a shader
+         */
+        [[nodiscard]] virtual u32 getMaxShaderStorageBufferSlots() const = 0;
 
         /**
          * @brief Retrieves the maximum number of bits in the depth buffer. On current hardware, this value is nearly

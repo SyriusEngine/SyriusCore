@@ -298,9 +298,10 @@ void printContextInfo(const ResourceView<Context>& context){
     deviceInfo += "Max Viewport Height              : " + std::to_string(deviceLimits->getMaxViewportHeight()) + "\n";
     deviceInfo += "Max Texture Slots                : " + std::to_string(deviceLimits->getMaxTextureSlots()) + "\n";
     deviceInfo += "Max Texture Size                 : " + std::to_string(deviceLimits->getMaxTextureSize()) + "\n";
-    deviceInfo += "Max SSBO Slots                   : " + std::to_string(deviceLimits->getMaxShaderStorageBufferSlots()) + "\n";
     deviceInfo += "Max Constant Buffer Slots        : " + std::to_string(deviceLimits->getMaxConstantBufferSlots()) + "\n";
     deviceInfo += "Max Constant Buffer Size         : " + std::to_string(deviceLimits->getMaxConstantBufferSize()) + "\n";
+    deviceInfo += "Max Shader Storage Buffer Size   : " + std::to_string(deviceLimits->getMaxShaderStorageBufferSize()) + "\n";
+    deviceInfo += "Max Shader Storage Buffer Slots  : " + std::to_string(deviceLimits->getMaxShaderStorageBufferSlots()) + "\n";
     deviceInfo += "Max Depth Buffer Bits            : " + std::to_string(deviceLimits->getMaxDepthBufferBits()) + "\n";
     deviceInfo += "Max Vertex Attributes            : " + std::to_string(deviceLimits->getMaxVertexAttributes()) + "\n";
     deviceInfo += "Max Vertex Count                 : " + std::to_string(deviceLimits->getMaxVertexCount()) + "\n";
