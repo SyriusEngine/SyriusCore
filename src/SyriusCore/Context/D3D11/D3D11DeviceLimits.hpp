@@ -35,11 +35,13 @@ namespace Syrius{
 
         [[nodiscard]] u32 getMaxTextureSize() const override;
 
-        [[nodiscard]] u32 getMaxSSSBOSlots() const override;
-
         [[nodiscard]] u32 getMaxConstantBufferSize() const override;
 
         [[nodiscard]] u32 getMaxConstantBufferSlots() const override;
+
+        [[nodiscard]] u32 getMaxShaderStorageBufferSize() const override;
+
+        [[nodiscard]] u32 getMaxShaderStorageBufferSlots() const override;
 
         [[nodiscard]] u32 getMaxDepthBufferBits() const override;
 

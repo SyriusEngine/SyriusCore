@@ -60,15 +60,11 @@ namespace Syrius{
     }
 
     u32 D3D11DeviceLimits::getMaxTextureSlots() const {
-        return D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT;
+        return D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT ;
     }
 
     u32 D3D11DeviceLimits::getMaxTextureSize() const {
         return D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION;
-    }
-
-    u32 D3D11DeviceLimits::getMaxSSSBOSlots() const {
-        return D3D11_PS_CS_UAV_REGISTER_COUNT;
     }
 
     u32 D3D11DeviceLimits::getMaxConstantBufferSize() const {
@@ -81,6 +77,14 @@ namespace Syrius{
 
     u32 D3D11DeviceLimits::getMaxDepthBufferBits() const {
         return 32;
+    }
+
+    u32 D3D11DeviceLimits::getMaxShaderStorageBufferSize() const {
+        return D3D11_REQ_RESOURCE_SIZE_IN_MEGABYTES_EXPRESSION_A_TERM * 1024 * 1024;
+    }
+
+    u32 D3D11DeviceLimits::getMaxShaderStorageBufferSlots() const {
+        return D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT;
     }
 
     u32 D3D11DeviceLimits::getMaxVertexAttributes() const {
@@ -98,7 +102,7 @@ namespace Syrius{
     }
 
     u64 D3D11DeviceLimits::getMaxIndex() const {
-        return 0;
+        return std::numeric_limits<u64>::max();
     }
 
     bool D3D11DeviceLimits::isDoubleBuffered() const {
