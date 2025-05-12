@@ -34,8 +34,8 @@ namespace Syrius {
 
     private:
         const std::string m_Name;
-        const Size m_Size;
-        const SR_BUFFER_USAGE m_Usage;
+        const Size m_Size = 0;
+        const SR_BUFFER_USAGE m_Usage = SR_BUFFER_USAGE_DEFAULT;
         GLuint m_BufferID = 0;
         GLenum m_Target = 0;
 

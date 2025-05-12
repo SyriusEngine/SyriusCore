@@ -56,6 +56,7 @@ if (WIN32)
 
         src/SyriusCore/Context/OpenGL/Internal/WglContext.cpp
 
+        src/SyriusCore/Context/D3D11/Internal/D3D11Buffer.cpp
         src/SyriusCore/Context/D3D11/D3D11Context.cpp
         src/SyriusCore/Context/D3D11/D3D11Viewport.cpp
         src/SyriusCore/Context/D3D11/D3D11Utils.cpp
@@ -159,7 +160,7 @@ set(SYRIUS_CORE_SRC
     src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlCubeMap.cpp
     src/SyriusCore/Context/OpenGL/GlDeviceLimits.cpp
-    )
+)
 
 add_library(SyriusCore SHARED ${SYRIUS_CORE_SRC})
 if (UNIX)
@@ -192,7 +193,7 @@ set(SR_CORE_TEST_SRC
     Tests/Image/ImageUI8Test.cpp
     Tests/Image/ImageF32Test.cpp
     Tests/Image/ImageUtilsTest.cpp
-        Tests/Context/ShaderTest.cpp)
+    Tests/Context/ShaderTest.cpp)
 
 if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTS)
     # Add GTest

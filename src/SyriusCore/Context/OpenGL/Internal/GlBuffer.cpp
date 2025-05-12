@@ -70,7 +70,7 @@ namespace Syrius {
         SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[{}]: Update on buffer object {} requested, which was created with {} usage flag!", m_Name, m_BufferID, m_Usage);
 
         if (m_Size < other.m_Size) {
-            SR_LOG_WARNING(m_Name, "Copy from buffer object {} requested, which exceeds the current buffer size ({} > {}).", other.m_BufferID, other.m_Size, m_Size);
+            SR_LOG_WARNING(m_Name, "Copy from buffer object {} requested, which exceeds the current buffer size ({} > {}). Data will be partially copied", other.m_BufferID, other.m_Size, m_Size);
         }
         const Size copySize = std::min(m_Size, other.m_Size);
         glCopyNamedBufferSubData(other.m_BufferID, m_BufferID, 0, 0, copySize);

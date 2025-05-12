@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../../include/SyriusCore/Context/ConstantBuffer.hpp"
-#include "D3D11Utils.hpp"
+#include "Internal/D3D11Buffer.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 
@@ -11,7 +11,9 @@ namespace Syrius{
     public:
         D3D11ConstantBufferBase(const ConstantBufferDesc& desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
-        ~D3D11ConstantBufferBase() override;
+        ~D3D11ConstantBufferBase() override = default;
+
+        void release() override;
 
         void setData(const void* data, u64 size) override;
 
@@ -21,10 +23,16 @@ namespace Syrius{
 
         [[nodiscard]] u64 getIdentifier() const override;
 
+        [[nodiscard]] const std::string& getName() const override;
+
+        [[nodiscard]] Size getSize() const override;
+
+        [[nodiscard]] SR_BUFFER_USAGE getUsage() const override;
+
     protected:
         ID3D11Device* m_Device;
         ID3D11DeviceContext* m_Context;
-        ID3D11Buffer* m_Buffer;
+        D3D11Buffer m_Buffer;
     };
 
     class D3D11ConstantBufferVertex: public D3D11ConstantBufferBase{
