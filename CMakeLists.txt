@@ -142,6 +142,7 @@ set(SYRIUS_CORE_SRC
     src/SyriusCore/Context/CubeMap.cpp
     src/SyriusCore/Context/CubeMapLayout.cpp
 
+    src/SyriusCore/Context/OpenGL/Internal/GlBuffer.cpp
     src/SyriusCore/Context/OpenGL/GlContext.cpp
     src/SyriusCore/Context/OpenGL/GlViewport.cpp
     src/SyriusCore/Context/OpenGL/GlUtils.cpp

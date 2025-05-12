@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../../../../include/SyriusCore/Context/ConstantBuffer.hpp"
-#include "GlUtils.hpp"
-#include "GlShader.hpp"
+#include "Internal/GlBuffer.hpp"
 
 namespace Syrius{
 
@@ -10,11 +9,13 @@ namespace Syrius{
     public:
         GlConstantBuffer(const ConstantBufferDesc& desc, const UP<DeviceLimits>& deviceLimits);
 
-        ~GlConstantBuffer() override;
+        ~GlConstantBuffer() override = default;
+
+        void release() override;
 
         void bind(u32 slot) override;
 
-        void setData(const void* data, u64 size) override;
+        void setData(const void* data, Size size) override;
 
         void copyFrom(const ResourceView<ConstantBuffer>& other) override;
 
@@ -22,8 +23,14 @@ namespace Syrius{
 
         [[nodiscard]] u64 getIdentifier() const override;
 
+        [[nodiscard]] const std::string& getName() const override;
+
+        [[nodiscard]] Size getSize() const override;
+
+        [[nodiscard]] SR_BUFFER_USAGE getUsage() const override;
+
     private:
-        u32 m_BufferID;
+        GlBuffer m_Buffer;
     };
 }
 

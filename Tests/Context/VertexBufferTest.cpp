@@ -120,7 +120,16 @@ TEST_F(VertexBufferTest, UpdateVertexBufferLargerData){
 
     auto vb = TestEnvironment::m_Context->createVertexBuffer(desc);
 
-    EXPECT_THROW(vb->setData(s_RectangleVertices.data(), 4), SyriusAssert);
+    vb->setData(s_RectangleVertices.data(), 4);
+
+    auto data = vb->getData();
+    EXPECT_NE(data, nullptr);
+
+    // check if the data has changed
+    auto floatData = reinterpret_cast<float*>(data.get());
+    for (int i = 0; i < s_TriangleVertices.size(); i++){
+        EXPECT_EQ(floatData[i], s_RectangleVertices[i]);
+    }
 }
 
 TEST_F(VertexBufferTest, CopyVertexBuffer){

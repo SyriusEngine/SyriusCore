@@ -20,6 +20,8 @@ namespace Syrius{
 
         virtual ~ConstantBuffer() = default;
 
+        virtual void release() = 0;
+
         virtual void bind(u32 slot) = 0;
 
         virtual void setData(const void* data, u64 size) = 0;
@@ -30,18 +32,14 @@ namespace Syrius{
 
         [[nodiscard]] virtual u64 getIdentifier() const = 0;
 
-        [[nodiscard]] const std::string& getName() const;
+        [[nodiscard]] virtual const std::string& getName() const = 0;
 
-        [[nodiscard]] u32 getSize() const;
+        [[nodiscard]] virtual Size getSize() const = 0;
 
-        [[nodiscard]] SR_BUFFER_USAGE getUsage() const;
+        [[nodiscard]] virtual SR_BUFFER_USAGE getUsage() const = 0;
 
     protected:
         const UP<DeviceLimits>& m_DeviceLimits;
-
-        u32 m_Size;
-        SR_BUFFER_USAGE m_Usage;
-        std::string m_Name;
     };
 
 }

@@ -127,7 +127,16 @@ TEST_F(IndexBufferTest, UpdateIndexBufferLargerData){
 
     auto ib = TestEnvironment::m_Context->createIndexBuffer(desc);
 
-    EXPECT_THROW(ib->setData(s_RectangleIndices.data(), 4), SyriusAssert);
+    ib->setData(s_RectangleIndices.data(), 4);
+
+    auto data = ib->getData();
+    EXPECT_NE(data, nullptr);
+
+    // check if the data has changed
+    auto u32Data = reinterpret_cast<u32*>(data.get());
+    for (int i = 0; i < s_TriangleIndices.size(); i++){
+        EXPECT_EQ(u32Data[i], s_RectangleIndices[i]);
+    }
 }
 
 TEST_F(IndexBufferTest, CopyIndexBuffer){

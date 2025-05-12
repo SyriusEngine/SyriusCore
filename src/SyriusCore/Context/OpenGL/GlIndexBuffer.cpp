@@ -2,73 +2,54 @@
 
 namespace Syrius{
 
+    constexpr static auto m_Name = "GlIndexBuffer";
+
     GlIndexBuffer::GlIndexBuffer(const IndexBufferDesc &desc, const UP<DeviceLimits>& deviceLimits):
     IndexBuffer(desc, deviceLimits),
-    m_BufferID(0){
-        glCreateBuffers(1, &m_BufferID);
-        glNamedBufferData(m_BufferID, m_Size, desc.data, getGlBufferType(desc.usage));
+    m_Buffer(m_Name, GL_ELEMENT_ARRAY_BUFFER, desc.count * getTypeSize(desc.dataType), desc.data, desc.usage){
     }
 
-    GlIndexBuffer::~GlIndexBuffer() {
-        glDeleteBuffers(1, &m_BufferID);
+    void GlIndexBuffer::release() {
+        m_Buffer.release();
     }
 
     void GlIndexBuffer::bind() {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_BufferID);
+        m_Buffer.bind();
     }
 
-    void GlIndexBuffer::setData(const void *data, u32 count) {
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlIndexBuffer]: Update on buffer object {} requested, which was created with SR_BUFFER_USAGE_STATIC flag!", m_BufferID);
-        SR_PRECONDITION(count * getTypeSize(m_DataType) <= m_Size, "[GlIndexBuffer]: Update on buffer object {} requested, which exceeds the current buffer size ({} > {}).", m_BufferID, count * getTypeSize(m_DataType), m_Size);
-
-
-        u32 copySize = count * getTypeSize(m_DataType);
-        m_Count = count;
-        auto pBuffer = glMapNamedBuffer(m_BufferID, GL_WRITE_ONLY);
-        if (!pBuffer) {
-            SR_LOG_WARNING("GlIndexBuffer", "Failed to map buffer object {}", m_BufferID);
+    void GlIndexBuffer::setData(const void *data, const u64 count) {
+        if (count > m_DeviceLimits->getMaxIndexCount()) {
+            SR_LOG_WARNING(m_Name, "Current device supports only {} indices, but {} requested", m_DeviceLimits->getMaxIndexCount(), count);
             return;
         }
-
-        memcpy(pBuffer, data, copySize);
-        auto retVal = glUnmapNamedBuffer(m_BufferID);
-        if (retVal == GL_FALSE) {
-            SR_LOG_WARNING("GlIndexBuffer", "Failed to unmap buffer object {}", m_BufferID);
-        }
+        const Size copySize = count * getTypeSize(m_DataType);
+        m_Count = count;
+        m_Buffer.setData(data, copySize);
     }
 
     void GlIndexBuffer::copyFrom(const ResourceView<IndexBuffer> &other) {
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlIndexBuffer]: Update on buffer object {} requested, which was created with SR_BUFFER_USAGE_STATIC flag!", m_BufferID);
-
-        if (m_Size < other->getSize()){
-            SR_LOG_WARNING("GlIndexBuffer", "Copy from buffer object {} requested, which exceeds the current buffer "
-                                            "size ({} > {}).", m_BufferID, other->getSize(), m_Size);
+        const auto glBuffer = dynamic_cast<GlIndexBuffer*>(other.get());
+        if (!glBuffer) {
+            SR_LOG_WARNING(m_Name, "Failed to copy from IndexBuffer object {}", other->getIdentifier());
+            return;
         }
-        auto copySize = std::min(m_Size, other->getSize());
-        glCopyNamedBufferSubData(other->getIdentifier(), m_BufferID, 0, 0, copySize);
+        m_Buffer.copyFrom(glBuffer->m_Buffer);
     }
 
     UP<UByte[]> GlIndexBuffer::getData() const {
-        SR_PRECONDITION(m_Usage != SR_BUFFER_USAGE_STATIC, "[GlIndexBuffer]: Update on buffer object [] requested, which was created with SR_BUFFER_USAGE_STATIC flag!", m_BufferID);
-
-        auto data = createUP<UByte[]>(m_Size);
-        auto pBuffer = glMapNamedBuffer(m_BufferID, GL_READ_ONLY);
-
-        if (!pBuffer) {
-            SR_LOG_WARNING("GlIndexBuffer", "Failed to map buffer object {}", m_BufferID);
-            return std::move(data);
-        }
-
-        memcpy(data.get(), pBuffer, m_Size);
-        auto retVal = glUnmapNamedBuffer(m_BufferID);
-        if (retVal == GL_FALSE) {
-            SR_LOG_WARNING("GlIndexBuffer", "Failed to unmap buffer object {}", m_BufferID);
-        }
-        return std::move(data);
+        return m_Buffer.getData();
     }
 
     u64 GlIndexBuffer::getIdentifier() const {
-        return m_BufferID;
+        return m_Buffer.getBufferID();
+    }
+
+    Size GlIndexBuffer::getSize() const {
+        return m_Buffer.getSize();
+    }
+
+    SR_BUFFER_USAGE GlIndexBuffer::getUsage() const {
+        return m_Buffer.getUsage();
     }
 
 }

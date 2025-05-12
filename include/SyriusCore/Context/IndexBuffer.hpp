@@ -18,9 +18,11 @@ namespace Syrius{
 
         virtual ~IndexBuffer();
 
+        virtual void release() = 0;
+
         virtual void bind() = 0;
 
-        virtual void setData(const void* data, u32 count) = 0;
+        virtual void setData(const void* data, u64 count) = 0;
 
         virtual void copyFrom(const ResourceView<IndexBuffer>& other) = 0;
 
@@ -28,20 +30,18 @@ namespace Syrius{
 
         [[nodiscard]] virtual u64 getIdentifier() const = 0;
 
-        [[nodiscard]] u32 getSize() const;
+        [[nodiscard]] virtual Size getSize() const = 0;
 
-        [[nodiscard]] u32 getCount() const;
+        [[nodiscard]] virtual SR_BUFFER_USAGE getUsage() const = 0;
 
-        [[nodiscard]] SR_BUFFER_USAGE getUsage() const;
+        [[nodiscard]] u64 getCount() const;
 
         [[nodiscard]] SR_TYPE getDataType() const;
 
     protected:
         const UP<DeviceLimits>& m_DeviceLimits;
 
-        u32 m_Size;
-        u32 m_Count;
-        const SR_BUFFER_USAGE m_Usage;
+        u64 m_Count;
         const SR_TYPE m_DataType;
     };
 }

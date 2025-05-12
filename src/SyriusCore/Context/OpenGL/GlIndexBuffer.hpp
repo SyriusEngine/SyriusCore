@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GlUtils.hpp"
 #include "../../../../include/SyriusCore/Context/IndexBuffer.hpp"
+#include "Internal/GlBuffer.hpp"
 
 namespace Syrius{
 
@@ -9,11 +9,13 @@ namespace Syrius{
     public:
         GlIndexBuffer(const IndexBufferDesc& desc, const UP<DeviceLimits>& deviceLimits);
 
-        ~GlIndexBuffer() override;
+        ~GlIndexBuffer() override = default;
+
+        void release() override;
 
         void bind() override;
 
-        void setData(const void* data, u32 count) override;
+        void setData(const void* data, u64 count) override;
 
         void copyFrom(const ResourceView<IndexBuffer>& other) override;
 
@@ -21,8 +23,12 @@ namespace Syrius{
 
         [[nodiscard]] u64 getIdentifier() const override;
 
+        [[nodiscard]] Size getSize() const override;
+
+        [[nodiscard]] SR_BUFFER_USAGE getUsage() const override;
+
     private:
-        u32 m_BufferID;
+        GlBuffer m_Buffer;
     };
 }
 
