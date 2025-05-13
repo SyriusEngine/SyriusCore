@@ -18,12 +18,7 @@ namespace Syrius{
     m_Fullscreen(false),
     m_MouseInside(false),
     m_KeyRepeat(true),
-    m_UseImGui(false),
     m_Context(nullptr){
-
-    }
-
-    SyriusWindow::~SyriusWindow() {
 
     }
 
@@ -63,57 +58,16 @@ namespace Syrius{
         return !m_EventQueue.empty();
     }
 
-    void SyriusWindow::createImGuiContext() {
-        SR_PRECONDITION(!m_UseImGui, "There exists already an ImGui context")
-
-        if (m_Context == nullptr){
-            SR_LOG_WARNING("SyriusWindow", "There is no context created, creating a default OpenGL context");
-            ContextDesc desc;
-            desc.api = SR_API_OPENGL;
-            createContext(desc);
-        }
-
-        m_Context->createImGuiContext();
-        m_UseImGui = true;
-    }
-
-    void SyriusWindow::destroyImGuiContext() {
-        SR_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to destroy an ImGui context")
-        SR_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
-
-        m_Context->destroyImGuiContext();
-        m_UseImGui = false;
-    }
-
-    void SyriusWindow::onImGuiBegin() {
-        SR_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to destroy an ImGui context")
-        SR_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
-
-        m_Context->onImGuiBegin();
-    }
-
-    void SyriusWindow::onImGuiEnd() {
-        SR_PRECONDITION(m_Context != nullptr, "A valid context must be created in order to destroy an ImGui context")
-        SR_PRECONDITION(m_UseImGui, "There must be an ImGui context created")
-
-        m_Context->onImGuiEnd();
-    }
-
     void SyriusWindow::dispatchEvent(const Event &event) {
         m_EventQueue.push_back(event);
     }
 
     void SyriusWindow::destroyContext() {
-        SR_LOG_INFO_IF_FALSE(m_UseImGui != 0, "SyriusWindow", "There exists an ImGui context, destroying it");
-
-        if (m_UseImGui){
-            this->destroyImGuiContext();
-        }
         m_Context.reset();
     }
 
     Event SyriusWindow::getNextEvent() {
-        auto event = m_EventQueue[0];
+        auto event = m_EventQueue.front();
         m_EventQueue.pop_front();
         return event;
     }

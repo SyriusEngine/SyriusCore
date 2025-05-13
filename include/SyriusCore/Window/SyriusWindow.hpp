@@ -33,19 +33,19 @@ typedef enum SR_WIDOW_ICON {
 namespace Syrius{
 
     struct WindowDesc{
-        i32 xPos            = 200;
-        i32 yPos            = 200;
-        u32 width          = SR_DEFAULT_WIDTH;
-        u32 height         = SR_DEFAULT_HEIGHT;
-        std::string title     = "SyriusCore";
-        SR_WINDOW_STYLE style = SR_WINDOW_STYLE_DEFAULT;
+        i32 xPos                = 200;
+        i32 yPos                = 200;
+        u32 width               = SR_DEFAULT_WIDTH;
+        u32 height              = SR_DEFAULT_HEIGHT;
+        std::string title       = "SyriusCore";
+        SR_WINDOW_STYLE style   = SR_WINDOW_STYLE_DEFAULT;
     };
 
     class SR_CORE_API SyriusWindow{
     public:
         SyriusWindow() = delete;
 
-        virtual ~SyriusWindow();
+        virtual ~SyriusWindow() = default;
 
         [[nodiscard]] i32 getPosX() const;
 
@@ -64,14 +64,6 @@ namespace Syrius{
         [[nodiscard]] bool isFullscreen() const;
 
         [[nodiscard]] bool hasEvent() const;
-
-        void createImGuiContext();
-
-        void destroyImGuiContext();
-
-        void onImGuiBegin();
-
-        void onImGuiEnd();
 
         void destroyContext();
 
@@ -146,7 +138,6 @@ namespace Syrius{
         bool m_Fullscreen;
         bool m_MouseInside;
         bool m_KeyRepeat;
-        bool m_UseImGui;
 
         UP<Context> m_Context;
 

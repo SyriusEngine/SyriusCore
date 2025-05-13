@@ -58,15 +58,15 @@ namespace Syrius{
 
         ResourceView<CubeMap> createCubeMap(const ResourceView<CubeMapLayout>& desc) override;
 
-    protected:
+        void initImGui(const ImGuiDesc& desc) override;
 
-        void createImGuiContext() override;
-
-        void destroyImGuiContext() override;
+        void terminateImGui() override;
 
         void onImGuiBegin() override;
 
         void onImGuiEnd() override;
+
+    protected:
 
         void createDefaultFrameBuffer(i32 width, i32 height, const ContextDesc &desc) override;
 

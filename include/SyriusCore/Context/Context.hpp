@@ -19,9 +19,14 @@
 #include "CubeMapLayout.hpp"
 #include "CubeMap.hpp"
 
-namespace Syrius{
+typedef enum SR_IMGUI_STYLE {
+    SR_IMGUI_STYLE_DEFAULT  = 0x00, // Default imGui style is black
+    SR_IMGUI_STYLE_CLASSIC  = 0x01,
+    SR_IMGUI_STYLE_DARK     = 0x02,
+    SR_IMGUI_STYLE_LIGHT    = 0x03
+} SR_IMGUI_STYLE;
 
-    class SyriusWindow;
+namespace Syrius{
 
     struct SR_CORE_API ContextDesc{
         u8 depthBits        = 24;
@@ -33,6 +38,12 @@ namespace Syrius{
         bool enableDepthTest   = false;
         bool enableStencilTest = false;
         SR_SUPPORTED_API api   = SR_API_OPENGL;
+    };
+
+    struct SR_CORE_API ImGuiDesc {
+        bool useDocking = true;
+        SR_IMGUI_STYLE style = SR_IMGUI_STYLE_DEFAULT;
+
     };
 
     class SR_CORE_API Context{
@@ -282,15 +293,9 @@ namespace Syrius{
          */
         virtual void setVerticalSynchronisation(bool enable) = 0;
 
-    protected:
+        virtual void initImGui(const ImGuiDesc& desc) = 0;
 
-        explicit Context(const ContextDesc& desc);
-
-        virtual void createDefaultFrameBuffer(i32 width, i32 height, const ContextDesc& desc) = 0;
-
-        virtual void createImGuiContext() = 0;
-
-        virtual void destroyImGuiContext() = 0;
+        virtual void terminateImGui() = 0;
 
         virtual void onImGuiBegin() = 0;
 
@@ -298,11 +303,17 @@ namespace Syrius{
 
     protected:
 
-        friend SyriusWindow;
+        explicit Context(const ContextDesc& desc);
+
+        virtual void createDefaultFrameBuffer(i32 width, i32 height, const ContextDesc& desc) = 0;
+
+        void imGuiSetStyle(SR_IMGUI_STYLE style);
 
     protected:
 
         bool m_VerticalSync;
+        bool m_ImGuiContextCreated = false;
+        bool m_IsImGuiRendering = false;
 
         UP<DeviceLimits> m_DeviceLimits;
 

@@ -24,11 +24,9 @@ namespace Syrius {
 
         void setVerticalSynchronisation(bool enable) override;
 
-    protected:
+        void initImGui(const ImGuiDesc& desc) override;
 
-        void createImGuiContext() override;
-
-        void destroyImGuiContext() override;
+        void terminateImGui() override;
 
         void onImGuiBegin() override;
 
@@ -54,9 +52,6 @@ namespace Syrius {
         HWND &m_Hwnd;
         HDC m_HardwareDeviceContext;
         HGLRC m_Context;
-
-        ImGuiContext *m_ImGuiContext;
-
     };
 
 }

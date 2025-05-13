@@ -1,4 +1,5 @@
 #include "../../../include/SyriusCore/Context/Context.hpp"
+#include "../../../include/SyriusCore/Dependencies/imgui/imgui.h"
 #include "../Utils/DebugMacros.hpp"
 
 #include <algorithm>
@@ -171,5 +172,16 @@ namespace Syrius{
     void Context::destroyCubeMap(const ResourceView<CubeMap>& cubeMap){
         removeResource(m_CubeMaps, cubeMap);
     }
+
+    void Context::imGuiSetStyle(SR_IMGUI_STYLE style) {
+        switch (style) {
+            case SR_IMGUI_STYLE_DEFAULT:
+            case SR_IMGUI_STYLE_DARK:       ImGui::StyleColorsDark();   break;
+            case SR_IMGUI_STYLE_CLASSIC:    ImGui::StyleColorsClassic();  break;
+            case SR_IMGUI_STYLE_LIGHT:      ImGui::StyleColorsLight();  break;
+            default: ImGui::StyleColorsDark();
+        }
+    }
+
 
 }

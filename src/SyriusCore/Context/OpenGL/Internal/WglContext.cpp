@@ -4,6 +4,87 @@
 
 namespace Syrius{
 
+
+    /**
+     *
+     *  Following section is copy pasted from the ImGui repo
+     */
+
+    // Data stored per platform window
+    struct WGL_WindowData { HDC hDC; };
+
+    // Data
+    static HGLRC            g_hRC;
+    static WGL_WindowData   g_MainWindow;
+    static int              g_Width;
+    static int              g_Height;
+
+    // Helper functions
+    bool CreateDeviceWGL(HWND hWnd, WGL_WindowData* data)
+    {
+        HDC hDc = ::GetDC(hWnd);
+        PIXELFORMATDESCRIPTOR pfd = { 0 };
+        pfd.nSize = sizeof(pfd);
+        pfd.nVersion = 1;
+        pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+        pfd.iPixelType = PFD_TYPE_RGBA;
+        pfd.cColorBits = 32;
+
+        const int pf = ::ChoosePixelFormat(hDc, &pfd);
+        if (pf == 0)
+            return false;
+        if (::SetPixelFormat(hDc, pf, &pfd) == FALSE)
+            return false;
+        ::ReleaseDC(hWnd, hDc);
+
+        data->hDC = ::GetDC(hWnd);
+        if (!g_hRC)
+            g_hRC = wglCreateContext(data->hDC);
+        return true;
+    }
+
+    void CleanupDeviceWGL(HWND hWnd, WGL_WindowData* data)
+    {
+        wglMakeCurrent(nullptr, nullptr);
+        ::ReleaseDC(hWnd, data->hDC);
+    }
+
+    // Support function for multi-viewports
+    // Unlike most other backend combination, we need specific hooks to combine Win32+OpenGL.
+    // We could in theory decide to support Win32-specific code in OpenGL backend via e.g. an hypothetical ImGui_ImplOpenGL3_InitForRawWin32().
+    static void Hook_Renderer_CreateWindow(ImGuiViewport* viewport)
+    {
+        assert(viewport->RendererUserData == NULL);
+
+        WGL_WindowData* data = IM_NEW(WGL_WindowData);
+        CreateDeviceWGL((HWND)viewport->PlatformHandle, data);
+        viewport->RendererUserData = data;
+    }
+
+    static void Hook_Renderer_DestroyWindow(ImGuiViewport* viewport)
+    {
+        if (viewport->RendererUserData != NULL)
+        {
+            WGL_WindowData* data = (WGL_WindowData*)viewport->RendererUserData;
+            CleanupDeviceWGL((HWND)viewport->PlatformHandle, data);
+            IM_DELETE(data);
+            viewport->RendererUserData = NULL;
+        }
+    }
+
+    static void Hook_Platform_RenderWindow(ImGuiViewport* viewport, void*)
+    {
+        // Activate the platform window DC in the OpenGL rendering context
+        if (WGL_WindowData* data = (WGL_WindowData*)viewport->RendererUserData)
+            wglMakeCurrent(data->hDC, g_hRC);
+    }
+
+    static void Hook_Renderer_SwapBuffers(ImGuiViewport* viewport, void*)
+    {
+        if (WGL_WindowData* data = (WGL_WindowData*)viewport->RendererUserData)
+            ::SwapBuffers(data->hDC);
+    }
+
     u32 WglContext::m_ContextCount = 0;
 
     WglContext::WglContext(HWND &hwnd, const ContextDesc& desc):
@@ -11,7 +92,6 @@ namespace Syrius{
     m_Hwnd(hwnd),
     m_Context(nullptr),
     m_HardwareDeviceContext(nullptr),
-    m_ImGuiContext(nullptr),
     m_WGLVersion(0){
         m_HardwareDeviceContext = GetDC(m_Hwnd);
 
@@ -112,10 +192,6 @@ namespace Syrius{
     }
 
     WglContext::~WglContext() {
-        if (m_ImGuiContext){
-            WglContext::destroyImGuiContext();
-        }
-
         terminateGl();
         wglDeleteContext(m_Context);
         terminateWGL();
@@ -136,47 +212,87 @@ namespace Syrius{
         wglSwapIntervalEXT(m_VerticalSync);
     }
 
-    void WglContext::createImGuiContext() {
-        SR_PRECONDITION(!m_ImGuiContext, "There exists already an ImGui context")
+    void WglContext::initImGui(const ImGuiDesc& desc) {
+        if (m_ImGuiContextCreated) {
+            SR_LOG_WARNING("WglContext", "ImGui already initialized!");
+            return;
+        }
 
+        // Create the context
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
-        ImGui::StyleColorsDark();
+
+        // Configure flags
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;   // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;    // Enable Gamepad Controls
+        if (desc.useDocking) {
+            io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;       // Enable Docking
+            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;     // Enable Multi-Viewport / Platform Windows
+        }
+
+        // set ImGui style
+        imGuiSetStyle(desc.style);
+
         ImGui_ImplWin32_Init(m_Hwnd);
-        initGlad();
         ImGui_ImplOpenGL3_Init("#version 150");
 
-        m_ImGuiContext = ImGui::GetCurrentContext();
+        // Win32+GL needs specific hooks for viewport, as there are specific things needed to tie Win32 and GL api.
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
+            IM_ASSERT(platform_io.Renderer_CreateWindow == NULL);
+            IM_ASSERT(platform_io.Renderer_DestroyWindow == NULL);
+            IM_ASSERT(platform_io.Renderer_SwapBuffers == NULL);
+            IM_ASSERT(platform_io.Platform_RenderWindow == NULL);
+            platform_io.Renderer_CreateWindow = Hook_Renderer_CreateWindow;
+            platform_io.Renderer_DestroyWindow = Hook_Renderer_DestroyWindow;
+            platform_io.Renderer_SwapBuffers = Hook_Renderer_SwapBuffers;
+            platform_io.Platform_RenderWindow = Hook_Platform_RenderWindow;
+        }
 
-        SR_POSTCONDITION(m_ImGuiContext, "Failed to create ImGui context");
+        m_ImGuiContextCreated = true;
+
+        SR_POSTCONDITION(m_ImGuiContextCreated == true, "Failed to create ImGui context");
     }
 
-    void WglContext::destroyImGuiContext() {
-        SR_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
+    void WglContext::terminateImGui() {
+        SR_PRECONDITION(m_ImGuiContextCreated == true, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_IsImGuiRendering == false, "ImGuiRendering already started!")
 
-        ImGui::SetCurrentContext(m_ImGuiContext);
         ImGui_ImplOpenGL3_Shutdown();
-        terminateGlad();
         ImGui_ImplWin32_Shutdown();
         ImGui::DestroyContext();
-
-        m_ImGuiContext = nullptr;
+        m_ImGuiContextCreated = false;
     }
 
     void WglContext::onImGuiBegin() {
-        SR_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_ImGuiContextCreated == true, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_IsImGuiRendering == false, "ImGuiRendering already started!")
 
-        ImGui::SetCurrentContext(m_ImGuiContext);
+        m_IsImGuiRendering = true;
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
+
+        SR_POSTCONDITION(m_IsImGuiRendering == true, "Failed to start ImGuiRendering");
     }
 
     void WglContext::onImGuiEnd() {
-        SR_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_IsImGuiRendering == true, "onImGuiEnd() called before onImGuiBegin()")
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+
+            // Restore the OpenGL rendering context to the main window DC, since platform windows might have changed it.
+            wglMakeCurrent(g_MainWindow.hDC, g_hRC);
+        }
+        m_IsImGuiRendering = false;
     }
 
     bool WglContext::isExtensionSupported(const std::string &extName) {
