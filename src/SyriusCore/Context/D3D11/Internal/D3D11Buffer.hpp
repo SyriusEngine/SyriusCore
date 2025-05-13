@@ -2,6 +2,8 @@
 
 #include "../D3D11Utils.hpp"
 
+#if defined(SR_PLATFORM_WIN64)
+
 namespace Syrius {
 
     class D3D11Buffer {
@@ -41,3 +43,5 @@ namespace Syrius {
     };
 
 }
+
+#endif

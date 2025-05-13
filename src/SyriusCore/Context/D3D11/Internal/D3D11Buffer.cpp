@@ -1,5 +1,7 @@
 #include "D3D11Buffer.hpp"
 
+#if defined(SR_PLATFORM_WIN64)
+
 namespace Syrius {
 
     D3D11Buffer::D3D11Buffer(const std::string &name, const UINT bindFlags, const Size size, const void *data,
@@ -140,3 +142,5 @@ namespace Syrius {
         return m_BindFlags;
     }
 }
+
+#endif
