@@ -58,6 +58,8 @@ namespace Syrius{
 
         [[nodiscard]] bool isVerticalSyncEnabled() const;
 
+        [[nodiscard]] bool hasImGuiContext() const { return m_ImGuiContextCreated; }
+
         ResourceView<FrameBuffer> getDefaultFrameBuffer();
 
         void onResize(i32 width, i32 height) const;

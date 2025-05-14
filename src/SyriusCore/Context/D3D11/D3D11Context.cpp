@@ -111,41 +111,6 @@ namespace Syrius{
         m_VerticalSync = enable;
     }
 
-    void D3D11Context::createImGuiContext() {
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGui::StyleColorsDark();
-        ImGui_ImplWin32_Init(m_Hwnd);
-
-        ImGui_ImplDX11_Init(m_Device, m_DeviceContext);
-        m_ImGuiContext = ImGui::GetCurrentContext();
-    }
-
-    void D3D11Context::destroyImGuiContext() {
-        ImGui::SetCurrentContext(m_ImGuiContext);
-
-        ImGui_ImplDX11_Shutdown();
-        ImGui_ImplWin32_Shutdown();
-        ImGui::DestroyContext();
-        m_ImGuiContext = nullptr;
-    }
-
-    void D3D11Context::onImGuiBegin() {
-        SR_PRECONDITION(m_ImGuiContext != nullptr, "ImGui context is nullptr");
-
-        ImGui::SetCurrentContext(m_ImGuiContext);
-        ImGui_ImplDX11_NewFrame();
-        ImGui_ImplWin32_NewFrame();
-        ImGui::NewFrame();
-    }
-
-    void D3D11Context::onImGuiEnd() {
-        SR_PRECONDITION(m_ImGuiContext != nullptr, "ImGui context is nullptr");
-
-        ImGui::Render();
-        ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-    }
-
     ResourceView<ShaderModule> D3D11Context::createShaderModule(const ShaderModuleDesc &desc) {
         m_ShaderModules.emplace_back(new D3D11ShaderModule(desc, m_Device, m_DeviceContext));
         return createResourceView(m_ShaderModules.back());
@@ -221,6 +186,58 @@ namespace Syrius{
     ResourceView<CubeMap> D3D11Context::createCubeMap(const ResourceView<Syrius::CubeMapLayout> &desc) {
         m_CubeMaps.emplace_back(new D3D11CubeMap(desc, m_DeviceLimits, m_Device, m_DeviceContext));
         return createResourceView(m_CubeMaps.back());
+    }
+
+    void D3D11Context::initImGui(const ImGuiDesc& desc) {
+        if (m_ImGuiContextCreated) {
+            SR_LOG_WARNING("WglContext", "ImGui already initialized!");
+            return;
+        }
+
+        // Create the context
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+
+        // set ImGui style
+        imGuiSetStyle(desc.style);
+
+        ImGui_ImplWin32_Init(m_Hwnd);
+        ImGui_ImplDX11_Init(m_Device, m_DeviceContext);
+
+        m_ImGuiContextCreated = true;
+
+        SR_POSTCONDITION(m_ImGuiContextCreated == true, "Failed to create ImGui context");
+    }
+
+    void D3D11Context::terminateImGui() {
+        SR_PRECONDITION(m_ImGuiContextCreated == true, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_IsImGuiRendering == false, "ImGuiRendering already started!")
+
+        ImGui_ImplDX11_Shutdown();
+        ImGui_ImplWin32_Shutdown();
+        ImGui::DestroyContext();
+        m_ImGuiContextCreated = false;
+    }
+
+    void D3D11Context::onImGuiBegin() {
+        SR_PRECONDITION(m_ImGuiContextCreated == true, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_IsImGuiRendering == false, "ImGuiRendering already started!")
+
+        ImGui_ImplDX11_NewFrame();
+        ImGui_ImplWin32_NewFrame();
+        ImGui::NewFrame();
+        m_IsImGuiRendering = true;
+
+        SR_POSTCONDITION(m_IsImGuiRendering == true, "Failed to start ImGuiRendering");
+    }
+
+    void D3D11Context::onImGuiEnd() {
+        SR_PRECONDITION(m_IsImGuiRendering == true, "onImGuiEnd() called before onImGuiBegin()")
+
+        ImGui::Render();
+        ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+        ImGuiIO& io = ImGui::GetIO();
+        m_IsImGuiRendering = false;
     }
 
     void D3D11Context::createDefaultFrameBuffer(const i32 width, const  i32 height, const ContextDesc &desc) {

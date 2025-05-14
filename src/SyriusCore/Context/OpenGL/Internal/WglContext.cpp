@@ -222,34 +222,11 @@ namespace Syrius{
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
 
-        // Configure flags
-        ImGuiIO& io = ImGui::GetIO(); (void)io;
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;   // Enable Keyboard Controls
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;    // Enable Gamepad Controls
-        if (desc.useDocking) {
-            io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;       // Enable Docking
-            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;     // Enable Multi-Viewport / Platform Windows
-        }
-
         // set ImGui style
         imGuiSetStyle(desc.style);
 
         ImGui_ImplWin32_Init(m_Hwnd);
         ImGui_ImplOpenGL3_Init("#version 150");
-
-        // Win32+GL needs specific hooks for viewport, as there are specific things needed to tie Win32 and GL api.
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-        {
-            ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
-            IM_ASSERT(platform_io.Renderer_CreateWindow == NULL);
-            IM_ASSERT(platform_io.Renderer_DestroyWindow == NULL);
-            IM_ASSERT(platform_io.Renderer_SwapBuffers == NULL);
-            IM_ASSERT(platform_io.Platform_RenderWindow == NULL);
-            platform_io.Renderer_CreateWindow = Hook_Renderer_CreateWindow;
-            platform_io.Renderer_DestroyWindow = Hook_Renderer_DestroyWindow;
-            platform_io.Renderer_SwapBuffers = Hook_Renderer_SwapBuffers;
-            platform_io.Platform_RenderWindow = Hook_Platform_RenderWindow;
-        }
 
         m_ImGuiContextCreated = true;
 

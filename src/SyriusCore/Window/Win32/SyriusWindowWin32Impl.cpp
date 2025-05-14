@@ -1,5 +1,5 @@
 #include "SyriusWindowWin32Impl.hpp"
-#include "../Context/OpenGL/Internal/WglContext.hpp"
+#include "../../Context/OpenGL/Internal/WglContext.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 
@@ -68,9 +68,6 @@ namespace Syrius{
     }
 
     SyriusWindowWin32Impl::~SyriusWindowWin32Impl() {
-      	if (m_UseImGui){
-            destroyImGuiContext();
-        }
         if (m_Hwnd){
             DestroyWindow(m_Hwnd);
             m_Hwnd = nullptr;
@@ -327,13 +324,15 @@ namespace Syrius{
         SyriusWindowWin32Impl* window = hwnd ? reinterpret_cast<SyriusWindowWin32Impl*>(GetWindowLongPtrW(hwnd, GWLP_USERDATA)) : nullptr;
         if (window != nullptr){
             // only handle events for ImGui for this window
-            if (window->m_UseImGui){
-                ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
-                if (ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard){
-                    window->m_CaptureMouseAndKeyboardEvents = false;
-                }
-                else{
-                    window->m_CaptureMouseAndKeyboardEvents = true;
+            if (window->m_Context != nullptr){
+                if (window->m_Context->hasImGuiContext()) {
+                    ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
+                    if (ImGui::GetIO().WantCaptureMouse || ImGui::GetIO().WantCaptureKeyboard){
+                        window->m_CaptureMouseAndKeyboardEvents = false;
+                    }
+                    else{
+                        window->m_CaptureMouseAndKeyboardEvents = true;
+                    }
                 }
             }
             window->handleEvent(msg, wparam, lparam);

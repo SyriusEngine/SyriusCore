@@ -1,7 +1,7 @@
 #include "../../include/SyriusCore/SyriusCore.hpp"
 #include "Utils/CoreLogger.hpp"
 
-#include "Window/SyriusWindowWin32Impl.hpp"
+#include "Window/Win32/SyriusWindowWin32Impl.hpp"
 #include "Window/SyriusWindowGlfw3Impl.hpp"
 
 namespace Syrius {
