@@ -11,14 +11,16 @@ m_CurrentY(0.0f),
 m_DeltaTime(0.0f),
 m_LastFrameTime(0.0f),
 m_ShaderLibrary(config["Context"]["ShaderLibraryPath"].getOrDefault("./Resources/Shaders"), context){
-    m_Window->createImGuiContext();
+    ImGuiDesc imGuiDesc;
+    m_Context->initImGui(imGuiDesc);
     addImGuiDrawFunction([this]{
         imGuiDebugPanel(m_Context);
+        imGuiShowDockingWindow();
     });
 }
 
 Layer::~Layer() {
-    m_Window->destroyImGuiContext();
+    m_Context->terminateImGui();
 }
 
 void Layer::onUpdate() {
@@ -67,7 +69,7 @@ ResourceView<VertexArray> Layer::loadMesh(Mesh &mesh, ShaderProgram &program) {
 }
 
 void Layer::renderImGui() {
-    m_Window->onImGuiBegin();
+    m_Context->onImGuiBegin();
 
     m_CurrentX = 0.0f;
     m_CurrentY = 0.0f;
@@ -76,7 +78,7 @@ void Layer::renderImGui() {
         draw();
     }
 
-    m_Window->onImGuiEnd();
+    m_Context->onImGuiEnd();
 }
 
 void Layer::addImGuiDrawFunction(DrawFunction drawFunction) {
@@ -357,7 +359,7 @@ void Layer::imGuiCameraPanel(Camera &camera) {
 void Layer::imGuiBeginPanel(const char *name) const {
     ImGui::SetNextWindowPos(ImVec2(m_CurrentX, m_CurrentY));
     ImGui::SetNextWindowSize(ImVec2(*m_CurrentColumnWidth, 0.0f));
-    ImGui::Begin(name);
+    ImGui::Begin(name, nullptr, ImGuiWindowFlags_NoDocking);
 }
 
 void Layer::imGuiEndPanel() {
@@ -396,4 +398,14 @@ void Layer::imGuiFrameBufferPanel(ResourceView<FrameBuffer> &frameBuffer, i32& s
         ImGui::EndCombo();
     }
     imGuiEndPanel();
+}
+
+void Layer::imGuiShowDockingWindow() {
+    ImGui::Begin("Docking 1");
+    ImGui::Text("This is a docking window!");
+    ImGui::End();
+
+    ImGui::Begin("Docking 2");
+    ImGui::Text("This is another docking window!");
+    ImGui::End();
 }

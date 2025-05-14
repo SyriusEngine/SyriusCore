@@ -45,9 +45,13 @@ endif()
 
 if (WIN32)
     set(SYRIUS_CORE_PLATFORM_SRC
+        src/SyriusCore/Dependencies/imgui/imgui_impl_win32.cpp
+        src/SyriusCore/Dependencies/imgui/imgui_impl_opengl3.cpp
+        src/SyriusCore/Dependencies/imgui/imgui_impl_dx11.cpp
+
         src/SyriusCore/Dependencies/glad/src/wgl.c
 
-            src/SyriusCore/Window/SyriusWindowWin32Impl.cpp
+        src/SyriusCore/Window/SyriusWindowWin32Impl.cpp
         src/SyriusCore/Window/Win32Utils.cpp
 
         src/SyriusCore/Context/OpenGL/Internal/WglContext.cpp
@@ -73,8 +77,10 @@ if (WIN32)
 
 elseif(UNIX)
     set(SYRIUS_CORE_PLATFORM_SRC
+        src/SyriusCore/Dependencies/imgui/imgui_impl_glfw.cpp
+        src/SyriusCore/Dependencies/imgui/imgui_impl_opengl3.cpp
 
-            src/SyriusCore/Window/SyriusWindowGlfw3Impl.cpp
+        src/SyriusCore/Window/SyriusWindowGlfw3Impl.cpp
         src/SyriusCore/Window/Glfw3Utils.cpp
 
         src/SyriusCore/Context/OpenGL/Internal/GlxContext.cpp
@@ -90,7 +96,13 @@ set(SYRIUS_CORE_SRC
     ${SYRIUS_CORE_PLATFORM_SRC}
     src/SyriusCore/Dependencies/glad/src/gl.c
 
-        src/SyriusCore/Dependencies/stb_image/stb_image.cpp
+    src/SyriusCore/Dependencies/imgui/imgui.cpp
+    src/SyriusCore/Dependencies/imgui/imgui_demo.cpp
+    src/SyriusCore/Dependencies/imgui/imgui_draw.cpp
+    src/SyriusCore/Dependencies/imgui/imgui_tables.cpp
+    src/SyriusCore/Dependencies/imgui/imgui_widgets.cpp
+
+    src/SyriusCore/Dependencies/stb_image/stb_image.cpp
     src/SyriusCore/Dependencies/stb_image/stb_image_resize.cpp
     src/SyriusCore/Dependencies/stb_image/stb_image_write.cpp
 

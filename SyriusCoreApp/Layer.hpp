@@ -55,6 +55,8 @@ protected:
 
     void imGuiFrameBufferPanel(ResourceView<FrameBuffer>& frameBuffer, i32& selectedTexture);
 
+    void imGuiShowDockingWindow();
+
 protected:
     ResourceView<Context>& m_Context;
     EasyIni::Configuration& m_Config;

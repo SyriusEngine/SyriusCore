@@ -21,11 +21,11 @@ namespace Syrius {
     }
 
     Glfw3glContext::~Glfw3glContext() {
-        if (m_ImGuiContext){
-            Glfw3glContext::destroyImGuiContext();
+        if (m_ImGuiContextCreated) {
+            SR_LOG_WARNING("Glfw3glContext", "ImGui context was created but not destroyed! Destroying...");
+            Glfw3glContext::terminateImGui();
         }
         terminateGl();
-
     }
 
     void Glfw3glContext::setGlfw3glContextHints(const ContextDesc &desc) {
@@ -56,49 +56,65 @@ namespace Syrius {
         glfwSwapInterval(enable ? 1 : 0);
     }
 
-    void Glfw3glContext::createImGuiContext() {
-        SR_PRECONDITION(!m_ImGuiContext, "There exists already an ImGui context")
+    void Glfw3glContext::initImGui(const ImGuiDesc &desc) {
+        if (m_ImGuiContextCreated) {
+            SR_LOG_WARNING("WglContext", "ImGui already initialized!");
+            return;
+        }
 
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO(); (void)io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-        ImGui::CreateContext();
-        ImGui::StyleColorsDark();
+        if (desc.useDocking) {
+            io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable docking
+            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+        }
+
+        imGuiSetStyle(desc.style);
+
         ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
         ImGui_ImplOpenGL3_Init("#version 150");
+        m_ImGuiContextCreated = true;
 
-        m_ImGuiContext = ImGui::GetCurrentContext();
-
-        SR_POSTCONDITION(m_ImGuiContext, "Failed to create ImGui context");
+        SR_POSTCONDITION(m_ImGuiContextCreated == true, "Failed to create ImGui context");
     }
 
-    void Glfw3glContext::destroyImGuiContext() {
-        SR_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
+    void Glfw3glContext::terminateImGui() {
+        SR_PRECONDITION(m_ImGuiContextCreated == true, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_IsImGuiRendering == false, "ImGuiRendering already started!")
 
-        ImGui::SetCurrentContext(m_ImGuiContext);
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
-
-        m_ImGuiContext = nullptr;
+        m_ImGuiContextCreated = false;
     }
 
     void Glfw3glContext::onImGuiBegin() {
-        SR_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_ImGuiContextCreated == true, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_IsImGuiRendering == false, "ImGuiRendering already started!")
 
-        ImGui::SetCurrentContext(m_ImGuiContext);
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+        m_IsImGuiRendering = true;
+
+        SR_POSTCONDITION(m_IsImGuiRendering == true, "Failed to start ImGuiRendering");
     }
 
     void Glfw3glContext::onImGuiEnd() {
-        SR_PRECONDITION(m_ImGuiContext, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_IsImGuiRendering == true, "onImGuiEnd() called before onImGuiBegin()")
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+            makeCurrent();
+        }
+        m_IsImGuiRendering = false;
     }
 
 }

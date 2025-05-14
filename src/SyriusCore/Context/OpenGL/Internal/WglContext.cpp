@@ -270,10 +270,10 @@ namespace Syrius{
         SR_PRECONDITION(m_ImGuiContextCreated == true, "There does not exists an ImGui context");
         SR_PRECONDITION(m_IsImGuiRendering == false, "ImGuiRendering already started!")
 
-        m_IsImGuiRendering = true;
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
+        m_IsImGuiRendering = true;
 
         SR_POSTCONDITION(m_IsImGuiRendering == true, "Failed to start ImGuiRendering");
     }
