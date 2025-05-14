@@ -98,9 +98,6 @@ namespace Syrius{
         HICON m_Icon;
 
         SavedWindowInfo m_SavedWindowInfo;
-
-        bool m_CaptureMouseAndKeyboardEvents = false;
-
     };
 }
 

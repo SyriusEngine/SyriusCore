@@ -21,7 +21,7 @@ namespace Syrius{
         scDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;  // DWM uses BGRA format, this is supposed to be slightly faster than RGBA
         scDesc.BufferDesc.RefreshRate.Numerator = 0;
         scDesc.BufferDesc.RefreshRate.Denominator = 0;
-        scDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+        scDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_STRETCHED;
         scDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
         scDesc.SampleDesc.Count = 1;
         scDesc.SampleDesc.Quality = 0;
@@ -29,7 +29,7 @@ namespace Syrius{
         scDesc.BufferCount = 2; // backbuffer count, is equal to 2 because of DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL
         scDesc.OutputWindow = m_Hwnd;
         scDesc.Windowed = TRUE;
-        scDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+        scDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
         scDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH; // allows toggling between fullscreen mode and windowed mode
 
         SR_CORE_D3D11_CALL(D3D11CreateDeviceAndSwapChain(
@@ -199,6 +199,13 @@ namespace Syrius{
         ImGui::CreateContext();
 
         // set ImGui style
+        ImGuiIO& io = ImGui::GetIO();
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+        if (desc.useDocking) {
+            io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+        }
         imGuiSetStyle(desc.style);
 
         ImGui_ImplWin32_Init(m_Hwnd);
@@ -236,7 +243,12 @@ namespace Syrius{
 
         ImGui::Render();
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-        ImGuiIO& io = ImGui::GetIO();
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+        }
         m_IsImGuiRendering = false;
     }
 

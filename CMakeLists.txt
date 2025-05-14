@@ -73,8 +73,6 @@ if (WIN32)
         src/SyriusCore/Context/D3D11/D3D11DepthStencilAttachment.cpp
         src/SyriusCore/Context/D3D11/D3D11DeviceLimits.cpp
         src/SyriusCore/Context/D3D11/D3D11Cubemap.cpp
-            src/SyriusCore/Window/Win32/ImGuiWin32Bindings.cpp
-            src/SyriusCore/Window/Win32/ImGuiWin32Bindings.hpp
     )
 
 elseif(UNIX)

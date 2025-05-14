@@ -11,8 +11,6 @@ m_CurrentY(0.0f),
 m_DeltaTime(0.0f),
 m_LastFrameTime(0.0f),
 m_ShaderLibrary(config["Context"]["ShaderLibraryPath"].getOrDefault("./Resources/Shaders"), context){
-    ImGuiDesc imGuiDesc;
-    m_Context->initImGui(imGuiDesc);
     addImGuiDrawFunction([this]{
         imGuiDebugPanel(m_Context);
         imGuiShowDockingWindow();
@@ -20,7 +18,6 @@ m_ShaderLibrary(config["Context"]["ShaderLibraryPath"].getOrDefault("./Resources
 }
 
 Layer::~Layer() {
-    m_Context->terminateImGui();
 }
 
 void Layer::onUpdate() {

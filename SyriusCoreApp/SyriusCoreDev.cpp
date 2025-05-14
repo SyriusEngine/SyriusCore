@@ -30,6 +30,10 @@ m_Config(iniFile){
         m_Context->setVerticalSynchronisation(true);
     }
     printContextInfo(m_Context);
+
+    ImGuiDesc imGuiDesc;
+    imGuiDesc.useDocking = m_Config["Context"]["ImGuiUseDocking"].getOrDefault<bool>(false);
+    m_Context->initImGui(imGuiDesc);
 }
 
 SyriusCoreDev::~SyriusCoreDev() {
