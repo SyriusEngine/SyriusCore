@@ -12,6 +12,11 @@
 
 namespace Syrius {
 
+    struct ImGuiWindowData {
+        HDC hDC;
+        HGLRC hglrc;
+    };
+
     class WglContext : public GlContext {
     public:
         WglContext(HWND &hwnd, const ContextDesc& desc);
@@ -40,6 +45,20 @@ namespace Syrius {
         void initWGL();
 
         void terminateWGL();
+
+    private:
+
+        static void imGuiHookCreateWindow(ImGuiViewport* viewport);
+
+        static void imGuiHookDestroyWindow(ImGuiViewport* viewport);
+
+        static void imGuiHookRenderWindow(ImGuiViewport* viewport, void*);
+
+        static void imGuiHookSwapBuffers(ImGuiViewport* viewport, void*);
+
+        static bool imGuiCreateDevice(HWND hwnd, ImGuiWindowData* data);
+
+        static void imGuiCleanupDevice(HWND hwnd, ImGuiWindowData* data);
 
     private:
         static u32 m_ContextCount;

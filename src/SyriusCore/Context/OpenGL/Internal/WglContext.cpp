@@ -4,86 +4,7 @@
 
 namespace Syrius{
 
-
-    /**
-     *
-     *  Following section is copy pasted from the ImGui repo
-     */
-
-    // Data stored per platform window
-    struct WGL_WindowData { HDC hDC; };
-
-    // Data
-    static HGLRC            g_hRC;
-    static WGL_WindowData   g_MainWindow;
-    static int              g_Width;
-    static int              g_Height;
-
-    // Helper functions
-    bool CreateDeviceWGL(HWND hWnd, WGL_WindowData* data)
-    {
-        HDC hDc = ::GetDC(hWnd);
-        PIXELFORMATDESCRIPTOR pfd = { 0 };
-        pfd.nSize = sizeof(pfd);
-        pfd.nVersion = 1;
-        pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-        pfd.iPixelType = PFD_TYPE_RGBA;
-        pfd.cColorBits = 32;
-
-        const int pf = ::ChoosePixelFormat(hDc, &pfd);
-        if (pf == 0)
-            return false;
-        if (::SetPixelFormat(hDc, pf, &pfd) == FALSE)
-            return false;
-        ::ReleaseDC(hWnd, hDc);
-
-        data->hDC = ::GetDC(hWnd);
-        if (!g_hRC)
-            g_hRC = wglCreateContext(data->hDC);
-        return true;
-    }
-
-    void CleanupDeviceWGL(HWND hWnd, WGL_WindowData* data)
-    {
-        wglMakeCurrent(nullptr, nullptr);
-        ::ReleaseDC(hWnd, data->hDC);
-    }
-
-    // Support function for multi-viewports
-    // Unlike most other backend combination, we need specific hooks to combine Win32+OpenGL.
-    // We could in theory decide to support Win32-specific code in OpenGL backend via e.g. an hypothetical ImGui_ImplOpenGL3_InitForRawWin32().
-    static void Hook_Renderer_CreateWindow(ImGuiViewport* viewport)
-    {
-        assert(viewport->RendererUserData == NULL);
-
-        WGL_WindowData* data = IM_NEW(WGL_WindowData);
-        CreateDeviceWGL((HWND)viewport->PlatformHandle, data);
-        viewport->RendererUserData = data;
-    }
-
-    static void Hook_Renderer_DestroyWindow(ImGuiViewport* viewport)
-    {
-        if (viewport->RendererUserData != NULL)
-        {
-            WGL_WindowData* data = (WGL_WindowData*)viewport->RendererUserData;
-            CleanupDeviceWGL((HWND)viewport->PlatformHandle, data);
-            IM_DELETE(data);
-            viewport->RendererUserData = NULL;
-        }
-    }
-
-    static void Hook_Platform_RenderWindow(ImGuiViewport* viewport, void*)
-    {
-        // Activate the platform window DC in the OpenGL rendering context
-        if (WGL_WindowData* data = (WGL_WindowData*)viewport->RendererUserData)
-            wglMakeCurrent(data->hDC, g_hRC);
-    }
-
-    static void Hook_Renderer_SwapBuffers(ImGuiViewport* viewport, void*)
-    {
-        if (WGL_WindowData* data = (WGL_WindowData*)viewport->RendererUserData)
-            ::SwapBuffers(data->hDC);
-    }
+    static std::string s_ImGuiLoggerName = "ImGuiWglContext";
 
     u32 WglContext::m_ContextCount = 0;
 
@@ -95,15 +16,15 @@ namespace Syrius{
     m_WGLVersion(0){
         m_HardwareDeviceContext = GetDC(m_Hwnd);
 
-        const u8 pixelType = desc.redBits + desc.greenBits + desc.blueBits + desc.alphaBits;
+        const u8 colorBits = desc.redBits + desc.greenBits + desc.blueBits + desc.alphaBits;
 
         const DWORD pixelFormatFlags = PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_DOUBLEBUFFER;
         PIXELFORMATDESCRIPTOR pixelDesc = {
                 sizeof(pixelDesc),
                 1,
                 pixelFormatFlags,
-                pixelType,
-                0,
+                PFD_TYPE_RGBA,
+                colorBits,
                 desc.redBits,
                 0,
                 desc.greenBits,
@@ -147,7 +68,7 @@ namespace Syrius{
                 WGL_CONTEXT_DEBUG_BIT_ARB,		GL_FALSE,
 #endif
                 WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
-                WGL_COLOR_BITS_ARB, pixelType,
+                WGL_COLOR_BITS_ARB, colorBits,
                 WGL_DEPTH_BITS_ARB, desc.depthBits,
                 WGL_STENCIL_BITS_ARB, desc.stencilBits,
                 0, // End
@@ -222,6 +143,19 @@ namespace Syrius{
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
 
+        ImGuiIO& io = ImGui::GetIO();
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+        if (desc.useDocking) {
+            io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+            ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
+            platform_io.Renderer_CreateWindow = WglContext::imGuiHookCreateWindow;
+            platform_io.Renderer_DestroyWindow = WglContext::imGuiHookDestroyWindow;
+            platform_io.Renderer_SwapBuffers = WglContext::imGuiHookRenderWindow;
+            platform_io.Platform_RenderWindow = WglContext::imGuiHookRenderWindow;
+        }
+
         // set ImGui style
         imGuiSetStyle(desc.style);
 
@@ -267,7 +201,7 @@ namespace Syrius{
             ImGui::RenderPlatformWindowsDefault();
 
             // Restore the OpenGL rendering context to the main window DC, since platform windows might have changed it.
-            wglMakeCurrent(g_MainWindow.hDC, g_hRC);
+            makeCurrent();
         }
         m_IsImGuiRendering = false;
     }
@@ -312,6 +246,74 @@ namespace Syrius{
         }
     }
 
+    void WglContext::imGuiHookCreateWindow(ImGuiViewport *viewport) {
+        assert(viewport->RendererUserData == NULL);
+
+        auto* data = IM_NEW(ImGuiWindowData);
+        imGuiCreateDevice(static_cast<HWND>(viewport->PlatformHandle), data);
+        viewport->RendererUserData = data;
+    }
+
+    void WglContext::imGuiHookDestroyWindow(ImGuiViewport *viewport) {
+        if (viewport->RendererUserData != nullptr){
+            auto* data = static_cast<ImGuiWindowData *>(viewport->RendererUserData);
+            imGuiCleanupDevice(static_cast<HWND>(viewport->PlatformHandle), data);
+            IM_DELETE(data);
+            viewport->RendererUserData = nullptr;
+        }
+    }
+
+    void WglContext::imGuiHookRenderWindow(ImGuiViewport *viewport, void*) {
+        auto* data = static_cast<ImGuiWindowData *>(viewport->RendererUserData);
+        if (data) {
+            wglMakeCurrent(data->hDC, data->hglrc);
+        }
+    }
+
+    void WglContext::imGuiHookSwapBuffers(ImGuiViewport *viewport, void*) {
+        auto* data = static_cast<ImGuiWindowData *>(viewport->RendererUserData);
+        if (data) {
+            SwapBuffers(data->hDC);
+        }
+    }
+
+    bool WglContext::imGuiCreateDevice(HWND hwnd, ImGuiWindowData *data) {
+        HDC hDc = ::GetDC(hwnd);
+        PIXELFORMATDESCRIPTOR pfd = { 0 };
+        pfd.nSize = sizeof(pfd);
+        pfd.nVersion = 1;
+        pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+        pfd.iPixelType = PFD_TYPE_RGBA;
+        pfd.cColorBits = 32;
+
+        const int pf = ChoosePixelFormat(hDc, &pfd);
+        if (pf == 0) {
+            SR_LOG_WARNING(s_ImGuiLoggerName, "Failed to choose a pixel format");
+            ReleaseDC(hwnd, hDc);
+            return false;
+        }
+        if (SetPixelFormat(hDc, pf, &pfd) == FALSE) {
+            SR_LOG_WARNING(s_ImGuiLoggerName, "Failed to set the pixel format");
+            ReleaseDC(hwnd, hDc);
+            return false;
+        }
+        HGLRC hglrc = wglCreateContext(hDc);
+        if (!hglrc) {
+            SR_LOG_WARNING(s_ImGuiLoggerName, "Failed to create OpenGL context for viewport window.");
+            ReleaseDC(hwnd, hDc);
+            return false;
+        }
+
+        data->hDC = GetDC(hwnd);
+        data->hglrc = hglrc;
+        return true;
+    }
+
+    void WglContext::imGuiCleanupDevice(HWND hwnd, ImGuiWindowData *data) {
+        wglMakeCurrent(nullptr, nullptr);
+        wglDeleteContext(data->hglrc);
+        ReleaseDC(hwnd, data->hDC);
+    }
 }
 
 #endif
