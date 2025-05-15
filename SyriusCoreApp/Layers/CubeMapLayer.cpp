@@ -52,7 +52,7 @@ void CubeMapLayer::onUpdate() {
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();
-    m_TransformBuffer->bind(0);
+    m_TransformBuffer->bindShaderResource(0);
     m_Camera.bind(1);
     m_Projection.bind(2);
     m_Sampler->bindShaderResource(0);

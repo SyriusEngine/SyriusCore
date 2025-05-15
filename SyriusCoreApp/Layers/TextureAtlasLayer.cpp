@@ -74,8 +74,8 @@ void TextureAtlasLayer::onUpdate() {
     m_Texture1->bindShaderResource(0);
     m_Texture2->bindShaderResource(1);
     m_Sampler->bindShaderResource(0);
-    m_TransformBuffer->bind(0);
-    m_TextureParametersBuffer->bind(4);
+    m_TransformBuffer->bindShaderResource(0);
+    m_TextureParametersBuffer->bindShaderResource(4);
     m_Context->draw(m_VertexArray);
 
     renderImGui();

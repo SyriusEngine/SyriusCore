@@ -59,7 +59,7 @@ void ShaderLayer::onUpdate() {
     m_ShaderProgram.shaderProgram->bind();
     //m_Texture1->bindShaderResource(0);
     m_Sampler->bindShaderResource(0);
-    m_ParameterBuffer->bind(5);
+    m_ParameterBuffer->bindShaderResource(5);
     m_Context->draw(m_VertexArray);
 
     renderImGui();

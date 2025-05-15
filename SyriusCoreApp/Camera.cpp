@@ -103,7 +103,7 @@ void Camera::move(i32 keyPressed, double deltaTime) {
 }
 
 void Camera::bind(u32 slot) {
-    m_CameraData->bind(slot);
+    m_CameraData->bindShaderResource(slot);
 }
 
 void Camera::setPosition(const glm::vec3 &position) {

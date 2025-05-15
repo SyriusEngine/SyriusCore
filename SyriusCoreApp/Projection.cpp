@@ -25,7 +25,7 @@ Projection::~Projection() {
 }
 
 void Projection::bind(u32 slot) {
-    m_Resource->bind(slot);
+    m_Resource->bindShaderResource(slot);
 }
 
 void Projection::onEvent(const Event& event) {

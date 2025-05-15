@@ -39,8 +39,8 @@ void ConstantBufferLayer::onUpdate() {
     m_Context->beginRenderPass();
 
     m_ShaderProgram.shaderProgram->bind();
-    m_TransformBuffer->bind(0);
-    m_ColorDataBuffer->bind(1);
+    m_TransformBuffer->bindShaderResource(0);
+    m_ColorDataBuffer->bindShaderResource(1);
     m_Context->draw(m_VertexArray);
 
     renderImGui();

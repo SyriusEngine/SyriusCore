@@ -102,10 +102,10 @@ void FrameBufferLayer::onUpdate() {
     m_Texture1->bindShaderResource(0);
     m_Texture2->bindShaderResource(1);
     m_Sampler->bindShaderResource(0);
-    m_TransformBuffer->bind(0);
+    m_TransformBuffer->bindShaderResource(0);
     m_Camera.bind(1);
     m_Projection.bind(2);
-    m_TextureParametersBuffer->bind(4);
+    m_TextureParametersBuffer->bindShaderResource(4);
     m_Context->draw(m_VertexArray);
 
     m_Context->endRenderPass(m_FrameBuffer);

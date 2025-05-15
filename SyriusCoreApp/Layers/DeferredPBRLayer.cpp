@@ -100,10 +100,10 @@ void DeferredPBRLayer::onUpdate() {
 
     m_GeometryPass.shaderProgram->bind();
     m_Material.bind(0);
-    m_TransformBuffer->bind(0);
+    m_TransformBuffer->bindShaderResource(0);
     m_Camera.bind(1);
     m_Projection.bind(2);
-    m_TextureParametersBuffer->bind(4);
+    m_TextureParametersBuffer->bindShaderResource(4);
     m_Context->draw(m_Model);
 
     m_Context->endRenderPass(m_GBuffer);
@@ -113,7 +113,7 @@ void DeferredPBRLayer::onUpdate() {
     m_Context->beginRenderPass();
 
     m_LightPass.shaderProgram->bind();
-    m_LightBuffer->bind(5);
+    m_LightBuffer->bindShaderResource(5);
     m_GBuffer->getColorAttachment(0)->bindShaderResource(0);
     m_GBuffer->getColorAttachment(1)->bindShaderResource(1);
     m_GBuffer->getColorAttachment(2)->bindShaderResource(2);

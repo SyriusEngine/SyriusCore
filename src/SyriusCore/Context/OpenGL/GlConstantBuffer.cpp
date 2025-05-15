@@ -11,7 +11,11 @@ namespace Syrius{
         m_Buffer.release();
     }
 
-    void GlConstantBuffer::bind(u32 slot) {
+    void GlConstantBuffer::bind() {
+        m_Buffer.bind();
+    }
+
+    void GlConstantBuffer::bindShaderResource(u32 slot) {
         SR_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[{}]: supplied slot {} exceeds the maximum number of constant buffer slots {}", m_Buffer.getName(), slot, m_DeviceLimits->getMaxConstantBufferSlots());
 
         m_Buffer.bindShaderResource(slot);

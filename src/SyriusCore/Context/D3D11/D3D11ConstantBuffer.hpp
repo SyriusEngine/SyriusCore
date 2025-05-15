@@ -15,6 +15,8 @@ namespace Syrius{
 
         void release() override;
 
+        void bind() override;
+
         void setData(const void* data, u64 size) override;
 
         void copyFrom(const ResourceView<ConstantBuffer>& other) override;
@@ -41,7 +43,7 @@ namespace Syrius{
 
         ~D3D11ConstantBufferVertex() override = default;
 
-        void bind(u32 slot) override;
+        void bindShaderResource(u32 slot) override;
     };
 
     class D3D11ConstantBufferPixel: public D3D11ConstantBufferBase{
@@ -50,7 +52,7 @@ namespace Syrius{
 
         ~D3D11ConstantBufferPixel() override = default;
 
-        void bind(u32 slot) override;
+        void bindShaderResource(u32 slot) override;
     };
 
     class D3D11ConstantBufferGeometry: public D3D11ConstantBufferBase{
@@ -59,7 +61,7 @@ namespace Syrius{
 
         ~D3D11ConstantBufferGeometry() override = default;
 
-        void bind(u32 slot) override;
+        void bindShaderResource(u32 slot) override;
     };
 
 }

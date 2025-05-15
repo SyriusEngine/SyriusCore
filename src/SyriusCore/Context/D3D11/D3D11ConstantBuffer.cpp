@@ -15,6 +15,9 @@ namespace Syrius{
         m_Buffer.release();
     }
 
+    void D3D11ConstantBufferBase::bind() {
+        // Not necessary in D3D11
+    }
 
     void D3D11ConstantBufferBase::setData(const void *data, u64 size) {
         SR_PRECONDITION(size <= m_DeviceLimits->getMaxConstantBufferSize(), "[{}]: supplied size {} exceeds the maximum constant buffer size {}", m_Buffer.getName(), size, m_DeviceLimits->getMaxConstantBufferSize());
@@ -56,7 +59,7 @@ namespace Syrius{
 
     }
 
-    void D3D11ConstantBufferVertex::bind(u32 slot) {
+    void D3D11ConstantBufferVertex::bindShaderResource(u32 slot) {
         SR_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot ({}) exceeds the maximum number of constant buffer slots ({})", slot, m_DeviceLimits->getMaxConstantBufferSlots());
 
         ID3D11Buffer* buffer = m_Buffer.getBufferID();
@@ -68,7 +71,7 @@ namespace Syrius{
 
     }
 
-    void D3D11ConstantBufferPixel::bind(u32 slot) {
+    void D3D11ConstantBufferPixel::bindShaderResource(u32 slot) {
         SR_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot ({}) exceeds the maximum number of constant buffer slots ({})", slot, m_DeviceLimits->getMaxConstantBufferSlots());
 
         ID3D11Buffer* buffer = m_Buffer.getBufferID();
@@ -80,7 +83,7 @@ namespace Syrius{
 
     }
 
-    void D3D11ConstantBufferGeometry::bind(u32 slot) {
+    void D3D11ConstantBufferGeometry::bindShaderResource(u32 slot) {
         SR_PRECONDITION(slot < m_DeviceLimits->getMaxConstantBufferSlots(), "[ConstantBuffer]: supplied slot ({}) exceeds the maximum number of constant buffer slots ({})", slot, m_DeviceLimits->getMaxConstantBufferSlots());
 
         ID3D11Buffer* buffer = m_Buffer.getBufferID();
