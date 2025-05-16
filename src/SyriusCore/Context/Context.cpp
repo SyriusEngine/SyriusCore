@@ -1,7 +1,7 @@
 #include "../../../include/SyriusCore/Context/Context.hpp"
 #include "../../../include/SyriusCore/Dependencies/imgui/imgui.h"
 #include "../Utils/DebugMacros.hpp"
-#include "SyriusCore/Dependencies/imgui/implot.h"
+#include "../../../include/SyriusCore/Dependencies/imgui/implot.h"
 
 #include <algorithm>
 
