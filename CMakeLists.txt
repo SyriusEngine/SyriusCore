@@ -245,9 +245,19 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
     SyriusCoreApp/Layers/CubeMapLayer.cpp
     SyriusCoreApp/Layers/DeferredPBRLayer.cpp)
 
+set(SYRIUS_CORE_SANDBOX_SRC
+    SyriusCoreSandBox/SandBox.cpp
+)
+
+
 if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_APP)
     fetch_glm()
     message(STATUS "Building example App")
+
+    add_executable(SyriusCoreSandBox main.cpp ${SYRIUS_CORE_SANDBOX_SRC})
+    add_dependencies(SyriusCoreSandBox SyriusCore)
+    target_link_libraries(SyriusCoreSandBox SyriusCore glm::glm)
+
     add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
     add_dependencies(SyriusCoreApp SyriusCore)
     target_link_libraries(SyriusCoreApp SyriusCore glm::glm)
