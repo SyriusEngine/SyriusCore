@@ -3,12 +3,11 @@
 
 int main(const int argc, char* argv[]) {
     try {
-        std::vector<std::string_view> args(argv, argv + argc);
-
         std::string configFile = "config.ini";
         if (argc > 1) {
             configFile = argv[1];
         }
+        const std::vector<std::string_view> args(argv, argv + argc);
         Sandbox sandbox(configFile, args);
         sandbox.run();
 

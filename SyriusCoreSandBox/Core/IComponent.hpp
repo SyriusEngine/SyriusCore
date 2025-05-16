@@ -3,8 +3,8 @@
 #include "../SandBoxInclude.hpp"
 
 struct ImGuiWindowData {
-    ImVec2 position;
-    ImVec2 size;
+    ImVec2 position = {0.0f, 0.0f};
+    ImVec2 size = {200.0f, 0.0f};
 };
 
 class IComponent {

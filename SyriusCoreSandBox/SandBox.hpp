@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_set>
+
 #include "SandBoxInclude.hpp"
 
 #include "Core/IComponent.hpp"
@@ -31,6 +33,10 @@ private:
 
     void setupImGui();
 
+    void setupFactories();
+
+    void createComponent(std::string_view);
+
 private:
     EasyIni::Configuration m_Config;
 
@@ -41,4 +47,5 @@ private:
 
     std::vector<SP<IComponent>> m_Components;
     std::unordered_map<std::string, SP<IComponentFactory>> m_ComponentFactories;
+    std::unordered_set<std::string> m_ComponentsCreated;
 };

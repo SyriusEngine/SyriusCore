@@ -254,6 +254,8 @@ set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/Core/IComponentFactory.hpp
     SyriusCoreSandBox/Core/IComponent.hpp
     SyriusCoreSandBox/Core/IComponent.cpp
+    SyriusCoreSandBox/Components/Debug.cpp
+    SyriusCoreSandBox/Components/Debug.hpp
 )
 
 

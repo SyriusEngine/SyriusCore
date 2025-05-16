@@ -1,11 +1,19 @@
 #include "SandBox.hpp"
 #include "Utils.hpp"
 
+#include "Components/Debug.hpp"
+
 Sandbox::Sandbox(const std::string& iniFile, const std::vector<std::string_view> &args):
 m_Config(iniFile){
     setupWindow();
     setupContext();
     setupImGui();
+    setupFactories();
+
+    // Loop over the requested components
+    for (Size i = 2; i < args.size(); i++) {
+        createComponent(args[i]);
+    }
 }
 
 Sandbox::~Sandbox() {
@@ -97,6 +105,33 @@ void Sandbox::setupImGui() {
     imGuiDesc.style = static_cast<SR_IMGUI_STYLE>(m_Config["ImGui"]["Style"].getOrDefault<u32>(SR_IMGUI_STYLE_DEFAULT));
     m_Context->initImGui(imGuiDesc);
 }
+
+void Sandbox::setupFactories() {
+    addFactory<DebugComponentFactory>();
+}
+
+
+void Sandbox::createComponent(const std::string_view name) {
+    for (const auto& [provides, factory]: m_ComponentFactories) {
+        if (provides == name) {
+            // Found a factory that provides the requested component
+            // First check if that factory also needs components
+            const auto& requires = factory->requires();
+            for (const auto& require: requires) {
+                if (m_ComponentsCreated.find(require) == m_ComponentsCreated.end()) {
+                    // Required component not created yet, so create it
+                    createComponent(require);
+                }
+            }
+
+            // Create the component
+            auto component = factory->createComponent(m_Window, m_Context);
+            m_Components.push_back(component);
+            m_ComponentsCreated.insert(provides);
+        }
+    }
+}
+
 
 
 
