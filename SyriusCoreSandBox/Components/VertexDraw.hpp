@@ -14,6 +14,12 @@ public:
     void onImGui(ImGuiWindowData& windowData) override;
 
 private:
+
+    void imGuiVertexBufferPanel(ImGuiWindowData &windowData);
+
+    void imGuiVertexArrayPanel(ImGuiWindowData &windowData);
+
+private:
     ResourceView<VertexLayout> m_VertexLayout;
     ResourceView<VertexBuffer> m_VertexBuffer;
     ResourceView<VertexArray> m_VertexArray;

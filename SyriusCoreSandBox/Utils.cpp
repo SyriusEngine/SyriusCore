@@ -133,5 +133,16 @@ ShaderProgram loadShader(const ResourceView<Context>& context, const std::string
     program.shaderProgram = context->createShader(sDesc);
 
     return program;
+}
 
+std::string drawModeToString(const SR_DRAW_MODE mode){
+    switch (mode){
+        case SR_DRAW_POINTS:        return "Points";
+        case SR_DRAW_LINES:         return "Lines";
+        case SR_DRAW_LINES_STRIP:   return "Line Strip";
+        case SR_DRAW_TRIANGLES:     return "Triangles";
+        case SR_DRAW_TRIANGLE_STRIP:return "Triangle Strip";
+        default:
+            return "Unknown";
+    }
 }

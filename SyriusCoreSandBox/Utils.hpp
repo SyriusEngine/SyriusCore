@@ -26,3 +26,5 @@ struct ShaderProgram{
 };
 
 ShaderProgram loadShader(const ResourceView<Context>& context, const std::string& vertexShader, const std::string& fragmentShader);
+
+std::string drawModeToString(SR_DRAW_MODE mode);

@@ -51,6 +51,11 @@ void VertexDraw::onUpdate(Duration deltaTime){
 }
 
 void VertexDraw::onImGui(ImGuiWindowData &windowData){
+    imGuiVertexBufferPanel(windowData);
+    imGuiVertexArrayPanel(windowData);
+}
+
+void VertexDraw::imGuiVertexBufferPanel(ImGuiWindowData &windowData){
     imGuiBegin(windowData, "VertexDraw");
 
     ImGui::Text("Mesh drawn without index buffer.");
@@ -82,3 +87,30 @@ void VertexDraw::onImGui(ImGuiWindowData &windowData){
 
     imGuiEnd(windowData);
 }
+
+void VertexDraw::imGuiVertexArrayPanel(ImGuiWindowData &windowData){
+    imGuiBegin(windowData, "VertexArray1");
+
+    static std::vector<std::string> drawModes = {"SR_DRAW_POINTS", "SR_DRAW_LINES", "SR_DRAW_LINE_STRIP",
+                                                "SR_DRAW_TRIANGLES", "SR_DRAW_TRIANGLE_STRIP"};
+    static int drawModeIndex = 3;
+    auto drawMode = m_VertexArray->getDrawMode();
+    ImGui::Text("Draw Mode: %s", drawModeToString(drawMode).c_str());
+    if (ImGui::BeginCombo("Draw Mode", drawModes[drawModeIndex].c_str())){
+        for(int i = 0; i < drawModes.size(); i++){
+            bool isSelected = (drawModeIndex == i);
+            if (ImGui::Selectable(drawModes[i].c_str(), isSelected)){
+                drawModeIndex = i;
+                m_VertexArray->setDrawMode(static_cast<SR_DRAW_MODE>(i + 1));
+            }
+            if (isSelected){
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+        ImGui::EndCombo();
+    }
+
+    imGuiEnd(windowData);
+}
+
+
