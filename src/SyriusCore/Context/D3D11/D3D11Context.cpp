@@ -189,41 +189,17 @@ namespace Syrius{
     }
 
     void D3D11Context::initImGui(const ImGuiDesc& desc) {
-        if (m_ImGuiContextCreated) {
-            SR_LOG_WARNING("WglContext", "ImGui already initialized!");
-            return;
-        }
-
-        // Create the context
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-
-        // set ImGui style
-        ImGuiIO& io = ImGui::GetIO();
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-        if (desc.useDocking) {
-            io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-        }
-        imGuiSetStyle(desc.style);
+        Context::initImGui(desc);
 
         ImGui_ImplWin32_Init(m_Hwnd);
         ImGui_ImplDX11_Init(m_Device, m_DeviceContext);
-
-        m_ImGuiContextCreated = true;
-
-        SR_POSTCONDITION(m_ImGuiContextCreated == true, "Failed to create ImGui context");
     }
 
     void D3D11Context::terminateImGui() {
-        SR_PRECONDITION(m_ImGuiContextCreated == true, "There does not exists an ImGui context");
-        SR_PRECONDITION(m_IsImGuiRendering == false, "ImGuiRendering already started!")
-
         ImGui_ImplDX11_Shutdown();
         ImGui_ImplWin32_Shutdown();
-        ImGui::DestroyContext();
-        m_ImGuiContextCreated = false;
+
+        Context::terminateImGui();
     }
 
     void D3D11Context::onImGuiBegin() {
