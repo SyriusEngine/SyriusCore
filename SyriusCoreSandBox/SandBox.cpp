@@ -2,6 +2,7 @@
 #include "Utils.hpp"
 
 #include "Components/Debug.hpp"
+#include "Components/VertexDraw.hpp"
 
 Sandbox::Sandbox(const std::string& iniFile, const std::vector<std::string_view> &args):
 m_Config(iniFile){
@@ -107,7 +108,8 @@ void Sandbox::setupImGui() {
 }
 
 void Sandbox::setupFactories() {
-    addFactory<DebugComponentFactory>();
+    addFactory<DebugFactory>();
+    addFactory<VertexDrawFactory>();
 }
 
 

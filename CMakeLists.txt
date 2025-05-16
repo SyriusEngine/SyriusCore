@@ -256,6 +256,8 @@ set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/Core/IComponent.cpp
     SyriusCoreSandBox/Components/Debug.cpp
     SyriusCoreSandBox/Components/Debug.hpp
+    SyriusCoreSandBox/Components/VertexDraw.cpp
+    SyriusCoreSandBox/Components/VertexDraw.hpp
 )
 
 

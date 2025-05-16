@@ -11,10 +11,10 @@ public:
     void onImGui(ImGuiWindowData& windowData) override;
 };
 
-class DebugComponentFactory: public IComponentFactory {
+class DebugFactory: public IComponentFactory {
 public:
-    DebugComponentFactory() = default;
-    ~DebugComponentFactory() override = default;
+    DebugFactory() = default;
+    ~DebugFactory() override = default;
 
     SP<IComponent> createComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context) override {
         return createSP<Debug>(window, context);

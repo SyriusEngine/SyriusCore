@@ -4,7 +4,7 @@
 
 struct ImGuiWindowData {
     ImVec2 position = {0.0f, 0.0f};
-    ImVec2 size = {200.0f, 0.0f};
+    ImVec2 size = {250.0f, 0.0f};
 };
 
 class IComponent {

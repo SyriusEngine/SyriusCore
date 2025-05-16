@@ -89,3 +89,49 @@ void printEventInfo(const Event& event){
             break;
     }
 }
+
+ShaderProgram loadShader(const ResourceView<Context>& context, const std::string& vertexShader, const std::string& fragmentShader) {
+    fs::path library = fs::current_path() / "Resources" / "Shaders";
+    std::string extension;
+    SR_SHADER_LANGUAGE_TYPE codeType;
+    switch (context->getType()){
+        case SR_API_OPENGL: {
+            library /= "GLSL";
+            extension = ".glsl";
+            codeType = SR_SHADER_LANGUAGE_GLSL;
+            break;
+        }
+        case SR_API_D3D11:{
+            library /= "HLSL";
+            extension = ".hlsl";
+            codeType = SR_SHADER_LANGUAGE_HLSL;
+            break;
+        }
+        default:
+            throw std::runtime_error("ShaderLibrary::loadShader: Unsupported API");
+    }
+
+    ShaderProgram program;
+
+    ShaderModuleFileDesc vsDesc;
+    vsDesc.shaderType = SR_SHADER_VERTEX;
+    vsDesc.language = codeType;
+    vsDesc.filePath = library / std::string(vertexShader + "_vs" + extension);
+    vsDesc.entryPoint = "main";
+    program.vertexShader = context->createShaderModule(vsDesc);
+
+    ShaderModuleFileDesc fsDesc;
+    fsDesc.shaderType = SR_SHADER_FRAGMENT;
+    fsDesc.language = codeType;
+    fsDesc.filePath = library / std::string(fragmentShader + "_fs" + extension);
+    fsDesc.entryPoint = "main";
+    program.fragmentShader = context->createShaderModule(fsDesc);
+
+    ShaderDesc sDesc;
+    sDesc.vertexShader = program.vertexShader;
+    sDesc.fragmentShader = program.fragmentShader;
+    program.shaderProgram = context->createShader(sDesc);
+
+    return program;
+
+}
