@@ -243,10 +243,17 @@ set(SYRIUS_CORE_APP_LAYERS_SRC
     SyriusCoreApp/Layers/FrameBufferLayer.cpp
     SyriusCoreApp/Layers/ShaderLayer.cpp
     SyriusCoreApp/Layers/CubeMapLayer.cpp
-    SyriusCoreApp/Layers/DeferredPBRLayer.cpp)
+    SyriusCoreApp/Layers/DeferredPBRLayer.cpp
+)
 
 set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/SandBox.cpp
+    SyriusCoreSandBox/Utils.cpp
+    SyriusCoreSandBox/Utils.hpp
+
+    SyriusCoreSandBox/Core/IComponentFactory.hpp
+    SyriusCoreSandBox/Core/IComponent.hpp
+    SyriusCoreSandBox/Core/IComponent.cpp
 )
 
 

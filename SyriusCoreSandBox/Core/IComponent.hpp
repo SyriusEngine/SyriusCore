@@ -1,0 +1,32 @@
+#pragma once
+
+#include "../SandBoxInclude.hpp"
+
+struct ImGuiWindowData {
+    ImVec2 position;
+    ImVec2 size;
+};
+
+class IComponent {
+public:
+    IComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context);
+
+    virtual ~IComponent() = default;
+
+    virtual void onUpdate(Duration deltaTime);
+
+    virtual void onEvent(const Event& event);
+
+    virtual void onImGui(ImGuiWindowData& windowData);
+
+protected:
+    void imGuiBegin(const ImGuiWindowData & windowData, std::string_view name);
+
+    void imGuiEnd(ImGuiWindowData& windowData);
+
+protected:
+
+    const UP<SyriusWindow>& m_Window;
+    const ResourceView<Context>& m_Context;
+
+};
