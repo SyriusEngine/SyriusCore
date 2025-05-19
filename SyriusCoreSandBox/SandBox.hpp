@@ -1,11 +1,7 @@
 #pragma once
 
-#include <unordered_set>
-
 #include "SandBoxInclude.hpp"
-
-#include "Core/IComponent.hpp"
-#include "Core/IComponentFactory.hpp"
+#include "ComponentContainer.hpp"
 
 class Sandbox {
 public:
@@ -15,17 +11,10 @@ public:
 
     void run();
 
-    template<typename FACTORY>
-    void addFactory() {
-        static_assert(std::is_base_of_v<IComponentFactory, FACTORY>, "FACTORY type is not derived from IFactoryComponent");
-
-        auto factory = createSP<FACTORY>();
-        m_ComponentFactories.insert({factory->provides(), factory});
-    }
 
 private:
 
-    void processEvents();
+    void processEvents() const;
 
     void setupWindow();
 
@@ -33,19 +22,13 @@ private:
 
     void setupImGui();
 
-    void setupFactories();
-
-    void createComponent(std::string_view);
-
 private:
     EasyIni::Configuration m_Config;
 
     UP<SyriusWindow> m_Window;
     ResourceView<Context> m_Context;
 
-    bool m_PrintEventInfo = false;
+    UP<ComponentContainer> m_ComponentContainer;
 
-    std::vector<SP<IComponent>> m_Components;
-    std::unordered_map<std::string, SP<IComponentFactory>> m_ComponentFactories;
-    std::unordered_set<std::string> m_ComponentsCreated;
+    bool m_PrintEventInfo = false;
 };

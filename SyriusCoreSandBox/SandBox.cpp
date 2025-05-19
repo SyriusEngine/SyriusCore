@@ -9,11 +9,12 @@ m_Config(iniFile){
     setupWindow();
     setupContext();
     setupImGui();
-    setupFactories();
+
+    m_ComponentContainer = createUP<ComponentContainer>(m_Window, m_Context);
 
     // Loop over the requested components
     for (Size i = 2; i < args.size(); i++) {
-        createComponent(args[i]);
+        m_ComponentContainer->createComponent(args[i]);
     }
 }
 
@@ -33,25 +34,20 @@ void Sandbox::run() {
         TimePoint currentTime = getTime();
         const Duration deltaTime = currentTime - lastFrameTime;
         lastFrameTime = currentTime;
-        for (const auto& component: m_Components){
-            component->onUpdate(deltaTime);
-        }
+        m_ComponentContainer->onUpdate(deltaTime);
 
         // 3. Draw ImGui
-        ImGuiWindowData data;
         m_Context->getDefaultFrameBuffer()->bind();
         m_Context->onImGuiBegin();
-        for (const auto& component: m_Components){
-            component->onImGui(data);
-        }
+        m_ComponentContainer->onImGui();
         m_Context->onImGuiEnd();
 
-
+        // 4. Present final frame
         m_Context->swapBuffers();
     }
 }
 
-void Sandbox::processEvents() {
+void Sandbox::processEvents() const {
     m_Window->pollEvents();
     while (m_Window->hasEvent()){
         auto event = m_Window->getNextEvent();
@@ -69,9 +65,7 @@ void Sandbox::processEvents() {
             break;
         }
 
-        for (const auto& component: m_Components) {
-            component->onEvent(event);
-        }
+        m_ComponentContainer->onEvent(event);
     }
 }
 
@@ -106,36 +100,3 @@ void Sandbox::setupImGui() {
     imGuiDesc.style = static_cast<SR_IMGUI_STYLE>(m_Config["ImGui"]["Style"].getOrDefault<u32>(SR_IMGUI_STYLE_DEFAULT));
     m_Context->initImGui(imGuiDesc);
 }
-
-void Sandbox::setupFactories() {
-    addFactory<DebugFactory>();
-    addFactory<VertexDrawFactory>();
-}
-
-
-void Sandbox::createComponent(const std::string_view name) {
-    for (const auto& [provides, factory]: m_ComponentFactories) {
-        if (provides == name) {
-            // Found a factory that provides the requested component
-            // First check if that factory also needs components
-            const auto& requires = factory->requires();
-            for (const auto& require: requires) {
-                if (m_ComponentsCreated.find(require) == m_ComponentsCreated.end()) {
-                    // Required component not created yet, so create it
-                    createComponent(require);
-                }
-            }
-
-            // Create the component
-            auto component = factory->createComponent(m_Window, m_Context);
-            m_Components.push_back(component);
-            m_ComponentsCreated.insert(provides);
-        }
-    }
-}
-
-
-
-
-
-

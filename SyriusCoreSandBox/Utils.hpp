@@ -27,4 +27,20 @@ struct ShaderProgram{
 
 ShaderProgram loadShader(const ResourceView<Context>& context, const std::string& vertexShader, const std::string& fragmentShader);
 
+Mesh createTriangle();
+
+Mesh createRectangle(float size = 0.5f);
+
+Mesh createScreenRectangle();
+
+Mesh createSphere(u32 rings, u32 sectors);
+
+Mesh createCube();
+
+Mesh createBigCube();
+
 std::string drawModeToString(SR_DRAW_MODE mode);
+
+std::string filterToString(SR_TEXTURE_FILTER mode);
+
+std::string wrapModeToString(SR_TEXTURE_WRAP mode);
