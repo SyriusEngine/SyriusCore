@@ -27,7 +27,7 @@ struct ShaderProgram{
 
 ShaderProgram loadShader(const ResourceView<Context>& context, const std::string& vertexShader, const std::string& fragmentShader);
 
-Mesh createTriangle();
+Mesh createTriangle(float size = 0.5f);
 
 Mesh createRectangle(float size = 0.5f);
 

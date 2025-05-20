@@ -260,6 +260,8 @@ set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/Components/VertexDraw.hpp
     SyriusCoreSandBox/ComponentContainer.cpp
     SyriusCoreSandBox/ComponentContainer.hpp
+    SyriusCoreSandBox/Components/IndexDraw.cpp
+    SyriusCoreSandBox/Components/IndexDraw.hpp
 )
 
 

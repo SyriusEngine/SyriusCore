@@ -2,12 +2,14 @@
 
 #include "Components/Debug.hpp"
 #include "Components/VertexDraw.hpp"
+#include "Components/IndexDraw.hpp"
 
 ComponentContainer::ComponentContainer(const UP<SyriusWindow>& window, const ResourceView<Context>& context):
 m_Window(window),
 m_Context(context){
     addFactory<DebugFactory>();
     addFactory<VertexDrawFactory>();
+    addFactory<IndexDrawFactory>();
 }
 
 void ComponentContainer::createComponent(const std::string_view name){
