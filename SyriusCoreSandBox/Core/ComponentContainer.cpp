@@ -3,20 +3,25 @@
 #include "../ComponentLayers/Debug.hpp"
 #include "../ComponentLayers/VertexDraw.hpp"
 #include "../ComponentLayers/IndexDraw.hpp"
+#include "../ComponentLayers/MVP.hpp"
 
 #include "../Components/Camera.hpp"
 #include "../Components/Projection.hpp"
 #include "../Components/MeshComponent.hpp"
+#include "../Components/ShaderComponent.hpp"
 
 ComponentContainer::ComponentContainer(const UP<SyriusWindow>& window, const ResourceView<Context>& context):
 m_Window(window),
 m_Context(context){
     addFactory<CameraFactory>();
     addFactory<ProjectionFactory>();
+    addFactory<ShaderComponentFactory>();
+    addFactory<MeshComponentFactory>();
 
     addFactory<DebugFactory>();
     addFactory<VertexDrawFactory>();
     addFactory<IndexDrawFactory>();
+    addFactory<MVPFactory>();
 }
 
 void ComponentContainer::createComponent(const std::string_view name){

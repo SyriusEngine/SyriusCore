@@ -26,19 +26,23 @@ void Camera::onUpdate(const Duration deltaTime){
 }
 
 void Camera::onEvent(const Event &event){
-    if (!m_Enable) {
-        return;
-    }
     switch (event.type) {
         case SR_EVENT_MOUSE_MOVED: {
             const float xPosition = static_cast<float>(event.mousePosX);
             const float yPosition = static_cast<float>(event.mousePosY);
-            mouseMoved(xPosition, yPosition);
+            if (m_Enable) {
+                mouseMoved(xPosition, yPosition);
+            }
             break;
         }
         case SR_EVENT_KEYBOARD_KEY_PRESSED: {
             const SR_KEYBOARD_KEY key = static_cast<SR_KEYBOARD_KEY>(event.keyCode);
-            move(key);
+            if (key == SR_KEY_E) {
+                m_Enable = !m_Enable;
+            }
+            if (m_Enable) {
+                move(key);
+            }
             break;
         }
         default: break;
@@ -100,7 +104,6 @@ void Camera::move(SR_KEYBOARD_KEY keyPressed) {
         case SR_KEY_D:  m_Position += glm::normalize(glm::cross(m_Front, m_Up)) * velocity; break;
         case SR_KEY_SPACE:  m_Position += m_Up * velocity; break;
         case SR_KEY_LEFT_CONTROL:  m_Position -= m_Up * velocity; break;
-        case SR_KEY_E: m_Enable = !m_Enable; break;
         default: break;
     }
     updateCameraData();

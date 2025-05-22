@@ -272,6 +272,8 @@ set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/ComponentLayers/VertexDraw.hpp
     SyriusCoreSandBox/ComponentLayers/IndexDraw.cpp
     SyriusCoreSandBox/ComponentLayers/IndexDraw.hpp
+    SyriusCoreSandBox/ComponentLayers/MVP.cpp
+    SyriusCoreSandBox/ComponentLayers/MVP.hpp
 )
 
 
