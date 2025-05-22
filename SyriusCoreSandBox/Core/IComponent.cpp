@@ -1,7 +1,8 @@
 #include "IComponent.hpp"
+#include "ComponentContainer.hpp"
 
-IComponent::IComponent(const UP<SyriusWindow> &window, const ResourceView<Context> &context):
-m_Window(window), m_Context(context){
+IComponent::IComponent(const UP<SyriusWindow> &window, const ResourceView<Context> &context, ComponentContainer* container):
+m_Window(window), m_Context(context), m_Container(container){
 
 }
 

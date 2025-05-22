@@ -6,8 +6,8 @@ struct CameraData{
 };
 
 
-Camera::Camera(const UP<SyriusWindow> &window, const ResourceView<Context> &context):
-IComponent(window, context){
+Camera::Camera(const UP<SyriusWindow> &window, const ResourceView<Context> &context, ComponentContainer* container):
+IComponent(window, context, container){
 
     CameraData zero;
     ConstantBufferDesc desc;

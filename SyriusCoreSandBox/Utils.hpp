@@ -14,7 +14,7 @@ struct Vertex{
     glm::vec2 texCoord;
 };
 
-struct Mesh{
+struct MeshData{
     std::vector<Vertex> vertices;
     std::vector<u32> indices;
 };
@@ -27,17 +27,17 @@ struct ShaderProgram{
 
 ShaderProgram loadShader(const ResourceView<Context>& context, const std::string& vertexShader, const std::string& fragmentShader);
 
-Mesh createTriangle(float size = 0.5f);
+MeshData createTriangle(float size = 0.5f);
 
-Mesh createRectangle(float size = 0.5f);
+MeshData createRectangle(float size = 0.5f);
 
-Mesh createScreenRectangle();
+MeshData createScreenRectangle();
 
-Mesh createSphere(u32 rings, u32 sectors);
+MeshData createSphere(u32 rings, u32 sectors);
 
-Mesh createCube();
+MeshData createCube();
 
-Mesh createBigCube();
+MeshData createBigCube();
 
 std::string drawModeToString(SR_DRAW_MODE mode);
 

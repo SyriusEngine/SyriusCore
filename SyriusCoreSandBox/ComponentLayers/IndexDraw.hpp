@@ -5,7 +5,7 @@
 
 class IndexDraw: public IComponent {
 public:
-    IndexDraw(const UP<SyriusWindow>& window, const ResourceView<Context>& context);
+    IndexDraw(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container);
 
     ~IndexDraw() override = default;
 
@@ -36,8 +36,8 @@ public:
     IndexDrawFactory() = default;
     ~IndexDrawFactory() override = default;
 
-    SP<IComponent> createComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context) override {
-        return createSP<IndexDraw>(window, context);
+    SP<IComponent> createComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container) override {
+        return createSP<IndexDraw>(window, context, container);
     }
 
     std::string provides() const override {

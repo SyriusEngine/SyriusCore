@@ -1,7 +1,7 @@
 #include "Debug.hpp"
 
-Debug::Debug(const UP<SyriusWindow> &window, const ResourceView<Context> &context):
-IComponent(window, context){
+Debug::Debug(const UP<SyriusWindow> &window, const ResourceView<Context> &context, ComponentContainer* container):
+IComponent(window, context, container){
 }
 
 void Debug::onImGui(ImGuiWindowData &windowData) {

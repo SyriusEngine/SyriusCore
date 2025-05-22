@@ -5,7 +5,7 @@
 
 class VertexDraw: public IComponent {
 public:
-    VertexDraw(const UP<SyriusWindow>& window, const ResourceView<Context>& context);
+    VertexDraw(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container);
 
     ~VertexDraw() override = default;
 
@@ -31,8 +31,8 @@ public:
     VertexDrawFactory() = default;
     ~VertexDrawFactory() override = default;
 
-    SP<IComponent> createComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context) override {
-        return createSP<VertexDraw>(window, context);
+    SP<IComponent> createComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container) override {
+        return createSP<VertexDraw>(window, context, container);
     }
 
     std::string provides() const override {

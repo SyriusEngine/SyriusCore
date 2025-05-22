@@ -7,7 +7,7 @@ m_SelectedTexture(0),
 m_Projection(context, window->getWidth(), window->getHeight()){
     m_ShaderProgram = m_ShaderLibrary.loadShader("MVP", "FrameBuffer");
 
-    Mesh cube = createCube();
+    MeshData cube = createCube();
     m_VertexArray = loadMesh(cube, m_ShaderProgram);
 
     glm::mat4 transform = glm::mat4(1.0f);
@@ -74,7 +74,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
 
     m_ScreenProgram = m_ShaderLibrary.loadShader("Screen");
 
-    Mesh rectangle = createRectangle(0.75f);
+    MeshData rectangle = createRectangle(0.75f);
     m_ScreenVertexArray = loadMesh(rectangle, m_ScreenProgram);
 
     addImGuiDrawFunction([this]{

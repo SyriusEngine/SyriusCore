@@ -11,7 +11,7 @@ IndexBufferLayer::IndexBufferLayer(ResourceView<Context> &context, const UP<Syri
     m_VertexLayout->addAttribute("Tangent", SR_FLOAT32_3);
     m_VertexLayout->addAttribute("TexCoord", SR_FLOAT32_2);
 
-    Mesh rectangle = createRectangle();
+    MeshData rectangle = createRectangle();
 
     VertexBufferDesc vboDesc;
     vboDesc.usage = SR_BUFFER_USAGE_DYNAMIC;

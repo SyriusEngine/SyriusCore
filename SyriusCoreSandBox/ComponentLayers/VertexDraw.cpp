@@ -16,8 +16,8 @@ static const Vertex s_VertexDrawTriangle[] = {
     glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f),glm::vec2(1.0f, 0.0f),
 };
 
-VertexDraw::VertexDraw(const UP<SyriusWindow> &window, const ResourceView<Context> &context):
-IComponent(window, context){
+VertexDraw::VertexDraw(const UP<SyriusWindow> &window, const ResourceView<Context> &context, ComponentContainer* container):
+IComponent(window, context, container){
     m_ShaderProgram = loadShader(m_Context, "VertexBuffer", "VertexBuffer");
 
     m_VertexLayout = m_Context->createVertexLayout();

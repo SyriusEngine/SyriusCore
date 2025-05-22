@@ -1,7 +1,7 @@
 #include "IndexDraw.hpp"
 
-IndexDraw::IndexDraw(const UP<SyriusWindow> &window, const ResourceView<Context> &context):
-IComponent(window, context){
+IndexDraw::IndexDraw(const UP<SyriusWindow> &window, const ResourceView<Context> &context, ComponentContainer* container):
+IComponent(window, context, container){
     m_ShaderProgram = loadShader(m_Context, "VertexBuffer", "VertexBuffer");
 
     m_VertexLayout = m_Context->createVertexLayout();
@@ -11,7 +11,7 @@ IComponent(window, context){
     m_VertexLayout->addAttribute("Tangent", SR_FLOAT32_3);
     m_VertexLayout->addAttribute("TexCoord", SR_FLOAT32_2);
 
-    Mesh rectangle = createRectangle();
+    MeshData rectangle = createRectangle();
 
     VertexBufferDesc vboDesc;
     vboDesc.usage = SR_BUFFER_USAGE_DYNAMIC;

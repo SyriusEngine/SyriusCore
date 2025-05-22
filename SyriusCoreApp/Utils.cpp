@@ -1,6 +1,6 @@
 #include "Utils.hpp"
 
-void calculateTangents(Mesh& mesh){
+void calculateTangents(MeshData& mesh){
     for (int i = 0; i < mesh.indices.size(); i += 3) {
         auto& v0 = mesh.vertices[mesh.indices[i + 0]];
         auto& v1 = mesh.vertices[mesh.indices[i + 1]];
@@ -26,8 +26,8 @@ void calculateTangents(Mesh& mesh){
     }
 }
 
-Mesh createTriangle(){
-    Mesh triangle;
+MeshData createTriangle(){
+    MeshData triangle;
     triangle.vertices = {
             {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
             {{0.0f, 0.5f, 0.0f},   {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f}, {0.5f, 1.0f}},
@@ -40,8 +40,8 @@ Mesh createTriangle(){
     return triangle;
 }
 
-Mesh createRectangle(float size){
-    Mesh mesh;
+MeshData createRectangle(float size){
+    MeshData mesh;
     mesh.vertices = {
             {{-size, -size, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f},{0.0f, 0.0f}},
             {{size, -size, 0.0f},  {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f},{1.0f, 0.0f}},
@@ -56,8 +56,8 @@ Mesh createRectangle(float size){
     return mesh;
 }
 
-Mesh createScreenRectangle(){
-    Mesh mesh;
+MeshData createScreenRectangle(){
+    MeshData mesh;
     mesh.vertices = {
             {{-1.0f, -1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f},{0.0f, 0.0f}},
             {{1.0f, -1.0f, 0.0f},  {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f},{1.0f, 0.0f}},
@@ -77,8 +77,8 @@ Mesh createScreenRectangle(){
 #define M_PI_2 1.57079632679489661923
 #endif
 
-Mesh createSphere(u32 rings, u32 sectors){
-    Mesh mesh;
+MeshData createSphere(u32 rings, u32 sectors){
+    MeshData mesh;
     float const R = 1.0f/(float)(rings-1);
     float const S = 1.0f/(float)(sectors-1);
     u32 r, s;
@@ -109,8 +109,8 @@ Mesh createSphere(u32 rings, u32 sectors){
     return mesh;
 }
 
-Mesh createCube(){
-    Mesh cube;
+MeshData createCube(){
+    MeshData cube;
     cube.vertices = {
             /// front
             {glm::vec3(0.0f, 0.0f, 0.0f),  glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
@@ -166,8 +166,8 @@ Mesh createCube(){
     return cube;
 }
 
-Mesh createBigCube(){
-    Mesh cube;
+MeshData createBigCube(){
+    MeshData cube;
     cube.vertices = {
             {glm::vec3(-1.0f, 1.0f, 1.0f),  glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
             {glm::vec3(1.0f, 1.0f, 1.0f),  glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f)},

@@ -4,7 +4,7 @@
 
 class Debug: public IComponent{
 public:
-    Debug(const UP<SyriusWindow>& window, const ResourceView<Context>& context);
+    Debug(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container);
 
     ~Debug() override = default;
 
@@ -16,8 +16,8 @@ public:
     DebugFactory() = default;
     ~DebugFactory() override = default;
 
-    SP<IComponent> createComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context) override {
-        return createSP<Debug>(window, context);
+    SP<IComponent> createComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container) override {
+        return createSP<Debug>(window, context, container);
     }
 
     std::string provides() const override {

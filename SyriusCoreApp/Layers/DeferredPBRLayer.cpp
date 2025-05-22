@@ -15,7 +15,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     //Mesh cube = createCube();
     //m_Model = loadMesh(cube, m_GeometryPass);
 
-    Mesh sphere = createSphere(32, 32);
+    MeshData sphere = createSphere(32, 32);
     m_Model = loadMesh(sphere, m_GeometryPass);
 
     glm::mat4 transform = glm::mat4(1.0f);
@@ -61,7 +61,7 @@ m_Projection(context, window->getWidth(), window->getHeight()){
     m_GBuffer = m_Context->createFrameBuffer(fbLayout);
 
     m_LightPass = m_ShaderLibrary.loadShader("LightPass");
-    Mesh rectangle = createRectangle(1.0f);
+    MeshData rectangle = createRectangle(1.0f);
     m_ScreenRectangle = loadMesh(rectangle, m_LightPass);
 
     // By default, create 1 light

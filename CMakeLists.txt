@@ -259,6 +259,12 @@ set(SYRIUS_CORE_SANDBOX_SRC
 
     SyriusCoreSandBox/Components/Camera.cpp
     SyriusCoreSandBox/Components/Camera.hpp
+    SyriusCoreSandBox/Components/Projection.cpp
+    SyriusCoreSandBox/Components/Projection.hpp
+    SyriusCoreSandBox/Components/MeshComponent.cpp
+    SyriusCoreSandBox/Components/MeshComponent.hpp
+    SyriusCoreSandBox/Components/ShaderComponent.cpp
+    SyriusCoreSandBox/Components/ShaderComponent.hpp
 
     SyriusCoreSandBox/ComponentLayers/Debug.cpp
     SyriusCoreSandBox/ComponentLayers/Debug.hpp

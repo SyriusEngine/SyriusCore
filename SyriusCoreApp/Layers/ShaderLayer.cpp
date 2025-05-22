@@ -14,7 +14,7 @@ ShaderLayer::ShaderLayer(ResourceView<Context> &context, const UP<SyriusWindow> 
     SamplerDesc splrDesc;
     m_Sampler = m_Context->createSampler(splrDesc);
 
-    Mesh rectangle = createScreenRectangle();
+    MeshData rectangle = createScreenRectangle();
     m_VertexArray = loadMesh(rectangle, m_ShaderProgram);
 
     auto vsShader = config["ShaderLayer"]["VertexShader"].get<std::string>();

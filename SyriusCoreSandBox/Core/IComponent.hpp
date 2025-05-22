@@ -7,9 +7,11 @@ struct ImGuiWindowData {
     ImVec2 size = {250.0f, 0.0f};
 };
 
+class ComponentContainer;
+
 class IComponent {
 public:
-    IComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context);
+    IComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container);
 
     virtual ~IComponent() = default;
 
@@ -25,7 +27,7 @@ protected:
     void imGuiEnd(ImGuiWindowData& windowData);
 
 protected:
-
+    ComponentContainer* m_Container;
     const UP<SyriusWindow>& m_Window;
     const ResourceView<Context>& m_Context;
 

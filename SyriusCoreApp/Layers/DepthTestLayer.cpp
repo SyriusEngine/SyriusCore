@@ -7,7 +7,7 @@ m_Camera(0.1f, 0.01f, context),
 m_Projection(context, window->getWidth(), window->getHeight()){
     m_ShaderProgram = m_ShaderLibrary.loadShader("MVP", "Texture");
 
-    Mesh cube = createCube();
+    MeshData cube = createCube();
     m_VertexArray = loadMesh(cube, m_ShaderProgram);
 
     glm::mat4 transform = glm::mat4(1.0f);

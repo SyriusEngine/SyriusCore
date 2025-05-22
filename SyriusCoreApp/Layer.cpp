@@ -33,7 +33,7 @@ void Layer::onEvent(const Event &event) {
 }
 
 
-ResourceView<VertexArray> Layer::loadMesh(Mesh &mesh, ShaderProgram &program) {
+ResourceView<VertexArray> Layer::loadMesh(MeshData &mesh, ShaderProgram &program) {
     auto layout = m_Context->createVertexLayout();
     layout->addAttribute("Position", SR_FLOAT32_3);
     layout->addAttribute("Color", SR_FLOAT32_3);
@@ -108,11 +108,11 @@ void Layer::imGuiIndexBufferPanel(ResourceView<IndexBuffer> & indexBuffer) {
     static bool useRectangle = true;
     if (ImGui::Checkbox("Draw Rectangle", &useRectangle)){
         if (!useRectangle){
-            Mesh triangle = createTriangle();
+            MeshData triangle = createTriangle();
             indexBuffer->setData(triangle.indices.data(), triangle.indices.size());
         }
         else{
-            Mesh rectangle = createRectangle();
+            MeshData rectangle = createRectangle();
             indexBuffer->setData(rectangle.indices.data(), rectangle.indices.size());
         }
     }

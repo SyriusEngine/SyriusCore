@@ -5,11 +5,14 @@
 #include "../ComponentLayers/IndexDraw.hpp"
 
 #include "../Components/Camera.hpp"
+#include "../Components/Projection.hpp"
+#include "../Components/MeshComponent.hpp"
 
 ComponentContainer::ComponentContainer(const UP<SyriusWindow>& window, const ResourceView<Context>& context):
 m_Window(window),
 m_Context(context){
-    addFactory<Camera>();
+    addFactory<CameraFactory>();
+    addFactory<ProjectionFactory>();
 
     addFactory<DebugFactory>();
     addFactory<VertexDrawFactory>();
@@ -30,7 +33,7 @@ void ComponentContainer::createComponent(const std::string_view name){
             }
 
             // Create the component
-            auto component = factory->createComponent(m_Window, m_Context);
+            auto component = factory->createComponent(m_Window, m_Context, this);
             m_Components.push_back(component);
             m_NameToComponent.insert(provides);
         }

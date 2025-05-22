@@ -5,7 +5,7 @@
 
 class Camera: public IComponent {
 public:
-    Camera(const UP<SyriusWindow>& window, const ResourceView<Context>& context);
+    Camera(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container);
 
     ~Camera() override = default;
 
@@ -47,8 +47,8 @@ public:
     CameraFactory() = default;
     ~CameraFactory() override = default;
 
-    SP<IComponent> createComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context) override {
-        return createSP<Camera>(window, context);
+    SP<IComponent> createComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container) override {
+        return createSP<Camera>(window, context, container);
     }
 
     std::string provides() const override {

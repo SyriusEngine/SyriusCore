@@ -4,7 +4,7 @@ SamplerLayer::SamplerLayer(ResourceView<Context> &context, const UP<SyriusWindow
                            EasyIni::Configuration &config) : Layer(context, window, config) {
     m_ShaderProgram = m_ShaderLibrary.loadShader("Texture");
 
-    Mesh rectangle = createRectangle();
+    MeshData rectangle = createRectangle();
     m_VertexArray = loadMesh(rectangle, m_ShaderProgram);
 
     glm::mat4 transform = glm::mat4(1.0f);

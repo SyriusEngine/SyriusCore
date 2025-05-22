@@ -25,7 +25,7 @@ public:
 
 protected:
 
-    ResourceView<VertexArray> loadMesh(Mesh& mesh, ShaderProgram& program);
+    ResourceView<VertexArray> loadMesh(MeshData& mesh, ShaderProgram& program);
 
     void renderImGui();
 
