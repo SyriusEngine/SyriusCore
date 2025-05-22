@@ -22,10 +22,10 @@ void IComponent::imGuiEnd(ImGuiWindowData &windowData) {
     ImGui::End();
     if (windowData.size.y + lastSize.y > m_Window->getHeight()){
         windowData.position.y = 0.0f;
-        windowData.position.x  = m_Window->getWidth() - lastSize.x;
+        windowData.position.x = m_Window->getWidth() - lastSize.x;
     }
     else{
-        windowData.position.y = lastSize.y;
+        windowData.position.y += lastSize.y;
     }
 }
 

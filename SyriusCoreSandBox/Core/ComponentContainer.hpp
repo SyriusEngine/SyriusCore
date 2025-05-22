@@ -2,10 +2,10 @@
 
 #include <unordered_set>
 
-#include "SandBoxInclude.hpp"
+#include "../SandBoxInclude.hpp"
 
-#include "Core/IComponent.hpp"
-#include "Core/IComponentFactory.hpp"
+#include "IComponent.hpp"
+#include "IComponentFactory.hpp"
 
 class ComponentContainer {
 public:

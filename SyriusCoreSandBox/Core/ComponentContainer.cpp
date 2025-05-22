@@ -1,12 +1,16 @@
 #include "ComponentContainer.hpp"
 
-#include "Components/Debug.hpp"
-#include "Components/VertexDraw.hpp"
-#include "Components/IndexDraw.hpp"
+#include "../ComponentLayers/Debug.hpp"
+#include "../ComponentLayers/VertexDraw.hpp"
+#include "../ComponentLayers/IndexDraw.hpp"
+
+#include "../Components/Camera.hpp"
 
 ComponentContainer::ComponentContainer(const UP<SyriusWindow>& window, const ResourceView<Context>& context):
 m_Window(window),
 m_Context(context){
+    addFactory<Camera>();
+
     addFactory<DebugFactory>();
     addFactory<VertexDrawFactory>();
     addFactory<IndexDrawFactory>();

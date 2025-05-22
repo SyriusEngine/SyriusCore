@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SandBoxInclude.hpp"
-#include "ComponentContainer.hpp"
+#include "Core/ComponentContainer.hpp"
 
 class Sandbox {
 public:

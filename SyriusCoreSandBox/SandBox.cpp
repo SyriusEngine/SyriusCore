@@ -1,8 +1,16 @@
 #include "SandBox.hpp"
 #include "Utils.hpp"
 
-#include "Components/Debug.hpp"
-#include "Components/VertexDraw.hpp"
+#include "ComponentLayers/Debug.hpp"
+#include "ComponentLayers/VertexDraw.hpp"
+
+void AppMessageHandler(const Message& msg) {
+    if (msg.message.find("131185") == std::string::npos) {
+        fmt::print("[{}:{}:{}] [{}] [{}]: {}\n",
+            msg.file, msg.function, msg.line,
+            msg.source, msg.severity, msg.message);
+    }
+}
 
 Sandbox::Sandbox(const std::string& iniFile, const std::vector<std::string_view> &args):
 m_Config(iniFile){
@@ -91,6 +99,11 @@ void Sandbox::setupContext() {
     }
     if (logContextInfo){
         printContextInfo(m_Context);
+    }
+
+    const bool ignore131185 = m_Config["Context"]["Ignore131185"].getOrDefault<bool>(false);
+    if (ignore131185) {
+        Logger::setDebugCallback(AppMessageHandler);
     }
 }
 

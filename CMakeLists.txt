@@ -254,14 +254,18 @@ set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/Core/IComponentFactory.hpp
     SyriusCoreSandBox/Core/IComponent.hpp
     SyriusCoreSandBox/Core/IComponent.cpp
-    SyriusCoreSandBox/Components/Debug.cpp
-    SyriusCoreSandBox/Components/Debug.hpp
-    SyriusCoreSandBox/Components/VertexDraw.cpp
-    SyriusCoreSandBox/Components/VertexDraw.hpp
-    SyriusCoreSandBox/ComponentContainer.cpp
-    SyriusCoreSandBox/ComponentContainer.hpp
-    SyriusCoreSandBox/Components/IndexDraw.cpp
-    SyriusCoreSandBox/Components/IndexDraw.hpp
+    SyriusCoreSandBox/Core/ComponentContainer.cpp
+    SyriusCoreSandBox/Core/ComponentContainer.hpp
+
+    SyriusCoreSandBox/Components/Camera.cpp
+    SyriusCoreSandBox/Components/Camera.hpp
+
+    SyriusCoreSandBox/ComponentLayers/Debug.cpp
+    SyriusCoreSandBox/ComponentLayers/Debug.hpp
+    SyriusCoreSandBox/ComponentLayers/VertexDraw.cpp
+    SyriusCoreSandBox/ComponentLayers/VertexDraw.hpp
+    SyriusCoreSandBox/ComponentLayers/IndexDraw.cpp
+    SyriusCoreSandBox/ComponentLayers/IndexDraw.hpp
 )
 
 
