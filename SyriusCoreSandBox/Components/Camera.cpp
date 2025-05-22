@@ -17,6 +17,8 @@ IComponent(window, context, container){
     desc.name = "CameraData";
     desc.shaderStage = SR_SHADER_VERTEX;
     m_CameraData = m_Context->createConstantBuffer(desc);
+
+    updateCameraData();
 }
 
 void Camera::onUpdate(const Duration deltaTime){

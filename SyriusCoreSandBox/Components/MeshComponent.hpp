@@ -18,13 +18,30 @@ public:
     void onImGui(ImGuiWindowData &windowData) override;
 
 private:
+
+    void imGuiDrawTransform();
+
+    void imGuiDrawVertexArray();
+
+    void imGuiDrawMeshSelector();
+
+    void setTransformData() const;
+
+    void setMesh(const MeshData& meshData);
+
+private:
     Transform m_Transform;
     ResourceView<ConstantBuffer> m_TransformBuffer;
 
     ResourceView<VertexLayout> m_VertexLayout;
-    ResourceView<VertexBuffer> m_VertexBuffer;
-    ResourceView<IndexBuffer> m_IndexBuffer;
     ResourceView<VertexArray> m_VertexArray;
+    SR_DRAW_MODE m_CurrentDrawMode = SR_DRAW_TRIANGLES;
+    Size m_VertexCount = 0;
+    Size m_IndexCount = 0;
+
+    glm::vec3 m_Translate = glm::vec3(0.0f);
+    glm::vec3 m_Rotate = glm::vec3(0.0f);
+    glm::vec3 m_Scale = glm::vec3(1.0f);
 };
 
 class MeshComponentFactory: public IComponentFactory {
