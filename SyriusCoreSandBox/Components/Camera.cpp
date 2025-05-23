@@ -7,7 +7,9 @@ struct CameraData{
 
 
 Camera::Camera(const UP<SyriusWindow> &window, const ResourceView<Context> &context, ComponentContainer* container):
-IComponent(window, context, container){
+IComponent(window, context, container),
+m_LastX(window->getWidth() / 2.0f),
+m_LastY(window->getHeight() / 2.0f){
 
     CameraData zero;
     ConstantBufferDesc desc;
@@ -41,6 +43,14 @@ void Camera::onEvent(const Event &event){
             const SR_KEYBOARD_KEY key = static_cast<SR_KEYBOARD_KEY>(event.keyCode);
             if (key == SR_KEY_E) {
                 m_Enable = !m_Enable;
+                if (m_Enable) {
+                    m_Window->grabMouse();
+                    m_Window->hideMouse();
+                }
+                else {
+                    m_Window->releaseMouse();
+                    m_Window->showMouse();
+                }
             }
             if (m_Enable) {
                 move(key);
@@ -80,12 +90,18 @@ void Camera::updateCameraData() {
     m_CameraData->setData(&data, sizeof(CameraData));
 }
 
-void Camera::mouseMoved(float mousePosX, float mousePosY) {
-    mousePosX *= m_Sensitivity;
-    mousePosY *= m_Sensitivity;
+void Camera::mouseMoved(const float mousePosX, const float mousePosY) {
+    float xOffset = mousePosX - m_LastX;
+    float yOffset = mousePosY - m_LastY;
 
-    m_Yaw += mousePosX;
-    m_Pitch -= mousePosY;
+    m_LastX = mousePosX;
+    m_LastY = mousePosY;
+
+    xOffset *= m_Sensitivity;
+    yOffset *= m_Sensitivity;
+
+    m_Yaw += xOffset;
+    m_Pitch -= yOffset;
 
     if (m_Pitch > 89.0f) {
         m_Pitch = 89.0f;

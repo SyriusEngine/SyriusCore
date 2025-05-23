@@ -37,7 +37,10 @@ private:
     float m_Yaw = -90.0f;
     float m_Pitch = 0.0f;
     float m_Speed = 0.01f;
-    float m_Sensitivity = 0.01f;
+    float m_Sensitivity = 0.2f;
+
+    float m_LastX = 0.0f;
+    float m_LastY = 0.0f;
 
     ResourceView<ConstantBuffer> m_CameraData;
 };
