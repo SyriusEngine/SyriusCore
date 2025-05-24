@@ -33,7 +33,7 @@ private:
     ResourceView<Sampler> m_Sampler;
 
     Camera m_Camera;
-    Projection m_Projection;
+    ProjectionComponent m_Projection;
 
     i32 m_SelectedTexture;
 };

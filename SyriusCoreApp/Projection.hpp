@@ -7,11 +7,11 @@ struct ProjectionData{
     glm::mat4 m_Orthographic;
 };
 
-class Projection{
+class ProjectionComponent{
 public:
-    Projection(ResourceView<Context>& context, u32 width, u32 height, float fov = 45.0f, float near = 0.1f, float far = 100.0f);
+    ProjectionComponent(ResourceView<Context>& context, u32 width, u32 height, float fov = 45.0f, float near = 0.1f, float far = 100.0f);
 
-    ~Projection();
+    ~ProjectionComponent();
 
     void bind(u32 slot);
 

@@ -231,17 +231,8 @@ set(SYRIUS_CORE_APP_SRC
 
 set(SYRIUS_CORE_APP_LAYERS_SRC
     ${SYRIUS_CORE_APP_SRC}
-    SyriusCoreApp/Layers/ImGuiLayer.cpp
-    SyriusCoreApp/Layers/VertexBufferLayer.cpp
-    SyriusCoreApp/Layers/IndexBufferLayer.cpp
-    SyriusCoreApp/Layers/VertexArrayLayer.cpp
-    SyriusCoreApp/Layers/ConstantBufferLayer.cpp
-    SyriusCoreApp/Layers/SamplerLayer.cpp
-    SyriusCoreApp/Layers/TextureLayer.cpp
-    SyriusCoreApp/Layers/DepthTestLayer.cpp
     SyriusCoreApp/Layers/TextureAtlasLayer.cpp
     SyriusCoreApp/Layers/FrameBufferLayer.cpp
-    SyriusCoreApp/Layers/ShaderLayer.cpp
     SyriusCoreApp/Layers/CubeMapLayer.cpp
     SyriusCoreApp/Layers/DeferredPBRLayer.cpp
 )
@@ -259,8 +250,8 @@ set(SYRIUS_CORE_SANDBOX_SRC
 
     SyriusCoreSandBox/Components/Camera.cpp
     SyriusCoreSandBox/Components/Camera.hpp
-    SyriusCoreSandBox/Components/Projection.cpp
-    SyriusCoreSandBox/Components/Projection.hpp
+    SyriusCoreSandBox/Components/ProjectionComponent.cpp
+    SyriusCoreSandBox/Components/ProjectionComponent.hpp
     SyriusCoreSandBox/Components/MeshComponent.cpp
     SyriusCoreSandBox/Components/MeshComponent.hpp
     SyriusCoreSandBox/Components/ShaderComponent.cpp
@@ -274,6 +265,14 @@ set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/ComponentLayers/IndexDraw.hpp
     SyriusCoreSandBox/ComponentLayers/MVP.cpp
     SyriusCoreSandBox/ComponentLayers/MVP.hpp
+    SyriusCoreSandBox/Components/DepthTest.cpp
+    SyriusCoreSandBox/Components/DepthTest.hpp
+    SyriusCoreSandBox/Components/SamplerComponent.cpp
+    SyriusCoreSandBox/Components/SamplerComponent.hpp
+    SyriusCoreSandBox/Components/TextureComponent.cpp
+    SyriusCoreSandBox/Components/TextureComponent.hpp
+    SyriusCoreSandBox/ComponentLayers/MVPTextured.cpp
+    SyriusCoreSandBox/ComponentLayers/MVPTextured.hpp
 )
 
 

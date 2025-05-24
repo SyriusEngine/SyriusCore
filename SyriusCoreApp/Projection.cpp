@@ -1,6 +1,6 @@
 #include "Projection.hpp"
 
-Projection::Projection(ResourceView<Context> &context, u32 width, u32 height, float fov, float near, float far):
+ProjectionComponent::ProjectionComponent(ResourceView<Context> &context, u32 width, u32 height, float fov, float near, float far):
 m_Context(context),
 m_Width(static_cast<float>(width)),
 m_Height(static_cast<float>(height)),
@@ -20,15 +20,15 @@ m_Far(far){
 }
 
 
-Projection::~Projection() {
+ProjectionComponent::~ProjectionComponent() {
 
 }
 
-void Projection::bind(u32 slot) {
+void ProjectionComponent::bind(u32 slot) {
     m_Resource->bindShaderResource(slot);
 }
 
-void Projection::onEvent(const Event& event) {
+void ProjectionComponent::onEvent(const Event& event) {
     if (event.type == SR_EVENT_WINDOW_RESIZED) {
         m_Width = static_cast<float>(event.windowWidth);
         m_Height = static_cast<float>(event.windowHeight);

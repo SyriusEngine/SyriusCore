@@ -24,5 +24,5 @@ private:
     ResourceView<CubeMap> m_CubeMap;
 
     Camera m_Camera;
-    Projection m_Projection;
+    ProjectionComponent m_Projection;
 };

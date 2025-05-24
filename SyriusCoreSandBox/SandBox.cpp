@@ -47,10 +47,11 @@ void Sandbox::run() {
         m_Context->endRenderPass();
 
         // 3. Draw ImGui
-        m_Context->getDefaultFrameBuffer()->bind();
+        m_Context->beginRenderPass();
         m_Context->onImGuiBegin();
         m_ComponentContainer->onImGui();
         m_Context->onImGuiEnd();
+        m_Context->endRenderPass();
 
         // 4. Present final frame
         m_Context->swapBuffers();

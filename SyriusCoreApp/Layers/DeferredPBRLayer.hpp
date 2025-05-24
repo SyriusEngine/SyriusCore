@@ -27,7 +27,7 @@ private:
 
 private:
     Camera m_Camera;
-    Projection m_Projection;
+    ProjectionComponent m_Projection;
     ResourceView<Sampler> m_Sampler;
 
     ResourceView<ConstantBuffer> m_TransformBuffer;

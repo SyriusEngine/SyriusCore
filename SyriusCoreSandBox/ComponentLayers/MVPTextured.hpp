@@ -3,24 +3,24 @@
 #include "../Core/IComponentFactory.hpp"
 #include "../Utils.hpp"
 
-class MVP: public IComponent {
+class MVPTextured: public IComponent {
 public:
-    MVP(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container);
+    MVPTextured(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container);
 
-    ~MVP() override = default;
+    ~MVPTextured() override = default;
 };
 
-class MVPFactory: public IComponentFactory {
+class MVPTexturedFactory: public IComponentFactory {
 public:
-    MVPFactory() = default;
-    ~MVPFactory() override = default;
+    MVPTexturedFactory() = default;
+    ~MVPTexturedFactory() override = default;
 
     SP<IComponent> createComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container) override {
-        return createSP<MVP>(window, context, container);
+        return createSP<MVPTextured>(window, context, container);
     }
 
     std::string provides() const override {
-        return "MVP";
+        return "MVPTextured";
     }
 
     std::vector<std::string> requires() const override {
@@ -29,8 +29,9 @@ public:
             "Camera",
             "ShaderComponent",
             "DepthTest",
+            "Sampler",
+            "Texture",
             "MeshComponent",
         };
     }
 };
-

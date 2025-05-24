@@ -7,11 +7,11 @@ struct ProjectionData{
     glm::mat4 projection;
 };
 
-class Projection: public IComponent {
+class ProjectionComponent: public IComponent {
 public:
-    Projection(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container);
+    ProjectionComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container);
 
-    ~Projection() override = default;
+    ~ProjectionComponent() override = default;
 
     void onUpdate(Duration deltaTime) override;
 
@@ -38,7 +38,7 @@ public:
     ~ProjectionFactory() override = default;
 
     SP<IComponent> createComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container) override {
-        return createSP<Projection>(window, context, container);
+        return createSP<ProjectionComponent>(window, context, container);
     }
 
     std::string provides() const override {

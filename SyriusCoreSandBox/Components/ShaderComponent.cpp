@@ -2,7 +2,11 @@
 
 ShaderComponent::ShaderComponent(const UP<SyriusWindow> &window, const ResourceView<Context> &context, ComponentContainer *container):
 IComponent(window, context, container){
-    setShader("MVP", "MVP");
+    /*
+     * D3D11 Expects a shader to be bound to create the vertex array. Since the vertex layout does not change
+     * between all components, loading any shader (even if it is not used) is fine to get the input layout object
+     */
+    setShader("VertexBuffer", "VertexBuffer");
 
 }
 

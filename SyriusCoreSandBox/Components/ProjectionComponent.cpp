@@ -1,6 +1,6 @@
-#include "Projection.hpp"
+#include "ProjectionComponent.hpp"
 
-Projection::Projection(const UP<SyriusWindow> &window, const ResourceView<Context> &context, ComponentContainer* container):
+ProjectionComponent::ProjectionComponent(const UP<SyriusWindow> &window, const ResourceView<Context> &context, ComponentContainer* container):
 IComponent(window, context, container){
 
     ConstantBufferDesc desc;
@@ -13,11 +13,11 @@ IComponent(window, context, container){
     setProjection();
 }
 
-void Projection::onUpdate(Duration deltaTime){
+void ProjectionComponent::onUpdate(Duration deltaTime){
     m_Buffer->bindShaderResource(2);
 }
 
-void Projection::onEvent(const Event &event){
+void ProjectionComponent::onEvent(const Event &event){
     switch (event.type) {
         case SR_EVENT_WINDOW_RESIZED: {
             setProjection();
@@ -28,7 +28,7 @@ void Projection::onEvent(const Event &event){
     }
 }
 
-void Projection::onImGui(ImGuiWindowData &windowData){
+void ProjectionComponent::onImGui(ImGuiWindowData &windowData){
     imGuiBegin(windowData, "Projection");
 
     if (ImGui::DragFloat("FOV", &m_Fov, 1.0f, 0.0f, 180.0f)){
@@ -44,7 +44,7 @@ void Projection::onImGui(ImGuiWindowData &windowData){
     imGuiEnd(windowData);
 }
 
-void Projection::setProjection(){
+void ProjectionComponent::setProjection(){
     const float width = static_cast<float>(m_Context->getWidth()); // Don't use the window width but the framebuffer width
     const float height = static_cast<float>(m_Context->getHeight()); // Don't use the window height but the framebuffer height
     m_ProjectionData.projection = glm::perspective(glm::radians(m_Fov), width / height, m_Near, m_Far);

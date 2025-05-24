@@ -4,11 +4,15 @@
 #include "../ComponentLayers/VertexDraw.hpp"
 #include "../ComponentLayers/IndexDraw.hpp"
 #include "../ComponentLayers/MVP.hpp"
+#include "../ComponentLayers/MVPTextured.hpp"
 
 #include "../Components/Camera.hpp"
-#include "../Components/Projection.hpp"
+#include "../Components/ProjectionComponent.hpp"
 #include "../Components/MeshComponent.hpp"
 #include "../Components/ShaderComponent.hpp"
+#include "../Components/DepthTest.hpp"
+#include "../Components/SamplerComponent.hpp"
+#include "../Components/TextureComponent.hpp"
 
 ComponentContainer::ComponentContainer(const UP<SyriusWindow>& window, const ResourceView<Context>& context):
 m_Window(window),
@@ -17,11 +21,15 @@ m_Context(context){
     addFactory<ProjectionFactory>();
     addFactory<ShaderComponentFactory>();
     addFactory<MeshComponentFactory>();
+    addFactory<DepthTestFactory>();
+    addFactory<SamplerFactory>();
+    addFactory<TextureFactory>();
 
     addFactory<DebugFactory>();
     addFactory<VertexDrawFactory>();
     addFactory<IndexDrawFactory>();
     addFactory<MVPFactory>();
+    addFactory<MVPTexturedFactory>();
 }
 
 void ComponentContainer::createComponent(const std::string_view name){
