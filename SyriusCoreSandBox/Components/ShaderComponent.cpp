@@ -2,6 +2,7 @@
 
 ShaderComponent::ShaderComponent(const UP<SyriusWindow> &window, const ResourceView<Context> &context, ComponentContainer *container):
 IComponent(window, context, container){
+    setShader("MVP", "MVP");
 
 }
 

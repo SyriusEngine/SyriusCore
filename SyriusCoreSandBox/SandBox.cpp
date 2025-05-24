@@ -39,10 +39,12 @@ void Sandbox::run() {
 
         // 2. Update components
         m_Context->clear();
+        m_Context->beginRenderPass();
         TimePoint currentTime = getTime();
         const Duration deltaTime = currentTime - lastFrameTime;
         lastFrameTime = currentTime;
         m_ComponentContainer->onUpdate(deltaTime);
+        m_Context->endRenderPass();
 
         // 3. Draw ImGui
         m_Context->getDefaultFrameBuffer()->bind();

@@ -14,7 +14,13 @@ void MVP::onUpdate(Duration deltaTime) {
 }
 
 void MVP::onImGui(ImGuiWindowData &windowData){
+    imGuiBegin(windowData, "DepthTest");
 
+    if (ImGui::Checkbox("Depth Test", &m_EnableDepthTest)) {
+        m_Context->getDefaultFrameBuffer()->enableDepthTest(m_EnableDepthTest);
+    }
+
+    imGuiEnd(windowData);
 }
 
 

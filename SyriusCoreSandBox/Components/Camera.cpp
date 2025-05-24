@@ -41,7 +41,7 @@ void Camera::onEvent(const Event &event){
         }
         case SR_EVENT_KEYBOARD_KEY_PRESSED: {
             const SR_KEYBOARD_KEY key = static_cast<SR_KEYBOARD_KEY>(event.keyCode);
-            if (key == SR_KEY_E) {
+            if (key == SR_KEY_F) {
                 m_Enable = !m_Enable;
                 if (m_Enable) {
                     m_Window->grabMouse();

@@ -12,6 +12,9 @@ public:
     void onUpdate(Duration deltaTime) override;
 
     void onImGui(ImGuiWindowData& windowData) override;
+
+private:
+    bool m_EnableDepthTest = false;
 };
 
 class MVPFactory: public IComponentFactory {
