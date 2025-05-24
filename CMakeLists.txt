@@ -232,8 +232,6 @@ set(SYRIUS_CORE_APP_SRC
 set(SYRIUS_CORE_APP_LAYERS_SRC
     ${SYRIUS_CORE_APP_SRC}
     SyriusCoreApp/Layers/TextureAtlasLayer.cpp
-    SyriusCoreApp/Layers/FrameBufferLayer.cpp
-    SyriusCoreApp/Layers/CubeMapLayer.cpp
     SyriusCoreApp/Layers/DeferredPBRLayer.cpp
 )
 
@@ -273,6 +271,10 @@ set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/Components/TextureComponent.hpp
     SyriusCoreSandBox/ComponentLayers/MVPTextured.cpp
     SyriusCoreSandBox/ComponentLayers/MVPTextured.hpp
+    SyriusCoreSandBox/ComponentLayers/FrameBufferLayer.cpp
+    SyriusCoreSandBox/ComponentLayers/FrameBufferLayer.hpp
+    SyriusCoreSandBox/ComponentLayers/CubeMapLayer.cpp
+    SyriusCoreSandBox/ComponentLayers/CubeMapLayer.hpp
 )
 
 

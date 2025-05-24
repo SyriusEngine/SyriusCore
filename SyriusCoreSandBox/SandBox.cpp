@@ -49,7 +49,8 @@ void Sandbox::run() {
         // 3. Draw ImGui
         m_Context->beginRenderPass();
         m_Context->onImGuiBegin();
-        m_ComponentContainer->onImGui();
+        ImGuiWindowData data;
+        m_ComponentContainer->onImGui(data);
         m_Context->onImGuiEnd();
         m_Context->endRenderPass();
 

@@ -19,7 +19,7 @@ public:
 
     void onEvent(const Event& event) const;
 
-    void onImGui() const;
+    void onImGui(ImGuiWindowData& windowData) const;
 
     template<typename COMPONENT>
     SP<COMPONENT> getComponent() const {

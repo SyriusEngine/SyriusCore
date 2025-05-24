@@ -5,6 +5,8 @@
 #include "../ComponentLayers/IndexDraw.hpp"
 #include "../ComponentLayers/MVP.hpp"
 #include "../ComponentLayers/MVPTextured.hpp"
+#include "../ComponentLayers/FrameBufferLayer.hpp"
+#include "../ComponentLayers/CubeMapLayer.hpp"
 
 #include "../Components/Camera.hpp"
 #include "../Components/ProjectionComponent.hpp"
@@ -30,6 +32,8 @@ m_Context(context){
     addFactory<IndexDrawFactory>();
     addFactory<MVPFactory>();
     addFactory<MVPTexturedFactory>();
+    addFactory<FrameBufferLayerFactory>();
+    addFactory<CubeMapFactory>();
 }
 
 void ComponentContainer::createComponent(const std::string_view name){
@@ -65,10 +69,9 @@ void ComponentContainer::onEvent(const Event &event) const{
     }
 }
 
-void ComponentContainer::onImGui() const{
-    ImGuiWindowData data;
+void ComponentContainer::onImGui(ImGuiWindowData& windowData) const{
     for (const auto& component: m_Components){
-        component->onImGui(data);
+        component->onImGui(windowData);
     }
 }
 
