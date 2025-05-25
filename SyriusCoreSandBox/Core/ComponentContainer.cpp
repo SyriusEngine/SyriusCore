@@ -10,6 +10,7 @@
 #include "../ComponentLayers/DeferredPBRLayer.hpp"
 #include "../ComponentLayers/PBRLayer.hpp"
 #include "../ComponentLayers/ImGuiLayer.hpp"
+#include "../ComponentLayers/ShaderStorageBufferLayer.hpp"
 
 #include "../Components/Camera.hpp"
 #include "../Components/ProjectionComponent.hpp"
@@ -42,6 +43,7 @@ m_Context(context){
     addFactory<PBRFactory>();
     addFactory<DeferredPBRFactory>();
     addFactory<ImGuiFactory>();
+    addFactory<ShaderStorageBufferFactory>();
 }
 
 void ComponentContainer::createComponent(const std::string_view name){

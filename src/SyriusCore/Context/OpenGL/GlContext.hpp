@@ -13,7 +13,7 @@
 #include "GlSampler.hpp"
 #include "GlFrameBuffer.hpp"
 #include "GlCubeMap.hpp"
-
+#include "GlShaderStorageBuffer.hpp"
 
 namespace Syrius{
 
@@ -54,6 +54,8 @@ namespace Syrius{
         ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferLayout>& desc) override;
 
         ResourceView<CubeMap> createCubeMap(const ResourceView<CubeMapLayout>& desc) override;
+
+        ResourceView<ShaderStorageBuffer> createShaderStorageBuffer(const ShaderStorageBufferDesc& desc) override;
 
     protected:
         explicit GlContext(const ContextDesc& desc);

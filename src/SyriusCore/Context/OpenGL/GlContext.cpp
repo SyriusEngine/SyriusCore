@@ -97,12 +97,17 @@ namespace Syrius{
         return createResourceView(m_CubeMaps.back());
     }
 
+    ResourceView<ShaderStorageBuffer> GlContext::createShaderStorageBuffer(const ShaderStorageBufferDesc &desc) {
+        m_ShaderStorageBuffers.emplace_back(new GlShaderStorageBuffer(desc, m_DeviceLimits));
+        return createResourceView(m_ShaderStorageBuffers.back());
+    }
+
     void GlContext::initGl() {
         initGlad();
         m_DeviceLimits = createUP<GlDeviceLimits>();
     }
 
-    void GlContext::createDefaultFrameBuffer(i32 width, i32 height, const ContextDesc &desc) {
+    void GlContext::createDefaultFrameBuffer(const i32 width, const i32 height, const ContextDesc &desc) {
         auto defaultFbDesc = createFrameBufferLayout();
         ViewportDesc viewportDesc;
         viewportDesc.width = width;

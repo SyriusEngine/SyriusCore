@@ -273,6 +273,8 @@ set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/ComponentLayers/PBRLayer.hpp
     SyriusCoreSandBox/ComponentLayers/ImGuiLayer.cpp
     SyriusCoreSandBox/ComponentLayers/ImGuiLayer.hpp
+    SyriusCoreSandBox/ComponentLayers/ShaderStorageBufferLayer.cpp
+    SyriusCoreSandBox/ComponentLayers/ShaderStorageBufferLayer.hpp
 )
 
 
