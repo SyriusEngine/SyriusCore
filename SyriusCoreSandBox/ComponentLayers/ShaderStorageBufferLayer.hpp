@@ -21,12 +21,12 @@ private:
 
     void imGuiDrawMeshSelector();
 
-    void setTransformData() const;
+    void setTransformData();
 
     void setMesh(const MeshData& meshData);
 
 private:
-    Transform m_Transform;
+    std::vector<Transform> m_Transforms;
     ResourceView<ShaderStorageBuffer> m_TransformBuffer;
 
     ResourceView<VertexLayout> m_VertexLayout;
