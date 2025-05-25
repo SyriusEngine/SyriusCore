@@ -60,6 +60,8 @@ namespace Syrius{
 
         [[nodiscard]] bool hasImGuiContext() const { return m_ImGuiContextCreated; }
 
+        [[nodiscard]] bool hasImPlotContext() const { return m_ImPlotContextCreated; }
+
         ResourceView<FrameBuffer> getDefaultFrameBuffer();
 
         void onResize(i32 width, i32 height) const;

@@ -270,6 +270,8 @@ set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/Components/MaterialComponent.hpp
     SyriusCoreSandBox/ComponentLayers/PBRLayer.cpp
     SyriusCoreSandBox/ComponentLayers/PBRLayer.hpp
+    SyriusCoreSandBox/ComponentLayers/ImGuiLayer.cpp
+    SyriusCoreSandBox/ComponentLayers/ImGuiLayer.hpp
 )
 
 

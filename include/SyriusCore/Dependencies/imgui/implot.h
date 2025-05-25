@@ -46,6 +46,9 @@
 
 #pragma once
 #include "imgui.h"
+
+#include "../../ExportCore.hpp"
+
 #ifndef IMGUI_DISABLE
 
 //-----------------------------------------------------------------------------
@@ -57,7 +60,7 @@
 // backward nor forward ABI compatibility and also function call overhead. If you
 // do use ImPlot as a DLL, be sure to call SetImGuiContext (see Miscellanous section).
 #ifndef IMPLOT_API
-#define IMPLOT_API
+#define IMPLOT_API  SR_CORE_API
 #endif
 
 // ImPlot version string.
