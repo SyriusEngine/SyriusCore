@@ -8,7 +8,6 @@ IComponent(window, context, container){
     auto shader = container->getComponent<ShaderComponent>();
     shader->setShader("ShaderStorageBuffer", "Texture");
 
-    std::vector<Transform> transforms;
     constexpr i32 border = 16;
     constexpr float spacing = 4.0f;
     for (int x = -border; x < border; x++) {
@@ -16,15 +15,15 @@ IComponent(window, context, container){
             for (int z = -border; z < border; z++) {
                 Transform transform;
                 transform.model = glm::translate(glm::vec3(x * spacing, y * spacing, z * spacing));
-                transforms.push_back(transform);
+                m_Transforms.push_back(transform);
                 m_InstanceCount++;
             }
         }
     }
 
     ShaderStorageBufferDesc transformDesc;
-    transformDesc.data = transforms.data();
-    transformDesc.size = sizeof(Transform) * transforms.size();
+    transformDesc.data = m_Transforms.data();
+    transformDesc.size = sizeof(Transform) * m_Transforms.size();
     transformDesc.shaderStage = SR_SHADER_VERTEX;
     transformDesc.usage = SR_BUFFER_USAGE_DYNAMIC;
     transformDesc.name = "TransformData";
@@ -61,13 +60,13 @@ void ShaderStorageBufferLayer::onImGui(ImGuiWindowData &windowData){
 }
 
 void ShaderStorageBufferLayer::imGuiDrawTransform() {
-    if (ImGui::DragFloat3("Translation", glm::value_ptr(m_Translate), 0.01f)){
-        setTransformData();
-    }
-    if (ImGui::DragFloat3("Rotation", glm::value_ptr(m_Rotate), 0.01f)){
-        setTransformData();
-    }
-    if (ImGui::DragFloat3("Scale", glm::value_ptr(m_Scale), 0.1f)){
+    ImGui::TextWrapped("When the correct transformation is filled in, press Upload. We"
+                       "do not want to send data to the GPU every time a slider changes."
+                       "This causes huge amount of pipeline stalls since we force the driver to synchronize");
+    ImGui::DragFloat3("Translation", glm::value_ptr(m_Translate), 0.01f);
+    ImGui::DragFloat3("Rotation", glm::value_ptr(m_Rotate), 0.01f);
+    ImGui::DragFloat3("Scale", glm::value_ptr(m_Scale), 0.1f);
+    if (ImGui::Button("Upload")) {
         setTransformData();
     }
 }
@@ -117,10 +116,15 @@ void ShaderStorageBufferLayer::imGuiDrawMeshSelector() {
     }
 }
 
-void ShaderStorageBufferLayer::setTransformData() const {
+void ShaderStorageBufferLayer::setTransformData() {
     const glm::mat4 translate  = glm::translate(glm::mat4(1.0f), m_Translate);
     const glm::mat4 rotate = glm::toMat4(glm::quat(m_Rotate));
     const glm::mat4 scale = glm::scale(m_Scale);
+    const glm::mat4 result = translate * scale * rotate;
+    for (auto& t: m_Transforms) {
+        t.model = result;
+    }
+    m_TransformBuffer->setData(m_Transforms.data(), m_Transforms.size() * sizeof(Transform));
 }
 
 void ShaderStorageBufferLayer::setMesh(const MeshData &meshData) {
