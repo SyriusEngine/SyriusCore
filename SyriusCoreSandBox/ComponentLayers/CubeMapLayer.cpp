@@ -5,7 +5,7 @@
 
 CubeMapLayer::CubeMapLayer(const UP<SyriusWindow> &window, const ResourceView<Context> &context, ComponentContainer *container):
 IComponent(window, context, container){
-    auto shader = container->getComponent<ShaderComponent>();
+    const auto shader = container->getComponent<ShaderComponent>();
     shader->setShader("CubeMap", "CubeMap");
 
     auto cubeMapLayout = m_Context->createCubeMapLayout(2048, 2048, SR_TEXTURE_RGBA_UI8);
@@ -22,7 +22,6 @@ IComponent(window, context, container){
 
 void CubeMapLayer::onUpdate(Duration deltaTime) {
     m_CubeMap->bindShaderResource(0);
-
 }
 
 

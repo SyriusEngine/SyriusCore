@@ -33,35 +33,8 @@ m_PrivContainer(createUP<ComponentContainer>(window, context)){
     // 2nd Stage: Draw the framebuffer to a rectangle
     m_ScreenProgram = loadShader(m_Context, "Screen", "Screen");
 
-    auto [vertices, indices] = createRectangle(0.75);
-
-    auto layout = m_Context->createVertexLayout();
-    layout->addAttribute("Position", SR_FLOAT32_3);
-    layout->addAttribute("Color", SR_FLOAT32_3);
-    layout->addAttribute("Normal", SR_FLOAT32_3);
-    layout->addAttribute("Tangent", SR_FLOAT32_3);
-    layout->addAttribute("TexCoord", SR_FLOAT32_2);
-
-    VertexBufferDesc vboDesc;
-    vboDesc.usage = SR_BUFFER_USAGE_DYNAMIC;
-    vboDesc.data = vertices.data();
-    vboDesc.layout = layout;
-    vboDesc.count = vertices.size();
-    auto vbo = m_Context->createVertexBuffer(vboDesc);
-
-    IndexBufferDesc iboDesc;
-    iboDesc.usage = SR_BUFFER_USAGE_DYNAMIC;
-    iboDesc.data = indices.data();
-    iboDesc.count = indices.size();
-    iboDesc.dataType = SR_UINT32;
-    auto ibo = m_Context->createIndexBuffer(iboDesc);
-
-    VertexArrayDesc vaoDesc;
-    vaoDesc.drawMode = SR_DRAW_TRIANGLES;
-    vaoDesc.vertexShader = m_ScreenProgram.vertexShader;
-    vaoDesc.vertexBuffer = vbo;
-    vaoDesc.indexBuffer = ibo;
-    m_ScreenVertexArray = m_Context->createVertexArray(vaoDesc);
+    auto rectangle = createRectangle(0.75);
+    m_ScreenVertexArray = loadMesh(m_Context, rectangle, m_ScreenProgram);
 }
 
 void FrameBufferLayer::onUpdate(const Duration deltaTime) {

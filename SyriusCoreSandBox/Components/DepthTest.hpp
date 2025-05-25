@@ -12,7 +12,7 @@ public:
     void onImGui(ImGuiWindowData& windowData) override;
 
 private:
-    bool m_EnableDepthTest = true;
+    bool m_EnableDepthTest = false;
 };
 
 class DepthTestFactory: public IComponentFactory {

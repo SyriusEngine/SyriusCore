@@ -135,6 +135,37 @@ ShaderProgram loadShader(const ResourceView<Context>& context, const std::string
     return program;
 }
 
+ResourceView<VertexArray> loadMesh(const ResourceView<Context> &context, const MeshData &data, const ShaderProgram &program) {
+    const auto layout = context->createVertexLayout();
+    layout->addAttribute("Position", SR_FLOAT32_3);
+    layout->addAttribute("Color", SR_FLOAT32_3);
+    layout->addAttribute("Normal", SR_FLOAT32_3);
+    layout->addAttribute("Tangent", SR_FLOAT32_3);
+    layout->addAttribute("TexCoord", SR_FLOAT32_2);
+
+    VertexBufferDesc vboDesc;
+    vboDesc.usage = SR_BUFFER_USAGE_DYNAMIC;
+    vboDesc.data = data.vertices.data();
+    vboDesc.layout = layout;
+    vboDesc.count = data.vertices.size();
+    const auto vbo = context->createVertexBuffer(vboDesc);
+
+    IndexBufferDesc iboDesc;
+    iboDesc.usage = SR_BUFFER_USAGE_DYNAMIC;
+    iboDesc.data = data.indices.data();
+    iboDesc.count = data.indices.size();
+    iboDesc.dataType = SR_UINT32;
+    const auto ibo = context->createIndexBuffer(iboDesc);
+
+    VertexArrayDesc vaoDesc;
+    vaoDesc.drawMode = SR_DRAW_TRIANGLES;
+    vaoDesc.vertexShader = program.vertexShader;
+    vaoDesc.vertexBuffer = vbo;
+    vaoDesc.indexBuffer = ibo;
+    return context->createVertexArray(vaoDesc);
+}
+
+
 void calculateTangents(MeshData& mesh){
     for (int i = 0; i < mesh.indices.size(); i += 3) {
         auto& v0 = mesh.vertices[mesh.indices[i + 0]];

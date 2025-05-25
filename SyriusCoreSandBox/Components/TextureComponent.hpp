@@ -3,12 +3,6 @@
 #include "../Core/IComponentFactory.hpp"
 #include "../Utils.hpp"
 
-struct TextureParameters{
-    float lerpFactor = 0.0f;
-    float scale = 1.0f;
-    float padding[2] = {0.0f, 0.0f};
-};
-
 class TextureComponent: public IComponent {
 public:
     TextureComponent(const UP<SyriusWindow>& window, const ResourceView<Context>& context, ComponentContainer* container);

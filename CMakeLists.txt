@@ -219,21 +219,7 @@ if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTS)
             WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif ()
 
-################### Syrius Core App ###################
-
-set(SYRIUS_CORE_APP_SRC
-    SyriusCoreApp/SyriusCoreDev.cpp
-    SyriusCoreApp/ShaderLibrary.cpp
-    SyriusCoreApp/Utils.cpp
-    SyriusCoreApp/Camera.cpp
-    SyriusCoreApp/Layer.cpp
-    SyriusCoreApp/Projection.cpp SyriusCoreApp/Material.cpp SyriusCoreApp/Material.hpp)
-
-set(SYRIUS_CORE_APP_LAYERS_SRC
-    ${SYRIUS_CORE_APP_SRC}
-    SyriusCoreApp/Layers/TextureAtlasLayer.cpp
-    SyriusCoreApp/Layers/DeferredPBRLayer.cpp
-)
+################### Syrius Core Sandbox ###################
 
 set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/SandBox.cpp
@@ -254,6 +240,12 @@ set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/Components/MeshComponent.hpp
     SyriusCoreSandBox/Components/ShaderComponent.cpp
     SyriusCoreSandBox/Components/ShaderComponent.hpp
+    SyriusCoreSandBox/Components/DepthTest.cpp
+    SyriusCoreSandBox/Components/DepthTest.hpp
+    SyriusCoreSandBox/Components/SamplerComponent.cpp
+    SyriusCoreSandBox/Components/SamplerComponent.hpp
+    SyriusCoreSandBox/Components/TextureComponent.cpp
+    SyriusCoreSandBox/Components/TextureComponent.hpp
 
     SyriusCoreSandBox/ComponentLayers/Debug.cpp
     SyriusCoreSandBox/ComponentLayers/Debug.hpp
@@ -263,18 +255,18 @@ set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/ComponentLayers/IndexDraw.hpp
     SyriusCoreSandBox/ComponentLayers/MVP.cpp
     SyriusCoreSandBox/ComponentLayers/MVP.hpp
-    SyriusCoreSandBox/Components/DepthTest.cpp
-    SyriusCoreSandBox/Components/DepthTest.hpp
-    SyriusCoreSandBox/Components/SamplerComponent.cpp
-    SyriusCoreSandBox/Components/SamplerComponent.hpp
-    SyriusCoreSandBox/Components/TextureComponent.cpp
-    SyriusCoreSandBox/Components/TextureComponent.hpp
     SyriusCoreSandBox/ComponentLayers/MVPTextured.cpp
     SyriusCoreSandBox/ComponentLayers/MVPTextured.hpp
     SyriusCoreSandBox/ComponentLayers/FrameBufferLayer.cpp
     SyriusCoreSandBox/ComponentLayers/FrameBufferLayer.hpp
     SyriusCoreSandBox/ComponentLayers/CubeMapLayer.cpp
     SyriusCoreSandBox/ComponentLayers/CubeMapLayer.hpp
+    SyriusCoreSandBox/ComponentLayers/DeferredPBRLayer.cpp
+    SyriusCoreSandBox/ComponentLayers/DeferredPBRLayer.hpp
+    SyriusCoreSandBox/Components/MaterialComponent.cpp
+    SyriusCoreSandBox/Components/MaterialComponent.hpp
+    SyriusCoreSandBox/ComponentLayers/PBRLayer.cpp
+    SyriusCoreSandBox/ComponentLayers/PBRLayer.hpp
 )
 
 
@@ -285,10 +277,6 @@ if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_APP)
     add_executable(SyriusCoreSandBox main.cpp ${SYRIUS_CORE_SANDBOX_SRC})
     add_dependencies(SyriusCoreSandBox SyriusCore)
     target_link_libraries(SyriusCoreSandBox SyriusCore glm::glm)
-
-    add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
-    add_dependencies(SyriusCoreApp SyriusCore)
-    target_link_libraries(SyriusCoreApp SyriusCore glm::glm)
 endif()
 
 

@@ -7,6 +7,8 @@
 #include "../ComponentLayers/MVPTextured.hpp"
 #include "../ComponentLayers/FrameBufferLayer.hpp"
 #include "../ComponentLayers/CubeMapLayer.hpp"
+#include "../ComponentLayers/DeferredPBRLayer.hpp"
+#include "../ComponentLayers/PBRLayer.hpp"
 
 #include "../Components/Camera.hpp"
 #include "../Components/ProjectionComponent.hpp"
@@ -15,6 +17,7 @@
 #include "../Components/DepthTest.hpp"
 #include "../Components/SamplerComponent.hpp"
 #include "../Components/TextureComponent.hpp"
+#include "../Components/MaterialComponent.hpp"
 
 ComponentContainer::ComponentContainer(const UP<SyriusWindow>& window, const ResourceView<Context>& context):
 m_Window(window),
@@ -26,6 +29,7 @@ m_Context(context){
     addFactory<DepthTestFactory>();
     addFactory<SamplerFactory>();
     addFactory<TextureFactory>();
+    addFactory<MaterialFactory>();
 
     addFactory<DebugFactory>();
     addFactory<VertexDrawFactory>();
@@ -34,6 +38,8 @@ m_Context(context){
     addFactory<MVPTexturedFactory>();
     addFactory<FrameBufferLayerFactory>();
     addFactory<CubeMapFactory>();
+    addFactory<PBRFactory>();
+    addFactory<DeferredPBRFactory>();
 }
 
 void ComponentContainer::createComponent(const std::string_view name){

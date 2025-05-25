@@ -5,6 +5,6 @@
 
 MVPTextured::MVPTextured(const UP<SyriusWindow> &window, const ResourceView<Context> &context, ComponentContainer *container):
 IComponent(window, context, container){
-    auto shader = container->getComponent<ShaderComponent>();
+    const auto shader = container->getComponent<ShaderComponent>();
     shader->setShader("MVP", "Texture");
 }

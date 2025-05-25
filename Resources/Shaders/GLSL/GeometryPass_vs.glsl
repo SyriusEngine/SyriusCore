@@ -22,7 +22,6 @@ layout(std140, binding = 1) uniform CameraData {
 
 layout(std140, binding = 2) uniform ProjectionData {
     mat4 perspective;
-    mat4 orthogonal;
 };
 
 void main() {

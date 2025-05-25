@@ -25,7 +25,15 @@ struct ShaderProgram{
     ResourceView<ShaderModule> fragmentShader;
 };
 
+struct TextureParameters{
+    float lerpFactor = 0.0f;
+    float scale = 1.0f;
+    float padding[2] = {0.0f, 0.0f};
+};
+
 ShaderProgram loadShader(const ResourceView<Context>& context, const std::string& vertexShader, const std::string& fragmentShader);
+
+ResourceView<VertexArray> loadMesh(const ResourceView<Context>& context, const MeshData& data, const ShaderProgram& program);
 
 MeshData createTriangle(float size = 0.5f);
 
