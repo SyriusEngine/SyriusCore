@@ -2,6 +2,7 @@
 
 #include "../../../Dependencies/imgui/imgui_impl_glfw.h"
 #include "../../../Dependencies/imgui/imgui_impl_opengl3.h"
+#include "../../../../include/SyriusCore/Dependencies/imgui/implot.h"
 
 #if !defined(SR_PLATFORM_WIN64)
 
@@ -57,38 +58,17 @@ namespace Syrius {
     }
 
     void Glfw3glContext::initImGui(const ImGuiDesc &desc) {
-        if (m_ImGuiContextCreated) {
-            SR_LOG_WARNING("WglContext", "ImGui already initialized!");
-            return;
-        }
-
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGuiIO& io = ImGui::GetIO(); (void)io;
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-        if (desc.useDocking) {
-            io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable docking
-            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-        }
-
-        imGuiSetStyle(desc.style);
+        Context::initImGui(desc);
 
         ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
         ImGui_ImplOpenGL3_Init("#version 150");
-        m_ImGuiContextCreated = true;
-
-        SR_POSTCONDITION(m_ImGuiContextCreated == true, "Failed to create ImGui context");
     }
 
     void Glfw3glContext::terminateImGui() {
-        SR_PRECONDITION(m_ImGuiContextCreated == true, "There does not exists an ImGui context");
-        SR_PRECONDITION(m_IsImGuiRendering == false, "ImGuiRendering already started!")
-
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
-        ImGui::DestroyContext();
-        m_ImGuiContextCreated = false;
+
+        Context::terminateImGui();
     }
 
     void Glfw3glContext::onImGuiBegin() {

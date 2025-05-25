@@ -102,6 +102,9 @@ set(SYRIUS_CORE_SRC
     src/SyriusCore/Dependencies/imgui/imgui_draw.cpp
     src/SyriusCore/Dependencies/imgui/imgui_tables.cpp
     src/SyriusCore/Dependencies/imgui/imgui_widgets.cpp
+    src/SyriusCore/Dependencies/imgui/implot_items.cpp
+    src/SyriusCore/Dependencies/imgui/implot.cpp
+    src/SyriusCore/Dependencies/imgui/implot_demo.cpp
 
     src/SyriusCore/Dependencies/stb_image/stb_image.cpp
     src/SyriusCore/Dependencies/stb_image/stb_image_resize.cpp
@@ -267,6 +270,8 @@ set(SYRIUS_CORE_SANDBOX_SRC
     SyriusCoreSandBox/Components/MaterialComponent.hpp
     SyriusCoreSandBox/ComponentLayers/PBRLayer.cpp
     SyriusCoreSandBox/ComponentLayers/PBRLayer.hpp
+    SyriusCoreSandBox/ComponentLayers/ImGuiLayer.cpp
+    SyriusCoreSandBox/ComponentLayers/ImGuiLayer.hpp
 )
 
 

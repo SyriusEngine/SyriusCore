@@ -10,6 +10,7 @@
 #include "Context/Context.hpp"
 
 #include "Dependencies/imgui/imgui.h"
+#include "Dependencies/imgui/implot.h"
 
 namespace Syrius {
 

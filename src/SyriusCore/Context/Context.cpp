@@ -1,6 +1,7 @@
 #include "../../../include/SyriusCore/Context/Context.hpp"
 #include "../../../include/SyriusCore/Dependencies/imgui/imgui.h"
 #include "../Utils/DebugMacros.hpp"
+#include "../../../include/SyriusCore/Dependencies/imgui/implot.h"
 
 #include <algorithm>
 
@@ -171,6 +172,47 @@ namespace Syrius{
 
     void Context::destroyCubeMap(const ResourceView<CubeMap>& cubeMap){
         removeResource(m_CubeMaps, cubeMap);
+    }
+
+    void Context::initImGui(const ImGuiDesc &desc) {
+        if (m_ImGuiContextCreated) {
+            SR_LOG_WARNING("Context", "ImGui already initialized!");
+            return;
+        }
+
+        // Create the context
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        // Enable ImPlot
+        if (desc.useImPlot) {
+            ImPlot::CreateContext();
+            m_ImPlotContextCreated = true;
+        }
+        // Configure flags
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+        if (desc.useDocking) {
+            io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable docking
+            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+        }
+
+        // Set style
+        imGuiSetStyle(desc.style);
+        m_ImGuiContextCreated = true;
+
+        SR_POSTCONDITION(m_ImGuiContextCreated == true, "Failed to create ImGui context");
+    }
+
+    void Context::terminateImGui() {
+        SR_PRECONDITION(m_ImGuiContextCreated == true, "There does not exists an ImGui context");
+        SR_PRECONDITION(m_IsImGuiRendering == false, "ImGuiRendering already started!")
+
+        if (m_ImPlotContextCreated) {
+            ImPlot::DestroyContext();
+        }
+        ImGui::DestroyContext();
+        m_ImGuiContextCreated = false;
     }
 
     void Context::imGuiSetStyle(SR_IMGUI_STYLE style) {

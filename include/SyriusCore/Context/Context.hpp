@@ -42,8 +42,8 @@ namespace Syrius{
 
     struct SR_CORE_API ImGuiDesc {
         bool useDocking = true;
+        bool useImPlot = true;  // ImPlot is a library for plotting data in ImGui
         SR_IMGUI_STYLE style = SR_IMGUI_STYLE_DEFAULT;
-
     };
 
     class SR_CORE_API Context{
@@ -59,6 +59,8 @@ namespace Syrius{
         [[nodiscard]] bool isVerticalSyncEnabled() const;
 
         [[nodiscard]] bool hasImGuiContext() const { return m_ImGuiContextCreated; }
+
+        [[nodiscard]] bool hasImPlotContext() const { return m_ImPlotContextCreated; }
 
         ResourceView<FrameBuffer> getDefaultFrameBuffer();
 
@@ -295,9 +297,9 @@ namespace Syrius{
          */
         virtual void setVerticalSynchronisation(bool enable) = 0;
 
-        virtual void initImGui(const ImGuiDesc& desc) = 0;
+        virtual void initImGui(const ImGuiDesc& desc);
 
-        virtual void terminateImGui() = 0;
+        virtual void terminateImGui();
 
         virtual void onImGuiBegin() = 0;
 
@@ -315,6 +317,7 @@ namespace Syrius{
 
         bool m_VerticalSync;
         bool m_ImGuiContextCreated = false;
+        bool m_ImPlotContextCreated = false;
         bool m_IsImGuiRendering = false;
 
         UP<DeviceLimits> m_DeviceLimits;
