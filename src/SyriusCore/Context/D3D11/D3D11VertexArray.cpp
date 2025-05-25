@@ -64,13 +64,14 @@ namespace Syrius{
         SR_CORE_DXGI_GET_MESSAGES()
     }
 
-    void D3D11VertexArray::drawBuffersInstanced(u32 instanceCount) {
+    void D3D11VertexArray::drawBuffersInstanced(const u32 instanceCount) {
         m_VertexBuffer->bind();
         m_Context->IASetInputLayout(m_InputLayout);
         m_Context->IASetPrimitiveTopology(m_D3d11DrawMode);
 
         m_Context->DrawInstanced(m_VertexBuffer->getCount(), instanceCount, 0, 0);
 
+        SR_CORE_DXGI_GET_MESSAGES()
     }
 
     void D3D11VertexArray::setDrawMode(SR_DRAW_MODE drawMode) {
@@ -136,6 +137,8 @@ namespace Syrius{
         m_Context->IASetPrimitiveTopology(m_D3d11DrawMode);
 
         m_Context->DrawIndexed(m_IndexBuffer->getCount(), 0, 0);
+
+        SR_CORE_DXGI_GET_MESSAGES()
     }
 
     void D3D11VertexArrayIndexed::drawBuffersInstanced(u32 instanceCount) {

@@ -24,7 +24,6 @@ cbuffer CameraData: register(b1){
 
 cbuffer ProjectionData: register(b2){
     matrix<float, 4, 4> perspective;
-    matrix<float, 4, 4> orthogonal;
 };
 
 VS_OUT main(VS_IN vsIn){

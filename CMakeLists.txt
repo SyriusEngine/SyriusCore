@@ -51,8 +51,8 @@ if (WIN32)
 
         src/SyriusCore/Dependencies/glad/src/wgl.c
 
-            src/SyriusCore/Window/Win32/SyriusWindowWin32Impl.cpp
-            src/SyriusCore/Window/Win32/Win32Utils.cpp
+        src/SyriusCore/Window/Win32/SyriusWindowWin32Impl.cpp
+        src/SyriusCore/Window/Win32/Win32Utils.cpp
 
         src/SyriusCore/Context/OpenGL/Internal/WglContext.cpp
 
@@ -73,6 +73,7 @@ if (WIN32)
         src/SyriusCore/Context/D3D11/D3D11DepthStencilAttachment.cpp
         src/SyriusCore/Context/D3D11/D3D11DeviceLimits.cpp
         src/SyriusCore/Context/D3D11/D3D11Cubemap.cpp
+        src/SyriusCore/Context/D3D11/D3D11ShaderStorageBuffer.cpp
     )
 
 elseif(UNIX)
@@ -142,6 +143,7 @@ set(SYRIUS_CORE_SRC
     src/SyriusCore/Context/DepthStencilAttachment.cpp
     src/SyriusCore/Context/CubeMap.cpp
     src/SyriusCore/Context/CubeMapLayout.cpp
+    src/SyriusCore/Context/ShaderStorageBuffer.cpp
 
     src/SyriusCore/Context/OpenGL/Internal/GlBuffer.cpp
     src/SyriusCore/Context/OpenGL/GlContext.cpp
@@ -160,6 +162,7 @@ set(SYRIUS_CORE_SRC
     src/SyriusCore/Context/OpenGL/GlDepthStencilAttachment.cpp
     src/SyriusCore/Context/OpenGL/GlCubeMap.cpp
     src/SyriusCore/Context/OpenGL/GlDeviceLimits.cpp
+    src/SyriusCore/Context/OpenGL/GlShaderStorageBuffer.cpp
 )
 
 add_library(SyriusCore SHARED ${SYRIUS_CORE_SRC})
@@ -216,38 +219,64 @@ if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTS)
             WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 endif ()
 
-################### Syrius Core App ###################
+################### Syrius Core Sandbox ###################
 
-set(SYRIUS_CORE_APP_SRC
-    SyriusCoreApp/SyriusCoreDev.cpp
-    SyriusCoreApp/ShaderLibrary.cpp
-    SyriusCoreApp/Utils.cpp
-    SyriusCoreApp/Camera.cpp
-    SyriusCoreApp/Layer.cpp
-    SyriusCoreApp/Projection.cpp SyriusCoreApp/Material.cpp SyriusCoreApp/Material.hpp)
+set(SYRIUS_CORE_SANDBOX_SRC
+    SyriusCoreSandBox/SandBox.cpp
+    SyriusCoreSandBox/Utils.cpp
+    SyriusCoreSandBox/Utils.hpp
 
-set(SYRIUS_CORE_APP_LAYERS_SRC
-    ${SYRIUS_CORE_APP_SRC}
-    SyriusCoreApp/Layers/ImGuiLayer.cpp
-    SyriusCoreApp/Layers/VertexBufferLayer.cpp
-    SyriusCoreApp/Layers/IndexBufferLayer.cpp
-    SyriusCoreApp/Layers/VertexArrayLayer.cpp
-    SyriusCoreApp/Layers/ConstantBufferLayer.cpp
-    SyriusCoreApp/Layers/SamplerLayer.cpp
-    SyriusCoreApp/Layers/TextureLayer.cpp
-    SyriusCoreApp/Layers/DepthTestLayer.cpp
-    SyriusCoreApp/Layers/TextureAtlasLayer.cpp
-    SyriusCoreApp/Layers/FrameBufferLayer.cpp
-    SyriusCoreApp/Layers/ShaderLayer.cpp
-    SyriusCoreApp/Layers/CubeMapLayer.cpp
-    SyriusCoreApp/Layers/DeferredPBRLayer.cpp)
+    SyriusCoreSandBox/Core/IComponentFactory.hpp
+    SyriusCoreSandBox/Core/IComponent.hpp
+    SyriusCoreSandBox/Core/IComponent.cpp
+    SyriusCoreSandBox/Core/ComponentContainer.cpp
+    SyriusCoreSandBox/Core/ComponentContainer.hpp
+
+    SyriusCoreSandBox/Components/Camera.cpp
+    SyriusCoreSandBox/Components/Camera.hpp
+    SyriusCoreSandBox/Components/ProjectionComponent.cpp
+    SyriusCoreSandBox/Components/ProjectionComponent.hpp
+    SyriusCoreSandBox/Components/MeshComponent.cpp
+    SyriusCoreSandBox/Components/MeshComponent.hpp
+    SyriusCoreSandBox/Components/ShaderComponent.cpp
+    SyriusCoreSandBox/Components/ShaderComponent.hpp
+    SyriusCoreSandBox/Components/DepthTest.cpp
+    SyriusCoreSandBox/Components/DepthTest.hpp
+    SyriusCoreSandBox/Components/SamplerComponent.cpp
+    SyriusCoreSandBox/Components/SamplerComponent.hpp
+    SyriusCoreSandBox/Components/TextureComponent.cpp
+    SyriusCoreSandBox/Components/TextureComponent.hpp
+
+    SyriusCoreSandBox/ComponentLayers/Debug.cpp
+    SyriusCoreSandBox/ComponentLayers/Debug.hpp
+    SyriusCoreSandBox/ComponentLayers/VertexDraw.cpp
+    SyriusCoreSandBox/ComponentLayers/VertexDraw.hpp
+    SyriusCoreSandBox/ComponentLayers/IndexDraw.cpp
+    SyriusCoreSandBox/ComponentLayers/IndexDraw.hpp
+    SyriusCoreSandBox/ComponentLayers/MVP.cpp
+    SyriusCoreSandBox/ComponentLayers/MVP.hpp
+    SyriusCoreSandBox/ComponentLayers/MVPTextured.cpp
+    SyriusCoreSandBox/ComponentLayers/MVPTextured.hpp
+    SyriusCoreSandBox/ComponentLayers/FrameBufferLayer.cpp
+    SyriusCoreSandBox/ComponentLayers/FrameBufferLayer.hpp
+    SyriusCoreSandBox/ComponentLayers/CubeMapLayer.cpp
+    SyriusCoreSandBox/ComponentLayers/CubeMapLayer.hpp
+    SyriusCoreSandBox/ComponentLayers/DeferredPBRLayer.cpp
+    SyriusCoreSandBox/ComponentLayers/DeferredPBRLayer.hpp
+    SyriusCoreSandBox/Components/MaterialComponent.cpp
+    SyriusCoreSandBox/Components/MaterialComponent.hpp
+    SyriusCoreSandBox/ComponentLayers/PBRLayer.cpp
+    SyriusCoreSandBox/ComponentLayers/PBRLayer.hpp
+)
+
 
 if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_APP)
     fetch_glm()
     message(STATUS "Building example App")
-    add_executable(SyriusCoreApp AppMain.cpp ${SYRIUS_CORE_APP_LAYERS_SRC})
-    add_dependencies(SyriusCoreApp SyriusCore)
-    target_link_libraries(SyriusCoreApp SyriusCore glm::glm)
+
+    add_executable(SyriusCoreSandBox main.cpp ${SYRIUS_CORE_SANDBOX_SRC})
+    add_dependencies(SyriusCoreSandBox SyriusCore)
+    target_link_libraries(SyriusCoreSandBox SyriusCore glm::glm)
 endif()
 
 

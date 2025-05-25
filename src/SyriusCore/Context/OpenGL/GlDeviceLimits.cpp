@@ -50,16 +50,20 @@ namespace Syrius{
         return getGlConstantInt(GL_MAX_TEXTURE_SIZE);
     }
 
-    u32 GlDeviceLimits::getMaxSSSBOSlots() const {
-        return getGlConstantInt(GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS);
-    }
-
     u32 GlDeviceLimits::getMaxConstantBufferSize() const {
         return getGlConstantInt(GL_MAX_UNIFORM_BLOCK_SIZE);
     }
 
     u32 GlDeviceLimits::getMaxConstantBufferSlots() const {
         return getGlConstantInt(GL_MAX_UNIFORM_BUFFER_BINDINGS);
+    }
+
+    u32 GlDeviceLimits::getMaxShaderStorageBufferSize() const {
+        return getGlConstantInt(GL_MAX_SHADER_STORAGE_BLOCK_SIZE);
+    }
+
+    u32 GlDeviceLimits::getMaxShaderStorageBufferSlots() const {
+        return getGlConstantInt(GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS);
     }
 
     u32 GlDeviceLimits::getMaxDepthBufferBits() const {

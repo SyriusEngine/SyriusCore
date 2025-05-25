@@ -44,7 +44,7 @@ void runAllTests(const std::string& iniFile){
 
 int main(int argc, char** argv) {
     try {
-        std::string configFile = "config.ini";
+        std::string configFile = "Config.ini";
         if (argc < 2) {
             std::cerr << "Usage: " << argv[0] << " <config file>" << std::endl;
         }

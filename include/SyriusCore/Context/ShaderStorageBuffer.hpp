@@ -1,24 +1,23 @@
 #pragma once
 
 #include "Utils.hpp"
-#include "Shader.hpp"
 #include "DeviceLimits.hpp"
 
-namespace Syrius{
+namespace Syrius {
 
-    struct SR_CORE_API ConstantBufferDesc{
+    struct SR_CORE_API ShaderStorageBufferDesc{
         std::string name;
-        Size size                 = 0;
-        const void* data            = nullptr;
-        SR_BUFFER_USAGE usage       = SR_BUFFER_USAGE_DEFAULT;
-        SR_SHADER_TYPE shaderStage  = SR_SHADER_VERTEX;
+        const void* data = nullptr;
+        Size size = 0;
+        SR_BUFFER_USAGE usage = SR_BUFFER_USAGE_DEFAULT;
+        SR_SHADER_TYPE shaderStage = SR_SHADER_VERTEX;
     };
 
-    class SR_CORE_API ConstantBuffer{
+    class SR_CORE_API ShaderStorageBuffer {
     public:
-        ConstantBuffer(const ConstantBufferDesc& desc, const UP<DeviceLimits>& deviceLimits);
+        ShaderStorageBuffer(const ShaderStorageBufferDesc& desc, const UP<DeviceLimits>& deviceLimits);
 
-        virtual ~ConstantBuffer() = default;
+        virtual ~ShaderStorageBuffer() = default;
 
         virtual void release() = 0;
 
@@ -28,7 +27,7 @@ namespace Syrius{
 
         virtual void setData(const void* data, Size size) = 0;
 
-        virtual void copyFrom(const ResourceView<ConstantBuffer>& other) = 0;
+        virtual void copyFrom(const ResourceView<ShaderStorageBuffer>& other) = 0;
 
         [[nodiscard]] virtual UP<UByte[]> getData() const = 0;
 
@@ -43,6 +42,4 @@ namespace Syrius{
     protected:
         const UP<DeviceLimits>& m_DeviceLimits;
     };
-
 }
-

@@ -1,15 +1,15 @@
 #pragma once
 
-#include "../../../../include/SyriusCore/Context/ConstantBuffer.hpp"
+#include "../../../../include/SyriusCore/Context/ShaderStorageBuffer.hpp"
 #include "Internal/GlBuffer.hpp"
 
-namespace Syrius{
+namespace Syrius {
 
-    class GlConstantBuffer: public ConstantBuffer{
+    class GlShaderStorageBuffer: public ShaderStorageBuffer{
     public:
-        GlConstantBuffer(const ConstantBufferDesc& desc, const UP<DeviceLimits>& deviceLimits);
+        GlShaderStorageBuffer(const ShaderStorageBufferDesc& desc, const UP<DeviceLimits>& deviceLimits);
 
-        ~GlConstantBuffer() override = default;
+        ~GlShaderStorageBuffer() override = default;
 
         void release() override;
 
@@ -19,7 +19,7 @@ namespace Syrius{
 
         void setData(const void* data, Size size) override;
 
-        void copyFrom(const ResourceView<ConstantBuffer>& other) override;
+        void copyFrom(const ResourceView<ShaderStorageBuffer>& other) override;
 
         [[nodiscard]] UP<UByte[]> getData() const override;
 
@@ -35,4 +35,3 @@ namespace Syrius{
         GlBuffer m_Buffer;
     };
 }
-
