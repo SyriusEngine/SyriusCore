@@ -174,6 +174,10 @@ namespace Syrius{
         removeResource(m_CubeMaps, cubeMap);
     }
 
+    void Context::destroyShaderStorageBuffer(const ResourceView<ShaderStorageBuffer> &shaderStorageBuffer) {
+        removeResource(m_ShaderStorageBuffers, shaderStorageBuffer);
+    }
+
     void Context::initImGui(const ImGuiDesc &desc) {
         if (m_ImGuiContextCreated) {
             SR_LOG_WARNING("Context", "ImGui already initialized!");

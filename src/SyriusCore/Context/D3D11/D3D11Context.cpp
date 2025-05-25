@@ -184,10 +184,16 @@ namespace Syrius{
         return createResourceView(m_FrameBuffers.back());
     }
 
-    ResourceView<CubeMap> D3D11Context::createCubeMap(const ResourceView<Syrius::CubeMapLayout> &desc) {
+    ResourceView<CubeMap> D3D11Context::createCubeMap(const ResourceView<CubeMapLayout> &desc) {
         m_CubeMaps.emplace_back(new D3D11CubeMap(desc, m_DeviceLimits, m_Device, m_DeviceContext));
         return createResourceView(m_CubeMaps.back());
     }
+
+    ResourceView<ShaderStorageBuffer> D3D11Context::createShaderStorageBuffer(const ShaderStorageBufferDesc &desc) {
+        m_ShaderStorageBuffers.emplace_back(new D3D11ShaderStorageBuffer(desc, m_DeviceLimits, m_Device, m_DeviceContext));
+        return createResourceView(m_ShaderStorageBuffers.back());
+    }
+
 
     void D3D11Context::initImGui(const ImGuiDesc& desc) {
         Context::initImGui(desc);

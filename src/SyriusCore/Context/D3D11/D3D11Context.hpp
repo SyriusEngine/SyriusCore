@@ -19,6 +19,7 @@
 #include "D3D11ColorAttachment.hpp"
 #include "D3D11DepthStencilAttachment.hpp"
 #include "D3D11Cubemap.hpp"
+#include "D3D11ShaderStorageBuffer.hpp"
 
 #if defined(SR_PLATFORM_WIN64)
 
@@ -57,6 +58,8 @@ namespace Syrius{
         ResourceView<FrameBuffer> createFrameBuffer(const ResourceView<FrameBufferLayout>& desc) override;
 
         ResourceView<CubeMap> createCubeMap(const ResourceView<CubeMapLayout>& desc) override;
+
+        ResourceView<ShaderStorageBuffer> createShaderStorageBuffer(const ShaderStorageBufferDesc &desc) override;
 
         void initImGui(const ImGuiDesc& desc) override;
 

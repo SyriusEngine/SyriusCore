@@ -25,6 +25,10 @@ struct ShaderProgram{
     ResourceView<ShaderModule> fragmentShader;
 };
 
+struct Transform {
+    glm::mat4 model = glm::mat4(1.0f);
+};
+
 struct TextureParameters{
     float lerpFactor = 0.0f;
     float scale = 1.0f;

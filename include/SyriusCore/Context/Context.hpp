@@ -18,6 +18,7 @@
 #include "DepthStencilAttachment.hpp"
 #include "CubeMapLayout.hpp"
 #include "CubeMap.hpp"
+#include "ShaderStorageBuffer.hpp"
 
 typedef enum SR_IMGUI_STYLE {
     SR_IMGUI_STYLE_DEFAULT  = 0x00, // Default imGui style is black
@@ -246,6 +247,8 @@ namespace Syrius{
          */
         virtual ResourceView<CubeMap> createCubeMap(const ResourceView<CubeMapLayout>& desc) = 0;
 
+        virtual ResourceView<ShaderStorageBuffer> createShaderStorageBuffer(const ShaderStorageBufferDesc& desc) = 0;
+
         virtual void beginRenderPass(const ResourceView<FrameBuffer>& frameBuffer);
 
         virtual void beginRenderPass();
@@ -279,6 +282,8 @@ namespace Syrius{
         void destroyCubeMapLayout(const ResourceView<CubeMapLayout>& cubeMapLayout);
 
         void destroyCubeMap(const ResourceView<CubeMap>& cubeMap);
+
+        void destroyShaderStorageBuffer(const ResourceView<ShaderStorageBuffer>& shaderStorageBuffer);
 
         /**
         * @brief: Commands the swap chain to present a back buffer to the screen. If multiple back buffers are used,
@@ -343,6 +348,7 @@ namespace Syrius{
         std::vector<UP<FrameBuffer>> m_FrameBuffers; // framebuffer at location 0 is the default framebuffer
         std::vector<UP<CubeMapLayout>> m_CubeMapLayouts;
         std::vector<UP<CubeMap>> m_CubeMaps;
+        std::vector<UP<ShaderStorageBuffer>> m_ShaderStorageBuffers;
 
 
     private:
