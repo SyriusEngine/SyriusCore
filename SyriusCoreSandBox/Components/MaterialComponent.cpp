@@ -7,6 +7,7 @@ IComponent(window, context, container){
     ConstantBufferDesc textureParamsDesc;
     TextureParameters params;
     textureParamsDesc.data = &params;
+    textureParamsDesc.count = 1;
     textureParamsDesc.size = sizeof(TextureParameters);
     textureParamsDesc.shaderStage = SR_SHADER_FRAGMENT;
     textureParamsDesc.usage = SR_BUFFER_USAGE_DYNAMIC;

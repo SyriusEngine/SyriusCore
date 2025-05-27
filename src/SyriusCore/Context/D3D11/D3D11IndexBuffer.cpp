@@ -10,7 +10,7 @@ namespace Syrius{
     IndexBuffer(desc, deviceLimits),
     m_Device(device),
     m_Context(context),
-    m_Buffer(m_Name, D3D11_BIND_INDEX_BUFFER, desc.count * getTypeSize(desc.dataType), desc.data, desc.usage, device, context),
+    m_Buffer(m_Name, D3D11_BIND_INDEX_BUFFER, 0, desc.count * getTypeSize(desc.dataType), desc.count, desc.data, desc.usage, device, context),
     m_DxgiDataType(getD3d11DataType(desc.dataType)){
         SR_PRECONDITION(desc.dataType == SR_UINT32 or desc.dataType == SR_UINT16, "D3D11 Index buffers only supports 16 and 32 bit integer data types, supplied type: {}", desc.dataType);
     }

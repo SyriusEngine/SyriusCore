@@ -2,11 +2,13 @@
 
 namespace Syrius {
 
-    GlBuffer::GlBuffer(const std::string &name, GLenum target, Size size, const void *data, SR_BUFFER_USAGE usage):
+    GlBuffer::GlBuffer(const std::string &name, const GLenum target, const Size size, const Size count,
+        const void *data, const SR_BUFFER_USAGE usage):
     m_Name(name),
     m_Size(size),
-    m_Target(target),
-    m_Usage(usage){
+    m_Count(count),
+    m_Usage(usage),
+    m_Target(target){
         glCreateBuffers(1, &m_BufferID);
         glNamedBufferData(m_BufferID, size, data, getGlBufferType(usage));
 
@@ -98,6 +100,10 @@ namespace Syrius {
 
     Size GlBuffer::getSize() const {
         return m_Size;
+    }
+
+    Size GlBuffer::getCount() const {
+        return m_Count;
     }
 
     SR_BUFFER_USAGE GlBuffer::getUsage() const {

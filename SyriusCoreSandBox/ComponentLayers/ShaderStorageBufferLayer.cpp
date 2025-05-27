@@ -24,6 +24,7 @@ IComponent(window, context, container){
     ShaderStorageBufferDesc transformDesc;
     transformDesc.data = m_Transforms.data();
     transformDesc.size = sizeof(Transform) * m_Transforms.size();
+    transformDesc.count = m_Transforms.size();
     transformDesc.shaderStage = SR_SHADER_VERTEX;
     transformDesc.usage = SR_BUFFER_USAGE_DYNAMIC;
     transformDesc.name = "TransformData";
@@ -41,7 +42,10 @@ IComponent(window, context, container){
 }
 
 void ShaderStorageBufferLayer::onUpdate(Duration deltaTime){
-    m_TransformBuffer->bindShaderResource(0);
+    /*
+     * ShaderStorageBuffers in D3D11 use the same slots as textures!
+     */
+    m_TransformBuffer->bindShaderResource(5);
     m_Context->drawInstanced(m_VertexArray, m_InstanceCount);
 }
 

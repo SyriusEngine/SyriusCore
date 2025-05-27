@@ -4,7 +4,7 @@ namespace Syrius {
 
     GlShaderStorageBuffer::GlShaderStorageBuffer(const ShaderStorageBufferDesc &desc, const UP<DeviceLimits>& deviceLimits):
     ShaderStorageBuffer(desc, deviceLimits),
-    m_Buffer(desc.name, GL_SHADER_STORAGE_BUFFER, desc.size, desc.data, desc.usage){
+    m_Buffer(desc.name, GL_SHADER_STORAGE_BUFFER, desc.size, desc.count, desc.data, desc.usage){
     }
 
     void GlShaderStorageBuffer::release() {
@@ -53,6 +53,10 @@ namespace Syrius {
 
     Size GlShaderStorageBuffer::getSize() const {
         return m_Buffer.getSize();
+    }
+
+    Size GlShaderStorageBuffer::getCount() const {
+        return m_Buffer.getCount();
     }
 
     SR_BUFFER_USAGE GlShaderStorageBuffer::getUsage() const {

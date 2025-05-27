@@ -8,7 +8,7 @@ namespace Syrius{
     ConstantBuffer(desc, deviceLimits),
     m_Device(device),
     m_Context(context),
-    m_Buffer(desc.name, D3D11_BIND_CONSTANT_BUFFER, desc.size, desc.data, desc.usage, device, context){
+    m_Buffer(desc.name, D3D11_BIND_CONSTANT_BUFFER, 0, desc.size, desc.count, desc.data, desc.usage, device, context){
     }
 
     void D3D11ConstantBufferBase::release() {

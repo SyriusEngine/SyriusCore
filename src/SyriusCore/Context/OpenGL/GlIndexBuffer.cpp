@@ -6,7 +6,7 @@ namespace Syrius{
 
     GlIndexBuffer::GlIndexBuffer(const IndexBufferDesc &desc, const UP<DeviceLimits>& deviceLimits):
     IndexBuffer(desc, deviceLimits),
-    m_Buffer(m_Name, GL_ELEMENT_ARRAY_BUFFER, desc.count * getTypeSize(desc.dataType), desc.data, desc.usage){
+    m_Buffer(m_Name, GL_ELEMENT_ARRAY_BUFFER, desc.count * getTypeSize(desc.dataType), desc.count, desc.data, desc.usage){
     }
 
     void GlIndexBuffer::release() {

@@ -8,8 +8,8 @@ namespace Syrius {
 
     class D3D11Buffer {
     public:
-        D3D11Buffer(const std::string& name, UINT bindFlags, Size size, const void* data, SR_BUFFER_USAGE usage,
-            ID3D11Device *device, ID3D11DeviceContext *context);
+        D3D11Buffer(const std::string& name, UINT bindFlags, UINT miscFlags, Size size, Size count, const void* data,
+            SR_BUFFER_USAGE usage, ID3D11Device *device, ID3D11DeviceContext *context);
 
         ~D3D11Buffer();
 
@@ -25,6 +25,8 @@ namespace Syrius {
 
         [[nodiscard]] Size getSize() const;
 
+        [[nodiscard]] Size getCount() const;
+
         [[nodiscard]] SR_BUFFER_USAGE getUsage() const;
 
         [[nodiscard]] const std::string& getName() const;
@@ -38,6 +40,7 @@ namespace Syrius {
 
         const std::string m_Name;
         const Size m_Size = 0;
+        const Size m_Count = 0;
         const SR_BUFFER_USAGE m_Usage = SR_BUFFER_USAGE_DEFAULT;
         const UINT m_BindFlags;
     };

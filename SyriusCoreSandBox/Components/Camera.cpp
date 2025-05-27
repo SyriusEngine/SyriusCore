@@ -14,6 +14,7 @@ m_LastY(window->getHeight() / 2.0f){
     CameraData zero;
     ConstantBufferDesc desc;
     desc.size = sizeof(CameraData);
+    desc.count = 1;
     desc.usage = SR_BUFFER_USAGE_DYNAMIC;
     desc.data = &zero;
     desc.name = "CameraData";
