@@ -44,6 +44,7 @@ m_PrivContainer(createUP<ComponentContainer>(window, context)){
     ConstantBufferDesc lightDesc;
     lightDesc.data = &m_LightData;
     lightDesc.size = sizeof(LightData);
+    lightDesc.count = 1;
     lightDesc.shaderStage = SR_SHADER_FRAGMENT;
     lightDesc.usage = SR_BUFFER_USAGE_DYNAMIC;
     lightDesc.name = "LightData";

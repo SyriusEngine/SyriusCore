@@ -9,7 +9,7 @@ layout (location = 4) in vec2 lTexCoord;
 layout (location = 16) out vec4 fColor;
 layout (location = 17) out vec2 fTexCoord;
 
-layout(std430, binding = 0) buffer TransformData {
+layout(std430, binding = 5) buffer TransformData {
     mat4 transform[];
 };
 

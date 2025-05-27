@@ -7,17 +7,15 @@
 
 namespace Syrius {
 
-    class D3D11ShaderStorageBuffer: public ShaderStorageBuffer{
+    class D3D11ShaderStorageBufferBase: public ShaderStorageBuffer{
     public:
-        D3D11ShaderStorageBuffer(const ShaderStorageBufferDesc& desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
+        D3D11ShaderStorageBufferBase(const ShaderStorageBufferDesc& desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
 
-        ~D3D11ShaderStorageBuffer() override = default;
+        ~D3D11ShaderStorageBufferBase() override;
 
         void release() override;
 
         void bind() override;
-
-        void bindShaderResource(u32 slot) override;
 
         void setData(const void* data, Size size) override;
 
@@ -31,10 +29,48 @@ namespace Syrius {
 
         [[nodiscard]] Size getSize() const override;
 
+        [[nodiscard]] Size getCount() const override;
+
         [[nodiscard]] SR_BUFFER_USAGE getUsage() const override;
 
-    private:
+    protected:
 
+        void create_srv();
+
+        void release_srv() const;
+
+    protected:
+        ID3D11Device* m_Device = nullptr;
+        ID3D11DeviceContext* m_Context = nullptr;
+        ID3D11ShaderResourceView* m_ShaderResourceView = nullptr; //SRV
+        D3D11Buffer m_Buffer;
+    };
+
+    class D3D11ShaderStorageBufferVertex: public D3D11ShaderStorageBufferBase {
+    public:
+        D3D11ShaderStorageBufferVertex(const ShaderStorageBufferDesc& desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
+
+        ~D3D11ShaderStorageBufferVertex() override = default;
+
+        void bindShaderResource(u32 slot) override;
+    };
+
+    class D3D11ShaderStorageBufferFragment: public D3D11ShaderStorageBufferBase {
+    public:
+        D3D11ShaderStorageBufferFragment(const ShaderStorageBufferDesc& desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
+
+        ~D3D11ShaderStorageBufferFragment() override = default;
+
+        void bindShaderResource(u32 slot) override;
+    };
+
+    class D3D11ShaderStorageBufferGeometry: public D3D11ShaderStorageBufferBase {
+    public:
+        D3D11ShaderStorageBufferGeometry(const ShaderStorageBufferDesc& desc, const UP<DeviceLimits>& deviceLimits, ID3D11Device* device, ID3D11DeviceContext* context);
+
+        ~D3D11ShaderStorageBufferGeometry() override = default;
+
+        void bindShaderResource(u32 slot) override;
     };
 }
 

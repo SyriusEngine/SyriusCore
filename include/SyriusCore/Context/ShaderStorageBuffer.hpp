@@ -9,6 +9,7 @@ namespace Syrius {
         std::string name;
         const void* data = nullptr;
         Size size = 0;
+        Size count = 0;
         SR_BUFFER_USAGE usage = SR_BUFFER_USAGE_DEFAULT;
         SR_SHADER_TYPE shaderStage = SR_SHADER_VERTEX;
     };
@@ -36,6 +37,8 @@ namespace Syrius {
         [[nodiscard]] virtual const std::string& getName() const = 0;
 
         [[nodiscard]] virtual Size getSize() const = 0;
+
+        [[nodiscard]] virtual Size getCount() const = 0;
 
         [[nodiscard]] virtual SR_BUFFER_USAGE getUsage() const = 0;
 

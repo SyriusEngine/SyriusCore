@@ -6,7 +6,7 @@ namespace Syrius{
 
     GlVertexBuffer::GlVertexBuffer(const VertexBufferDesc &desc, const UP<DeviceLimits>& deviceLimits):
     VertexBuffer(desc, deviceLimits),
-    m_Buffer(m_Name, GL_ARRAY_BUFFER, desc.layout->getStride() * desc.count, desc.data, desc.usage){
+    m_Buffer(m_Name, GL_ARRAY_BUFFER, desc.layout->getStride() * desc.count, desc.count, desc.data, desc.usage){
     }
 
     void GlVertexBuffer::release() {

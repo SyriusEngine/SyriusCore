@@ -150,8 +150,8 @@ namespace Syrius{
     }
 
     ResourceView<ConstantBuffer> D3D11Context::createConstantBuffer(const ConstantBufferDesc &desc) {
-        ConstantBuffer* ptr;
-        auto shaderStage = desc.shaderStage;
+        ConstantBuffer* ptr = nullptr;
+        const auto shaderStage = desc.shaderStage;
         switch (shaderStage) {
             case SR_SHADER_VERTEX:      ptr = new D3D11ConstantBufferVertex(desc, m_DeviceLimits, m_Device, m_DeviceContext); break;
             case SR_SHADER_FRAGMENT:    ptr = new D3D11ConstantBufferPixel(desc, m_DeviceLimits, m_Device, m_DeviceContext); break;
@@ -190,10 +190,18 @@ namespace Syrius{
     }
 
     ResourceView<ShaderStorageBuffer> D3D11Context::createShaderStorageBuffer(const ShaderStorageBufferDesc &desc) {
-        m_ShaderStorageBuffers.emplace_back(new D3D11ShaderStorageBuffer(desc, m_DeviceLimits, m_Device, m_DeviceContext));
+        ShaderStorageBuffer* ptr = nullptr;
+        switch (desc.shaderStage) {
+            case SR_SHADER_VERTEX:  ptr = new D3D11ShaderStorageBufferVertex(desc, m_DeviceLimits, m_Device, m_DeviceContext);  break;
+            case SR_SHADER_FRAGMENT:  ptr = new D3D11ShaderStorageBufferFragment(desc, m_DeviceLimits, m_Device, m_DeviceContext);  break;
+            case SR_SHADER_GEOMETRY:  ptr = new D3D11ShaderStorageBufferGeometry(desc, m_DeviceLimits, m_Device, m_DeviceContext);  break;
+            default:
+                SR_LOG_THROW("D3D11Context", "Unsupported shader stage () for Shader Storage Buffer", desc.shaderStage);
+
+        }
+        m_ShaderStorageBuffers.emplace_back(ptr);
         return createResourceView(m_ShaderStorageBuffers.back());
     }
-
 
     void D3D11Context::initImGui(const ImGuiDesc& desc) {
         Context::initImGui(desc);

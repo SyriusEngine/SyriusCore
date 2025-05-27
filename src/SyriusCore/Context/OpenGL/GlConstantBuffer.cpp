@@ -4,7 +4,7 @@ namespace Syrius{
 
     GlConstantBuffer::GlConstantBuffer(const ConstantBufferDesc &desc, const UP<DeviceLimits>& deviceLimits):
     ConstantBuffer(desc, deviceLimits),
-    m_Buffer(desc.name, GL_UNIFORM_BUFFER, desc.size, desc.data, desc.usage){
+    m_Buffer(desc.name, GL_UNIFORM_BUFFER, desc.size, desc.count, desc.data, desc.usage){
     }
 
     void GlConstantBuffer::release() {

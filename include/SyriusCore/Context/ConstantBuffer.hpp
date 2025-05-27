@@ -8,7 +8,8 @@ namespace Syrius{
 
     struct SR_CORE_API ConstantBufferDesc{
         std::string name;
-        Size size                 = 0;
+        Size size                   = 0;
+        Size count                  = 0 ;
         const void* data            = nullptr;
         SR_BUFFER_USAGE usage       = SR_BUFFER_USAGE_DEFAULT;
         SR_SHADER_TYPE shaderStage  = SR_SHADER_VERTEX;

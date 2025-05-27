@@ -29,6 +29,8 @@ namespace Syrius {
 
         [[nodiscard]] Size getSize() const override;
 
+        [[nodiscard]] Size getCount() const override;
+
         [[nodiscard]] SR_BUFFER_USAGE getUsage() const override;
 
     private:

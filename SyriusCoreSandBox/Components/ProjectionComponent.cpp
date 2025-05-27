@@ -6,6 +6,7 @@ IComponent(window, context, container){
     ConstantBufferDesc desc;
     desc.shaderStage = SR_SHADER_VERTEX;
     desc.size = sizeof(ProjectionData);
+    desc.count = 1;
     desc.usage = SR_BUFFER_USAGE_DYNAMIC;
     desc.name = "ProjectionData";
     desc.data = &m_ProjectionData;

@@ -6,7 +6,7 @@ namespace Syrius {
 
     class GlBuffer {
     public:
-        GlBuffer(const std::string& name, GLenum target, Size size, const void* data, SR_BUFFER_USAGE usage);
+        GlBuffer(const std::string& name, GLenum target, Size size, Size count, const void* data, SR_BUFFER_USAGE usage);
 
         ~GlBuffer();
 
@@ -26,6 +26,8 @@ namespace Syrius {
 
         [[nodiscard]] Size getSize() const;
 
+        [[nodiscard]] Size getCount() const;
+
         [[nodiscard]] SR_BUFFER_USAGE getUsage() const;
 
         [[nodiscard]] const std::string& getName() const;
@@ -35,6 +37,7 @@ namespace Syrius {
     private:
         const std::string m_Name;
         const Size m_Size = 0;
+        const Size m_Count = 0;
         const SR_BUFFER_USAGE m_Usage = SR_BUFFER_USAGE_DEFAULT;
         GLuint m_BufferID = 0;
         GLenum m_Target = 0;

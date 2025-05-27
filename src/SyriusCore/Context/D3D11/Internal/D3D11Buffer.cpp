@@ -4,14 +4,20 @@
 
 namespace Syrius {
 
-    D3D11Buffer::D3D11Buffer(const std::string &name, const UINT bindFlags, const Size size, const void *data,
-        const SR_BUFFER_USAGE usage, ID3D11Device *device, ID3D11DeviceContext *context):
+    D3D11Buffer::D3D11Buffer(const std::string &name, const UINT bindFlags, const UINT miscFlags, const Size size, const Size count,
+        const void *data, const SR_BUFFER_USAGE usage, ID3D11Device *device, ID3D11DeviceContext *context):
     m_Device(device),
     m_Context(context),
     m_Name(name),
     m_Size(size),
+    m_Count(count),
     m_Usage(usage),
     m_BindFlags(bindFlags){
+        SR_PRECONDITION(size > 0, "Size is 0");
+        SR_PRECONDITION(count > 0, "Count is 0");
+        SR_PRECONDITION(device != nullptr, "Device is null")
+        SR_PRECONDITION(context != nullptr, "Context is null")
+
         D3D11_BUFFER_DESC bufferDesc;
         bufferDesc.ByteWidth = m_Size;
         bufferDesc.Usage = getD3d11BufferType(m_Usage);
@@ -22,8 +28,8 @@ namespace Syrius {
         else{
             bufferDesc.CPUAccessFlags = 0;
         }
-        bufferDesc.MiscFlags = 0;
-        bufferDesc.StructureByteStride = 0;
+        bufferDesc.MiscFlags = miscFlags;
+        bufferDesc.StructureByteStride = m_Size / m_Count;
 
         UP<D3D11_SUBRESOURCE_DATA> subResourceData = nullptr;
         if (data != nullptr) {
@@ -128,6 +134,10 @@ namespace Syrius {
 
     Size D3D11Buffer::getSize() const {
         return m_Size;
+    }
+
+    Size D3D11Buffer::getCount() const {
+        return m_Count;
     }
 
     SR_BUFFER_USAGE D3D11Buffer::getUsage() const {
