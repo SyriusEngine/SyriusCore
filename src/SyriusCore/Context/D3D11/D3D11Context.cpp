@@ -1,5 +1,4 @@
 #include "D3D11Context.hpp"
-#include "../../../../include/SyriusCore/Dependencies/imgui/implot.h"
 
 #if defined(SR_PLATFORM_WIN64)
 

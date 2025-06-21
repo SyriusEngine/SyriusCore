@@ -209,7 +209,7 @@ if ((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTS)
     message(STATUS "Building tests")
 
     add_executable(SyriusCoreTest ${SYRIUS_CORE_SRC} ${SR_CORE_TEST_SRC} TestMain.cpp)
-    add_dependencies(SyriusCoreTest gtest)
+    target_include_directories(SyriusCoreTest PUBLIC include)
 
     target_link_libraries(SyriusCoreTest PUBLIC SyriusUtils)
     target_link_libraries(SyriusCoreTest PRIVATE ${SYRIUS_CORE_LIBS} GTest::gtest)

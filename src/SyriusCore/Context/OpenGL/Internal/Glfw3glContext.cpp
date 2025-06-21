@@ -2,7 +2,6 @@
 
 #include "../../../Dependencies/imgui/imgui_impl_glfw.h"
 #include "../../../Dependencies/imgui/imgui_impl_opengl3.h"
-#include "../../../../include/SyriusCore/Dependencies/imgui/implot.h"
 
 #if !defined(SR_PLATFORM_WIN64)
 
