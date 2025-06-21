@@ -105,6 +105,7 @@ set(SYRIUS_CORE_SRC
     src/SyriusCore/Dependencies/imgui/implot_items.cpp
     src/SyriusCore/Dependencies/imgui/implot.cpp
     src/SyriusCore/Dependencies/imgui/implot_demo.cpp
+    src/SyriusCore/Dependencies/imgui/imgui_stdlib.cpp
 
     src/SyriusCore/Dependencies/stb_image/stb_image.cpp
     src/SyriusCore/Dependencies/stb_image/stb_image_resize.cpp

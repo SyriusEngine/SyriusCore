@@ -1,16 +1,16 @@
 #pragma once
 
-#include "Utils/SyriusCoreInclude.hpp"
-#include "ExportCore.hpp"
+#include <SyriusCore/ExportCore.hpp>
 
-#include "Image/ImageBase.hpp"
+#include <SyriusCore/Context/Context.hpp>
 
-#include "Window/SyriusWindow.hpp"
+#include <SyriusCore/Window/SyriusWindow.hpp>
 
-#include "Context/Context.hpp"
+#include <SyriusCore/Image/Image.hpp>
 
-#include "Dependencies/imgui/imgui.h"
-#include "Dependencies/imgui/implot.h"
+#include <SyriusCore/Dependencies/imgui/imgui.h>
+#include <SyriusCore/Dependencies/imgui/implot.h>
+
 
 namespace Syrius {
 
