@@ -193,9 +193,11 @@ namespace Syrius{
         ImGuiIO& io = ImGui::GetIO(); (void)io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+        if (desc.useMultiViewport) {
+            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+        }
         if (desc.useDocking) {
             io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable docking
-            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
         }
 
         // Set style

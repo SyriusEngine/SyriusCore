@@ -10,6 +10,7 @@
 
 #include <SyriusCore/Dependencies/imgui/imgui.h>
 #include <SyriusCore/Dependencies/imgui/implot.h>
+#include <SyriusCore/Dependencies/imgui/imgui_stdlib.h>
 
 
 namespace Syrius {

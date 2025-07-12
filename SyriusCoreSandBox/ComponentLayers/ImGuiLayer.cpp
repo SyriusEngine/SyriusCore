@@ -10,6 +10,10 @@ void ImGuiLayer::onImGui(ImGuiWindowData &windowData) {
         ImPlot::ShowDemoWindow();
     }
 
+    static std::string s_Text = "Example";
+    ImGui::Begin("std::string text input");
+    ImGui::InputText("Some Text Input", &s_Text);
+    ImGui::End();
 }
 
 

@@ -42,6 +42,7 @@ namespace Syrius{
 
     struct SR_CORE_API ImGuiDesc {
         bool useDocking = true;
+        bool useMultiViewport = true;
         bool useImPlot = true;  // ImPlot is a library for plotting data in ImGui
         SR_IMGUI_STYLE style = SR_IMGUI_STYLE_DEFAULT;
     };
