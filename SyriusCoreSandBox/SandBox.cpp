@@ -114,6 +114,7 @@ void Sandbox::setupContext() {
 void Sandbox::setupImGui() {
     ImGuiDesc imGuiDesc;
     imGuiDesc.useDocking = m_Config["ImGui"]["ImGuiUseDocking"].getOrDefault<bool>(false);
+    imGuiDesc.useMultiViewport = m_Config["ImGui"]["ImGuiUseMultiViewPort"].getOrDefault<bool>(false);
     imGuiDesc.style = static_cast<SR_IMGUI_STYLE>(m_Config["ImGui"]["Style"].getOrDefault<u32>(SR_IMGUI_STYLE_DEFAULT));
     m_Context->initImGui(imGuiDesc);
 }
